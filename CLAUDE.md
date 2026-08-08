@@ -89,3 +89,97 @@ Ringkasan singkat:
   menyalakan run berikutnya.
 - Jangan mengarang eksperimen tambahan untuk "mengisi GPU".
 - Laporkan hasil apa adanya.
+
+## Status sesi & handoff (2026-08-08) — BACA INI DULU kalau melanjutkan sesi
+
+Sesi sebelumnya dihentikan sengaja karena user pindah ke GPU yang lebih kuat
+(GPU sebelumnya, RTX A4500, terbukti compute-bound — lihat
+`docs/CATATAN-TEKNIS-FASE1.md`, ~4-5 jam/60-epoch, jauh lebih lambat dari
+referensi L4 ~1 jam). **Sesi berikutnya: minta ke user GitHub personal
+access token (untuk push ke repo ini & clone `research-pipeline` kalau perlu)
+dan HuggingFace token (untuk `ULM-DS-Lab/SawitMVC-Depth`, repo private).**
+
+### Link penting
+
+- Repo ini: https://github.com/muhammad-zainal-muttaqin/project-expertise
+- Volume 1 (toolbox training/eval, read-only, JANGAN diedit langsung):
+  https://github.com/muhammad-zainal-muttaqin/research-pipeline
+- Pipeline counting: https://github.com/ULM-SawitMVC/Baseline-SawitMVC
+- Dataset: https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-YOLO (publik),
+  https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-Depth (privat, butuh token)
+
+### Status Fase 0 — SELESAI
+
+Semua sudah di-commit (lihat riwayat git). Ringkasan: `Baseline-SawitMVC`
+di-clone ke `/workspace/Baseline-SawitMVC`, Ridge+F_all tereproduksi persis
+(77,48%/32,62%/1,0355 via `experiments/exp_counting_v3.py`, BUKAN
+`run_e2e_pipeline.py` — lihat `docs/SCHEMA-PERTREE.md`), skema GT SawitMVC vs
+SawitMVC-Depth identik (tidak perlu shim), split SawitMVC-Depth-YOLO
+(70/15/15, seed 10) di-reuse langsung, adaptor `scripts/adapters/` lolos
+smoke test, depth tereproyeksi penuh (1408 file, Z 0,8-15,0m).
+
+### Status Fase 1 — SEBAGIAN (retrain 953 pohon)
+
+Bobot E-021 asli (Volume 1) hilang — semua di bawah ini adalah retrain ulang
+("_v2repro"), bukan bobot asli.
+
+| Model | Status | Hasil |
+|---|---|---|
+| YOLO26l | **Selesai**, lolos reproduksi | test mAP50=0,5435 (target 0,5300), mAP50-95=0,2565 (target 0,2568) |
+| RT-DETR-L | **Dihentikan sengaja di epoch 6/60** untuk pindah GPU | checkpoint ada di `research-pipeline/evidence/experiments/runs/rtdetr_l_e60_i1280_v2repro/weights/{best,last}.pt` (kalau volume network `/workspace` persisten ke pod baru) — kalau tidak persisten, ULANGI dari nol, jangan coba resume |
+| RF-DETR-L | Belum mulai | Config override wajib: lihat `docs/RENCANA.md` Fase 1.3 (epochs 60, resolution 1280, batch 8, grad-accum 2, seed 42 — default CLI skrip TIDAK sama) |
+
+**PENTING — bobot `.pt`/`.pth` TIDAK ter-commit ke git (gitignored, terlalu
+besar, konsisten dengan konvensi Volume 1).** Kalau pod lama akan dimatikan
+dan `/workspace` (network volume) TIDAK ikut pindah ke pod baru, bobot YOLO26l
+yang sudah lolos reproduksi (51MB) akan HILANG dan perlu dilatih ulang — itu
+tetap OK karena GPU baru harusnya jauh lebih cepat, tapi jangan asumsikan
+bobot itu masih ada tanpa mengecek dulu.
+
+**Cara lanjut (di GPU baru):**
+1. Cek dulu apakah `/workspace` (mount `mfs#euro-3.runpod.net:9421`) masih
+   ada isinya dari sesi lalu (`ls /workspace/research-pipeline`,
+   `ls /workspace/SawitMVC`). Kalau iya, repo dan dataset sudah lengkap,
+   tinggal `git pull` di `project-expertise`. Kalau tidak, clone ulang dari
+   link di atas dan unduh dataset dari HuggingFace pakai token.
+2. Cache dataset ke disk lokal **kalau I/O ternyata jadi bottleneck lagi** —
+   tapi jangan asumsikan otomatis membantu; ukur dulu (lihat
+   `docs/CATATAN-TEKNIS-FASE1.md`, di RTX A4500 ternyata GPU compute yang
+   jadi batas, bukan I/O). Skrip pembantu: `scripts/train_ultra_local.py`.
+3. Lanjut retrain RT-DETR-L dari nol (bukan resume) dengan
+   `scripts/train_ultra_local.py --arch rtdetr` (lihat docstring skrip).
+4. Retrain RF-DETR-L (config di atas), lalu eval pycocotools ketiganya
+   (`research-pipeline/reproduce/experiments/eval/eval_all_pycoco_v2repro.py`
+   — SUDAH ada, arahkan ke bobot `_v2repro`, JANGAN edit `eval_all_pycoco.py`
+   asli).
+5. Inference + counting 953 pohon pakai adaptor `scripts/adapters/` + pola
+   `exp_counting_v3.py` (fit Ridge segar per detektor, BUKAN
+   `run_e2e_pipeline.py`).
+6. Tulis `V2-E-001`/`V2-E-002` di `experiments/EKSPERIMEN.md`, commit+push.
+7. Fase 2 (RGB 352 pohon): data yaml lokal sudah disiapkan template-nya —
+   `path: <cache>/SawitMVC-Depth-YOLO` (yaml `SawitMVC-Depth-YOLO/data.yaml`
+   sudah portable, `path: .`, tinggal override).
+8. Fase 3 (RGB+D 352 pohon) lalu **Fase 5 (loop perbaikan RGB+D)** — baca
+   `docs/RENCANA.md` bagian Fase 5: **HANYA dua lever yang boleh dicoba,
+   representasi dataset ATAU arsitektur model** (dilarang tuning
+   hyperparameter/SAHI/ensembling). Screening cepat: **maks 15 epoch,
+   patience 3**, baru full 60 epoch kalau kandidat lolos screening.
+9. Fase 4: kompilasi matriks final + laporan.
+
+### Catatan lain
+
+- `research-pipeline` (repo terpisah) punya perubahan uncommitted milik user
+  dari sebelum sesi ini (`eval_e022_paired.py`, `eval_e022_pycoco.py`,
+  `eval_rfdetr_e022.py`, `train_rfdetr_4ch.py` modified) — **bukan dari sesi
+  ini, jangan di-commit tanpa konfirmasi user**, itu kemungkinan kerjaan lain
+  yang belum selesai.
+- `research-pipeline` juga punya artefak baru dari sesi ini yang belum
+  di-push ke remote-nya (masih di working tree lokal, di `/workspace`):
+  `eval_all_pycoco_v2repro.py`, folder run `yolo26l_e60_i1280_v2repro` &
+  `rtdetr_l_e60_i1280_v2repro` (JSON/CSV saja, bobot gitignored),
+  `docs/experiments/KOREKSI-SIDECAR-SAWITMVC-DEPTH.md`, beberapa skrip build
+  baru (`materialize_yolo_split.py`, `patch_sidecar_metadata.py`,
+  `push_hf_v110.py`, `push_hf_yolo.py`, `repack_jpeg_padding.py`). Kalau
+  `/workspace` tidak persisten ke pod baru, ini semua hilang kecuali
+  di-push manual — bukan keputusan sesi ini untuk push otomatis karena
+  bercampur dengan perubahan user yang belum dikonfirmasi.
