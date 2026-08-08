@@ -129,19 +129,20 @@ Bobot E-021 asli (Volume 1) hilang — semua di bawah ini adalah retrain ulang
 | RT-DETR-L | **Dihentikan sengaja di epoch 6/60** untuk pindah GPU | checkpoint ada di `research-pipeline/evidence/experiments/runs/rtdetr_l_e60_i1280_v2repro/weights/{best,last}.pt` (kalau volume network `/workspace` persisten ke pod baru) — kalau tidak persisten, ULANGI dari nol, jangan coba resume |
 | RF-DETR-L | Belum mulai | Config override wajib: lihat `docs/RENCANA.md` Fase 1.3 (epochs 60, resolution 1280, batch 8, grad-accum 2, seed 42 — default CLI skrip TIDAK sama) |
 
-**PENTING — bobot `.pt`/`.pth` TIDAK ter-commit ke git (gitignored, terlalu
-besar, konsisten dengan konvensi Volume 1).** Kalau pod lama akan dimatikan
-dan `/workspace` (network volume) TIDAK ikut pindah ke pod baru, bobot YOLO26l
-yang sudah lolos reproduksi (51MB) akan HILANG dan perlu dilatih ulang — itu
-tetap OK karena GPU baru harusnya jauh lebih cepat, tapi jangan asumsikan
-bobot itu masih ada tanpa mengecek dulu.
+**Bobot YOLO26l_v2repro SUDAH aman** — di-commit ke git repo ini di
+`models/yolo26l_e60_i1280_v2repro/best.pt` (51MB, memakai pengecualian
+`!models/**/*.pt` di `.gitignore`). Tinggal `git pull`/`git clone`, tidak
+perlu retrain ulang. RT-DETR-L (cuma 6/60 epoch saat dihentikan) dan
+RF-DETR-L (belum mulai) TIDAK disimpan — retrain dari nol di GPU baru.
 
 **Cara lanjut (di GPU baru):**
 1. Cek dulu apakah `/workspace` (mount `mfs#euro-3.runpod.net:9421`) masih
    ada isinya dari sesi lalu (`ls /workspace/research-pipeline`,
    `ls /workspace/SawitMVC`). Kalau iya, repo dan dataset sudah lengkap,
    tinggal `git pull` di `project-expertise`. Kalau tidak, clone ulang dari
-   link di atas dan unduh dataset dari HuggingFace pakai token.
+   link di atas dan unduh dataset dari HuggingFace pakai token. Bobot
+   YOLO26l ikut ter-clone otomatis (ada di `models/` repo ini), tidak perlu
+   diambil dari `/workspace` lagi.
 2. Cache dataset ke disk lokal **kalau I/O ternyata jadi bottleneck lagi** —
    tapi jangan asumsikan otomatis membantu; ukur dulu (lihat
    `docs/CATATAN-TEKNIS-FASE1.md`, di RTX A4500 ternyata GPU compute yang
