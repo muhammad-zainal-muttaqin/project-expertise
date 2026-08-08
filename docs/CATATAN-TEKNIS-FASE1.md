@@ -27,6 +27,32 @@ Pola CWD yang sama berlaku untuk `train_rtdetr.py` (pakai `data_rgb.yaml` yang
 sama). `train_rfdetr.py` beda jalur (pakai `rfdetr_ds/`, bukan yaml ultralytics)
 -- perlu dicek terpisah apakah punya masalah serupa sebelum dijalankan.
 
+## Cache dataset ke disk lokal (2026-08-08) — hasil terukur
+
+Dataset di-cache dari `/workspace` (network mount, moosefs) ke disk lokal
+overlay (`/home/claudeuser/data-cache/`): `SawitMVC` (2,4G), `SawitMVC-Depth-YOLO`
+(1,6G), `depth_png_v2` (0,2G). Split file lokal + `data_rgb_local.yaml` dibuat
+di `/home/claudeuser/data-cache/`; symlink `rfdetr_ds/*/images/*` dialihkan ke
+cache lokal. Skrip pemicu training lokal: `scripts/train_ultra_local.py`
+(replikasi `train_yolo26l.py`/`train_rtdetr.py`, hanya `--data` yang beda,
+tidak mengedit file research-pipeline apa pun).
+
+**Hasil setelah RT-DETR-L direstart dengan cache lokal:** GPU utilization naik
+jadi 97% konsisten (sebelumnya osilasi 33-99%), tapi **kecepatan wall-clock per
+epoch nyaris sama** (~326 detik vs ~334 detik sebelumnya). Kesimpulan:
+hipotesis awal (I/O jaringan sebagai bottleneck utama) **salah** — GPU compute
+RTX A4500 sendiri yang jadi batas kecepatan untuk beban kerja ini, bukan
+storage. Osilasi utilization yang teramati sebelumnya kemungkinan sampling
+sesaat, bukan pola I/O-wait yang konsisten.
+
+**Keputusan:** cache lokal tetap dipertahankan (tidak merugikan, dan akan
+berguna di Fase 2/3/5 yang membaca ulang dataset 352-pohon berkali-kali untuk
+banyak percobaan pendek — di situ overhead scan/setup per-run yang berulang
+baru benar-benar terasa). Tapi untuk mempercepat Fase 1 secara berarti,
+upgrade GPU (kandidat: L4, tensor core gen-4, per log asli E-021 mencatat ~1
+jam/60 epoch di L4 vs ~4-4,4 jam di A4500) lebih relevan daripada optimasi
+storage lebih lanjut.
+
 ## Urutan Fase 1 (status берjalan)
 
 1. [running] YOLO26l retrain -> `evidence/experiments/runs/yolo26l_e60_i1280_v2repro/`
