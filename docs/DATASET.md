@@ -52,7 +52,7 @@ folder) — perlu pencocokan berbasis isi untuk pemetaan.
 | Bbox | 2.299 |
 | Kelas | B1, B2, B3, B4 |
 | Depth | Orbbec sensor, Y16 848x480, uint16 milimeter |
-| Split | **Belum ada — perlu dibuat** |
+| Split | **Ada** — 70/15/15 per pohon, seed 10, di `/workspace/SawitMVC-Depth-YOLO/split_stats.json` |
 
 ### Distribusi kelas (terbalik dari SawitMVC)
 
@@ -88,7 +88,7 @@ TIDAK sebanding dengan angka SawitMVC.**
 | Kelas dominan | B3 | B2 |
 | Kelas langka | B1 | B4 (hanya 148) |
 | Depth | Tidak | Ya |
-| Split resmi | Ada | Belum |
+| Split resmi | Ada | Ada (70/15/15 per pohon, seed 10, tree-stratified, `SawitMVC-Depth-YOLO`) |
 
 **Konsekuensi:** Perbandingan RGB vs RGB+D hanya sah pada dataset yang sama
 (352 pohon). Angka dari 953 pohon adalah referensi terpisah.

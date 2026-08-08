@@ -22,8 +22,8 @@ mana pun, dan dataset SawitMVC-Depth siap dipakai.
 | # | Tugas | Detail | Status |
 |---|---|---|---|
 | 0.1 | Adaptor format deteksi | Buat konverter output RT-DETR-L dan RF-DETR-L ke format JSON per-pohon yang sama dengan `predictions/y26mv2_per_tree/` di Baseline-SawitMVC | Belum |
-| 0.2 | Siapkan split SawitMVC-Depth | Buat split train/val/test per pohon untuk 352 pohon, konsisten dengan konvensi SawitMVC (per pohon, bukan per citra) | Belum |
-| 0.3 | Verifikasi ground truth | Pastikan anotasi SawitMVC-Depth kompatibel dengan pipeline counting (format JSON, kelas B1–B4, identitas tandan) | Belum |
+| 0.2 | Siapkan split SawitMVC-Depth | Buat split train/val/test per pohon untuk 352 pohon, konsisten dengan konvensi SawitMVC (per pohon, bukan per citra) | **Selesai** — sudah ada siap pakai di `/workspace/SawitMVC-Depth-YOLO/` (70/15/15, seed 10, tree-stratified, 245/52/55 pohon), tidak perlu dibuat ulang |
+| 0.3 | Verifikasi ground truth | Pastikan anotasi SawitMVC-Depth kompatibel dengan pipeline counting (format JSON, kelas B1–B4, identitas tandan) | **Selesai** — skema identik dengan SawitMVC (lihat `docs/SCHEMA-PERTREE.md`), tidak perlu shim terjemahan |
 | 0.4 | Siapkan depth yang sudah diproyeksikan | Gunakan `reproject_depth.py` dari Research-Pipeline untuk memproyeksikan seluruh depth ke bidang RGB | Belum |
 | 0.5 | Setup environment | `requirements.txt`, versi pustaka (ultralytics, rfdetr, pycocotools, scikit-learn) | Belum |
 
