@@ -167,6 +167,19 @@ dan pelajaran Volume 1 (lihat `docs/REKAP.md` §4-5):
   kecil-taknol (bukan gate init-nol seperti F-007), dibangun di atas sinyal
   indikatif E-032 (mid-fusion 3/3 seed positif, CI masih memuat nol).
 
+**Protokol iterasi cepat (ditambahkan 2026-08-08):** setiap percobaan Fase 5
+dijalankan dengan **maksimal 15 epoch, patience 3 epoch** (bukan 60 epoch
+seperti Fase 1-3) — screening cepat, bukan angka final. Alasan pengguna:
+sinyal menjanjikan atau tidak sudah terlihat di 15 epoch pertama. Konsekuensi:
+- Angka dari screening 15-epoch **tidak dibandingkan langsung** dengan angka
+  60-epoch Fase 1-3 — hanya dipakai untuk ranking relatif antar-percobaan
+  Fase 5 (mana yang layak dilanjutkan).
+- Kandidat yang lolos screening (naik konsisten, bukan derau) baru dijalankan
+  penuh 60 epoch untuk angka yang bisa dikutip dan dibandingkan RGB vs RGB+D.
+- Tetap dicatat di `EKSPERIMEN.md` sebagai entri sendiri (mis. tag
+  `[screening-15ep]` di judul), verdict tetap CONFIRMED/FALSIFIED/INCONCLUSIVE
+  berdasar sinyal screening, bukan diklaim sebagai hasil final.
+
 ---
 
 ## Ringkasan Estimasi
