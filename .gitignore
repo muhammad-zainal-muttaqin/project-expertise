@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dataset (terlalu besar untuk git)
+datasets/
+SawitMVC-YOLO/
+SawitMVC-Depth/
+*.pt
+*.pth
+!models/**/*.pt
+
+# Hasil training besar
+runs/
+wandb/
+
+# Temp
+temp/
+*.tmp
