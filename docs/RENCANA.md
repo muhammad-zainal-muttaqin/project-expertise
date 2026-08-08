@@ -136,6 +136,39 @@ Fase 1 — itu wajar, bukan kegagalan.
 
 ---
 
+## Fase 5 — Loop Perbaikan RGB+D (dibatasi eksplisit oleh pengguna)
+
+**Ditambahkan 2026-08-08.** Setelah Fase 3+4 menghasilkan angka RGB+D
+pertama, fase ini mencari cara menaikkannya lebih jauh vs RGB. Pengguna
+membatasi eksplisit: **hanya dua jenis intervensi yang boleh dicoba.**
+
+1. **Mengubah representasi dataset** — mis. encoding depth (inverse-depth
+   vs linear, HHA, surface normal, edge map turunan depth), preprocessing/
+   normalisasi, augmentasi khusus kanal depth, resolusi/kanal tambahan.
+2. **Mengubah arsitektur model** — mis. lokasi fusi (awal/menengah/akhir),
+   desain cabang, modifikasi stem, mekanisme gating (dengan pelajaran dari
+   F-007: hindari init-nol).
+
+**Yang TIDAK boleh dicoba di fase ini** (di luar dua kategori di atas):
+tuning hyperparameter (sudah terbukti mentok — lihat "Hal yang sudah dicoba
+dan GAGAL" di `CLAUDE.md`), teknik inference/post-processing siap pakai
+(SAHI sudah gagal), ensembling, atau trik training lain.
+
+Setiap percobaan tetap wajib mengikuti aturan eksperimen `CLAUDE.md`: satu
+hipotesis falsifiable per entri, dicatat di `experiments/EKSPERIMEN.md`
+dengan verdict CONFIRMED/FALSIFIED/INCONCLUSIVE, hasil negatif dicatat
+dengan bobot sama. Kandidat awal yang konsisten dengan kedua lever di atas
+dan pelajaran Volume 1 (lihat `docs/REKAP.md` §4-5):
+
+- Representasi: ganti encoding inverse-depth linear saat ini dengan encoding
+  yang menonjolkan kontras dekat (di mana tandan berada), bukan seluruh
+  rentang 0,8-15,0 m secara linear.
+- Arsitektur: cabang depth terpisah dengan fusi menengah, inisialisasi
+  kecil-taknol (bukan gate init-nol seperti F-007), dibangun di atas sinyal
+  indikatif E-032 (mid-fusion 3/3 seed positif, CI masih memuat nol).
+
+---
+
 ## Ringkasan Estimasi
 
 | Fase | Kebutuhan GPU | Estimasi waktu |
