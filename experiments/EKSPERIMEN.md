@@ -258,8 +258,8 @@ Bootstrap CI paired (RGBD − RGB, 10.000 replikat):
 | Detektor | Δ Class ±1 CI95 | P(RGBD > RGB) |
 |---|---|---|
 | YOLO26l | [−5,9pp, +1,8pp] | 16,5% |
-| RT-DETR-L | [−8,2pp, +0,5pp] | 3,7% |
-| RF-DETR-L | belum dihitung | — |
+| RT-DETR-L | [−5,0pp, +0,5pp] | 5,6% |
+| RF-DETR-L | [−2,7pp, +2,7pp] | 47,3% |
 
 Per-kelas RGBD (±1 Acc / MAE / bias):
 
@@ -270,9 +270,109 @@ Per-kelas RGBD (±1 Acc / MAE / bias):
 | RF-DETR-L | 90,9% / 0,51 / −0,07 | 83,6% / 0,84 / +0,04 | 83,6% / 0,65 / −0,25 | 94,5% / 0,35 / −0,05 |
 
 **Sumber:** `results/counting_rgbd352.json`, `results/counting_rgb352.json`, `results/bootstrap_ci_352.json`
-**Verdict:** FALSIFIED — depth 4-kanal TIDAK meningkatkan counting. YOLO26l dan
-RT-DETR-L turun signifikan (P(RGBD>RGB) = 16,5% dan 3,7%). RF-DETR-L tepat sama
-(88,18%) tetapi Tree ±1 Acc justru naik (67,27% vs 65,45%).
+**Verdict:** FALSIFIED — depth 4-kanal TIDAK meningkatkan counting. Bootstrap CI
+menunjukkan P(RGBD>RGB) hanya 16,5% (YOLO26l), 5,6% (RT-DETR-L), dan 47,3%
+(RF-DETR-L). Tidak satu pun arsitektur yang CI-nya eksklusif positif.
+RF-DETR-L tepat sama (88,18%) dengan Tree ±1 Acc sedikit naik (67,27% vs 65,45%),
+tapi CI simetris [−2,7pp, +2,7pp] menunjukkan ini kebetulan.
 **Catatan:** Early fusion depth secara konsisten merugikan counting meskipun YOLO26l
 menunjukkan sedikit perbaikan deteksi. Ini mengonfirmasi bahwa perbaikan deteksi minor
 tidak otomatis menerjemahkan ke perbaikan counting.
+
+---
+
+## V2-E-007 — Analisis matriks 9-sel: dampak dataset dan arsitektur terhadap deteksi dan counting
+
+**Tanggal:** 2026-08-09
+**Tujuan:** Sintesis terstratifikasi dari 9 kombinasi (3 arsitektur × 3 dataset)
+untuk menjawab: (1) apakah urutan arsitektur konsisten lintas dataset,
+(2) apakah early fusion depth membantu, (3) bagaimana pola per-kelas berubah.
+
+### A. Matriks deteksi (test split, pycocotools mAP50)
+
+| | YOLO26l | RT-DETR-L | RF-DETR-L |
+|---|---|---|---|
+| 953-RGB | 0,5435 | 0,5781 | **0,6012** |
+| 352-RGB | 0,3606 | 0,4343 | **0,4544** |
+| 352-RGBD | **0,3919** | 0,3877 | 0,4186 |
+
+**Temuan deteksi:**
+1. **Urutan arsitektur stabil di RGB**: RF-DETR-L > RT-DETR-L > YOLO26l pada kedua
+   dataset RGB (953 dan 352 pohon). Gap RF-DETR vs YOLO26l konsisten (~0,06–0,09).
+2. **RGBD memecah urutan**: RT-DETR-L turun di bawah YOLO26l saat menerima depth
+   (0,3877 vs 0,3919). RF-DETR-L tetap #1 tapi gap menyempit.
+3. **Penurunan absolut 953→352**: semua arsitektur turun ~0,15–0,18 mAP50
+   (efek ukuran dataset + distribusi kelas berbeda, BUKAN degradasi model).
+4. **B4 paling terdampak depth**: delta B4 untuk RT-DETR-L (−0,110) dan
+   RF-DETR-L (−0,116) jauh lebih besar dari kelas lain. B4 (tandan overripe)
+   memiliki instance paling sedikit dan paling rentan terhadap noise depth.
+
+### B. Matriks counting (test split, Ridge + F_all, Class ±1 Acc)
+
+| | YOLO26l | RT-DETR-L | RF-DETR-L |
+|---|---|---|---|
+| 953-RGB | 72,16% | 76,24% | 76,24% |
+| 352-RGB | 89,55% | **90,91%** | 88,18% |
+| 352-RGBD | 87,73% | 88,64% | 88,18% |
+
+**Temuan counting:**
+1. **Detektor terbaik ≠ counter terbaik**: RF-DETR-L unggul deteksi di semua
+   dataset RGB, tapi RT-DETR-L unggul counting pada 352-RGB (90,91% vs 88,18%).
+   Pada 953-RGB, RT-DETR-L dan RF-DETR-L seri (76,24%).
+2. **Depth merugikan counting pada 2/3 arsitektur**: YOLO26l −1,8pp, RT-DETR-L
+   −2,3pp. RF-DETR-L netral (88,18% → 88,18%) tapi Tree ±1 Acc naik
+   (65,45% → 67,27%).
+3. **Counting 352 >> 953**: semua model mencapai 87–91% pada 352 pohon vs
+   72–76% pada 953 pohon. Ini karena distribusi kelas lebih seragam dan
+   jumlah tandan per pohon lebih sedikit di SawitMVC-Depth.
+
+### C. Bootstrap CI — uji signifikansi RGBD vs RGB (10.000 replikat, paired)
+
+| Arsitektur | Δ Class ±1 | CI 95% | P(RGBD>RGB) | Signifikan? |
+|---|---|---|---|---|
+| YOLO26l | −1,82pp | [−5,9, +1,8] | 16,5% | Tidak (CI memuat 0) |
+| RT-DETR-L | −2,25pp | [−5,0, +0,5] | 5,6% | Marginal (CI hampir ekskl. negatif) |
+| RF-DETR-L | +0,02pp | [−2,7, +2,7] | 47,3% | Tidak (CI simetris, efek ~0) |
+
+**Kesimpulan:** Tidak ada arsitektur yang secara signifikan diuntungkan oleh depth
+pada level α=0,05. RT-DETR-L mendekati signifikan ke arah NEGATIF (P=5,6%),
+artinya depth kemungkinan merugikan RT-DETR-L.
+
+### D. Analisis per-kelas terstratifikasi (352 pohon, RGB vs RGBD)
+
+**Deteksi — kelas yang paling diuntungkan depth:**
+- YOLO26l B3: +0,064 (kelas terlemah naik paling banyak)
+- YOLO26l B4: +0,030
+- RF-DETR-L B1: +0,008
+
+**Deteksi — kelas yang paling dirugikan depth:**
+- RF-DETR-L B4: −0,116
+- RT-DETR-L B4: −0,110
+- RF-DETR-L B3: −0,032
+
+**Counting — pola bias:**
+- Semua model RGBD memiliki bias negatif lebih besar di B1 dan B3
+  (under-predict), terutama YOLO26l B1 (bias −0,24 vs −0,09 di RGB).
+- B4 konsisten baik (acc >94%) karena instance sedikit dan Ridge mudah
+  memprediksi mendekati 0.
+
+### E. Ringkasan Fase 4
+
+**Jawaban untuk pertanyaan utama:**
+
+| Pertanyaan | Jawaban |
+|---|---|
+| Arsitektur terbaik deteksi? | RF-DETR-L (konsisten #1 di RGB) |
+| Arsitektur terbaik counting? | RT-DETR-L (90,91% pada 352-RGB) |
+| Apakah depth membantu deteksi? | Hanya YOLO26l (+0,031), sisanya merugikan |
+| Apakah depth membantu counting? | Tidak — 0/3 arsitektur signifikan naik |
+| Kelas tersulit? | B3 (matang awal) — AP50 terendah di semua kondisi |
+| Kelas termudah? | B1 (mentah) — AP50 >0,68 di semua kondisi |
+
+**Implikasi untuk Fase 5:** Early fusion naif (concat kanal) tidak efektif.
+Fase 5 harus mengeksplorasi (1) representasi depth alternatif (edge, inverse,
+clipping) yang mungkin memberikan sinyal lebih informatif, dan/atau (2) arsitektur
+fusi yang lebih canggih (mid/late fusion, attention-based) yang tidak sekadar
+menggabungkan kanal di input.
+
+**Sumber:** `results/matrix_compiled.json`, `results/bootstrap_ci_352.json`
