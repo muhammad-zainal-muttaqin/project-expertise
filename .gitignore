@@ -35,3 +35,7 @@ wandb/
 # Temp
 temp/
 *.tmp
+
+# Environment / secrets
+.env
+.env.*
