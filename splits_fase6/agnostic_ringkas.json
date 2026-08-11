@@ -1,0 +1,27 @@
+{
+  "agnostic953": {
+    "train": {
+      "citra": 3200,
+      "box": 14859
+    },
+    "val": {
+      "citra": 364,
+      "box": 1683
+    }
+  },
+  "agnostic352": {
+    "train": {
+      "citra": 980,
+      "box": 1517
+    },
+    "val": {
+      "citra": 208,
+      "box": 372
+    },
+    "test": {
+      "citra": 220,
+      "box": 410
+    }
+  },
+  "irisan_bocor": 0
+}

@@ -39,3 +39,6 @@ temp/
 # Environment / secrets
 .env
 .env.*
+
+# Hasil training Fase 6 (bobot besar; ikut backup HF bucket, ringkasan angka ada di results/)
+runs_fase6/

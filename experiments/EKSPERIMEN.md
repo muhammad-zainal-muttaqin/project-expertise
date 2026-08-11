@@ -628,3 +628,265 @@ KONKLUSIF untuk counting (arah tergantung baseline pembanding). Lever
 arsitektur (mid-fusion+gate) FALSIFIED di screening (V2-E-009). Hasil
 positif deteksi ini genuinely baru — tidak ada benchmark RGB-D pada TBS
 sawit sebelumnya di literatur manapun.
+
+---
+
+# Fase 6 — Diagnostik ulang dan pipeline dua-tahap
+
+Konteks: pengguna meminta terobosan yang bisa dipertanggungjawabkan secara
+matematis supaya depth benar-benar menaikkan metrik, dengan pelonggaran scope
+eksplisit — boleh berat, boleh multi-tahap, tidak harus YOLO, tidak harus satu
+pipeline. Sebelum melatih apa pun, dijalankan lima probe read-only; hasilnya
+mengubah rumusan masalahnya. Jalan penemuan lengkap: `docs/DIAGNOSIS-DEPTH.md`.
+Semua probe reproducible via `scripts/probe_depth_signal.py`.
+
+---
+
+## V2-E-012 — Gap mAP50 antara 953 dan 352 pohon disebabkan kelangkaan label B3/B4, bukan kanal depth
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Selisih test mAP50 953-vs-352 dapat dijelaskan sepenuhnya oleh
+perbedaan komposisi kelas, bukan oleh kehadiran kanal depth. Falsifikasi:
+kalau gap tersebar merata di keempat kelas, hipotesis ini salah.
+**Dataset & split:** SawitMVC-YOLO (953) dan SawitMVC-Depth (352), seluruh
+split, hitung ulang langsung dari file label.
+**Metode:** `scripts/probe_depth_signal.py --probe distribusi`
+
+**Hasil:**
+
+| Split | citra | instance | /citra | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|---|---|---|
+| 953-train | 3.000 | 14.041 | 4,68 | 11,2% | 18,6% | 52,2% | 17,9% |
+| 953-test | 588 | 2.612 | 4,44 | 9,6% | 19,0% | 53,9% | 17,4% |
+| 352-train | 980 | 1.517 | 1,55 | 35,8% | 43,6% | 14,2% | 6,5% |
+| 352-test | 220 | 410 | 1,86 | 35,9% | 42,4% | 15,4% | 6,3% |
+
+B3 train 7.333 → 215 instance (34× lebih sedikit); B4 2.513 → 98 (26×).
+AP50 per kelas (YOLO26l test): B1 0,7705→0,6804, B2 0,4479→0,4320,
+**B3 0,6050→0,2001, B4 0,3506→0,1299**.
+
+**Sumber:** `results/perkelas_pycoco_v2repro.json`,
+`results/perkelas_pycoco_rgb352.json`, hitung ulang label via probe.
+**Verdict: CONFIRMED** — gap terkonsentrasi persis di dua kelas yang
+instance-nya menghilang; B1/B2 nyaris tidak berubah.
+**Konsekuensi:** perbandingan lintas dataset 953-vs-352 tidak sah dan tidak
+boleh dipakai lagi untuk menilai depth. Memotong dataset 953 jadi 25% tetap
+menyisakan ~1.800 instance B3 dengan komposisi kelas yang sama, jadi "RGB 25%
+tetap menang" adalah hasil yang diharapkan dan tidak menguji depth.
+
+---
+
+## V2-E-013 — Sebagian besar kehilangan mAP50 berasal dari salah kelas, bukan gagal lokalisasi
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Pada bobot RGB-352 yang sudah ada, AP50 class-agnostic jauh di
+atas mAP50 class-aware. Falsifikasi: kalau keduanya berdekatan, yang rusak
+adalah lokalisasi dan pemisahan dua-tahap tidak akan menolong.
+**Dataset & split:** SawitMVC-Depth 352, split kanonik, test (410 box).
+**Metode:** inference `runs/yolo26l_e60_i1280_rgb352/weights/best.pt`
+(conf 0,001, IoU-NMS 0,7), lalu AP50 gaya COCO dihitung dua kali — sekali
+per kelas, sekali dengan seluruh kelas dilipat jadi satu. Implementasi
+divalidasi lebih dulu: mAP50 hasil hitung sendiri 0,3707 vs pycocotools
+0,3711 (selisih 0,0004).
+
+**Hasil:**
+
+| Besaran | Nilai |
+|---|---|
+| mAP50 class-aware | 0,3707 |
+| AP50 class-agnostic (lokalisasi murni) | **0,6677** |
+| Hilang karena salah kelas | **0,2970 (44,5%)** |
+
+Konfusi pada box yang sudah benar lokasinya (IoU≥0,5, conf≥0,25):
+
+| | →B1 | →B2 | →B3 | →B4 | recall |
+|---|---|---|---|---|---|
+| B1 | 92 | 26 | 0 | 0 | 78,0% |
+| B2 | 13 | 83 | 12 | 0 | 76,9% |
+| B3 | 0 | 21 | 11 | 4 | 30,6% |
+| B4 | 0 | 1 | 3 | 5 | 55,6% |
+
+Akurasi klasifikasi 70,5% (n=271). Seluruh kesalahan jatuh ke kelas
+bertetangga — nol kasus B1→B3/B4 — jadi ini masalah **ordinal**.
+Catatan kejujuran: 70,5% itu bersyarat pada box yang berhasil dideteksi
+(271 dari 410); atas seluruh GT akurasinya 191/410 = **46,6%**.
+
+**Sumber:** `scripts/eval_twostage.py` (fungsi `ap50`), log sesi 2026-08-11.
+**Verdict: CONFIRMED** — plafon mAP50 pipeline ini adalah 0,6677, dan 44,5%
+kemampuan yang sudah ada terbuang di tahap penamaan kelas.
+
+---
+
+## V2-E-014 — Sinyal depth yang tersedia adalah relief lokal ordinal, bukan skala metrik, dan sub-kuantum per piksel
+
+**Tanggal:** 2026-08-11
+**Hipotesis (A):** depth memberi skala metrik (`D = d·Z/f`) yang memisahkan
+kelas lebih baik daripada ukuran piksel.
+**Hipotesis (B):** depth memberi kontras kedalaman lokal antara tandan dan
+sekelilingnya yang monoton terhadap kematangan.
+**Dataset & split:** 2.299 box GT SawitMVC-Depth + `depth_png_352/`.
+**Metode:** `scripts/probe_depth_signal.py --probe depth`
+
+**Hasil A — FALSIFIED.** Z median per kelas nyaris konstan:
+B1 1,36 m / B2 1,33 / B3 1,31 / B4 1,20. Protokol foto jarak tetap, jadi
+mengalikan dengan Z hanya menggeser skala. (Temuan sampingan: depth **95,1%
+valid DI DALAM box** — angka "29% invalid" yang selama ini dikutip itu latar,
+bukan objek.)
+
+**Hasil B — CONFIRMED.** Relief = median Z(cincin) − median Z(box):
+
+| | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|
+| relief median | **+2,8 cm** | 0,0 cm | −1,5 cm | **−5,1 cm** |
+| lebih dekat dari sekitar | 61,3% | 50,7% | 41,4% | 26,4% |
+
+Kruskal-Wallis 4 kelas: **H = 99,8, p = 1,7×10⁻²¹**. Monoton sempurna.
+
+**Kenapa sinyal sekuat itu tidak terpakai:** encoding uint8 inverse-depth
+`[0,8; 15,0]` m punya step `dZ/dv = Z²·(1/Z_NEAR − 1/Z_FAR)/254` = **2,91 cm
+per level di Z=2,5 m** (median Z per citra dataset ini 2,49 m). Sinyal relief
+median 0,8 cm = **0,27 level**; B4 (5,1 cm) = 1,8 level. Dengan derau sensor
+~1% Z ≈ 2,5 cm, **SNR per piksel ≈ 0,3**. Rentang dinamis kanal justru habis
+untuk ramp global adegan (entropi 7,68 dari 8 bit) yang **nuisance** — median
+Z per citra std 0,82 m, rentang 0,80–6,44 m, mengikuti posisi operator.
+
+Pooling memulihkan sinyalnya (AUC B1-vs-B4):
+
+| piksel di-pool | AUC train+val | AUC test |
+|---|---|---|
+| 1 | 0,592 | 0,577 |
+| 16 | 0,724 | 0,650 |
+| 256 | 0,728 | 0,593 |
+| 4.096 | 0,730 | 0,621 |
+
+**Sumber:** `scripts/probe_depth_signal.py`, `depth_png_352/depth_meta.json`.
+**Verdict: A FALSIFIED, B CONFIRMED.**
+**Konsekuensi:** depth harus dikonsumsi **setelah pooling wilayah**, pada jalur
+**klasifikasi**. Early fusion di stem adalah rezim terburuk (resolusi penuh,
+pooling minimum) — menjelaskan kegagalan berulang E-022/E-027/E-032/V2-E-005/006,
+sekaligus meretrodiksi kenapa `edge` (Sobel = high-pass yang membuang ramp
+global) satu-satunya yang pernah menang (V2-E-008/010).
+**Koreksi terhadap pemahaman lama:** rentang `[0,8; 15,0]` dipilih di Volume 1
+dengan memaksimalkan entropi SELURUH CITRA — objektif yang keliru untuk tugas
+ini, karena mengoptimalkan deskripsi langit dan pohon jauh, bukan resolusi pada
+skala objek.
+
+---
+
+## V2-E-015 — Classifier kematangan pada crop mengalahkan klasifikasi detektor satu-tahap
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Memisahkan klasifikasi kematangan menjadi model crop tersendiri
+(dengan pretraining dari 846 pohon 953 yang bebas bocor, sampling seimbang
+kelas, dan mask box target) menaikkan akurasi kematangan di atas 46,6% yang
+dicapai detektor Fase 1-5 atas seluruh GT.
+**Dataset & split:** crop GT SawitMVC-Depth 352, split kanonik
+(1.517 train / 372 val / 410 test); pretraining dari 16.542 crop 846 pohon 953
+(`splits_fase6/pretrain953_*`, irisan nol dengan val/test-352 diverifikasi).
+**Metode:** `scripts/build_crop_dataset.py` + `scripts/train_crop_classifier.py`,
+backbone `convnext_tiny.fb_in22k_ft_in1k` (in_chans=4: RGB + mask box), head
+hybrid (CE + CORAL), 45 epoch, batch 32.
+
+**Hasil (akurasi kematangan, test split 410 crop):**
+
+| Pendekatan | test akurasi |
+|---|---|
+| Tebak kelas terbanyak (B2) | 0,4244 |
+| Histogram warna + regresi logistik | 0,4780 |
+| **Detektor Fase 1-5 atas seluruh GT** | **0,4659** (191/410) |
+| **Classifier crop (rata-rata 3 seed)** | **0,6309 ± 0,0203** |
+
+**Dua bug sendiri yang sempat menahan hasil** (dicatat karena keduanya generik
+dan mudah terulang):
+1. Crop diperluas ctx=1,6 supaya cincin ikut masuk, tapi di kanopi padat sering
+   ada >1 tandan per crop — tanpa penanda, model tidak tahu tandan mana yang
+   dinilai. Ditambahkan kanal **mask box**.
+2. Augmentasi fotometrik awal (brightness ±25%, saturasi 0,6–1,4) menghapus
+   label: kematangan tandan DIDEFINISIKAN oleh warna. Diturunkan ke ±7%.
+Setelah keduanya diperbaiki, pretrain 953 naik dari akurasi 0,471 → 0,648.
+
+**Sumber:** `runs_fase6/sd{101,202,303}_rgb/hasil.json`,
+`runs_fase6/pre953v2/hasil.json`.
+**Verdict: CONFIRMED** — +16,5pp absolut di atas klasifikasi detektor.
+**Catatan:** run dengan `in_chans=3` di `runs_fase6/` (ft_rgb_coral,
+ft_rgb_hybrid, ft_rgbd_hybrid) berasal dari kode sebelum kedua bug diperbaiki
+dan **tidak sebanding** — sengaja tidak dihapus, tapi tidak dipakai di angka
+manapun.
+
+---
+
+## V2-E-016 — Informasi kematangan yang dibawa depth REDUNDAN secara kondisional terhadap RGB
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Kanal relief depth menaikkan akurasi klasifikasi kematangan di
+atas RGB saja. Falsifikasi: kalau delta-nya nol atau negatif lintas seed,
+hipotesis gugur.
+**Dataset & split:** sama dengan V2-E-015.
+
+### Bagian A — cabang CNN depth, 3 seed
+
+Cabang depth terpisah (2 kanal: relief + mask valid), difusikan setelah global
+pooling, gate init 0,1 (taknol, pelajaran F-007), plus loss auxiliary RGB-only.
+
+| seed | val rgb | val rgbd | Δ | test rgb | test rgbd | Δ |
+|---|---|---|---|---|---|---|
+| 101 | 0,6505 | 0,6075 | −0,0430 | 0,6146 | 0,5805 | −0,0341 |
+| 202 | 0,6640 | 0,6398 | −0,0242 | 0,6537 | 0,6073 | −0,0463 |
+| 303 | 0,6290 | 0,6532 | +0,0242 | 0,6244 | 0,6439 | +0,0195 |
+
+Rata-rata **Δval = −0,0143** (t=−0,72, p=0,55), **Δtest = −0,0203**
+(t=−1,01, p=0,42). Gate berhenti di 0,110–0,114 dari init 0,100 — model
+praktis tidak membuka jalur depth.
+
+Catatan penting: satu seed tunggal sempat memberi **+5,9pp** — persis besaran
+yang, kalau dilaporkan sendirian, akan terbaca sebagai kemenangan depth.
+Multi-seed menunjukkan itu derau.
+
+### Bagian B — statistik depth terpool secara analitik
+
+Bagian A bisa dibantah: desain cabang CNN melanggar temuan V2-E-014 sendiri
+(pooling ditaruh di akhir, sesudah 4 conv ber-stride bekerja pada medan
+ber-SNR ~0,3). Jadi diuji lagi dengan depth diberi kondisi paling
+menguntungkan — 8 statistik yang SUDAH terpool (relief cincin−box, median,
+std, cakupan valid, rentang persentil), ditempel ke fitur penultimate
+classifier RGB terlatih, dibandingkan lewat regresi logistik yang sama.
+
+Sinyal relief terverifikasi masih utuh di crop: B1 +1,34 cm, B2 −0,24,
+B3 −2,60, B4 −4,29 — tetap monoton.
+
+| Fitur | val akurasi | test akurasi |
+|---|---|---|
+| statistik depth saja (8 dim) | 0,3468 | 0,3756 |
+| RGB saja (768 dim) | 0,6774 | 0,6415 |
+| RGB + statistik depth (776 dim) | 0,6720 | 0,6415 |
+
+**Kontribusi depth: −0,0054 val, +0,0000 test.**
+
+**Sumber:** `runs_fase6/sd*/hasil.json`, `results/probe_fitur_depth.json`,
+`scripts/probe_fitur_depth.py`.
+**Verdict: FALSIFIED.**
+
+**Interpretasi — ini temuan utamanya.** Depth membawa informasi kematangan bila
+berdiri sendiri (`I(Y;D) > 0`: relief monoton, Kruskal-Wallis p=1,7×10⁻²¹ di
+V2-E-014; dan sendirian ia mencapai 0,3756 vs tebakan acak 0,25). Tetapi
+informasi itu **redundan secara kondisional terhadap RGB** (`I(Y;D|RGB) ≈ 0`).
+Penjelasan fisiknya sederhana: tandan yang menonjol keluar dari pelepah (B1)
+juga *terlihat* besar dan matang di RGB — relief adalah **akibat** dari
+variabel laten yang sama (kematangan/ukuran tandan), bukan pengukuran
+independen atasnya.
+
+**Konsekuensinya bersifat batas, bukan kegagalan implementasi.** Tidak ada
+arsitektur fusi yang bisa mengekstrak informasi yang tidak ada: kalau
+`I(Y;D|RGB) ≈ 0`, maka risiko Bayes model RGB-D sama dengan model RGB, dan
+setiap parameter tambahan hanya menambah error estimasi. Ini menjelaskan
+seluruh rangkaian hasil nol RGB-D di kedua volume (E-022, E-027, E-032,
+V2-E-005/006, V2-E-009) dengan satu pernyataan, dan memprediksi bahwa
+percobaan fusi berikutnya juga akan nol.
+
+**Batas klaim ini — jangan digeneralisasi berlebihan:**
+- Berlaku untuk **klasifikasi kematangan** pada dataset ini. Kontribusi depth
+  untuk **lokalisasi** (menemukan tandan tertutup) belum diuji terpisah —
+  seluruh eksperimen sebelumnya mencampur kedua tugas.
+- Berlaku untuk protokol pengambilan data ini: jarak standoff hampir tetap
+  (Z per kelas 1,20–1,36 m), depth uint8, 352 pohon. Sensor dengan presisi
+  lebih tinggi atau protokol jarak bervariasi bisa memberi hasil berbeda.

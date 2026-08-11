@@ -1,0 +1,43 @@
+{
+  "model": "runs_fase6/sd202_rgb/best.pt",
+  "rgb_saja": {
+    "val": {
+      "akurasi": 0.6774193548387096,
+      "akurasi_pm1": 0.9623655913978495,
+      "macro_recall": 0.5458482541509522
+    },
+    "test": {
+      "akurasi": 0.6414634146341464,
+      "akurasi_pm1": 0.9658536585365853,
+      "macro_recall": 0.5346188431163801
+    }
+  },
+  "depth_saja": {
+    "val": {
+      "akurasi": 0.3467741935483871,
+      "akurasi_pm1": 0.7553763440860215,
+      "macro_recall": 0.36995174104482176
+    },
+    "test": {
+      "akurasi": 0.375609756097561,
+      "akurasi_pm1": 0.7390243902439024,
+      "macro_recall": 0.3687295873256465
+    }
+  },
+  "rgb_plus_depth": {
+    "val": {
+      "akurasi": 0.6720430107526881,
+      "akurasi_pm1": 0.9623655913978495,
+      "macro_recall": 0.5514543114737686
+    },
+    "test": {
+      "akurasi": 0.6414634146341464,
+      "akurasi_pm1": 0.9634146341463414,
+      "macro_recall": 0.5348827417792935
+    }
+  },
+  "delta_depth": {
+    "val": -0.005376344086021501,
+    "test": 0.0
+  }
+}

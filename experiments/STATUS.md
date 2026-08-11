@@ -1,6 +1,46 @@
 # Status Eksperimen
 
-## Fase saat ini: 5 — Loop perbaikan RGB+D (SELESAI, semua metrik terisi)
+## Fase saat ini: 6 — Diagnostik ulang + pipeline dua-tahap (BERJALAN)
+
+Scope dilonggarkan pengguna: boleh berat/multi-tahap, tidak harus YOLO, tidak
+harus satu pipeline — target metrik setinggi mungkin. Lima probe read-only
+(tanpa training) mengubah rumusan masalahnya; jalan penemuannya lengkap di
+[../docs/DIAGNOSIS-DEPTH.md](../docs/DIAGNOSIS-DEPTH.md), entri
+`V2-E-012` s.d. `V2-E-014`.
+
+**Tiga temuan yang mengoreksi pemahaman Fase 1–5:**
+
+1. **Gap 953-vs-352 bukan efek depth** (V2-E-012) — B3 34× dan B4 26× lebih
+   langka di dataset depth; gap terkonsentrasi persis di dua kelas itu
+   (B3 AP50 0,605→0,200, B4 0,351→0,130), B1/B2 nyaris sama. Perbandingan
+   lintas dataset 953-vs-352 **tidak sah** dan tidak dipakai lagi.
+2. **44,5% kemampuan detektor hangus karena salah kelas** (V2-E-013) — AP50
+   class-agnostic 0,6677 vs mAP50 class-aware 0,3707. Mencari tandan sudah
+   baik; menamainya yang rusak, dan konfusinya selalu ke kelas bertetangga
+   (masalah ordinal).
+3. **Sinyal depth = relief lokal, bukan skala metrik** (V2-E-014) — relief
+   B1 +2,8 cm → B4 −5,1 cm, monoton, Kruskal-Wallis p=1,7×10⁻²¹; tapi
+   SNR per-piksel ≈0,3 (satu level uint8 = 2,91 cm di Z=2,5 m, sinyalnya
+   0,8 cm), jadi hanya terbaca setelah pooling wilayah (AUC 0,592→0,724).
+   Depth **95,1% valid di dalam box** — "29% invalid" itu latar, bukan objek.
+
+Konsekuensi desain: pisahkan lokalisasi dari klasifikasi, dan konsumsi depth
+setelah pooling di jalur klasifikasi — bukan early fusion di stem.
+
+### Status pengerjaan Fase 6
+
+| Komponen | Status |
+|---|---|
+| Probe diagnostik (`probe_depth_signal.py`) | selesai — V2-E-012/013/014 |
+| Split 953 bebas bocor (846 pohon) | selesai — irisan nol terverifikasi |
+| Dataset crop + relief depth + mask box | selesai — 16.542 crop (953) + 2.299 (352) |
+| Classifier kematangan crop | selesai tahap awal; ablasi depth multi-seed berjalan |
+| Detektor class-agnostic | berjalan (pretrain 953 → finetune 352) |
+| Rekomposisi dua-tahap + counting | belum |
+
+---
+
+## Fase 5 — Loop perbaikan RGB+D (SELESAI, semua metrik terisi)
 
 Lihat [docs/RENCANA.md](../docs/RENCANA.md) untuk rencana kerja lengkap dan
 [EKSPERIMEN.md](EKSPERIMEN.md) untuk log append-only per hipotesis.

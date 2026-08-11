@@ -220,3 +220,60 @@ bootstrap CI). Lihat `experiments/EKSPERIMEN.md` V2-E-008 s/d V2-E-011.
 | 3 | Ya (training) | 3–5 hari |
 | 4 | Tidak | 1 hari |
 | **Total** | | **~7–10 hari** |
+
+---
+
+## Fase 6 — Diagnostik ulang + pipeline dua-tahap (2026-08-11)
+
+**Pelonggaran scope oleh pengguna.** Fase 5 dibatasi ke dua lever
+(representasi, arsitektur) dengan larangan eksplisit terhadap tuning
+hyperparameter, SAHI, dan ensembling. Untuk Fase 6 pengguna melonggarkan:
+target akhirnya aplikasi mobile (foto 4 sisi → deteksi → hasil), tapi selama
+pengembangan **boleh lambat/berat, boleh dipecah multi-tahap, boleh ada
+preprocessing, tidak harus YOLO, tidak harus satu pipeline** — yang penting
+metriknya naik. Ditambah arahan: **tanpa rerun eksperimen lama, tanpa audit
+history dulu; kejar hasil terbaik, baru trace back**. Cabang yang turun sedikit
+saja atau buang waktu langsung dibuang.
+
+Larangan Fase 5 diperlakukan **tergantikan** untuk fase ini. Kalau itu keliru,
+cabang yang bersangkutan tinggal dibuang.
+
+### Kenapa fase ini ada
+
+Lima probe read-only (tanpa training, hitungan menit) menunjukkan rumusan
+masalah Fase 1–5 keliru di tiga titik. Lengkapnya di `docs/DIAGNOSIS-DEPTH.md`
+dan entri `V2-E-012` s.d. `V2-E-014`:
+
+1. Gap 953-vs-352 adalah kelangkaan label B3/B4 (34×/26×), bukan efek depth.
+2. 44,5% kemampuan detektor hangus karena salah kelas (AP50 lokalisasi 0,6677
+   vs mAP50 0,3707), dan konfusinya selalu antar-kelas-tetangga → ordinal.
+3. Sinyal depth adalah relief lokal ordinal (p=1,7×10⁻²¹) ber-SNR ~0,3 per
+   piksel — hanya terbaca setelah pooling wilayah. Early fusion di stem adalah
+   rezim terburuk untuk sinyal seperti itu.
+
+### Rancangan
+
+| Tahap | Isi | Alasan dari diagnostik |
+|---|---|---|
+| 0 | Split 953 bebas bocor (846 pohon, buang 107 pohon val/test-352) | 44 dari 55 pohon test-352 ada di train-953 — tanpa dibersihkan, pretraining tidak sah |
+| 1 | Classifier kematangan pada crop, RGB vs RGB+relief-depth | menyerang headroom 0,2970; crop melakukan pooling wilayah by-construction |
+| 2 | Detektor class-agnostic (1 kelas "tandan"), pretrain 953 → finetune 352 | lokalisasi lihat 2.299 positif, bukan terpecah jadi 215 (B3) / 98 (B4) |
+| 3 | Rekomposisi: kelas tahap-2 ditempel ke box tahap-1 → mAP50 sebanding Fase 1–5, lalu Ridge+F_all | angka tetap bisa dibandingkan dengan seluruh riwayat |
+
+Kanal depth yang dipakai bukan inverse-depth absolut (itu nuisance: standoff
+per citra std 0,82 m) melainkan **relief** `R = Z − median lokal`, di-scale
+±10 cm → 0..255 (step 0,08 cm/level vs 2,91 cm sebelumnya). Cabang depth
+difusikan **setelah global pooling**, gate init taknol (F-007), plus loss
+auxiliary RGB-only supaya jalur RGB tidak bisa dirusak jalur depth.
+
+### Batas yang harus jujur disebut
+
+Test split 352 cuma 410 box, dengan B4 = 26. Selisih kecil pada mAP50 tidak
+bisa dibedakan dari derau — pada Fase 5 bahkan val dan test berlawanan arah
+(RGB unggul di val 0,4111 vs 0,3856; `edge` unggul di test). Karena itu ablasi
+depth Fase 6 dijalankan **multi-seed**, dan klaim tanpa pemisahan yang jelas
+dari derau dilaporkan INCONCLUSIVE, bukan dibulatkan.
+
+Soal target ~90%: yang realistis menyentuh itu adalah **Class ±1 Acc counting**
+(sekarang 89,55%) dan akurasi klasifikasi kematangan per-crop. **mAP50 tidak
+bisa 90%** di dataset ini — plafonnya AP50 lokalisasi (0,6677 sekarang).
