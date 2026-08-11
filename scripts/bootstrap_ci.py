@@ -241,9 +241,12 @@ def main():
         ("YOLO26l", "pertree_rgb352/yolo_yolo26l", "pertree_rgbd352/yolo_yolo26lrgbd"),
         ("RT-DETR-L", "pertree_rgb352/rtdetr_rtdetrl", "pertree_rgbd352/rtdetr_rtdetrlrgbd"),
         ("RF-DETR-L", "pertree_rgb352/rfdetr_rfdetrl", "pertree_rgbd352/rfdetr_rfdetrlrgbd"),
+        # Fase 5 (V2-E-011): YOLO26l + encoding 'edge' vs RGB-352 retrain.
+        ("YOLO26l-edge", "pertree_rgb352/yolo_yolo26l", "pertree_rgbd352/yolo_yolo26lrgbdedge"),
     ]
 
-    results = {}
+    out = proj / "results" / "bootstrap_ci_352.json"
+    results = json.loads(out.read_text()) if out.exists() else {}
     for arch, rgb_dir_rel, rgbd_dir_rel in MODELS:
         rgb_dir = proj / "runs" / rgb_dir_rel
         rgbd_dir = proj / "runs" / rgbd_dir_rel
@@ -271,7 +274,6 @@ def main():
             print(f"  (trees differ, no paired test)")
             results[arch] = {"rgb_ci": ci_rgb, "rgbd_ci": ci_rgbd}
 
-    out = proj / "results" / "bootstrap_ci_352.json"
     out.write_text(json.dumps(results, indent=2, default=str))
     print(f"\n-> {out}")
 

@@ -21,6 +21,8 @@ MODELS_RGBD = [
     ("YOLO26l-RGBD",   "yolo",   "runs/yolo26l_e60_i1280_rgbd352/weights/best.pt",            1280, 26.3),
     ("RT-DETR-L-RGBD", "rtdetr", "runs/rtdetr_l_e60_i1280_rgbd352/weights/best.pt",           1280, 33.0),
     ("RF-DETR-L-RGBD", "rfdetr", "runs/rfdetr_l_e60_i1280_rgbd352/checkpoint_best_ema.pth",   1280, 35.7),
+    # Fase 5 (V2-E-010): encoding depth 'edge' menang screening V2-E-008.
+    ("YOLO26l-RGBD-edge", "yolo", "runs/yolo26l_e60_i1280_rgbd352_edge/weights/best.pt",       1280, 26.3),
 ]
 
 

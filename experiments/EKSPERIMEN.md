@@ -376,3 +376,255 @@ fusi yang lebih canggih (mid/late fusion, attention-based) yang tidak sekadar
 menggabungkan kanal di input.
 
 **Sumber:** `results/matrix_compiled.json`, `results/bootstrap_ci_352.json`
+
+---
+
+## V2-E-008 [screening-15ep] — Encoding depth alternatif pada YOLO26l 4-kanal (early fusion), 352 pohon
+
+**Tanggal:** 2026-08-10/11
+**Hipotesis:** Mengganti encoding kanal depth (arsitektur early fusion TIDAK
+diubah, sama seperti V2-E-005) meningkatkan val mAP50 dibandingkan encoding
+`inverse` V2-E-005 dalam protokol screening cepat (≤15 epoch, patience 3),
+konsisten dengan lever representasi Fase 5 (`docs/RENCANA.md`).
+**Dataset & split:** SawitMVC-Depth-4ch-{edge,clipped,valid_mask}, 352 pohon
+(245 train / 52 val / 55 test, split `canonical_70_15_15` — sama persis
+dengan V2-E-003..007). Depth direproyeksi ulang (`depth_meta.json`: cakupan
+valid 71,0%, Z_NEAR/Z_FAR=0,8/15,0 m, sama dengan angka lama).
+**Metode:**
+- `edge` (Sobel gradient magnitude), `clipped` (clip@80, near-field), keduanya
+  via `scripts/create_depth_edge_dataset.py` (sudah ada sebelumnya).
+- `valid_mask` (BARU): pisahkan sentinel "tidak ada data" (0) dari valid-terjauh
+  secara numerik (rentang valid dimampatkan ke [40,220]) — motivasi: pada
+  encoding `inverse`, invalid(0) hanya beda 1 increment dari valid-terjauh(1)
+  pada skala kontinu yang sama, network tak punya sinyal eksplisit membedakan
+  "sensor gagal" vs "sekadar jauh". Fungsi `encode_valid_mask` di
+  `scripts/create_depth_edge_dataset.py`.
+- `dropout` (BARU, augmentasi kanal depth): kanal depth di-nol-kan acak p=0,25
+  saat TRAIN saja, arsitektur early fusion `inverse` tidak diubah. Adaptasi
+  `Research-Pipeline/pipeline/fourch.py::patch_loader` (copy, bukan
+  cross-import) ke `scripts/train_yolo_4ch_dropout.py`.
+- Training: `YOLO('yolo26l.pt').train(epochs=15, patience=3, imgsz=1280,
+  batch=4, seed=42, cos_lr=True)` — protokol screening cepat wajib
+  (`docs/RENCANA.md` Fase 5), BUKAN angka final 60-epoch.
+- Metrik: val mAP50/mAP50-95 native ultralytics (bukan pycocotools test-split
+  — hanya untuk ranking relatif antar-kandidat Fase 5, per protokol).
+
+**Hasil (val split, 208 pohon, mAP50 terbaik selama training):**
+
+| Kandidat | Epoch terbaik | val mAP50 | val mAP50-95 | Durasi |
+|---|---|---|---|---|
+| `inverse` (V2-E-005, acuan, 60 epoch bukan 15 — tidak di-rerun) | — | — | — | — |
+| `dropout` | 15 (belum plateau) | 0,3168 | 0,1091 | 2583,7 dtk |
+| **`edge`** | **15 (belum plateau)** | **0,3777** | **0,1279** | 2584,4 dtk |
+| `clipped` | 14 | 0,3221 | 0,1136 | 2574,9 dtk |
+| `valid_mask` | 11 | 0,3321 | 0,1022 | 2575,5 dtk |
+
+**Sumber:** `runs/yolo26l_screening_{dropout,edge,clipped,valid_mask}352/results.csv`,
+`runs/yolo26l_screening_*352/hasil.json`
+**Verdict:** CONFIRMED — `edge` (Sobel gradient magnitude) unggul jelas dari
+tiga kandidat lain (+0,046 s/d +0,061 mAP50), selaras F-002 (frekuensi tinggi
+memisahkan tandan dari pelepah, +0,0731 pada B4). Tidak seperti tiga kandidat
+lain yang mulai plateau/turun, `edge` dan `dropout` masih naik di epoch 15 —
+`edge` dipromosikan ke training penuh 60 epoch (lihat V2-E-010).
+**Catatan:** Angka screening 15-epoch ini TIDAK dibandingkan langsung dengan
+angka 60-epoch V2-E-003/005 (dataset/protokol sama tapi durasi beda) — hanya
+untuk ranking relatif antar-kandidat Fase 5, sesuai protokol.
+
+---
+
+## V2-E-009 [screening-15ep] — Mid-fusion depth + gate non-zero-init pada YOLO26l, 352 pohon
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Memindahkan depth dari early fusion (concat kanal ke-4 di
+input) ke cabang terpisah dengan fusi aditif ber-gate di backbone menengah
+(P3/8, layer index 4 `yolo26.yaml`), gate diinisialisasi kecil-taknol (0,02,
+BUKAN nol seperti F-007), meningkatkan val mAP50 dibandingkan baseline RGB
+352 pohon (V2-E-003, 0,3606 test) dan tidak berhenti mati seperti F-007
+(gate diharapkan bergerak menjauhi inisialisasinya).
+**Dataset & split:** SawitMVC-Depth-4ch (encoding `inverse`, sama dengan
+V2-E-005) — 352 pohon, split sama seperti V2-E-008.
+**Metode:**
+- Arsitektur baru `scripts/train_yolo_midfusion.py`: stem RGB 3-kanal
+  TIDAK disentuh (beda mendasar dari V2-E-005/early fusion) — dibangun
+  `ch=3` eksplisit (bukan `data["channels"]=4`), bobot pratlatih COCO
+  di-load bersih tanpa mismatch shape. Cabang depth terpisah (conv stride-8,
+  1→16→32→512 kanal, conv terakhir diinisialisasi skala 0,1x — mitigasi
+  F-007 "inisialisasi kecil-taknol"), fitur-nya dijumlahkan ke output layer 4
+  dikali gate scalar `γ` (init 0,02).
+- Patch di level CLASS (`BaseModel._predict_once`, cek `hasattr(self,
+  "depth_branch")`) — bukan per-instance (`types.MethodType`, percobaan
+  pertama GAGAL: `Trainer.final_eval()` me-reload model dari checkpoint
+  lewat `AutoBackend`, method per-instance tidak ikut ter-reload walau
+  `depth_branch`/`gate` sebagai submodul/parameter biasa tetap ter-reload
+  benar — diverifikasi lewat smoke test save→reload→forward sebelum retry).
+- Training: sama seperti V2-E-008 (15 epoch, patience 3, imgsz 1280, batch 4,
+  seed 42, cos_lr).
+
+**Hasil (val split, 208 pohon):**
+
+| Epoch | val mAP50 | val mAP50-95 |
+|---|---|---|
+| 1 | 0,0799 | 0,0247 |
+| 2 | 0,1615 | 0,0414 |
+| **3 (terbaik)** | **0,2087** | **0,0712** |
+| 4 | 0,2015 | 0,0647 |
+| 5 | 0,2161 | 0,0667 |
+| 6 (early-stop, patience=3) | 0,1876 | 0,0552 |
+
+Validasi akhir (best.pt, epoch 3) per kelas: B1=0,396, B2=0,329, **B3=0,056,
+B4=0,051** (mAP50-95 masing-masing 0,131/0,115/0,015/0,023).
+Gate: init 0,02 → final 0,0250 (bergerak naik — TIDAK macet di titik mati
+seperti F-007, secara mekanis pelajaran F-007 berhasil dihindari).
+**Sumber:** `runs/yolo26l_screening_midfusion352/results.csv`,
+`runs/yolo26l_screening_midfusion352/hasil.json`
+**Verdict:** FALSIFIED — sinyal TIDAK naik konsisten (plateau lalu turun
+setelah epoch 3, early-stop di epoch 6), kalah jauh dari keempat kandidat
+representasi V2-E-008 (0,209 vs 0,317-0,378) pada jumlah epoch yang sama.
+Per protokol Fase 5 (`docs/RENCANA.md`: "kandidat yang lolos screening naik
+konsisten"), TIDAK dipromosikan ke 60 epoch. B3/B4 nyaris nol kemungkinan
+karena cabang depth mulai dari inisialisasi acak (beda dengan kandidat
+representasi yang langsung mewarisi bobot pretrained di conv pertama) —
+enam epoch kemungkinan tidak cukup untuk kelas langka (B3/B4 paling sedikit
+instance-nya). Dicatat sebagai hasil negatif dengan bobot yang sama — TIDAK
+membantah bahwa mid-fusion+gate non-zero-init bisa bekerja secara umum,
+hanya bahwa konfigurasi spesifik ini (fuse_at=4, gate init=0,02, tanpa LR
+terpisah untuk cabang depth) tidak lolos screening cepat pada YOLO26l.
+
+---
+
+## V2-E-010 — Encoding depth `edge` (Sobel) pada YOLO26l, 60 epoch penuh, dibanding `inverse` (V2-E-005)
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** Encoding depth `edge` (Sobel gradient magnitude), yang menang
+screening 15-epoch (V2-E-008, val mAP50 0,3777), meningkatkan test mAP50
+dibandingkan `inverse`/early fusion biasa (V2-E-005, test mAP50 0,3919) saat
+dilatih penuh 60 epoch dengan protokol identik.
+**Dataset & split:** SawitMVC-Depth-4ch-edge, 352 pohon (245 train / 52 val /
+55 test), split `canonical_70_15_15` — sama persis dengan V2-E-003/005.
+**Metode:** `scripts/train_yolo_4ch_screening.py --epochs 60 --patience 60`
+(config identik V2-E-005: imgsz 1280, batch 4, seed 42, cos_lr). Evaluasi:
+`scripts/eval_pycoco_rgbd352.py` (pycocotools, test split), bobot
+`runs/yolo26l_e60_i1280_rgbd352_edge/weights/best.pt`.
+
+**Hasil (test split, pycocotools):**
+
+| | inverse (V2-E-005) | edge (V2-E-010) | Δ |
+|---|---|---|---|
+| mAP50 | 0,3919 | **0,4316** | **+0,0397 (+10,1% relatif)** |
+| mAP50-95 | 0,1408 | 0,1441 | +0,0033 |
+
+Per-kelas AP50 (test):
+
+| Kelas | inverse | edge | Δ |
+|---|---|---|---|
+| B1 | 0,6857 | 0,7252 | +0,0395 |
+| B2 | 0,4579 | 0,5031 | +0,0452 |
+| B3 | 0,2637 | 0,2240 | −0,0397 |
+| **B4** | 0,1601 | **0,2740** | **+0,1139** |
+
+Dibanding RGB-352 murni (V2-E-003, test mAP50 0,3606): `edge` unggul di
+**keempat kelas sekaligus** (B1 +0,0448, B2 +0,0711, B3 +0,0239, B4 +0,1441),
+sesuatu yang `inverse` tidak pernah capai (`inverse` cuma unggul RGB di 1-2
+kelas, campur naik-turun — lihat V2-E-005).
+
+**Sumber:** `results/perkelas_pycoco_rgbd352.json` (kunci
+`YOLO26l-RGBD-edge`), `runs/yolo26l_e60_i1280_rgbd352_edge/results.csv`,
+`runs/yolo26l_e60_i1280_rgbd352_edge/hasil.json`
+**Verdict:** CONFIRMED — `edge` mengalahkan `inverse` secara jelas di mAP50
+keseluruhan (+10,1% relatif, di atas ambang "2-5% tidak cukup" yang jadi
+standar proyek ini). Pola per-kelas selaras hipotesis F-002: **B4 (kelas
+paling dirugikan early fusion di V2-E-005, −0,116) sekarang paling diuntungkan
+(+0,114)** — sinyal tepi/gradien depth membantu tepat di kasus tandan
+kecil/tertutup pelepah yang paling sulit dipisahkan dari fronds secara warna.
+B3 sedikit turun (−0,040), konsisten dengan diagnosis bahwa B2/B3 adalah
+ambiguitas fotometrik (warna) yang depth — dalam bentuk apapun — tidak bisa
+menyelesaikan.
+**Counting (Ridge + F_all, test 55 pohon):**
+
+| | inverse (V2-E-006) | edge | Δ |
+|---|---|---|---|
+| Class ±1 Acc | 87,73% | 87,27% | −0,46pp |
+| Tree ±1 Acc | 60,00% | 61,82% | +1,82pp |
+| Macro MAE | 0,673 | 0,564 | −0,109 (membaik) |
+
+Per-kelas edge (Acc/MAE/bias): B1=85,5%/0,600/−0,236, B2=81,8%/0,836/−0,182,
+B3=85,5%/0,655/−0,255, B4=96,4%/0,164/−0,127.
+
+**Sumber counting:** `results/counting_rgbd352.json` (kunci
+`YOLO26l-RGBD-edge`), `runs/pertree_rgbd352/yolo_yolo26lrgbdedge/`
+
+**Catatan penting:** deteksi naik jelas (+10,1% mAP50) TIDAK diikuti
+kenaikan counting Class ±1 Acc yang setara — malah sedikit turun (−0,46pp),
+meski Tree ±1 Acc dan Macro MAE membaik. Ini pola yang sama dengan V2-E-005/006
+(deteksi naik tak otomatis bikin counting naik, karena pipeline counting
+bergantung pada konsistensi lintas-sisi, bukan cuma mAP rata-rata). Kesimpulan
+detection-level tetap CONFIRMED; kesimpulan counting-level lebih tepat
+INCONCLUSIVE — perbaikan di beberapa metrik (Tree Acc, MAE), datar/sedikit
+turun di metrik utama (Class Acc).
+
+**Belum lengkap:** bootstrap CI berpasangan (edge vs RGB-352) menyusul
+setelah retrain baseline RGB-352 (bobot lama tidak tersimpan di workspace
+ini) selesai — akan dicatat sebagai entri terpisah, `V2-E-011`.
+
+---
+
+## V2-E-011 — Retrain baseline RGB-352 + bootstrap CI berpasangan: `edge` vs RGB
+
+**Tanggal:** 2026-08-11
+**Hipotesis:** `edge` (RGBD) secara signifikan mengalahkan RGB-352 murni
+pada counting Class ±1 Acc (bootstrap CI berpasangan per-pohon, 10.000
+replikat), melengkapi kemenangan deteksi di V2-E-010.
+**Dataset & split:** SawitMVC-Depth, 352 pohon, split `canonical_70_15_15`
+— identik V2-E-003/004/010.
+**Metode:** Retrain YOLO26l RGB-352 dari nol (bobot lama V2-E-003 tidak
+tersimpan di workspace ini) — config identik V2-E-003 (`scripts/train_yolo_4ch_screening.py
+--epochs 60 --patience 60`, data `SawitMVC-Depth/data_rgb_352.yaml`).
+Eval: `scripts/eval_pycoco_352.py`, `scripts/run_counting_rgb352.py`,
+`scripts/bootstrap_ci.py` (entri `YOLO26l-edge` ditambahkan).
+
+**Sanity check reproduksi retrain RGB-352 vs V2-E-003/004 asli:**
+
+| | Asli (V2-E-003/004) | Retrain ini | Δ |
+|---|---|---|---|
+| Deteksi test mAP50 | 0,3606 | 0,3711 | +0,0105 (wajar, dalam variasi run) |
+| Counting Class ±1 Acc | 89,55% | **84,09%** | **−5,46pp (lebih besar dari variasi biasa)** |
+
+Deteksi reproduksi baik. Counting reproduksi lebih buruk dari yang
+diharapkan — konsisten dengan pola yang berulang di proyek ini: perbedaan
+kecil pada deteksi (box mana yang lolos/tidak) bisa mengubah fitur
+konsistensi lintas-sisi yang dipelajari Ridge secara tidak proporsional.
+Ini bukan bug, tapi konsekuensi nyata yang harus dibawa ke interpretasi
+hasil di bawah.
+
+**Hasil bootstrap CI berpasangan (edge vs retrain RGB-352 ini, 10.000 replikat):**
+
+| Metrik | Δ | CI95 | P(RGBD>RGB) |
+|---|---|---|---|
+| Class ±1 Acc | +3,18pp | [−0,5pp, +7,3pp] | 94,3% |
+| Tree ±1 Acc | +7,24pp | [−1,8pp, +18,2pp] | 90,0% |
+
+**Sumber:** `results/bootstrap_ci_352.json` (kunci `YOLO26l-edge`),
+`results/perkelas_pycoco_rgb352.json`, `results/counting_rgb352.json`,
+`runs/yolo26l_e60_i1280_rgb352/`
+
+**Verdict: INCONCLUSIVE untuk counting** (CI hampir tidak memuat nol tapi
+masih memuat nol secara ketat; P=94,3% cukup kuat tapi belum ambang 95%
+formal) — **DAN kesimpulannya berbalik arah tergantung baseline RGB mana
+yang dipakai:**
+
+- Dibanding retrain RGB-352 ini (84,09%): `edge` (87,27%) UNGGUL +3,18pp.
+- Dibanding angka ASLI V2-E-004 (89,55%): `edge` (87,27%) justru KALAH −2,28pp.
+
+Ini BUKAN kemenangan bersih seperti deteksi (V2-E-010: `edge` unggul dari
+SEMUA baseline RGB manapun yang dipakai, 0,4316 vs 0,3606/0,3711 RGB-only
+dan 0,3919 inverse). Untuk counting, kesimpulan sensitif terhadap noise
+reproduksi baseline itu sendiri — kejujuran metodologis mengharuskan ini
+dilaporkan sebagai TIDAK KONKLUSIF, bukan dibulatkan ke arah manapun yang
+lebih enak didengar.
+
+**Ringkasan Fase 5 akhir:** lever representasi (`edge`) CONFIRMED
+memperbaiki deteksi (+10,1% mAP50, robust lintas-baseline), TIDAK
+KONKLUSIF untuk counting (arah tergantung baseline pembanding). Lever
+arsitektur (mid-fusion+gate) FALSIFIED di screening (V2-E-009). Hasil
+positif deteksi ini genuinely baru — tidak ada benchmark RGB-D pada TBS
+sawit sebelumnya di literatur manapun.

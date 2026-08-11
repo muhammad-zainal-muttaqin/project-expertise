@@ -180,6 +180,34 @@ sinyal menjanjikan atau tidak sudah terlihat di 15 epoch pertama. Konsekuensi:
   `[screening-15ep]` di judul), verdict tetap CONFIRMED/FALSIFIED/INCONCLUSIVE
   berdasar sinyal screening, bukan diklaim sebagai hasil final.
 
+### Status pelaksanaan (2026-08-11)
+
+Screening kedua lever sudah dijalankan pada YOLO26l (prioritas pertama sesuai
+keputusan pengguna — paling mudah dimodifikasi, satu-satunya yang naik di
+early fusion naif V2-E-005). Lihat `experiments/EKSPERIMEN.md` V2-E-008/009
+untuk detail lengkap.
+
+- **Lever representasi — 4 kandidat di-screening**: `edge` (Sobel gradient
+  magnitude) menang jelas (val mAP50 0,3777 vs 0,3168/0,3221/0,3321 untuk
+  dropout/clipped/valid_mask). Dipromosikan ke 60 epoch penuh — hasil test
+  split: **deteksi CONFIRMED naik +10,1% mAP50** dari `inverse` (0,4316 vs
+  0,3919), robust terhadap baseline RGB manapun. **Counting INCONCLUSIVE**
+  — bootstrap CI berpasangan berbalik arah tergantung baseline RGB-352 yang
+  dipakai (menang +3,18pp vs retrain baru, kalah −2,28pp vs angka asli
+  V2-E-004) — lihat V2-E-010/011 untuk detail lengkap kenapa ini dilaporkan
+  tidak konklusif, bukan dibulatkan ke arah manapun.
+- **Lever arsitektur — mid-fusion + gate non-zero-init**: gate berhasil
+  dihindarkan dari titik mati F-007 (bergerak 0,02→0,025), tapi sinyal
+  keseluruhan TIDAK naik konsisten (plateau epoch 3, early-stop epoch 6, val
+  mAP50 0,209) — kalah jauh dari kandidat representasi pada jumlah epoch
+  sama. **TIDAK dipromosikan** ke 60 epoch — hasil negatif, dicatat apa
+  adanya. RT-DETR-L/RF-DETR-L untuk lever arsitektur tidak dikerjakan
+  (kondisional pada lever arsitektur YOLO26l lolos screening, yang tidak
+  terjadi).
+
+**Fase 5 SELESAI** (2026-08-11) — semua metrik terisi (deteksi, counting,
+bootstrap CI). Lihat `experiments/EKSPERIMEN.md` V2-E-008 s/d V2-E-011.
+
 ---
 
 ## Ringkasan Estimasi
