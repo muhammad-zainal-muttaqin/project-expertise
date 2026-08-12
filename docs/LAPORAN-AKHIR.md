@@ -245,10 +245,20 @@ keduanya.
 | `detektor_pilihan_v*.json`, `sweep_inferensi_v*.json` | hanya val | **Benar sesuai protokol.** Ini berkas *pemilihan* konfigurasi; memilih di val memang yang seharusnya. Bukan lubang. |
 | `twostage_final*.json` | hanya test | **Dapat diterima, tapi tidak ideal.** Konfigurasinya memang dipilih di val lewat dua berkas di atas, jadi angka test-nya sah. Namun tanpa pendamping val, pembalikan peringkat val-vs-test tidak terlihat sampai diuji terpisah. |
 | `perkelas_pycoco_*.json`, `fase6_*.json`, `probe_fitur_depth.json` | val + test | Lengkap. |
-| `counting_*.json`, `matrix_compiled.json`, `bootstrap_ci_352.json` | tidak mencatat split | **Lubang dokumentasi.** Angkanya memang split test (mengikuti pipeline counting Fase 0), tapi berkasnya sendiri tidak menyatakannya. Harus dibaca bersama `EKSPERIMEN.md`. |
+| `counting_*.json`, `bootstrap_ci_352.json` | angka benar, split tidak dinyatakan | **DITUTUP.** Blok `_meta` ditambahkan ke tiap berkas: dataset, split kanonik, split evaluasi, jumlah pohon, strategi fit, pipeline, dan entri `V2-E-0xx` yang mengutipnya. Lihat catatan integritas di bawah. |
+| `matrix_compiled.json` | — | **Salah tanda pada audit pertama.** Berkas ini sudah menyatakan split lewat nama kuncinya (`test_mAP50`, `test_mAP50_95`); skrip audit hanya mencari kunci bernama harfiah `test` sehingga menandainya keliru. `_meta` tetap ditambahkan untuk menegaskan, plus peringatan V2-E-022/023. |
 | `agn953_full` | **tidak ada angka test sama sekali** | **Lubang nyata**, ditutup di §9.2. |
 
-Reproduksi audit: bandingkan kunci `val`/`test` pada tiap `results/*.json`.
+**Integritas penambahan metadata.** `scripts/lengkapi_metadata_split.py` hanya
+menambah kunci `_meta`; tidak ada nilai lama yang disentuh. Ini diverifikasi
+dua arah: muatan tiap berkas di-hash sebelum dan sesudah (dengan `_meta`
+dilepas kembali) dan harus identik — kalau berubah, berkas dikembalikan
+seperti semula dan skrip berhenti dengan status gagal. Verifikasi kedua lewat
+git: `git diff --numstat` mencatat 7–10 baris **ditambah dan nol dihapus** pada
+setiap berkas.
+
+Reproduksi audit: bandingkan kunci `val`/`test` pada tiap `results/*.json`,
+lalu `.venv/bin/python scripts/lengkapi_metadata_split.py --periksa`.
 
 ---
 

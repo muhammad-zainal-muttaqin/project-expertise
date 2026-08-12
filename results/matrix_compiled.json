@@ -1,4 +1,11 @@
 {
+  "_meta": {
+    "catatan": "split sudah tersirat di nama kunci (`test_mAP50`, `test_mAP50_95`); metadata ini hanya menegaskannya",
+    "split_evaluasi": "test",
+    "kolom_dataset": "lihat kunci `dataset` tiap baris",
+    "peringatan": "baris 953 dan 352 TIDAK sebanding — sesi akuisisi terpisah ~80 hari (V2-E-022); selisih antar-baris di dalam 352 sebagian besar di bawah derau (V2-E-023)",
+    "eksperimen": "V2-E-007"
+  },
   "detection": [
     {
       "dataset": "953-RGB",

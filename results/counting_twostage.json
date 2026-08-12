@@ -1,4 +1,14 @@
 {
+  "_meta": {
+    "dataset": "SawitMVC-Depth (352 pohon)",
+    "split_kanonik": "canonical_70_15_15 (245/52/55 pohon)",
+    "split_evaluasi": "test",
+    "n_pohon_evaluasi": 55,
+    "fit": "Ridge dipasang pada train+val, dilaporkan pada test",
+    "metrik": "Class ±1 Acc, macro MAE, akurasi per kelas",
+    "pipeline": "Ridge + F_all (67 dim), fungsi SAMA dengan Fase 1-5",
+    "eksperimen": "V2-E-021"
+  },
   "TwoStage-Small-Ens3-TTA": {
     "acc_B1": 0.8909090909090909,
     "mae_B1": 0.6181818181818182,

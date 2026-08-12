@@ -1,4 +1,14 @@
 {
+  "_meta": {
+    "dataset": "SawitMVC-Depth (352 pohon)",
+    "split_kanonik": "canonical_70_15_15 (245/52/55 pohon)",
+    "split_evaluasi": "test",
+    "n_pohon_evaluasi": 55,
+    "metrik": "CI 95% bootstrap untuk metrik COUNTING (bukan mAP50)",
+    "metode": "resampling tingkat pohon; selisih RGB vs RGB+D berpasangan",
+    "eksperimen": "V2-E-011",
+    "catatan": "CI untuk mAP50 deteksi ada di bootstrap_map*.json (V2-E-023)"
+  },
   "YOLO26l": {
     "rgb_ci": {
       "class_acc_ci": [

@@ -1,4 +1,14 @@
 {
+  "_meta": {
+    "dataset": "SawitMVC-Depth (352 pohon)",
+    "split_kanonik": "canonical_70_15_15 (245/52/55 pohon)",
+    "split_evaluasi": "test",
+    "n_pohon_evaluasi": 55,
+    "fit": "Ridge dipasang pada train+val, dilaporkan pada test",
+    "metrik": "Class ±1 Acc, MAE, bias per kelas",
+    "pipeline": "Ridge + F_all (67 dim), Baseline-SawitMVC",
+    "eksperimen": "V2-E-004"
+  },
   "YOLO26l": {
     "detector": "yolo_rgb352",
     "n_trees_test": 55,
