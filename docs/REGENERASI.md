@@ -45,6 +45,13 @@ SawitMVC-YOLO + SawitMVC-Depth
 `create_depth_edge_dataset.py` membaca dari `SawitMVC-Depth-4ch/images`, jadi
 **basis `inverse` harus dibangun lebih dulu** sebelum varian encoding mana pun.
 
+Urutan yang salah tidak akan lolos diam-diam: sejak 2026-08-12 kedua skrip itu
+**exit 2** dengan pesan yang menyebut perintah pembetulannya kalau direktori
+sumbernya tidak ada atau kosong, dan **exit 1** kalau ada berkas yang gagal
+ditulis di tengah jalan. Sebelumnya keduanya menulis direktori kosong lalu
+exit 0 — kegagalan diam yang baru ketahuan berjam-jam kemudian saat training.
+Selalu periksa exit code, jangan cuma melihat "Done".
+
 ## Perintah
 
 Semua dijalankan dari `/workspace/project-expertise`.
