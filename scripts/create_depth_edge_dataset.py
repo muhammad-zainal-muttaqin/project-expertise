@@ -94,9 +94,24 @@ def main():
 
     src = Path(args.src)
     dst = Path(args.dst)
-    dst.mkdir(parents=True, exist_ok=True)
 
-    tiffs = sorted(src.glob("*.tiff")) + sorted(src.glob("*.tif"))
+    # Gagal KERAS kalau sumbernya tidak ada. Sebelum guard ini skrip menulis
+    # direktori kosong lalu exit 0 — dan basis `SawitMVC-Depth-4ch/` memang
+    # dihapus 2026-08-12, jadi urutan build yang salah (lihat docs/REGENERASI.md)
+    # menghasilkan dataset kosong yang baru ketahuan saat training.
+    tiffs = sorted(src.glob("*.tiff")) + sorted(src.glob("*.tif")) if src.is_dir() else []
+    if not tiffs:
+        sebab = "tidak ada" if not src.is_dir() else "tidak memuat satu pun .tiff/.tif"
+        print(f"GAGAL: {src} {sebab}.\n"
+              f"Bangun basis 4-kanal dulu:\n"
+              f"  python scripts/build_4ch_dataset.py \\\n"
+              f"    --rgb-dir /workspace/SawitMVC-Depth/images \\\n"
+              f"    --depth-dir /workspace/depth_png_352 \\\n"
+              f"    --out-dir /workspace/SawitMVC-Depth-4ch/images --workers 8\n"
+              f"Selengkapnya di docs/REGENERASI.md.")
+        return 2
+
+    dst.mkdir(parents=True, exist_ok=True)
     print(f"Processing {len(tiffs)} TIFF files with encoding '{args.encoding}' ({args.workers} workers)")
 
     tasks = [(str(fp), str(dst / fp.name), args.encoding) for fp in tiffs]
@@ -108,7 +123,11 @@ def main():
                 print(f"  {i + 1}/{len(tiffs)}")
 
     print(f"Done: {n_ok}/{len(tiffs)} files → {dst}")
+    if n_ok != len(tiffs):
+        print(f"GAGAL: {len(tiffs) - n_ok} berkas gagal ditulis")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

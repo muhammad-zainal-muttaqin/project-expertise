@@ -53,6 +53,19 @@ def main():
     rgb_files = sorted(args.rgb_dir.glob("*.jpg"))
     print(f"Found {len(rgb_files)} RGB images")
 
+    # Gagal KERAS. Ini langkah PERTAMA rantai regenerasi (docs/REGENERASI.md);
+    # sebelumnya ia menulis direktori kosong lalu exit 0, sehingga salah ketik
+    # --rgb-dir baru ketahuan berjam-jam kemudian saat training.
+    if not rgb_files:
+        sebab = "tidak ada" if not args.rgb_dir.is_dir() else "tidak memuat satu pun .jpg"
+        print(f"GAGAL: {args.rgb_dir} {sebab} — "
+              f"harusnya /workspace/SawitMVC-Depth/images")
+        return 2
+    if not args.depth_dir.is_dir():
+        print(f"GAGAL: {args.depth_dir} tidak ada — "
+              f"harusnya /workspace/depth_png_352 (lihat docs/REGENERASI.md)")
+        return 2
+
     tasks = []
     n_missing_depth = 0
     for rgb in rgb_files:
@@ -71,7 +84,11 @@ def main():
     ok = sum(1 for r in results if r.startswith("OK"))
     print(f"\nDone: {ok}/{len(tasks)} images merged to 4-channel TIFF")
     print(f"Output: {args.out_dir}")
+    if ok != len(tasks):
+        print(f"GAGAL: {len(tasks) - ok} citra gagal digabung")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

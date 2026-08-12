@@ -16,8 +16,17 @@ python3 -m venv .venv --system-site-packages
 .venv/bin/pip install timm            # untuk classifier crop
 ```
 
+Untuk lingkungan yang **persis** menghasilkan angka di repo ini, pakai
+[`../requirements-freeze.txt`](../requirements-freeze.txt) (181 paket ter-pin,
+Python 3.12.3) alih-alih dua baris `pip install` di atas.
+
 Data mentah: `SawitMVC-YOLO/` (953 pohon) dan `SawitMVC-Depth/` (352 pohon)
 dari HuggingFace, plus `depth_png_352/` hasil `reproject_depth.py` (Volume 1).
+
+> **Sebagian data turunan dihapus 2026-08-12** saat proyek ditutup —
+> `crops_fase6/`, `crops_fase6_256/`, dan dataset 4-kanal selain `edge`.
+> Langkah §2 di bawah membangun ulang `crops_fase6/`; untuk sisanya lihat
+> [REGENERASI.md](REGENERASI.md). Bobot dan `runs*/` tidak ada yang dihapus.
 
 ## 1. Diagnostik (read-only, ~5 menit, tanpa GPU)
 
