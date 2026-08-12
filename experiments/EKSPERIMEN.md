@@ -890,3 +890,190 @@ percobaan fusi berikutnya juga akan nol.
 - Berlaku untuk protokol pengambilan data ini: jarak standoff hampir tetap
   (Z per kelas 1,20–1,36 m), depth uint8, 352 pohon. Sensor dengan presisi
   lebih tinggi atau protokol jarak bervariasi bisa memberi hasil berbeda.
+
+---
+
+## V2-E-017 — Lokalisasi (deteksi 1 kelas) sudah mentok di plafon dataset, bukan kurang kapasitas
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** AP50 lokalisasi pada 352 pohon masih jauh di bawah yang bisa
+dicapai kalau data lebih banyak. Falsifikasi: kalau dataset 953 (9,8x lebih
+banyak box latih) mencapai AP50 lokalisasi yang setara, berarti keduanya sudah
+menyentuh plafon resep ini dan menambah kapasitas/model tidak akan menolong.
+**Dataset & split:** `agnostic352` dan `agnostic953` (label dilipat jadi 1 kelas
+"tandan", `scripts/make_agnostic_dataset.py`), split kanonik yang sama dengan
+Fase 1-5. Pretraining memakai 846 pohon 953 yang sudah dibersihkan dari
+kebocoran (`splits_fase6/pretrain953_*`, irisan nol terverifikasi).
+**Metode:** `scripts/train_yolo_4ch_screening.py` (YOLO26l) dan RTDETR untuk
+pembanding arsitektur; evaluasi `scripts/eval_detector_agnostic.py`.
+
+**Hasil — training (val split masing-masing):**
+
+| Run | Epoch | best val AP50 | @ep | P | R |
+|---|---|---|---|---|---|
+| `agn953_pre-2` (pretrain dipotong) | 4 | 0,7604 | 4 | 0,7467 | 0,6976 |
+| `agn953_full` (pretrain cosine utuh) | 12 | **0,8101** | 11 | 0,8044 | 0,7279 |
+| `agn352_ft` (dari pretrain dipotong) | 50 | **0,7522** | 39 | 0,8105 | 0,6909 |
+| `agn352_ft2` (dari pretrain utuh, patience 10) | 11 | 0,6413 | 1 | 0,7015 | 0,6075 |
+| `agn352_ft3` (dari pretrain utuh, patience 45) | 60 | 0,7473 | 42 | 0,7620 | 0,6969 |
+| `agn352_rtdetr` (RT-DETR-L) | 36 | 0,7157 | 26 | 0,7634 | 0,6504 |
+
+**Hasil — pengukuran plafon, keduanya di split TEST dan bebas kebocoran:**
+
+| Dataset | box latih | AP50 lokalisasi (test) |
+|---|---|---|
+| SawitMVC 953 (`v2repro`, dilatih pada split 953 yang benar) | 14.859 | **0,7374** |
+| SawitMVC-Depth 352 (`agn352_ft`) | 1.517 | **0,7330** |
+
+**Sumber:** `results/fase6_ringkas.json`, `runs/agn*/results.csv`.
+**Verdict: CONFIRMED** — selisihnya hanya **0,0044** padahal dataset 953 punya
+9,8x lebih banyak box latih. Lokalisasi sudah menyentuh plafon resep ini.
+**Konsekuensi:** rencana memperbesar model (`yolo26x`, 59,0jt vs 26,3jt param)
+DIBATALKAN sebelum dijalankan — hambatannya bukan kapasitas detektor. Sebagai
+akibat lain, **mAP50 di dataset ini tidak mungkin melewati ~0,733**, karena
+mAP50 <= AP50 lokalisasi secara definisi. Target 0,80 berada di atas plafon.
+
+---
+
+## V2-E-018 — Pretrain yang lebih baik di 953 TIDAK berpindah ke 352, dan patience bisa membunuh run di puncak palsu
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** pretrain 953 yang lebih baik (0,8101 vs 0,7604, +5,0 poin)
+menghasilkan finetune 352 yang lebih baik pula.
+**Metode:** dua finetune dari pretrain utuh — `agn352_ft2` (patience 10) dan
+`agn352_ft3` (patience 45) — dibandingkan dengan `agn352_ft` dari pretrain
+yang dipotong.
+
+**Hasil:**
+- `agn352_ft2` berhenti di epoch 11 dengan best di **epoch 1** (0,6413).
+  Transfer yang kuat membuat epoch 1 mencetak nilai tinggi, itu tercatat sebagai
+  "best", lalu patience=10 memicu justru saat kurva sedang mendaki lagi
+  (ep9 0,5924 -> ep10 0,6060 -> ep11 0,6063). Pembandingnya, `agn352_ft`, baru
+  mencapai puncak di **epoch 39**. Run ini **cacat protokol**, bukan hasil.
+- `agn352_ft3` (patience 45, jalan penuh 60 epoch): puncak **0,7473 @ep42**,
+  vs `agn352_ft` **0,7522 @ep39**. Perbandingan epoch-per-epoch: ft3 unggul di
+  14 dari 31 epoch pertama — pada dasarnya **seri**.
+
+**Verdict: FALSIFIED** — keunggulan +5,0 poin pada domain 953 tidak berpindah
+ke 352. Masuk akal: dua kamera berbeda (960x1280 HP vs 1280x800 Orbbec) dan
+kepadatan objek berbeda (4,64 vs 1,55 per citra).
+**Pelajaran protokol:** memotong jadwal cosine di tengah berbeda dari
+early-stop saat plateau — `agn953_pre-2` yang dihentikan di epoch 4 dari 25
+kehilangan seluruh fase anneal (LR masih di puncak 0,00193), dan pretrain utuh
+menaikkannya +5,0 poin. Sebaliknya, patience yang terlalu ketat pada finetune
+ber-transfer kuat bisa membunuh run sebelum kurva sebenarnya dimulai.
+
+---
+
+## V2-E-019 — WBF antar-detektor dan sweep konfigurasi inference menaikkan lokalisasi tanpa training tambahan
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** menggabungkan beberapa detektor dan menyetel konfigurasi
+inference menaikkan AP50 lokalisasi di atas detektor tunggal terbaik.
+**Metode:** `scripts/pilih_detektor.py` (WBF, seluruh kombinasi) dan
+`scripts/sweep_inferensi.py` (imgsz x NMS IoU). **Pemilihan dilakukan di split
+val**, tidak pernah di test.
+
+**Hasil (AP50 val):**
+
+| Kombinasi | AP50 |
+|---|---|
+| **`agn352_ft` + `agn352_ft3` (WBF)** | **0,7577** |
+| `agn352_ft` + `agn352_ft3` + `agn352_rtdetr` | 0,7443 |
+| `agn352_ft` sendiri | 0,7370 |
+| `agn352_ft3` sendiri | 0,7250 |
+| `agn352_rtdetr` sendiri | 0,7135 |
+
+Sweep memilih **imgsz 1280, NMS IoU 0,5** (bukan 0,7 default).
+TTA deteksi (`augment=True`) diuji dan memberi **nol** perubahan — diabaikan
+ultralytics untuk YOLO26.
+
+**Verdict: CONFIRMED** — +2,1 poin dari 0,7370 ke 0,7577, tanpa training.
+**Catatan penting:** `agn352_ft3` **kalah** sendirian (0,7250 vs 0,7370) tapi
+gabungannya **melampaui keduanya**. Menambah RT-DETR justru menurunkan. Jadi
+nilai sebuah model dalam ensemble tidak bisa dinilai dari performa tunggalnya.
+
+---
+
+## V2-E-020 — Pipeline dua-tahap mencapai mAP50 0,4500, setara model terbaik proyek
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** memisahkan lokalisasi (detektor 1 kelas) dari klasifikasi
+kematangan (classifier crop) menghasilkan mAP50 lebih tinggi daripada detektor
+4-kelas satu-tahap.
+**Dataset & split:** test 352 (410 box), sama persis dengan Fase 1-5.
+**Metode:** `scripts/eval_twostage.py` — kelas + confidence tahap-2 ditempel ke
+box tahap-1, skor = `conf_det x P(kelas)`, **multi-kelas** (tiap box memancarkan
+4 deteksi), TTA 8 arah, ensemble classifier.
+
+**Hasil:**
+
+| Versi | Classifier | mAP50 | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|---|---|
+| v1 | 6 | 0,4192 | 0,7188 | 0,4474 | 0,2734 | 0,2375 |
+| v2 | 6 | 0,4395 | 0,7314 | 0,4689 | 0,3138 | 0,2440 |
+| v3 | 3 (gabungan) | 0,4102 | 0,7358 | 0,4658 | 0,2681 | 0,1713 |
+| **v4** | **9 (semua)** | **0,4500** | 0,7366 | 0,4683 | **0,3212** | **0,2738** |
+
+Pembanding Fase 1-5 (test 352 yang sama):
+
+| Model | mAP50 |
+|---|---|
+| YOLO26l RGB | 0,3711 |
+| YOLO26l RGB+D `inverse` | 0,3919 |
+| YOLO26l RGB+D `edge` | 0,4316 |
+| RT-DETR-L RGB | 0,4343 |
+| **Dua-tahap v4** | **0,4500** |
+| RF-DETR-L RGB (rekor) | 0,4544 |
+
+**Verdict: CONFIRMED terhadap satu-tahap YOLO26l** (+0,0789 absolut, +21,3%
+relatif dari 0,3711), dan melampaui `edge` serta RT-DETR-L. **Belum melampaui
+RF-DETR-L** — selisih 0,0044.
+**Catatan:** dua-tahap unggul di B3 (0,3212 vs 0,2641 RT-DETR-L) dan B4
+(0,2738 vs 0,2661 RF-DETR-L) — dua kelas yang paling langka.
+**Rasio panen:** 0,4500 / 0,7330 = 0,614 dari plafon lokalisasi. Model lama
+0,3711 / 0,6677 = 0,556. Jadi perbaikan datang dari KEDUA faktor.
+
+---
+
+## V2-E-021 — Training gabungan 953+352 menurunkan mAP50 tapi menaikkan counting
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** melatih classifier pada gabungan crop 953+352 (B3: 215 -> 8.780,
+B4: 98 -> 3.013) mengalahkan skema pretrain-lalu-finetune, karena tahap akhir
+skema lama hanya melihat 215 crop B3 dan 98 B4 sehingga menghapus pengetahuan
+kelas langka.
+**Metode:** `--tahap gabung` di `scripts/train_crop_classifier.py`, 3 seed,
+`convnext_small` @176; evaluasi tetap di val/test 352.
+
+**Hasil (akurasi crop GT, rata-rata 3 seed):**
+
+| Skema | val | test | test macro-F1 |
+|---|---|---|---|
+| `ftS` pretrain->finetune | 0,6729 | **0,6837** | 0,6105 |
+| `ftJ` + jitter mask | 0,6900 | 0,6829 | 0,6065 |
+| `ftG` gabungan | **0,6953** | 0,6724 | 0,5318 |
+
+**Hasil hilir (test 352):**
+
+| Konfigurasi | mAP50 | Counting Class ±1 |
+|---|---|---|
+| v2 (6 classifier lama) | 0,4395 | 86,82% |
+| v3 (3 classifier gabungan) | **0,4102** | **88,18%** |
+| v4 (9 classifier semua) | **0,4500** | 85,91% |
+
+**Verdict: FALSIFIED untuk mAP50, CONFIRMED untuk counting.**
+Gabungan menang di val tapi kalah di test — pola overfit ke domain yang salah:
+dari 18.059 crop latih, **92% berasal dari 953** (kamera berbeda). Sampling
+menyeimbangkan KELAS tapi tidak menyeimbangkan DOMAIN.
+
+**Divergensi metrik yang penting dicatat:** konfigurasi terbaik untuk mAP50
+(v4, 0,4500) BUKAN yang terbaik untuk counting (v3, 88,18%). Ini konsisten
+secara matematis: mAP hanya peduli **urutan** deteksi di dalam tiap kelas,
+sementara counting memakai **argmax** dan karenanya sensitif terhadap
+kalibrasi prior kelas. Menyetel satu metrik bisa mengorbankan yang lain —
+mis. NMS IoU 0,5 hasil sweep menaikkan mAP50 tapi menurunkan counting
+(85,45% -> 83,18% pada v1).
+
+**Sumber:** `results/fase6_ringkas.json`, `results/twostage_final*.json`,
+`results/counting_twostage.json`, `runs_fase6/ft{S,J,G}_*/hasil.json`.

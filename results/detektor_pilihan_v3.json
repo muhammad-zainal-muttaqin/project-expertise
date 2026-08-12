@@ -1,0 +1,18 @@
+{
+  "split_pemilihan": "val",
+  "semua_skor": {
+    "runs/agn352_ft/weights/best.pt": 0.7370024590274349,
+    "runs/agn352_ft3/weights/best.pt": 0.7250100062773951,
+    "runs/agn352_rtdetr/weights/best.pt": 0.7135173535593934,
+    "agn352_ft + agn352_ft3": 0.757679272739393,
+    "agn352_ft + agn352_rtdetr": 0.7310854896559387,
+    "agn352_ft3 + agn352_rtdetr": 0.7222451068117623,
+    "agn352_ft + agn352_ft3 + agn352_rtdetr": 0.7443476897701641
+  },
+  "terpilih": [
+    "runs/agn352_ft/weights/best.pt",
+    "runs/agn352_ft3/weights/best.pt"
+  ],
+  "AP50_val_terpilih": 0.757679272739393,
+  "wbf_iou": 0.6
+}

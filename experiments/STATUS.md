@@ -34,9 +34,36 @@ setelah pooling di jalur klasifikasi — bukan early fusion di stem.
 | Probe diagnostik (`probe_depth_signal.py`) | selesai — V2-E-012/013/014 |
 | Split 953 bebas bocor (846 pohon) | selesai — irisan nol terverifikasi |
 | Dataset crop + relief depth + mask box | selesai — 16.542 crop (953) + 2.299 (352) |
-| Classifier kematangan crop | selesai tahap awal; ablasi depth multi-seed berjalan |
-| Detektor class-agnostic | berjalan (pretrain 953 → finetune 352) |
-| Rekomposisi dua-tahap + counting | belum |
+| Ablasi depth pada classifier (3 seed + statistik terpool) | selesai — FALSIFIED (V2-E-016) |
+| Detektor class-agnostic (YOLO26l, RT-DETR-L) | selesai — V2-E-017/018 |
+| WBF antar-detektor + sweep inference | selesai — V2-E-019 |
+| Rekomposisi dua-tahap + counting | selesai — V2-E-020/021 |
+| Classifier crop resolusi 256 @224 | berjalan |
+
+### Hasil Fase 6 (test split 352, sebanding dengan Fase 1–5)
+
+| Model | mAP50 | B1 | B2 | B3 | B4 | Counting ±1 |
+|---|---|---|---|---|---|---|
+| YOLO26l RGB | 0,3711 | 0,6842 | 0,4184 | 0,2301 | 0,1516 | 84,09% |
+| YOLO26l RGB+D `edge` | 0,4316 | 0,7252 | 0,5031 | 0,2240 | 0,2740 | 87,27% |
+| RT-DETR-L RGB | 0,4343 | 0,7680 | 0,4867 | 0,2641 | 0,2185 | **90,91%** |
+| **Dua-tahap v4 (Fase 6)** | **0,4500** | 0,7366 | 0,4683 | **0,3212** | 0,2738 | 85,91% |
+| RF-DETR-L RGB | **0,4544** | 0,6853 | 0,5184 | **0,3477** | 0,2661 | 88,18% |
+| *Dua-tahap v3 (counting terbaik)* | 0,4102 | — | — | — | — | *88,18%* |
+
+**Tiga hal yang harus dibaca bersama angka di atas:**
+
+1. **Plafon mAP50 dataset ini ≈ 0,733.** mAP50 ≤ AP50 lokalisasi secara
+   definisi, dan AP50 lokalisasi test-352 = 0,7330 — praktis sama dengan
+   test-953 = 0,7374 yang punya 9,8× lebih banyak box latih (V2-E-017).
+   Target mAP50 0,80 berada **di atas plafon**, bukan sekadar belum tercapai.
+2. **Konfigurasi terbaik untuk mAP50 bukan yang terbaik untuk counting.**
+   v4 menang mAP50 (0,4500), v3 menang counting (88,18%). mAP peduli urutan
+   deteksi dalam kelas; counting memakai argmax sehingga sensitif kalibrasi
+   prior (V2-E-021).
+3. **Depth tetap tidak berkontribusi** pada klasifikasi kematangan:
+   `I(Y;D) > 0` tapi `I(Y;D|RGB) ≈ 0` (V2-E-016). Kontribusi depth untuk
+   lokalisasi belum diisolasi — ditunda atas permintaan pengguna.
 
 ---
 

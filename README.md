@@ -31,6 +31,7 @@ Ringkasan terkini selalu ada di [experiments/STATUS.md](experiments/STATUS.md).
 | RGB 352 pohon | 0,3606 / 89,55% | 0,4343 / 90,91% | 0,4544 / 88,18% |
 | RGB+D 352 pohon (`inverse`) | 0,3919 / 87,73% | 0,3877 / 88,64% | 0,4186 / 88,18% |
 | RGB+D 352 pohon (`edge`, Fase 5) | 0,4316 / 87,27% | — | — |
+| **Dua-tahap (Fase 6)** | **0,4500 / 85,91%** | — | — |
 
 **Peringatan membaca matriks ini:** baris 953 dan 352 **tidak sebanding** —
 dataset 352 punya B3 34× dan B4 26× lebih sedikit, dan mAP50 itu rata-rata
@@ -42,6 +43,7 @@ sama. Detailnya di [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
 | Dokumen | Isi |
 |---|---|
 | [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang |
+| [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Fase 6** — urutan perintah persis untuk membangun ulang seluruh hasil, plus 9 jebakan yang wajib dihindari |
 | [docs/REKAP.md](docs/REKAP.md) | Seluruh angka, percobaan gagal/berhasil, dan pelajaran dari Volume 1 |
 | [docs/DATASET.md](docs/DATASET.md) | Spesifikasi kedua dataset |
 | [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja per fase |
@@ -71,9 +73,14 @@ sama. Detailnya di [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
 | `probe_depth_signal.py` | 5 diagnostik read-only yang mendasari Fase 6 — jalankan untuk memverifikasi tiap angka di `DIAGNOSIS-DEPTH.md` |
 | `make_pretrain_split.py` | Daftar pohon 953 yang **bebas bocor** terhadap val/test 352 (846 pohon) |
 | `make_agnostic_dataset.py` | Dataset deteksi 1-kelas ("tandan") untuk memisahkan lokalisasi dari klasifikasi |
-| `build_crop_dataset.py` | Crop tandan + kanal **relief depth** + mask box target |
-| `train_crop_classifier.py` | Classifier kematangan RGB vs RGB+relief (head ordinal/hybrid, gate taknol, loss auxiliary RGB-only) |
+| `build_crop_dataset.py` | Crop tandan + kanal **relief depth** + mask box target (`--sisi` mengatur resolusi) |
+| `train_crop_classifier.py` | Classifier kematangan; `--tahap pretrain/finetune/gabung`, head ordinal/hybrid, gate taknol, loss auxiliary RGB-only |
+| `probe_fitur_depth.py` | Uji apakah statistik depth **terpool** menambah info di atas RGB (dasar V2-E-016) |
+| `eval_detector_agnostic.py` | AP50 lokalisasi murni + WBF antar-detektor |
+| `pilih_detektor.py` | Pilih kombinasi detektor terbaik — **selalu di split val** |
+| `sweep_inferensi.py` | Sweep imgsz × NMS IoU tanpa training |
 | `eval_twostage.py` | Rekomposisi dua-tahap → mAP50 yang sebanding dengan Fase 1–5 |
+| `run_counting_twostage.py` | Counting Ridge+F_all memakai fungsi yang **sama** dengan Fase 1–5 |
 
 ## Data turunan (di luar repo, di `/workspace/`)
 

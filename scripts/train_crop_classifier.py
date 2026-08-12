@@ -56,16 +56,50 @@ class CropDS(Dataset):
     fotometrik (jitter warna) HANYA pada RGB — relief depth itu besaran metrik,
     menggeser nilainya sama saja merusak sinyal yang mau dipakai."""
 
-    def __init__(self, rgb, dep, msk, y, latih: bool, pakai_depth: bool):
+    def __init__(self, rgb, dep, msk, y, latih: bool, pakai_depth: bool, jitter: float = 0.0):
         self.rgb, self.dep, self.msk, self.y = rgb, dep, msk, y
         self.latih, self.pakai_depth = latih, pakai_depth
+        self.jitter = jitter
 
     def __len__(self):
         return len(self.y)
 
+    @staticmethod
+    def _jitter_mask(msk, kuat: float):
+        """Geser/skala persegi mask untuk meniru galat box detektor.
+
+        Saat training mask menandai box GT yang sempurna, tapi saat inference ia
+        menandai box DETEKTOR yang bergeser dan berbeda skala. Diagnostik Fase 6
+        mengukur mismatch itu: akurasi classifier 0,631 pada crop GT tapi jalur
+        dua-tahapnya hanya memanen 56,5% dari plafon lokalisasi. Jitter ini
+        membuat distribusi mask saat latih menyerupai saat pakai.
+        """
+        biner = np.asarray(msk) > 127
+        baris = np.where(biner.any(1))[0]
+        kolom = np.where(biner.any(0))[0]
+        if baris.size == 0 or kolom.size == 0:
+            return msk
+        S = msk.shape[0]
+        y0, y1 = int(baris[0]), int(baris[-1]) + 1
+        x0, x1 = int(kolom[0]), int(kolom[-1]) + 1
+        cy, cx = (y0 + y1) / 2, (x0 + x1) / 2
+        h, w = (y1 - y0), (x1 - x0)
+        sy, sx = np.random.uniform(1 - kuat, 1 + kuat, 2)
+        cy += np.random.uniform(-kuat, kuat) * h
+        cx += np.random.uniform(-kuat, kuat) * w
+        h, w = h * sy, w * sx
+        baru = np.zeros(msk.shape, np.uint8)
+        ny0, ny1 = int(round(cy - h / 2)), int(round(cy + h / 2))
+        nx0, nx1 = int(round(cx - w / 2)), int(round(cx + w / 2))
+        baru[max(0, ny0):min(S, ny1), max(0, nx0):min(S, nx1)] = 255
+        return baru if baru.any() else msk
+
     def __getitem__(self, i):
         rgb = self.rgb[i]
-        msk = self.msk[i][..., None]
+        msk = self.msk[i]
+        if self.latih and self.jitter > 0:
+            msk = self._jitter_mask(msk, self.jitter)
+        msk = np.asarray(msk)[..., None]
         dep = self.dep[i] if self.pakai_depth else None
         S = rgb.shape[0]
 
@@ -284,12 +318,18 @@ def evaluasi(model, dl, dev, jenis: str):
 # -------------------------------------------------------------------------- main
 
 def main() -> int:
+    global IMG, CROPS
     ap = argparse.ArgumentParser()
-    ap.add_argument("--tahap", choices=["pretrain", "finetune"], required=True)
+    ap.add_argument("--tahap", choices=["pretrain", "finetune", "gabung"], required=True)
     ap.add_argument("--mode", choices=["rgb", "rgbd"], required=True)
     ap.add_argument("--backbone", default="convnext_tiny.fb_in22k_ft_in1k")
     ap.add_argument("--epochs", type=int, default=40)
     ap.add_argument("--batch", type=int, default=64)
+    ap.add_argument("--img", type=int, default=IMG)
+    ap.add_argument("--crops", default=str(CROPS),
+                    help="direktori dataset crop (mis. crops_fase6_256)")
+    ap.add_argument("--jitter", type=float, default=0.0,
+                    help="kekuatan jitter mask target (0.10 = +-10%% skala & geser)")
     ap.add_argument("--lr", type=float, default=3e-4)
     ap.add_argument("--lr-backbone", type=float, default=None)
     ap.add_argument("--aux", type=float, default=0.5)
@@ -300,6 +340,8 @@ def main() -> int:
     ap.add_argument("--name", required=True)
     args = ap.parse_args()
 
+    IMG = args.img
+    CROPS = Path(args.crops)
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     dev = "cuda"
@@ -315,6 +357,24 @@ def main() -> int:
         pohon_val = set(pohon[:max(1, len(pohon) // 10)].tolist())   # split per-POHON
         m_val = np.array([t in pohon_val for t in tree])
         idx_tr, idx_va, idx_te = np.where(~m_val)[0], np.where(m_val)[0], np.where(m_val)[0]
+    elif args.tahap == "gabung":
+        # Latih GABUNGAN 953 + 352-train, evaluasi tetap di val/test 352.
+        #
+        # Alasan: skema pretrain-lalu-finetune membuat tahap akhir hanya melihat
+        # 1.517 crop 352 yang isinya cuma 215 B3 dan 98 B4 — cukup untuk
+        # MENGHAPUS pengetahuan kelas langka yang baru didapat dari 8.565 B3 dan
+        # 2.915 B4 di 953. Dengan dicampur, kelas langka tetap hadir di tiap
+        # epoch. Kebocoran tetap aman: `crops953` sudah dibangun dari 846 pohon
+        # yang bebas dari val/test-352 (splits_fase6/pretrain953_*).
+        r9, d9, m9, y9, _, _ = muat("953", pakai_depth)
+        r3, d3, m3, y3, s3, _ = muat("352", pakai_depth)
+        n9 = len(y9)
+        rgb = np.concatenate([r9, r3]); msk = np.concatenate([m9, m3])
+        dep = (np.concatenate([d9, d3]) if pakai_depth else None)
+        y = np.concatenate([y9, y3])
+        idx_tr = np.concatenate([np.arange(n9), n9 + np.where(s3 == "train")[0]])
+        idx_va = n9 + np.where(s3 == "val")[0]
+        idx_te = n9 + np.where(s3 == "test")[0]
     else:
         rgb, dep, msk, y, split, tree = muat("352", pakai_depth)
         idx_tr = np.where(split == "train")[0]
@@ -325,7 +385,8 @@ def main() -> int:
         dep = np.zeros((len(y), 1, 1, 2), np.uint8)
 
     def buat(idx, latih):
-        ds = CropDS(rgb[idx], dep[idx] if pakai_depth else None, msk[idx], y[idx], latih, pakai_depth)
+        ds = CropDS(rgb[idx], dep[idx] if pakai_depth else None, msk[idx], y[idx],
+                    latih, pakai_depth, args.jitter)
         if latih:
             cnt = np.bincount(y[idx], minlength=K).astype(np.float64)
             w = (1.0 / np.maximum(cnt, 1))[y[idx]]               # sampling seimbang kelas

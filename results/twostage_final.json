@@ -1,0 +1,28 @@
+{
+  "detektor": [
+    "runs/agn352_ft/weights/best.pt",
+    "runs/agn352_ft2/weights/best.pt"
+  ],
+  "classifier": [
+    "runs_fase6/ftJ_101/best.pt",
+    "runs_fase6/ftJ_202/best.pt",
+    "runs_fase6/ftJ_42/best.pt",
+    "runs_fase6/ftS_101/best.pt",
+    "runs_fase6/ftS_202/best.pt",
+    "runs_fase6/ftS_42/best.pt"
+  ],
+  "tta": true,
+  "split": "test",
+  "multi_kelas": true,
+  "imgsz": 1280,
+  "det_iou": 0.5,
+  "mAP50": 0.41924517114762705,
+  "AP50_per_kelas": {
+    "B1": 0.7188,
+    "B2": 0.4474,
+    "B3": 0.2734,
+    "B4": 0.2375
+  },
+  "AP50_class_agnostic": 0.6966,
+  "n_gt": 410
+}

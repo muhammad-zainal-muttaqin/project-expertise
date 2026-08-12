@@ -1,0 +1,20 @@
+{
+  "detektor": "runs/agn352_ft/weights/best.pt",
+  "classifier": [
+    "runs_fase6/ftS_42/best.pt",
+    "runs_fase6/ftS_101/best.pt",
+    "runs_fase6/ftS_202/best.pt"
+  ],
+  "tta": true,
+  "split": "test",
+  "multi_kelas": true,
+  "mAP50": 0.40788142597479426,
+  "AP50_per_kelas": {
+    "B1": 0.6981,
+    "B2": 0.445,
+    "B3": 0.2745,
+    "B4": 0.2139
+  },
+  "AP50_class_agnostic": 0.6809,
+  "n_gt": 410
+}

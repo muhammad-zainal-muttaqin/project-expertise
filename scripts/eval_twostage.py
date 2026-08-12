@@ -80,10 +80,44 @@ def ap50(gt: dict, pred: dict, kelas: int | None):
                           for t in np.linspace(0, 1, 101)]))
 
 
+def wbf(kotak: np.ndarray, iou_th: float = 0.6, n_model: int = 2) -> np.ndarray:
+    """Weighted box fusion sederhana pada satu citra (kotak: N x 5 = xyxy+skor)."""
+    if len(kotak) == 0:
+        return kotak
+    kotak = kotak[np.argsort(-kotak[:, 4])]
+    gugus: list[list[np.ndarray]] = []
+    for k in kotak:
+        for g in gugus:
+            if iou_mat(k[None, :4], g[0][None, :4])[0, 0] >= iou_th:
+                g.append(k)
+                break
+        else:
+            gugus.append([k])
+    keluar = []
+    for g in gugus:
+        a = np.stack(g)
+        bobot = a[:, 4:5]
+        xy = (a[:, :4] * bobot).sum(0) / bobot.sum()
+        # Skor = rata-rata skor anggota, diredam kalau hanya SATU detektor yang
+        # menemukannya (n_model dipakai sebagai jumlah detektor yang ideal
+        # menyetujui). Kotak yang disepakati banyak detektor naik peringkat.
+        keluar.append([*xy, float(a[:, 4].mean() * min(len(g), n_model) / n_model)])
+    return np.array(keluar, float)
+
+
 # --------------------------------------------------------------------- pipeline
 
-def siapkan_crop(bgr, Z, box):
-    """Crop satu box persis seperti saat training classifier (harus identik)."""
+def siapkan_crop(bgr, Z, box, sisi=None):
+    """Crop satu box persis seperti saat training classifier (harus identik).
+
+    `sisi` = resolusi crop tersimpan saat training. Kalau model dilatih pada
+    crop 256 tapi di sini di-crop 176 lalu diperbesar ke IMG, detail halus
+    (yang justru mendefinisikan kematangan) hilang.
+    """
+    global S
+    S_lama = S
+    if sisi:
+        S = sisi
     x0f, y0f, x1f, y1f = box
     cx = (x0f + x1f) / 2 / W; cy = (y0f + y1f) / 2 / H
     w = (x1f - x0f) / W; h = (y1f - y0f) / H
@@ -114,17 +148,69 @@ def siapkan_crop(bgr, Z, box):
                 cv2.resize(v.astype(np.uint8), (S, S), interpolation=cv2.INTER_AREA),
                 cv2.resize((valid * 255).astype(np.uint8), (S, S), interpolation=cv2.INTER_AREA),
             ], -1)
+    S = S_lama
     return rgb, dep, msk
 
 
-def ke_tensor(rgb, dep, msk, dev):
+def muat_detektor(jalur: str):
+    """Muat detektor dengan kelas ultralytics yang benar.
+
+    `YOLO(...)` menerima bobot RT-DETR tanpa error tapi membangunnya sebagai
+    DetectionModel biasa — head-nya beda, jadi hasilnya tidak bisa dipercaya.
+    Pemilihan kelas dilakukan eksplisit dari nama bobot, dengan fallback.
+    """
+    from ultralytics import RTDETR, YOLO
+    nama = str(jalur).lower()
+    if "rtdetr" in nama or "rt-detr" in nama:
+        try:
+            return RTDETR(jalur)
+        except Exception as e:
+            print(f"  RTDETR() gagal untuk {jalur} ({e}); fallback ke YOLO()")
+    return YOLO(jalur)
+
+
+def muat_classifier(jalur: str, dev: str):
+    ck = torch.load(jalur, map_location="cpu")
+    ca = ck["args"]
+    m = Model(ca["backbone"], ca["mode"] == "rgbd", ca.get("gate_init", 0.1), ca["head"])
+    m.load_state_dict(ck["model"]); m.to(dev).eval()
+    return m, ca
+
+
+@torch.no_grad()
+def prediksi(models, xs, ds, tta: bool):
+    """Rata-rata probabilitas lintas model dan lintas transformasi TTA.
+
+    TTA memakai grup dihedral (4 rotasi x 2 flip) — sama persis dengan
+    augmentasi geometrik saat training, jadi tidak memasukkan transformasi
+    yang belum pernah dilihat model.
+    """
+    X, D = torch.stack(xs), torch.stack(ds)
+    total = None
+    varian = [(k, f) for k in range(4) for f in (False, True)] if tta else [(0, False)]
+    for m, ca in models:
+        for k, f in varian:
+            xv, dv = X, D
+            if k:
+                xv, dv = torch.rot90(xv, k, (2, 3)), torch.rot90(dv, k, (2, 3))
+            if f:
+                xv, dv = torch.flip(xv, (3,)), torch.flip(dv, (3,))
+            with torch.amp.autocast("cuda"):
+                keluar, _ = m(xv, dv)
+            p = prob_head(keluar, ca["head"]).float()
+            total = p if total is None else total + p
+    return (total / (len(models) * len(varian))).cpu().numpy()
+
+
+def ke_tensor(rgb, dep, msk, dev, img=None):
     import torch.nn.functional as Fn
+    S_in = img or IMG
     r = torch.from_numpy(rgb).permute(2, 0, 1).float() / 255.0
     m = torch.from_numpy(msk[..., None]).permute(2, 0, 1).float() / 255.0
     d = torch.from_numpy(dep).permute(2, 0, 1).float() / 255.0
-    r = Fn.interpolate(r[None], (IMG, IMG), mode="bilinear", align_corners=False)[0]
-    m = Fn.interpolate(m[None], (IMG, IMG), mode="bilinear", align_corners=False)[0]
-    d = Fn.interpolate(d[None], (IMG, IMG), mode="bilinear", align_corners=False)[0]
+    r = Fn.interpolate(r[None], (S_in, S_in), mode="bilinear", align_corners=False)[0]
+    m = Fn.interpolate(m[None], (S_in, S_in), mode="bilinear", align_corners=False)[0]
+    d = Fn.interpolate(d[None], (S_in, S_in), mode="bilinear", align_corners=False)[0]
     r = (r - torch.tensor([0.485, 0.456, 0.406])[:, None, None]) / \
         torch.tensor([0.229, 0.224, 0.225])[:, None, None]
     return torch.cat([r, m * 2 - 1], 0).to(dev), ((d - 0.5) / 0.5).to(dev)
@@ -132,8 +218,14 @@ def ke_tensor(rgb, dep, msk, dev):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--detektor", required=True)
-    ap.add_argument("--classifier", required=True)
+    ap.add_argument("--detektor", nargs="+", required=True,
+                    help="satu atau beberapa detektor; kalau >1 digabung dengan WBF")
+    ap.add_argument("--wbf-iou", type=float, default=0.6)
+    ap.add_argument("--imgsz", type=int, default=1280)
+    ap.add_argument("--det-iou", type=float, default=0.7)
+    ap.add_argument("--classifier", nargs="+", required=True,
+                    help="satu atau beberapa bobot; kalau >1 probabilitasnya dirata-rata (ensemble)")
+    ap.add_argument("--tta", action="store_true", help="rata-rata 8 transformasi dihedral")
     ap.add_argument("--split", default="test")
     ap.add_argument("--conf", type=float, default=0.001)
     ap.add_argument("--multi-kelas", action="store_true",
@@ -156,27 +248,46 @@ def main() -> int:
             g.append([c, (cx - w / 2) * W, (cy - h / 2) * H, (cx + w / 2) * W, (cy + h / 2) * H])
         gt[s] = np.array(g, float) if g else np.zeros((0, 5))
 
-    ck = torch.load(args.classifier, map_location="cpu")
-    cargs = ck["args"]
-    clf = Model(cargs["backbone"], cargs["mode"] == "rgbd", cargs.get("gate_init", 0.1), cargs["head"])
-    clf.load_state_dict(ck["model"]); clf.to(dev).eval()
-    pakai_depth = cargs["mode"] == "rgbd"
-    print(f"classifier: {args.classifier} mode={cargs['mode']} head={cargs['head']}")
+    models = [muat_classifier(j, dev) for j in args.classifier]
+    cargs = models[0][1]
+    pakai_depth = any(ca["mode"] == "rgbd" for _, ca in models)
+    img_in = cargs.get("img", IMG)
+    sisi_crop = max(S, img_in)      # jangan pernah memperbesar dari crop kecil
+    print(f"classifier: {len(models)} model, tta={args.tta}, "
+          f"mode={[ca['mode'] for _, ca in models]}, img={img_in}")
 
-    from ultralytics import YOLO
-    det = YOLO(args.detektor)
+    # Deteksi seluruh detektor dulu, lalu digabung WBF -> satu himpunan kotak.
+    per_det = {}
+    for jd in args.detektor:
+        det = muat_detektor(jd)
+        pd_ = {}
+        for i in range(0, len(stems), 8):
+            blok = stems[i:i + 8]
+            jalur = [str(D352 / "images" / f"{s}.jpg") for s in blok]
+            hasil = det.predict(jalur, imgsz=args.imgsz, conf=args.conf,
+                                iou=args.det_iou, max_det=100,
+                                verbose=False, save=False)
+            for s, r in zip(blok, hasil):
+                b = r.boxes
+                pd_[s] = (np.concatenate([b.xyxy.cpu().numpy(), b.conf.cpu().numpy()[:, None]], 1)
+                          if len(b) else np.zeros((0, 5)))
+        per_det[jd] = pd_
+        print(f"  deteksi selesai: {jd}", flush=True)
+
+    kotak_akhir = {}
+    for s in stems:
+        semua = np.concatenate([per_det[j][s] for j in args.detektor], 0)
+        kotak_akhir[s] = (wbf(semua, args.wbf_iou, len(args.detektor))
+                          if len(args.detektor) > 1 else semua)
 
     pred = {}
     for i in range(0, len(stems), 8):
         blok = stems[i:i + 8]
-        jalur = [str(D352 / "images" / f"{s}.jpg") for s in blok]
-        hasil = det.predict(jalur, imgsz=1280, conf=args.conf, iou=0.7,
-                            max_det=100, verbose=False, save=False)
-        for s, r in zip(blok, hasil):
-            b = r.boxes
-            if len(b) == 0:
+        for s in blok:
+            kk = kotak_akhir[s]
+            if len(kk) == 0:
                 pred[s] = np.zeros((0, 6)); continue
-            xyxy = b.xyxy.cpu().numpy(); conf = b.conf.cpu().numpy()
+            xyxy = kk[:, :4]; conf = kk[:, 4]
             bgr = cv2.imread(str(D352 / "images" / f"{s}.jpg"), cv2.IMREAD_COLOR)
             Z = None
             if pakai_depth and (DEPTH / f"{s}.png").exists():
@@ -185,16 +296,14 @@ def main() -> int:
                     Z = dekode_z(d)
             xs, ds, sah = [], [], []
             for j, bb in enumerate(xyxy):
-                c = siapkan_crop(bgr, Z, bb)
+                c = siapkan_crop(bgr, Z, bb, sisi_crop)
                 if c is None:
                     continue
-                t_x, t_d = ke_tensor(*c, dev)
+                t_x, t_d = ke_tensor(*c, dev, img_in)
                 xs.append(t_x); ds.append(t_d); sah.append(j)
             if not xs:
                 pred[s] = np.zeros((0, 6)); continue
-            with torch.no_grad(), torch.amp.autocast("cuda"):
-                keluar, _ = clf(torch.stack(xs), torch.stack(ds))
-                P = prob_head(keluar, cargs["head"]).float().cpu().numpy()
+            P = prediksi(models, xs, ds, args.tta)
             baris = []
             for n, j in enumerate(sah):
                 if args.multi_kelas:
@@ -210,8 +319,9 @@ def main() -> int:
     per = [ap50(gt, pred, c) for c in range(K)]
     agn = ap50(gt, {k: v[np.argsort(-v[:, 4])] for k, v in pred.items()}, None)
     hasil = {
-        "detektor": args.detektor, "classifier": args.classifier,
+        "detektor": args.detektor, "classifier": args.classifier, "tta": bool(args.tta),
         "split": args.split, "multi_kelas": bool(args.multi_kelas),
+        "imgsz": args.imgsz, "det_iou": args.det_iou,
         "mAP50": float(np.mean(per)),
         "AP50_per_kelas": {f"B{i+1}": round(float(per[i]), 4) for i in range(4)},
         "AP50_class_agnostic": round(float(agn), 4),

@@ -1,0 +1,22 @@
+{
+  "detektor": [
+    "runs/agn352_ft/weights/best.pt",
+    "runs/agn352_ft3/weights/best.pt"
+  ],
+  "split_sweep": "val",
+  "semua": {
+    "imgsz1280_iou0.5": 0.757679272739393,
+    "imgsz1280_iou0.6": 0.757679272739393,
+    "imgsz1280_iou0.7": 0.757679272739393,
+    "imgsz1280_iou0.8": 0.757679272739393,
+    "imgsz1536_iou0.5": 0.7408301068917739,
+    "imgsz1536_iou0.6": 0.7408301068917739,
+    "imgsz1536_iou0.7": 0.7408301068917739,
+    "imgsz1536_iou0.8": 0.7408301068917739
+  },
+  "terbaik": {
+    "imgsz": 1280,
+    "iou": 0.5,
+    "AP50_val": 0.757679272739393
+  }
+}

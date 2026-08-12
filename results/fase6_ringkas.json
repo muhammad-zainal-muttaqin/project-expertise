@@ -1,0 +1,361 @@
+{
+  "detektor_agnostic": {
+    "agn953_pre-2": {
+      "epoch_dijalankan": 4,
+      "best_val_mAP50": 0.7604,
+      "best_epoch": 4,
+      "P": 0.7467,
+      "R": 0.6976,
+      "menit": 35.6
+    },
+    "agn953_full": {
+      "epoch_dijalankan": 12,
+      "best_val_mAP50": 0.8101,
+      "best_epoch": 11,
+      "P": 0.8044,
+      "R": 0.7279,
+      "menit": 105.6
+    },
+    "agn352_ft": {
+      "epoch_dijalankan": 50,
+      "best_val_mAP50": 0.7522,
+      "best_epoch": 39,
+      "P": 0.8105,
+      "R": 0.6909,
+      "menit": 138.0
+    },
+    "agn352_ft2": {
+      "epoch_dijalankan": 11,
+      "best_val_mAP50": 0.6413,
+      "best_epoch": 1,
+      "P": 0.7015,
+      "R": 0.6075,
+      "menit": 30.4
+    },
+    "agn352_ft3": {
+      "epoch_dijalankan": 60,
+      "best_val_mAP50": 0.7473,
+      "best_epoch": 42,
+      "P": 0.762,
+      "R": 0.6969,
+      "menit": 168.0
+    },
+    "agn352_rtdetr": {
+      "epoch_dijalankan": 36,
+      "best_val_mAP50": 0.7157,
+      "best_epoch": 26,
+      "P": 0.7634,
+      "R": 0.6504,
+      "menit": 137.0
+    }
+  },
+  "seleksi": {
+    "detektor_pilihan_v4": {
+      "split_pemilihan": "val",
+      "semua_skor": {
+        "runs/agn352_ft/weights/best.pt": 0.7370024590274349,
+        "runs/agn352_ft3/weights/best.pt": 0.7250100062773951,
+        "runs/agn352_rtdetr/weights/best.pt": 0.7135173535593934,
+        "agn352_ft + agn352_ft3": 0.757679272739393,
+        "agn352_ft + agn352_rtdetr": 0.7310854896559387,
+        "agn352_ft3 + agn352_rtdetr": 0.7222451068117623,
+        "agn352_ft + agn352_ft3 + agn352_rtdetr": 0.7443476897701641
+      },
+      "terpilih": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "AP50_val_terpilih": 0.757679272739393,
+      "wbf_iou": 0.6
+    },
+    "detektor_pilihan_v3": {
+      "split_pemilihan": "val",
+      "semua_skor": {
+        "runs/agn352_ft/weights/best.pt": 0.7370024590274349,
+        "runs/agn352_ft3/weights/best.pt": 0.7250100062773951,
+        "runs/agn352_rtdetr/weights/best.pt": 0.7135173535593934,
+        "agn352_ft + agn352_ft3": 0.757679272739393,
+        "agn352_ft + agn352_rtdetr": 0.7310854896559387,
+        "agn352_ft3 + agn352_rtdetr": 0.7222451068117623,
+        "agn352_ft + agn352_ft3 + agn352_rtdetr": 0.7443476897701641
+      },
+      "terpilih": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "AP50_val_terpilih": 0.757679272739393,
+      "wbf_iou": 0.6
+    },
+    "detektor_pilihan_v2": {
+      "split_pemilihan": "val",
+      "semua_skor": {
+        "runs/agn352_ft/weights/best.pt": 0.7370024590274349,
+        "runs/agn352_ft3/weights/best.pt": 0.7250100062773951,
+        "runs/agn352_rtdetr/weights/best.pt": 0.7135173535593934,
+        "agn352_ft + agn352_ft3": 0.757679272739393,
+        "agn352_ft + agn352_rtdetr": 0.7310854896559387,
+        "agn352_ft3 + agn352_rtdetr": 0.7222451068117623,
+        "agn352_ft + agn352_ft3 + agn352_rtdetr": 0.7443476897701641
+      },
+      "terpilih": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "AP50_val_terpilih": 0.757679272739393,
+      "wbf_iou": 0.6
+    },
+    "detektor_pilihan": {
+      "split_pemilihan": "val",
+      "semua_skor": {
+        "runs/agn352_ft/weights/best.pt": 0.7370024590274349,
+        "runs/agn352_ft2/weights/best.pt": 0.6453910726620377,
+        "runs/agn352_rtdetr/weights/best.pt": 0.7135173535593934,
+        "agn352_ft + agn352_ft2": 0.7380456244643904,
+        "agn352_ft + agn352_rtdetr": 0.7310854896559387,
+        "agn352_ft2 + agn352_rtdetr": 0.6849259996695856,
+        "agn352_ft + agn352_ft2 + agn352_rtdetr": 0.7281269507481432
+      },
+      "terpilih": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft2/weights/best.pt"
+      ],
+      "AP50_val_terpilih": 0.7380456244643904,
+      "wbf_iou": 0.6
+    },
+    "sweep_inferensi_v4": {
+      "detektor": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "split_sweep": "val",
+      "semua": {
+        "imgsz1280_iou0.5": 0.757679272739393,
+        "imgsz1280_iou0.6": 0.757679272739393,
+        "imgsz1280_iou0.7": 0.757679272739393,
+        "imgsz1280_iou0.8": 0.757679272739393,
+        "imgsz1536_iou0.5": 0.7408301068917739,
+        "imgsz1536_iou0.6": 0.7408301068917739,
+        "imgsz1536_iou0.7": 0.7408301068917739,
+        "imgsz1536_iou0.8": 0.7408301068917739
+      },
+      "terbaik": {
+        "imgsz": 1280,
+        "iou": 0.5,
+        "AP50_val": 0.757679272739393
+      }
+    },
+    "sweep_inferensi_v3": {
+      "detektor": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "split_sweep": "val",
+      "semua": {
+        "imgsz1280_iou0.5": 0.757679272739393,
+        "imgsz1280_iou0.6": 0.757679272739393,
+        "imgsz1280_iou0.7": 0.757679272739393,
+        "imgsz1280_iou0.8": 0.757679272739393,
+        "imgsz1536_iou0.5": 0.7408301068917739,
+        "imgsz1536_iou0.6": 0.7408301068917739,
+        "imgsz1536_iou0.7": 0.7408301068917739,
+        "imgsz1536_iou0.8": 0.7408301068917739
+      },
+      "terbaik": {
+        "imgsz": 1280,
+        "iou": 0.5,
+        "AP50_val": 0.757679272739393
+      }
+    },
+    "sweep_inferensi_v2": {
+      "detektor": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft3/weights/best.pt"
+      ],
+      "split_sweep": "val",
+      "semua": {
+        "imgsz1280_iou0.5": 0.757679272739393,
+        "imgsz1280_iou0.6": 0.757679272739393,
+        "imgsz1280_iou0.7": 0.757679272739393,
+        "imgsz1280_iou0.8": 0.757679272739393,
+        "imgsz1536_iou0.5": 0.7408301068917739,
+        "imgsz1536_iou0.6": 0.7408301068917739,
+        "imgsz1536_iou0.7": 0.7408301068917739,
+        "imgsz1536_iou0.8": 0.7408301068917739
+      },
+      "terbaik": {
+        "imgsz": 1280,
+        "iou": 0.5,
+        "AP50_val": 0.757679272739393
+      }
+    },
+    "sweep_inferensi": {
+      "detektor": [
+        "runs/agn352_ft/weights/best.pt",
+        "runs/agn352_ft2/weights/best.pt"
+      ],
+      "split_sweep": "val",
+      "semua": {
+        "imgsz1280_iou0.5": 0.7380456244643904,
+        "imgsz1280_iou0.6": 0.7380456244643904,
+        "imgsz1280_iou0.7": 0.7380456244643904,
+        "imgsz1280_iou0.8": 0.7380456244643904,
+        "imgsz1536_iou0.5": 0.7170678728376295,
+        "imgsz1536_iou0.6": 0.7170678728376295,
+        "imgsz1536_iou0.7": 0.7170678728376295,
+        "imgsz1536_iou0.8": 0.7170678728376295
+      },
+      "terbaik": {
+        "imgsz": 1280,
+        "iou": 0.5,
+        "AP50_val": 0.7380456244643904
+      }
+    }
+  },
+  "twostage": {
+    "twostage_final": {
+      "mAP50": 0.4192,
+      "AP50_per_kelas": {
+        "B1": 0.7188,
+        "B2": 0.4474,
+        "B3": 0.2734,
+        "B4": 0.2375
+      },
+      "n_classifier": 6,
+      "n_detektor": 2,
+      "imgsz": 1280,
+      "det_iou": 0.5,
+      "tta": true,
+      "multi_kelas": true
+    },
+    "twostage_final_v2": {
+      "mAP50": 0.4395,
+      "AP50_per_kelas": {
+        "B1": 0.7314,
+        "B2": 0.4689,
+        "B3": 0.3138,
+        "B4": 0.244
+      },
+      "n_classifier": 6,
+      "n_detektor": 2,
+      "imgsz": 1280,
+      "det_iou": 0.5,
+      "tta": true,
+      "multi_kelas": true
+    },
+    "twostage_final_v3": {
+      "mAP50": 0.4102,
+      "AP50_per_kelas": {
+        "B1": 0.7358,
+        "B2": 0.4658,
+        "B3": 0.2681,
+        "B4": 0.1713
+      },
+      "n_classifier": 3,
+      "n_detektor": 2,
+      "imgsz": 1280,
+      "det_iou": 0.5,
+      "tta": true,
+      "multi_kelas": true
+    },
+    "twostage_final_v4": {
+      "mAP50": 0.45,
+      "AP50_per_kelas": {
+        "B1": 0.7366,
+        "B2": 0.4683,
+        "B3": 0.3212,
+        "B4": 0.2738
+      },
+      "n_classifier": 9,
+      "n_detektor": 2,
+      "imgsz": 1280,
+      "det_iou": 0.5,
+      "tta": true,
+      "multi_kelas": true
+    }
+  },
+  "counting": {
+    "TwoStage-Small-Ens3-TTA": {
+      "class_acc": 0.8545,
+      "macro_mae": 0.6545,
+      "per_kelas": {
+        "B1": 0.8909,
+        "B2": 0.7273,
+        "B3": 0.8182,
+        "B4": 0.9818
+      }
+    },
+    "TwoStage-FINAL": {
+      "class_acc": 0.8318,
+      "macro_mae": 0.7,
+      "per_kelas": {
+        "B1": 0.8727,
+        "B2": 0.6545,
+        "B3": 0.8364,
+        "B4": 0.9636
+      }
+    },
+    "TwoStage-FINAL_v2": {
+      "class_acc": 0.8682,
+      "macro_mae": 0.6455,
+      "per_kelas": {
+        "B1": 0.9091,
+        "B2": 0.7636,
+        "B3": 0.8364,
+        "B4": 0.9636
+      }
+    },
+    "TwoStage-FINAL_v3": {
+      "class_acc": 0.8818,
+      "macro_mae": 0.6318,
+      "per_kelas": {
+        "B1": 0.9273,
+        "B2": 0.7818,
+        "B3": 0.8545,
+        "B4": 0.9636
+      }
+    },
+    "TwoStage-FINAL_v4": {
+      "class_acc": 0.8591,
+      "macro_mae": 0.65,
+      "per_kelas": {
+        "B1": 0.9273,
+        "B2": 0.7273,
+        "B3": 0.8364,
+        "B4": 0.9455
+      }
+    }
+  },
+  "classifier_crop": {
+    "ftS": {
+      "n_seed": 3,
+      "val_akurasi": 0.6729,
+      "test_akurasi": 0.6837,
+      "test_macro_f1": 0.6105,
+      "backbone": "convnext_small.fb_in22k_ft_in1k",
+      "img": null,
+      "tahap": "finetune"
+    },
+    "ftJ": {
+      "n_seed": 3,
+      "val_akurasi": 0.69,
+      "test_akurasi": 0.6829,
+      "test_macro_f1": 0.6065,
+      "backbone": "convnext_small.fb_in22k_ft_in1k",
+      "img": null,
+      "tahap": "finetune"
+    },
+    "ftG": {
+      "n_seed": 3,
+      "val_akurasi": 0.6953,
+      "test_akurasi": 0.6724,
+      "test_macro_f1": 0.5318,
+      "backbone": "convnext_small.fb_in22k_ft_in1k",
+      "img": null,
+      "tahap": "gabung"
+    }
+  },
+  "lokalisasi_test": {
+    "SawitMVC-953 (v2repro, bersih)": 0.7374,
+    "SawitMVC-Depth-352 (agn352_ft)": 0.733
+  }
+}

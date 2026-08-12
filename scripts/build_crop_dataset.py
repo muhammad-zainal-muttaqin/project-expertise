@@ -166,11 +166,17 @@ def kumpulkan_tugas(src: str):
 
 
 def main() -> int:
+    global S, OUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", choices=["953", "352"], required=True)
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--sisi", type=int, default=S,
+                    help="sisi crop tersimpan; 176 default, 256 untuk detail lebih")
+    ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
 
+    S = args.sisi
+    OUT = Path(args.out)
     OUT.mkdir(parents=True, exist_ok=True)
     tugas, split_per_citra = kumpulkan_tugas(args.src)
     print(f"src={args.src}  citra={len(tugas)}")

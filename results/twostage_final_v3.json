@@ -1,0 +1,25 @@
+{
+  "detektor": [
+    "runs/agn352_ft/weights/best.pt",
+    "runs/agn352_ft3/weights/best.pt"
+  ],
+  "classifier": [
+    "runs_fase6/ftG_101/best.pt",
+    "runs_fase6/ftG_202/best.pt",
+    "runs_fase6/ftG_42/best.pt"
+  ],
+  "tta": true,
+  "split": "test",
+  "multi_kelas": true,
+  "imgsz": 1280,
+  "det_iou": 0.5,
+  "mAP50": 0.41024461629116626,
+  "AP50_per_kelas": {
+    "B1": 0.7358,
+    "B2": 0.4658,
+    "B3": 0.2681,
+    "B4": 0.1713
+  },
+  "AP50_class_agnostic": 0.7049,
+  "n_gt": 410
+}
