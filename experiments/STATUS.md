@@ -1,5 +1,12 @@
 # Status Eksperimen
 
+> **Ringkasan akhir proyek ada di [../docs/LAPORAN-AKHIR.md](../docs/LAPORAN-AKHIR.md).**
+> Pengumpulan metrik dihentikan 2026-08-12 setelah dua temuan menunjukkan
+> pertanyaan RGB-vs-RGB+D tidak bisa dijawab dengan pasangan data ini:
+> pergeseran akuisisi ~80 hari antara kedua dataset (`V2-E-022`) dan daya
+> statistik split test yang tidak memadai (`V2-E-023`). Bagian di bawah
+> dipertahankan apa adanya sebagai riwayat; baca bersama kedua entri itu.
+
 ## Fase saat ini: 6 — Diagnostik ulang + pipeline dua-tahap (BERJALAN)
 
 Scope dilonggarkan pengguna: boleh berat/multi-tahap, tidak harus YOLO, tidak
@@ -14,6 +21,10 @@ harus satu pipeline — target metrik setinggi mungkin. Lima probe read-only
    langka di dataset depth; gap terkonsentrasi persis di dua kelas itu
    (B3 AP50 0,605→0,200, B4 0,351→0,130), B1/B2 nyaris sama. Perbandingan
    lintas dataset 953-vs-352 **tidak sah** dan tidak dipakai lagi.
+   **DIKOREKSI oleh V2-E-022:** angkanya benar, sebabnya salah. Kelangkaan itu
+   bukan artefak dataset yang lebih kecil, melainkan fase kematangan berbeda
+   pada pohon yang sama — kedua dataset direkam terpisah ~80 hari (Mei vs Juli
+   2026). Pada 1.408 citra ber-ID sama, B3 berbanding 3.604 lawan 321.
 2. **44,5% kemampuan detektor hangus karena salah kelas** (V2-E-013) — AP50
    class-agnostic 0,6677 vs mAP50 class-aware 0,3707. Mencari tandan sudah
    baik; menamainya yang rusak, dan konfusinya selalu ke kelas bertetangga
@@ -38,7 +49,12 @@ setelah pooling di jalur klasifikasi — bukan early fusion di stem.
 | Detektor class-agnostic (YOLO26l, RT-DETR-L) | selesai — V2-E-017/018 |
 | WBF antar-detektor + sweep inference | selesai — V2-E-019 |
 | Rekomposisi dua-tahap + counting | selesai — V2-E-020/021 |
-| Classifier crop resolusi 256 @224 | berjalan |
+| Classifier crop resolusi 256 @224 (`ftH`) | selesai — tidak menolong (test 0,6569, grup terlemah) |
+| Fusi lintas-jalur dua-tahap + detektor class-aware | selesai — nihil (+0,0004), V2-E-023 |
+| Probe pergeseran temporal 953 vs 352 | selesai — **V2-E-022** |
+| Bootstrap CI seluruh angka Fase 6 | selesai — **V2-E-023** |
+| Test split bersih untuk `agn953_full` | selesai — 19 pohon tak tersentuh (§8 laporan) |
+| Depth untuk lokalisasi (`agn352_4ch`) | berjalan — V2-E-024 |
 
 ### Hasil Fase 6 (test split 352, sebanding dengan Fase 1–5)
 
@@ -50,6 +66,12 @@ setelah pooling di jalur klasifikasi — bukan early fusion di stem.
 | **Dua-tahap v4 (Fase 6)** | **0,4500** | 0,7366 | 0,4683 | **0,3212** | 0,2738 | 85,91% |
 | RF-DETR-L RGB | **0,4544** | 0,6853 | 0,5184 | **0,3477** | 0,2661 | 88,18% |
 | *Dua-tahap v3 (counting terbaik)* | 0,4102 | — | — | — | — | *88,18%* |
+
+**Peringatan utama (V2-E-023):** CI 95% untuk mAP50 di split ini selebar
+**±0,058** (220 citra, 410 kotak GT). Selisih antar-baris di tabel atas
+sebagian besar **lebih kecil dari lebar selangnya** dan tidak terbedakan.
+Jarak dua-tahap (0,4500) ke RF-DETR-L (0,4544) adalah 0,0044 — 26× lebih kecil
+dari lebar CI. Jangan mengurutkan baris-baris ini sebagai peringkat.
 
 **Tiga hal yang harus dibaca bersama angka di atas:**
 

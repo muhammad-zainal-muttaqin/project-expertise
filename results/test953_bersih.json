@@ -1,0 +1,7 @@
+{
+  "pohon_pretraining": 846,
+  "test_kanonik_953_citra": 588,
+  "test_bersih_citra": 76,
+  "test_bersih_pohon": 19,
+  "peringatan": "test_bersih kecil; CI-nya akan lebar dan wajib dilaporkan bersama angkanya"
+}

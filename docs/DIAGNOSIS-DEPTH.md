@@ -308,3 +308,51 @@ menunjukkan hal yang sama pada classifier — variasi antar-seed ±2-3pp, cukup
 untuk memalsukan "kemenangan" apa pun yang dilaporkan dari satu run.
 
 Angka apa pun dari split ini harus dibaca dengan itu di kepala.
+
+---
+
+## 9. Koreksi (2026-08-12): sebab yang saya tulis di Probe 1 salah
+
+Seluruh dokumen di atas dibiarkan apa adanya karena jalan penemuannya memang
+begitu. Bagian ini mengoreksi satu kesimpulan yang ternyata keliru, dan
+koreksinya mengubah arti hampir semua yang menyusul.
+
+**Yang saya tulis di Probe 1.** B3 turun dari 7.333 ke 215 instance (34×) dan B4
+dari 2.513 ke 98 (26×) ketika berpindah dari dataset 953 ke 352, lalu saya
+simpulkan itu **efek kelangkaan label** akibat dataset yang lebih kecil.
+
+**Yang sebenarnya terjadi.** Angkanya benar, sebabnya salah. Kedua dataset
+memakai tree ID yang sama untuk 352 pohon DAMIMAS, jadi saya bandingkan
+labelnya langsung pada 1.408 citra ber-ID sama
+(`scripts/probe_pergeseran_temporal.py`):
+
+| Sumber label | Total kotak | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|---|
+| SawitMVC-YOLO (953) | 6.523 | 566 (8,7%) | 1.098 (16,8%) | 3.604 (55,3%) | 1.255 (19,2%) |
+| SawitMVC-Depth (352) | 2.299 | 829 (36,1%) | 1.001 (43,5%) | 321 (14,0%) | 148 (6,4%) |
+
+Pada **pohon yang sama**, B3 berbeda 11,2× dan B4 8,5×. Sebabnya ada di
+metadata akuisisi: dataset 953 direkam **30 April – 16 Mei 2026**, dataset 352
+direkam **28–29 Juli 2026**. Jeda ~80 hari, dengan rotasi panen sawit 7–15 hari.
+
+Jadi ini bukan dataset kecil versus dataset besar. Ini **kebun yang sama pada
+fase kematangan yang berbeda**. Kohort B3 yang dominan pada Mei sudah matang
+jadi B1/B2 pada Juli, sebagian sudah dipanen — konsisten dengan turunnya total
+kotak dan bergesernya distribusi ke 80% B1+B2.
+
+**Kenapa ini mengubah arti seluruh Fase 6.** Rangkaian pretrain 953 → finetune
+352 yang jadi tulang punggung Fase 6 bukan transfer di dalam satu domain,
+melainkan transfer melintasi pergeseran domain temporal. Model belajar dunia
+yang 55% B3, lalu diuji di dunia yang 14% B3.
+
+**Dan ini menjawab pertanyaan yang menggantung sejak Probe 2:** kenapa mencari
+tandan berhasil (AP50 agnostik 0,7330) tapi menamainya rusak (mAP50 0,45)?
+Karena label lokalisasi bertahan melintasi 80 hari — posisi tandan di kanopi
+relatif stabil — sementara label kematangan tidak, karena benda fisiknya
+berubah. Ketimpangan antara detektor dan classifier adalah sifat dari pasangan
+data yang dipakai, bukan cacat arsitektur yang bisa diperbaiki dengan model
+atau loss yang lebih baik.
+
+Detail lengkap dan konsekuensinya: `experiments/EKSPERIMEN.md` entri
+**V2-E-022**. Batas daya statistik yang membuat seluruh perbandingan Fase 6
+tidak terbedakan: entri **V2-E-023**.

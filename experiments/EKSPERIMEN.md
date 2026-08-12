@@ -1077,3 +1077,107 @@ mis. NMS IoU 0,5 hasil sweep menaikkan mAP50 tapi menurunkan counting
 
 **Sumber:** `results/fase6_ringkas.json`, `results/twostage_final*.json`,
 `results/counting_twostage.json`, `runs_fase6/ft{S,J,G}_*/hasil.json`.
+
+---
+
+## V2-E-022 — Dataset 953 dan 352 adalah dua sesi akuisisi terpisah ~80 hari, bukan dua "view" pohon yang sama
+
+**Tanggal:** 2026-08-12
+**Hipotesis yang diuji (asumsi implisit seluruh Volume 2):** karena 352 pohon
+DAMIMAS memakai tree ID yang sama di kedua dataset, keduanya adalah pohon yang
+sama — satu direkam dengan depth, satu tanpa — sehingga 953 sah dipakai sebagai
+korpus pretraining untuk 352.
+**Metode:** `scripts/probe_pergeseran_temporal.py` — read-only, membandingkan
+label kedua dataset pada citra ber-ID sama, dan membaca tanggal akuisisi dari
+sidecar JSON 953 serta `MERGE_VERIFICATION.json` 352.
+
+**Hasil — 1.408 citra ber-ID sama, dua himpunan label:**
+
+| Sumber label | Total kotak | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|---|
+| SawitMVC-YOLO (953) | 6.523 | 566 (8,7%) | 1.098 (16,8%) | **3.604 (55,3%)** | 1.255 (19,2%) |
+| SawitMVC-Depth (352) | 2.299 | 829 (36,1%) | 1.001 (43,5%) | **321 (14,0%)** | 148 (6,4%) |
+
+Rasio jumlah kotak 2,84x; B3 **11,2x**; B4 **8,5x**.
+
+**Hasil — tanggal akuisisi:**
+
+| Dataset | Akuisisi |
+|---|---|
+| SawitMVC-YOLO (953) | 30 April – 16 Mei 2026 |
+| SawitMVC-Depth (352) | 28 – 29 Juli 2026 |
+
+Jeda **~80 hari**. Rotasi panen sawit 7–15 hari, jadi ada 5–11 putaran panen di
+antara kedua sesi. Citranya sendiri juga bukan berkas yang sama (953 potret
+960x1280, 352 lanskap 1280x800).
+
+**Sumber:** `results/pergeseran_temporal.json`.
+**Verdict: asumsi FALSIFIED.** Tandan yang difoto Mei bukan tandan yang difoto
+Juli. Kohort B3 yang dominan pada Mei sudah matang menjadi B1/B2 pada Juli, dan
+sebagian sudah dipanen — konsisten dengan turunnya total kotak 6.523 ke 2.299
+dan bergesernya distribusi dari 55% B3 menjadi 80% B1+B2.
+
+**Koreksi terhadap V2-E-012.** Angka "B3 34x lebih langka di dataset 352" benar,
+tetapi sebabnya salah. Itu bukan artefak dataset yang lebih kecil, melainkan
+fase kematangan kebun yang berbeda **pada pohon yang sama**. Perbandingan
+lintas-dataset 953-vs-352 tidak sah bukan hanya karena ketimpangan kelas, tapi
+karena keduanya mengukur populasi buah yang berbeda.
+
+**Konsekuensi untuk seluruh Fase 6.** Rangkaian pretrain 953 → finetune 352
+bukan transfer di dalam satu domain, melainkan transfer melintasi pergeseran
+domain temporal dengan distribusi kematangan nyaris terbalik. Ini menjelaskan
+tiga hal yang sebelumnya tidak terjelaskan:
+
+1. Recall B3 classifier hanya 0,254 dengan 36 dari 63 bocor ke B2, meskipun B3
+   adalah kelas terbanyak dalam training gabungan (8.780 dari 18.059 crop).
+2. `ftG` (training gabungan) mencatat val tertinggi tapi test terendah — bobot
+   953 yang 8x lebih besar mendominasi prior yang salah untuk domain target.
+3. Empat skema classifier (ftS/ftJ/ftG/ftH) tidak terbedakan satu sama lain:
+   semuanya melawan celah domain yang sama, dan celah itu ada di data.
+
+**Implikasi utama — mengapa detektor dan classifier timpang.** Label lokalisasi
+("ada tandan di sini") bertahan melintasi jeda 80 hari karena posisi tandan di
+kanopi relatif stabil. Label kematangan ("ini B3") tidak bertahan karena benda
+fisiknya berubah. Itulah sebabnya AP50 class-agnostic mencapai 0,7330 sementara
+mAP50 class-aware berhenti di ~0,45. Ketimpangan itu sifat pasangan data yang
+dipakai, bukan cacat arsitektur.
+
+---
+
+## V2-E-023 — Split test 352 tidak punya daya statistik untuk membedakan konfigurasi Fase 6
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** urutan konfigurasi Fase 6 berdasarkan titik estimasi mAP50
+(0,4102 → 0,4192 → 0,4395 → 0,4500 → 0,4544) mencerminkan perbedaan nyata.
+**Metode:** `scripts/bootstrap_map.py` — resampling pada tingkat CITRA (bukan
+kotak), 500 ulangan, seed 42; selisih antar-sumber dihitung **berpasangan**
+(sampel citra yang sama untuk kedua model) supaya korelasi antar-model tidak
+menggelembungkan selang.
+
+**Hasil (split test 352: 220 citra, 410 kotak GT):**
+
+| Sumber | mAP50 | CI 95% | Lebar |
+|---|---|---|---|
+| YOLO26l-RGBD `edge` | 0,4270 | [0,3771; 0,4938] | **0,1167** |
+| YOLO26l-RGB | 0,3677 | [0,3286; 0,4417] | **0,1130** |
+
+Selisih berpasangan `edge` − RGB: **+0,0593**, CI 95% **[−0,0013; +0,1168]**,
+P(Δ>0) = 0,972 → **tidak signifikan**, selang masih memuat nol.
+
+**Sumber:** `results/bootstrap_map_awal.json`.
+**Verdict: hipotesis FALSIFIED.** Lebar CI ~0,117 sementara jarak antara
+dua-tahap terbaik (0,4500) dan rekor proyek RF-DETR-L (0,4544) hanya **0,0044**
+— **26x lebih kecil dari lebar selangnya**. Seluruh urutan konfigurasi Fase 6
+jatuh di dalam satu selang kepercayaan yang sama dan tidak terbedakan.
+
+**Kegagalan metodologis yang diakui.** V2-E-011 (Fase 5) memakai bootstrap CI
+dan berani menyimpulkan INCONCLUSIVE. Fase 6 meninggalkan praktik itu dan
+mengurutkan konfigurasi berdasarkan titik estimasi selama enam versi
+rekomposisi (v1–v6) serta empat skema classifier (12 training). Bukti bahwa
+selisih-selisih itu derau sebenarnya sudah tersedia lebih awal: sebaran
+akurasi test antar-seed (0,6512–0,7049) lebih lebar daripada sebaran
+antar-metode (0,6707–0,6837).
+
+**Konsekuensi.** Angka Fase 6 hanya boleh dilaporkan dengan selangnya. Setiap
+pekerjaan lanjutan pada dataset ini harus menghitung daya statistik lebih dulu:
+dengan 410 kotak GT, efek di bawah ~0,10 mAP50 tidak terdeteksi.

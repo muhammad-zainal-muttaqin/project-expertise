@@ -20,8 +20,21 @@ pembatasan ke satu detektor tunggal-lah yang menahan angkanya (lihat
 
 ## Status
 
-Fase 0–5 **selesai** (`V2-E-001` s.d. `V2-E-011`). Fase 6 **berjalan**.
-Ringkasan terkini selalu ada di [experiments/STATUS.md](experiments/STATUS.md).
+Fase 0–6 **selesai** (`V2-E-001` s.d. `V2-E-024`). Pengumpulan metrik
+dihentikan 2026-08-12.
+
+**Baca [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) lebih dulu** — di situ
+seluruh hasil, batasnya, dan alasan berhentinya dirangkum. Dua temuan penutup:
+
+- **Kedua dataset terpisah ~80 hari akuisisi** (SawitMVC-YOLO Mei 2026,
+  SawitMVC-Depth Juli 2026). Pada 1.408 citra ber-ID sama, B3 berbanding
+  3.604 lawan 321 — perbandingan RGB-vs-RGB+D lintas-dataset mengukur populasi
+  buah yang berbeda, bukan efek depth (`V2-E-022`).
+- **Split test 352 tidak punya daya statistik** untuk pertanyaan ini: CI 95%
+  mAP50 selebar ±0,058 pada 410 kotak GT, sementara selisih yang diperebutkan
+  0,0044 (`V2-E-023`).
+
+Ringkasan per fase: [experiments/STATUS.md](experiments/STATUS.md).
 
 ### Matriks hasil (test split; mAP50 pycocotools / Class ±1 Acc Ridge+F_all)
 
@@ -33,16 +46,25 @@ Ringkasan terkini selalu ada di [experiments/STATUS.md](experiments/STATUS.md).
 | RGB+D 352 pohon (`edge`, Fase 5) | 0,4316 / 87,27% | — | — |
 | **Dua-tahap (Fase 6)** | **0,4500 / 85,91%** | — | — |
 
-**Peringatan membaca matriks ini:** baris 953 dan 352 **tidak sebanding** —
-dataset 352 punya B3 34× dan B4 26× lebih sedikit, dan mAP50 itu rata-rata
-makro empat kelas. Perbandingan RGB vs RGB+D hanya sah di dalam split 352 yang
-sama. Detailnya di [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
+**Dua peringatan wajib sebelum mengutip matriks ini:**
+
+1. **Baris 953 dan 352 tidak sebanding.** Bukan hanya karena ketimpangan kelas,
+   tapi karena kedua dataset direkam terpisah ~80 hari pada fase kematangan
+   kebun yang berbeda (`V2-E-022`). Keduanya mengukur populasi buah yang
+   berbeda.
+2. **Selisih antar-sel sebagian besar di bawah derau.** CI 95% mAP50 pada
+   split test 352 selebar ±0,058 (`V2-E-023`). Jangan memperlakukan matriks ini
+   sebagai peringkat.
+
+Detailnya di [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) dan
+[docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
 
 ## Navigasi
 
 | Dokumen | Isi |
 |---|---|
-| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang |
+| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Mulai dari sini** — seluruh hasil, ancaman validitas, dan rekomendasi lanjutan |
+| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang; §9 memuat koreksi sebab-akibat |
 | [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Fase 6** — urutan perintah persis untuk membangun ulang seluruh hasil, plus 9 jebakan yang wajib dihindari |
 | [docs/REKAP.md](docs/REKAP.md) | Seluruh angka, percobaan gagal/berhasil, dan pelajaran dari Volume 1 |
 | [docs/DATASET.md](docs/DATASET.md) | Spesifikasi kedua dataset |
@@ -81,6 +103,16 @@ sama. Detailnya di [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
 | `sweep_inferensi.py` | Sweep imgsz × NMS IoU tanpa training |
 | `eval_twostage.py` | Rekomposisi dua-tahap → mAP50 yang sebanding dengan Fase 1–5 |
 | `run_counting_twostage.py` | Counting Ridge+F_all memakai fungsi yang **sama** dengan Fase 1–5 |
+
+### Penutupan (validitas dan daya statistik)
+
+| Skrip | Fungsi |
+|---|---|
+| `probe_pergeseran_temporal.py` | Bandingkan label kedua dataset pada citra ber-ID sama + baca tanggal akuisisi — dasar `V2-E-022` |
+| `bootstrap_map.py` | CI 95% mAP50/AP50 dengan resampling tingkat citra; selisih antar-model **berpasangan** — dasar `V2-E-023` |
+| `dump_classaware.py` | Dump prediksi detektor (RGB jpg atau 4-kanal TIFF) ke format yang bisa difusikan/di-bootstrap; `--agnostik` untuk AP50 lokalisasi |
+| `fuse_final.py` | Fusi per-kelas lintas-jalur, bobot dipilih di val lalu dikunci |
+| `buat_test_953_bersih.py` | Bangun split test 953 yang benar-benar tak tersentuh pretraining (19 pohon) |
 
 ## Data turunan (di luar repo, di `/workspace/`)
 

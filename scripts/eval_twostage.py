@@ -329,6 +329,12 @@ def main() -> int:
     }
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(hasil, indent=2))
+    # Simpan prediksi mentah supaya bisa difusikan dengan detektor class-aware
+    # lain tanpa menjalankan ulang pipeline dua-tahap (mahal: detektor + N
+    # classifier x 8 TTA). Format sama dengan dump_classaware.py.
+    jalur_pred = Path(str(args.out).removesuffix(".json") + ".pred.npz")
+    np.savez_compressed(str(jalur_pred), **{k: v for k, v in pred.items()})
+    print(f"prediksi mentah -> {jalur_pred}")
     print(json.dumps(hasil, indent=2))
     return 0
 
