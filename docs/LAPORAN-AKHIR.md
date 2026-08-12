@@ -235,6 +235,21 @@ counting memakai argmax sehingga sensitif terhadap kalibrasi prior.
    reproyeksi per piksel dipakai (`reproject_depth.py`, Volume 1). Kesalahan
    registrasi tanpa reproyeksi: median 29 px, sebanding ukuran tandan kecil.
 
+### 8.1 Audit kelengkapan split pada seluruh berkas hasil
+
+Setiap `results/*.json` diperiksa: apakah mencatat angka val, test, atau
+keduanya.
+
+| Kelompok berkas | Isi | Penilaian |
+|---|---|---|
+| `detektor_pilihan_v*.json`, `sweep_inferensi_v*.json` | hanya val | **Benar sesuai protokol.** Ini berkas *pemilihan* konfigurasi; memilih di val memang yang seharusnya. Bukan lubang. |
+| `twostage_final*.json` | hanya test | **Dapat diterima, tapi tidak ideal.** Konfigurasinya memang dipilih di val lewat dua berkas di atas, jadi angka test-nya sah. Namun tanpa pendamping val, pembalikan peringkat val-vs-test tidak terlihat sampai diuji terpisah. |
+| `perkelas_pycoco_*.json`, `fase6_*.json`, `probe_fitur_depth.json` | val + test | Lengkap. |
+| `counting_*.json`, `matrix_compiled.json`, `bootstrap_ci_352.json` | tidak mencatat split | **Lubang dokumentasi.** Angkanya memang split test (mengikuti pipeline counting Fase 0), tapi berkasnya sendiri tidak menyatakannya. Harus dibaca bersama `EKSPERIMEN.md`. |
+| `agn953_full` | **tidak ada angka test sama sekali** | **Lubang nyata**, ditutup di §9.2. |
+
+Reproduksi audit: bandingkan kunci `val`/`test` pada tiap `results/*.json`.
+
 ---
 
 ## 9. Uji terakhir: apakah depth menolong lokalisasi?

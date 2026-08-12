@@ -126,6 +126,65 @@ statistik depth terpool:
 `results/fase6_ringkas.json` memuat metrik tiap detektor, tiap classifier,
 tiap versi rekomposisi, dan tiap counting dalam satu berkas.
 
+## 7. Penutupan — validitas dan daya statistik (V2-E-022/023/024)
+
+Langkah-langkah ini yang seharusnya dijalankan **sebelum** mengejar metrik,
+bukan sesudah. Urutannya sengaja ditulis begini supaya tidak terulang.
+
+```bash
+# 7.1 Apakah kedua dataset benar-benar sebanding?  (CPU, ~1 menit)
+.venv/bin/python scripts/probe_pergeseran_temporal.py \
+  --out results/pergeseran_temporal.json
+```
+
+Jalankan ini lebih dulu. Kalau tanggal akuisisinya berjauhan, seluruh
+perbandingan lintas-dataset gugur dan sisa rencana harus dirombak.
+
+```bash
+# 7.2 Seberapa besar efek yang bisa dideteksi split ini?  (CPU, ~10 menit)
+.venv/bin/python scripts/dump_classaware.py \
+  --bobot runs/yolo26l_e60_i1280_rgbd352_edge/weights/best.pt \
+  --data /workspace/SawitMVC-Depth-4ch-edge-YOLO --split test \
+  --out results/pred_edge_test.npz
+
+.venv/bin/python scripts/bootstrap_map.py --split test --n-boot 1000 \
+  --sumber results/pred_edge_test.npz results/pred_rgb352_test.npz \
+  --nama edge_rgbd yolo_rgb --out results/bootstrap_map.json
+```
+
+Kalau lebar CI jauh melebihi efek yang diharapkan, berhenti dan perbesar
+data — menambah model, loss, atau ensemble tidak akan mengubah kesimpulan.
+
+```bash
+# 7.3 Uji depth untuk LOKALISASI — berpasangan, hanya kanal yang beda
+.venv/bin/python scripts/train_yolo_4ch_screening.py \
+  --data /workspace/agnostic352_4ch/data.yaml \
+  --epochs 60 --patience 45 --imgsz 1280 --batch 4 --seed 42 \
+  --weights runs/agn953_full/weights/best.pt --name agn352_4ch
+
+for m in agn352_4ch:agnostic352_4ch agn352_ft3:SawitMVC-Depth; do
+  .venv/bin/python scripts/dump_classaware.py --agnostik --split test \
+    --bobot "runs/${m%%:*}/weights/best.pt" --data "/workspace/${m##*:}" \
+    --out "results/pred_${m%%:*}_test.npz"
+done
+
+.venv/bin/python scripts/bootstrap_map.py --split test --agnostik --n-boot 1000 \
+  --sumber results/pred_agn352_4ch_test.npz results/pred_agn352_ft3_test.npz \
+  --nama agn352_4ch agn352_ft3_rgb --out results/bootstrap_lokalisasi.json
+```
+
+```bash
+# 7.4 Angka test untuk agn953_full, yang tidak pernah ada
+.venv/bin/python scripts/buat_test_953_bersih.py     # 19 pohon tak tersentuh
+```
+
+**Jebakan kesepuluh, yang paling mahal dari semuanya:** mengurutkan
+konfigurasi berdasarkan titik estimasi tanpa selang kepercayaan. Fase 6
+menghabiskan enam versi rekomposisi dan dua belas training classifier untuk
+menggeser angka yang seluruhnya berada di dalam satu CI. Petunjuknya sudah ada
+sejak awal dan terlewat: sebaran akurasi antar-**seed** (0,0756) 2,8× lebih
+lebar daripada sebaran antar-**metode** (0,0268).
+
 ---
 
 ## Hal yang WAJIB diperhatikan saat mereproduksi
