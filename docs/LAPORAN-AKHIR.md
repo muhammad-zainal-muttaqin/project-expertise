@@ -237,6 +237,24 @@ counting memakai argmax sehingga sensitif terhadap kalibrasi prior.
    berasal dari `results/*.json` Fase 1–4; prediksinya tidak bisa diambil ulang,
    sehingga CI untuk kedua model itu tidak bisa dihitung. Hanya YOLO26l dan
    pipeline dua-tahap yang bisa di-bootstrap.
+
+   Ditelusuri 2026-08-12 atas pertanyaan pengguna. Keenam direktori run yang
+   dikutip `EKSPERIMEN.md` (`{rt,rf}detr_l_e60_i1280_{v2repro,rgb352,rgbd352}`)
+   sudah tidak ada. Eksperimen yang memakainya (`V2-E-003`/`005`/`007`) jalan
+   **9 Agustus**; backup pertama ke HF bucket **10 Agustus 13:27** — jadi
+   bobotnya hilang di sela itu, sebelum ada backup yang bisa memuatnya. Tidak
+   ada jejak di git (`runs/` masuk `.gitignore`) maupun di bucket; yang tersisa
+   di sana cuma metrik Volume 1 (`Research-Pipeline/experiments/runs/`), bukan
+   bobot. **Penyebabnya tidak bisa dibuktikan** — tidak ada log penghapusan.
+   Dugaan terkuat pembersihan disk atau migrasi pod, pola yang sudah pernah
+   terjadi di workspace ini (handoff 8 Agustus di `CLAUDE.md` repo ini mencatat
+   bobot E-021 asli Volume 1 juga hilang saat pindah GPU).
+
+   Yang sebenarnya mencegah ini bukan menyimpan bobot, tapi **menyimpan
+   prediksinya**: `results/pred_*.npz` berukuran ~90 KB per model, cukup untuk
+   menghitung CI kapan pun tanpa menjalankan detektornya lagi. Kebiasaan itu
+   baru dimulai di Fase 6 (`dump_classaware.py`, `eval_twostage.py`). Untuk
+   riset lanjutan: dump prediksi test **pada saat evaluasi**, bukan belakangan.
 4. **`agn953_full` tidak punya test split bersih yang memadai.**
    `make_agnostic_dataset.py` hanya membuat train+val untuk `agnostic953`.
    Dari 141 pohon test kanonik 953, 122 terpakai saat pretraining; hanya 19

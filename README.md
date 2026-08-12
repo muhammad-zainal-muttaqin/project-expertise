@@ -20,7 +20,7 @@ pembatasan ke satu detektor tunggal-lah yang menahan angkanya (lihat
 
 ## Status
 
-Fase 0–6 **selesai** (`V2-E-001` s.d. `V2-E-024`). Pengumpulan metrik
+Fase 0–6 **selesai** (`V2-E-001` s.d. `V2-E-026`). Pengumpulan metrik
 dihentikan 2026-08-12.
 
 **Baca [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) lebih dulu** — di situ
@@ -73,6 +73,7 @@ Detailnya di [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) dan
 | [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Mulai dari sini** — seluruh hasil, ancaman validitas, dan rekomendasi lanjutan |
 | [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang; §9 memuat koreksi sebab-akibat |
 | [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Fase 6** — urutan perintah persis untuk membangun ulang seluruh hasil, plus 9 jebakan yang wajib dihindari |
+| [docs/REGENERASI.md](docs/REGENERASI.md) | Cara membangun ulang data turunan yang dihapus 2026-08-12 (dataset 4-kanal, crop, rak symlink) — perintah, urutan, verifikasi |
 | [docs/REKAP.md](docs/REKAP.md) | Seluruh angka, percobaan gagal/berhasil, dan pelajaran dari Volume 1 |
 | [docs/DATASET.md](docs/DATASET.md) | Spesifikasi kedua dataset |
 | [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja per fase |
@@ -120,20 +121,34 @@ Detailnya di [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) dan
 | `dump_classaware.py` | Dump prediksi detektor (RGB jpg atau 4-kanal TIFF) ke format yang bisa difusikan/di-bootstrap; `--agnostik` untuk AP50 lokalisasi |
 | `fuse_final.py` | Fusi per-kelas lintas-jalur, bobot dipilih di val lalu dikunci |
 | `buat_test_953_bersih.py` | Bangun split test 953 yang benar-benar tak tersentuh pretraining (19 pohon) |
+| `buat_agnostic352_4ch.py` | Bangun `agnostic352_4ch` (dataset di balik `V2-E-024`); `--periksa` membandingkannya dengan direktori acuan |
 
 ## Data turunan (di luar repo, di `/workspace/`)
 
-Semua regenerable dari skrip di atas — sengaja tidak ikut git karena besar:
+Semua regenerable dari skrip di atas — sengaja tidak ikut git karena besar.
+**Perintah persis dan urutan ketergantungannya ada di
+[docs/REGENERASI.md](docs/REGENERASI.md)**, termasuk untuk folder yang sudah
+dihapus.
+
+Masih ada di disk:
 
 | Folder | Dibuat oleh | Isi |
 |---|---|---|
-| `crops_fase6/` | `build_crop_dataset.py` | 16.542 crop 953 + 2.299 crop 352 (RGB, relief depth, mask) |
+| `depth_png_352/` | `reproject_depth.py` (Volume 1) | Depth tereproyeksi ke frame color, uint8 kanonik. Perantara wajib semua dataset 4-kanal |
+| `SawitMVC-Depth-4ch-edge/` | `create_depth_edge_dataset.py` | TIFF 4-kanal encoding `edge` — pemenang Fase 5, dasar `V2-E-010`/`V2-E-024` |
 | `agnostic953/`, `agnostic352/` | `make_agnostic_dataset.py` | Dataset YOLO 1-kelas (symlink citra + label ditulis ulang) |
-| `depth_png_352/` | `reproject_depth.py` (Volume 1) | Depth tereproyeksi ke frame color, uint8 kanonik |
-| `SawitMVC-Depth-4ch*/` | `build_4ch_dataset.py`, `create_depth_edge_dataset.py` | Dataset TIFF 4-kanal per varian encoding |
+| `agnostic352_4ch/` | `buat_agnostic352_4ch.py` | Versi 4-kanal dari `agnostic352` — dataset di balik `V2-E-024` |
+| `agnostic953_test_{bersih,penuh}/` | `buat_test_953_bersih.py` | Split test 953 bersih (19 pohon) + versi penuh |
+| `SawitMVC-Depth{,-4ch-edge}-YOLO/` | `materialize_split_dirs.py` | Rak symlink `{split}/images,labels` untuk skrip eval lama |
 
-Di dalam repo: `splits_fase6/` (daftar split bebas-bocor, kecil, ikut git)
-dan `runs_fase6/` (output training Fase 6).
+Dihapus 2026-08-12 saat proyek ditutup (disk + bucket backup), ~23 GB, bisa
+dibangun ulang ~45 menit tanpa GPU: `SawitMVC-Depth-4ch/` (basis `inverse`),
+`-clipped/`, `-valid_mask/`, `-4ch-YOLO/`, `crops_fase6/`, `crops_fase6_256/`.
+
+Di dalam repo: `splits_fase6/` (daftar split bebas-bocor, kecil, ikut git),
+`runs/` + `runs_fase6/` (bobot dan log training — **tidak pernah dihapus**,
+lihat ATURAN #1 di `/workspace/CLAUDE.md`), dan `requirements-freeze.txt`
+(181 paket ter-pin; lingkungan yang menghasilkan seluruh angka di sini).
 
 ## Repo terkait
 

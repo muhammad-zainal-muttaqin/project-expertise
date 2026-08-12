@@ -61,6 +61,15 @@ Angka counting untuk YOLO26l, RT-DETR-L, RF-DETR-L **belum ada**.
 - Evaluasi deteksi: `pycocotools` (mengikat dari E-025).
 - Evaluasi counting: pipeline dari Baseline-SawitMVC.
 - Setiap angka menyebut dataset dan split.
+- **Dump prediksi test ke `.npz` pada saat evaluasi, bukan belakangan.**
+  Pakai `scripts/dump_classaware.py` (atau pola `np.savez_compressed` di
+  `eval_twostage.py`). Alasannya konkret: bobot RT-DETR-L dan RF-DETR-L
+  Volume 2 hilang antara 9 dan 10 Agustus 2026 sebelum sempat di-backup, dan
+  karena prediksinya tidak pernah disimpan, **CI untuk kedua arsitektur itu
+  tidak bisa dihitung selamanya** (lihat `docs/LAPORAN-AKHIR.md` §Ancaman
+  validitas butir 3). Satu berkas `.npz` ~90 KB menutup risiko itu.
+- **Bobot tidak boleh dihapus** — `*.pt`, `*.pth`, `runs*/`, `models/`, di
+  lokal maupun di bucket backup. Lihat ATURAN #1 di `/workspace/CLAUDE.md`.
 
 ## Hal yang sudah dicoba dan GAGAL (jangan diulang)
 
