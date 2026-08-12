@@ -5,7 +5,12 @@
     "dijalankan_saat": "penutupan proyek, setelah V2-E-026",
     "kenapa": "bucket 10x lebih besar dari isi eksperimen; sebagian besar turunan regenerable",
     "peringatan_ukuran": "`hf buckets list` melaporkan ukuran LOGIS. Ukuran nyata lebih kecil karena xet men-dedup blob identik. Rak symlink (agnostic*, *-YOLO) ter-upload penuh karena hf sync men-dereference symlink, lalu di-dedup — menghapusnya memangkas jumlah berkas, bukan storage.",
-    "resep_regenerasi": "project-expertise/docs/REGENERASI.md"
+    "resep_regenerasi": "project-expertise/docs/REGENERASI.md",
+    "verifikasi_regenerasi": [
+      "crops_fase6 (--src 352) dibangun ulang -> SHA-256 crops352_{rgb,dep,msk}.npy identik dengan aslinya",
+      "agnostic352_4ch dibangun ulang -> 980/208/220 citra, label identik (--periksa)",
+      "SawitMVC-Depth/images + depth_png_352 -> build_4ch_dataset.py -> create_depth_edge_dataset.py edge: 60 sampel acak SHA-256 identik dengan SawitMVC-Depth-4ch-edge yang disimpan"
+    ]
   },
   "sebelum": {
     "berkas": 92966,
@@ -99,5 +104,29 @@
       "scripts/",
       "splits_fase6/"
     ]
+  },
+  "sesudah_aktual": {
+    "diverifikasi": "2026-08-12 10:35 lewat `hf buckets list -R`, bukan dari pesan sync",
+    "berkas": 53965,
+    "byte_logis": 16195251653,
+    "byte_nyata": 15897427569,
+    "dihapus_dilaporkan_alat": 39001,
+    "gerbang_aset_terlindungi": {
+      "runs+runs_fase6": {
+        "berkas": 2878,
+        "byte": 6450630392,
+        "utuh": true
+      },
+      "bobot_pt_pth": {
+        "berkas": 64,
+        "byte": 6659771255,
+        "utuh": true
+      },
+      "dump_prediksi_npz": {
+        "berkas": 9,
+        "utuh": true
+      },
+      "semua_lolos": true
+    }
   }
 }
