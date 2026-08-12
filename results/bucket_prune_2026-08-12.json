@@ -1,0 +1,103 @@
+{
+  "_meta": {
+    "apa": "Catatan pemangkasan bucket hf://buckets/ULM-DS-Lab/project-expertise-backup",
+    "tanggal": "2026-08-12",
+    "dijalankan_saat": "penutupan proyek, setelah V2-E-026",
+    "kenapa": "bucket 10x lebih besar dari isi eksperimen; sebagian besar turunan regenerable",
+    "peringatan_ukuran": "`hf buckets list` melaporkan ukuran LOGIS. Ukuran nyata lebih kecil karena xet men-dedup blob identik. Rak symlink (agnostic*, *-YOLO) ter-upload penuh karena hf sync men-dereference symlink, lalu di-dedup — menghapusnya memangkas jumlah berkas, bukan storage.",
+    "resep_regenerasi": "project-expertise/docs/REGENERASI.md"
+  },
+  "sebelum": {
+    "berkas": 92966,
+    "byte_logis": 57638417826,
+    "byte_nyata": 41243966021,
+    "blob_unik": 58580
+  },
+  "dihapus": {
+    "berkas": 39001,
+    "byte_logis": 41443167202,
+    "byte_nyata": 25346539481,
+    "per_tier": {
+      "tier1_sampah": {
+        "alasan": "tidak punya nilai riset dan tidak perlu dibuat ulang",
+        "prefix": [
+          "<root>/.hf_sync_loop.log",
+          "*/.git/**",
+          "project-expertise/.venv/**",
+          ".claude/scheduled_tasks.lock"
+        ],
+        "berkas": 12184,
+        "byte_logis": 2249531344,
+        "byte_nyata": 2161778241
+      },
+      "tier2_turunan_mahal": {
+        "alasan": "regenerable, diverifikasi identik byte-per-byte 2026-08-12",
+        "prefix": [
+          "crops_fase6_256/**",
+          "crops_fase6/**"
+        ],
+        "berkas": 20,
+        "byte_logis": 10917180290,
+        "byte_nyata": 10913739178
+      },
+      "tier3_dataset_4ch_selain_edge": {
+        "alasan": "varian kalah screening Fase 5 + basis inverse; regenerable dari depth_png_352",
+        "prefix": [
+          "SawitMVC-Depth-4ch-valid_mask/**",
+          "SawitMVC-Depth-4ch-clipped/**",
+          "SawitMVC-Depth-4ch/**",
+          "SawitMVC-Depth-4ch-YOLO/**"
+        ],
+        "berkas": 7055,
+        "byte_logis": 16392859235,
+        "byte_nyata": 12269649411
+      },
+      "tier4_rak_symlink": {
+        "alasan": "duplikat byte-identik hasil dereference symlink oleh hf sync; 0 byte dibebaskan, hanya memangkas jumlah berkas",
+        "prefix": [
+          "agnostic953/**",
+          "agnostic352/**",
+          "agnostic352_4ch/**",
+          "agnostic953_test_bersih/**",
+          "agnostic953_test_penuh/**",
+          "SawitMVC-Depth-YOLO/**",
+          "SawitMVC-Depth-4ch-edge-YOLO/**"
+        ],
+        "berkas": 19742,
+        "byte_logis": 11883596333,
+        "byte_nyata": 1372650
+      }
+    }
+  },
+  "sesudah_diharapkan": {
+    "berkas": 53965,
+    "byte_logis": 16195250624,
+    "byte_nyata": 15897426540
+  },
+  "dilindungi_tidak_disentuh": {
+    "project-expertise/runs*/**": {
+      "berkas": 2878,
+      "byte": 6450630392,
+      "isi": "44 best.pt + 14 last.pt + log training"
+    },
+    "bobot_pt_lain": {
+      "berkas": 6,
+      "byte": 341280341
+    },
+    "dataset_sumber": [
+      "SawitMVC-YOLO/",
+      "SawitMVC-Depth/ (memuat splits/canonical_70_15_15*)"
+    ],
+    "perantara_wajib": [
+      "depth_png_352/",
+      "SawitMVC-Depth-4ch-edge/"
+    ],
+    "hasil_dan_dokumen": [
+      "project-expertise/results/",
+      "docs/",
+      "experiments/",
+      "scripts/",
+      "splits_fase6/"
+    ]
+  }
+}
