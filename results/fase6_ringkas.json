@@ -357,5 +357,64 @@
   "lokalisasi_test": {
     "SawitMVC-953 (v2repro, bersih)": 0.7374,
     "SawitMVC-Depth-352 (agn352_ft)": 0.733
+  },
+  "penutupan_V2E024_026": {
+    "lokalisasi_berpasangan_test352": {
+      "agn352_4ch_RGBD_edge": {
+        "AP50": 0.7636,
+        "CI95": [
+          0.7144,
+          0.8123
+        ],
+        "val_best": 0.7893,
+        "val_best_ep": 33
+      },
+      "agn352_ft3_RGB": {
+        "AP50": 0.7358,
+        "CI95": [
+          0.682,
+          0.7917
+        ],
+        "val_best": 0.7473,
+        "val_best_ep": 42
+      },
+      "delta": 0.0278,
+      "CI95_delta": [
+        -0.0121,
+        0.0648
+      ],
+      "P_delta_positif": 0.921,
+      "signifikan_95": false,
+      "catatan": "resep/init/seed/jadwal identik; hanya kanal masukan yang beda"
+    },
+    "agn953_full_test": {
+      "bersih_19pohon": 0.7702,
+      "penuh_141pohon": 0.809,
+      "val": 0.8101,
+      "catatan": "0,7702 yang sah; selisih ke set penuh = optimisme kontaminasi"
+    },
+    "CI_angka_utama_fase6": {
+      "dua_tahap_v4": {
+        "mAP50": 0.45,
+        "CI95": [
+          0.4054,
+          0.5188
+        ]
+      },
+      "edge_rgbd": {
+        "mAP50": 0.427,
+        "CI95": [
+          0.3836,
+          0.4984
+        ]
+      },
+      "delta": 0.023,
+      "CI95_delta": [
+        -0.0286,
+        0.0663
+      ],
+      "P_delta_positif": 0.789,
+      "signifikan_95": false
+    }
   }
 }

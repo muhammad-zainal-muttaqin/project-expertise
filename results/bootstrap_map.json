@@ -1,0 +1,87 @@
+{
+  "split": "test",
+  "n_citra": 220,
+  "n_boot": 1000,
+  "seed": 42,
+  "sumber": {
+    "dua_tahap_v4": "results/twostage_v4_ulang.pred.npz",
+    "edge_rgbd": "results/pred_edge_test.npz"
+  },
+  "per_sumber": {
+    "dua_tahap_v4": {
+      "mAP50": 0.45,
+      "per_kelas": {
+        "B1": 0.7366,
+        "B2": 0.4683,
+        "B3": 0.3212,
+        "B4": 0.2738
+      },
+      "CI95_mAP50": [
+        0.4054,
+        0.5188
+      ],
+      "lebar_CI": 0.1133,
+      "CI95_per_kelas": {
+        "B1": [
+          0.6644,
+          0.8111
+        ],
+        "B2": [
+          0.405,
+          0.5596
+        ],
+        "B3": [
+          0.2176,
+          0.4666
+        ],
+        "B4": [
+          0.1102,
+          0.489
+        ]
+      }
+    },
+    "edge_rgbd": {
+      "mAP50": 0.427,
+      "per_kelas": {
+        "B1": 0.7194,
+        "B2": 0.497,
+        "B3": 0.2207,
+        "B4": 0.2711
+      },
+      "CI95_mAP50": [
+        0.3836,
+        0.4984
+      ],
+      "lebar_CI": 0.1148,
+      "CI95_per_kelas": {
+        "B1": [
+          0.6415,
+          0.7996
+        ],
+        "B2": [
+          0.4215,
+          0.592
+        ],
+        "B3": [
+          0.1489,
+          0.338
+        ],
+        "B4": [
+          0.1191,
+          0.4949
+        ]
+      }
+    }
+  },
+  "selisih_berpasangan": {
+    "dua_tahap_v4 - edge_rgbd": {
+      "delta_titik": 0.023,
+      "CI95_delta": [
+        -0.0286,
+        0.0663
+      ],
+      "P(delta>0)": 0.789,
+      "signifikan_95": false
+    }
+  }
+}

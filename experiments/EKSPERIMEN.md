@@ -1181,3 +1181,135 @@ antar-metode (0,6707–0,6837).
 **Konsekuensi.** Angka Fase 6 hanya boleh dilaporkan dengan selangnya. Setiap
 pekerjaan lanjutan pada dataset ini harus menghitung daya statistik lebih dulu:
 dengan 410 kotak GT, efek di bawah ~0,10 mAP50 tidak terdeteksi.
+
+---
+
+## V2-E-024 — Depth menaikkan LOKALISASI dan menembus plafon yang diklaim V2-E-017, tapi belum signifikan di split ini
+
+**Tanggal:** 2026-08-12
+**Hipotesis:** kanal depth menaikkan AP50 **lokalisasi** (deteksi 1 kelas).
+Ini satu-satunya perbandingan RGB vs RGB+D pada proyek ini yang **tidak bisa
+dikotori pergeseran temporal** (V2-E-022), karena class-agnostic membuang label
+kematangan sepenuhnya dan menyisakan hanya "ada tandan atau tidak" — label yang
+bertahan melintasi jeda 80 hari karena posisi tandan di kanopi relatif stabil.
+
+**Rancangan berpasangan.** Resep, inisialisasi (`agn953_full`), seed (42),
+jadwal (60 epoch, patience 45, cosine), resolusi (1280), dan batch (4)
+**identik**. Satu-satunya yang berbeda: jumlah kanal masukan. Kanal ke-4 memakai
+encoding `edge` (Sobel gradien depth), pemenang screening V2-E-008/010 —
+diverifikasi identik dengan `SawitMVC-Depth-4ch-edge`. Bobot stem diinflasi
+3→4 kanal (1092/1092 item tertransfer, terverifikasi sebelum run).
+
+**Hasil — training (val):**
+
+| Run | Kanal | best val AP50 | @ep | Durasi |
+|---|---|---|---|---|
+| `agn352_4ch` | 4 (RGB + `edge`) | **0,7893** | 33 | 165 mnt |
+| `agn352_ft3` | 3 (RGB) | 0,7473 | 42 | 168 mnt |
+
+`agn352_4ch` unggul di 21 dari 26 epoch pertama dan menyamai puncak
+seumur-hidup kontrol RGB pada epoch 26.
+
+**Hasil — split TEST, AP50 lokasi murni, dengan CI bootstrap berpasangan
+(1.000 ulangan, resampling tingkat citra, seed 42):**
+
+| Model | AP50 test | CI 95% | Lebar | n prediksi |
+|---|---|---|---|---|
+| `agn352_4ch` (RGB+D) | **0,7636** | [0,7144; 0,8123] | 0,0979 | 1.660 |
+| `agn352_ft3` (RGB) | 0,7358 | [0,6820; 0,7917] | 0,1097 | 1.226 |
+
+Selisih berpasangan: **+0,0278**, CI 95% **[−0,0121; +0,0648]**,
+P(Δ>0) = **0,921** → **belum signifikan pada taraf 95%**.
+
+**Sumber:** `results/bootstrap_lokalisasi.json`,
+`results/pred_agn4ch_test.npz`, `results/pred_agnrgb_test.npz`,
+`runs/agn352_4ch/results.csv`.
+
+**Verdict: POSITIF TAPI BELUM KONKLUSIF.** Arah efeknya konsisten di val
+(+0,0420) dan test (+0,0278), dan ini sinyal positif terkuat untuk depth di
+seluruh Volume 2 — satu-satunya yang muncul dari perbandingan yang benar-benar
+bersih. Tetapi selangnya masih memuat nol.
+
+**Ketidaksignifikanan di sini TIDAK boleh dibaca sebagai "tidak ada efek".**
+V2-E-023 sudah menetapkan bahwa split test ini tidak mampu memisahkan efek di
+bawah ~0,10. Efek terukur 0,0278 berada jauh di bawah ambang itu, jadi hasil
+"tidak signifikan" memang sudah bisa diramalkan sebelum eksperimen dijalankan
+dan tidak membawa informasi tentang ada-tidaknya efek. Yang kurang adalah data,
+bukan efeknya.
+
+**Koreksi terhadap V2-E-017.** Entri itu menyimpulkan "mAP50 di dataset ini
+tidak mungkin melewati ~0,733" karena AP50 lokalisasi test-352 (0,7330) praktis
+sama dengan test-953 (0,7374) meski 953 punya 9,8× lebih banyak kotak latih.
+Kesimpulan itu benar **sebagai pernyataan tentang masukan RGB**, tapi ditulis
+seolah berlaku umum untuk dataset. Dengan kanal depth, titik estimasi lokalisasi
+mencapai **0,7636** — di atas kedua angka tersebut. Plafon itu ternyata sifat
+dari **modalitas masukan**, bukan sifat dataset. Perlu ditegaskan: 0,7636 masih
+di dalam CI 0,7330, jadi ini pembalikan **titik estimasi**, bukan pembalikan
+yang terbukti signifikan.
+
+**Konsekuensi.** Ini menajamkan rekomendasi §10 laporan. Depth tampaknya
+menolong di tempat yang persis diprediksi teori V2-E-022 — lokalisasi, bukan
+kematangan. Akuisisi berikutnya sebaiknya dirancang untuk menguji **itu**,
+dengan test split ≈4.000 kotak supaya efek berukuran 0,03 bisa dipisahkan.
+
+---
+
+## V2-E-025 — Angka test class-agnostic untuk `agn953_full`, dan besarnya efek kontaminasi pretraining
+
+**Tanggal:** 2026-08-12
+**Lubang yang ditutup:** `agn953_full` selama ini hanya punya AP50 **val**
+(0,8101). `make_agnostic_dataset.py` memang hanya membuat split train+val untuk
+`agnostic953` (baris `p953 = {"train": [], "val": []}`), sehingga angka test-nya
+tidak pernah ada. Angka "test-953 = 0,7374" yang sempat dikutip berasal dari
+model **berbeda** — detektor class-aware `v2repro` yang prediksinya dilipat jadi
+satu kelas.
+**Metode:** `scripts/buat_test_953_bersih.py`. Karena `pretrain953_images.txt`
+mengambil semua 846 pohon bebas-bocor tanpa menghormati split kanonik 953, dari
+141 pohon test kanonik hanya **19 pohon (76 citra, 316 kotak)** yang benar-benar
+tak tersentuh training. Dua set dilaporkan supaya efek kontaminasi terlihat,
+bukan disembunyikan.
+
+**Hasil:**
+
+| Set evaluasi | Pohon | Citra | Kotak | AP50 agnostik |
+|---|---|---|---|---|
+| **test bersih** (tak tersentuh) | 19 | 76 | 316 | **0,7702** |
+| test penuh (122/141 pohon terpakai saat training) | 141 | 588 | 2.612 | 0,8090 |
+| val (pembanding, dilaporkan selama ini) | — | 364 | — | 0,8101 |
+
+**Sumber:** `results/pred_agn953_bersih.npz`, `results/pred_agn953_penuh.npz`,
+`results/test953_bersih.json`.
+**Verdict:** angka yang sah untuk `agn953_full` adalah **0,7702**, bukan 0,8101.
+Selisih 0,0388 antara set bersih dan set penuh adalah besarnya optimisme akibat
+kontaminasi — dan angka val (0,8101) hampir identik dengan set terkontaminasi
+(0,8090), persis seperti yang diharapkan kalau keduanya berbagi pohon dengan
+training.
+**Peringatan:** set bersih hanya 316 kotak, jadi CI-nya lebih lebar lagi
+daripada split test 352 (yang sudah ±0,058 pada 410 kotak). Angka 0,7702 harus
+dibaca sebagai indikasi, bukan pengukuran presisi.
+
+---
+
+## V2-E-026 — CI untuk angka utama Fase 6: dua-tahap 0,4500 tidak terbedakan dari pembandingnya
+
+**Tanggal:** 2026-08-12
+**Metode:** konfigurasi v4 dijalankan ulang di test (9 classifier, WBF
+`agn352_ft`+`agn352_ft3`, imgsz 1280, NMS IoU 0,5, TTA, multi-kelas) dengan dump
+prediksi, lalu bootstrap 1.000 ulangan berpasangan.
+
+**Hasil:** reproduksi persis — mAP50 = **0,44999** vs 0,4500 yang dilaporkan
+V2-E-020, per kelas identik (B1 0,7366 / B2 0,4683 / B3 0,3212 / B4 0,2738).
+
+| Model | mAP50 | CI 95% | Lebar |
+|---|---|---|---|
+| Dua-tahap v4 | 0,4500 | [0,4054; 0,5188] | 0,1133 |
+| YOLO26l-RGBD `edge` | 0,4270 | [0,3836; 0,4984] | 0,1148 |
+
+Selisih berpasangan: **+0,0230**, CI 95% **[−0,0286; +0,0663]**, P(Δ>0) = 0,789
+→ **tidak signifikan**.
+
+**Sumber:** `results/bootstrap_map.json`, `results/twostage_v4_ulang.json`.
+**Verdict:** menegaskan V2-E-023. Angka utama Fase 6 tidak terbedakan dari
+detektor satu-tahap yang jauh lebih sederhana, apalagi dari RF-DETR-L (0,4544)
+yang bahkan lebih tinggi titik estimasinya. Seluruh kerja rekomposisi enam versi
+tidak menghasilkan perbedaan yang bisa dibuktikan pada split ini.

@@ -30,17 +30,27 @@ Tiga temuan menutup persoalannya:
    besar jatuh di dalam satu selang yang sama. Selisih 0,0044 antara pipeline
    dua-tahap terbaik dan rekor proyek adalah derau.
 
-3. **Lokalisasi sudah mentok, klasifikasi yang tidak bisa diperbaiki.** AP50
-   class-agnostic 0,7330 di test-352 versus mAP50 class-aware ~0,45. Selisih
-   itu bukan cacat arsitektur: label lokalisasi bertahan melintasi jeda 80 hari
-   karena posisi tandan di kanopi stabil, sedangkan label kematangan tidak
-   karena benda fisiknya berubah.
+3. **Yang rusak adalah klasifikasi, bukan lokalisasi.** AP50 class-agnostic
+   0,7330 di test-352 versus mAP50 class-aware ~0,45. Selisih itu bukan cacat
+   arsitektur: label lokalisasi bertahan melintasi jeda 80 hari karena posisi
+   tandan di kanopi stabil, sedangkan label kematangan tidak karena benda
+   fisiknya berubah.
+
+4. **Depth menolong — tapi untuk lokalisasi, bukan kematangan.** Uji
+   berpasangan terakhir (resep identik, hanya kanal masukan yang beda)
+   memberi AP50 lokalisasi **0,7636 dengan depth** versus **0,7358 tanpa**,
+   selisih +0,0278 (P(Δ>0) = 0,921, CI masih memuat nol). Titik estimasinya
+   **menembus plafon 0,733** yang sebelumnya diklaim sebagai batas dataset —
+   ternyata itu batas modalitas RGB, bukan batas dataset. Efeknya muncul persis
+   di tempat yang diprediksi temuan 1 dan 3, dan prediksi itu dibuat sebelum
+   eksperimennya dijalankan.
 
 **Rekomendasi utama:** pekerjaan lanjutan pada pertanyaan RGB-vs-RGB+D
 memerlukan satu sesi akuisisi yang merekam RGB dan depth **bersamaan pada
 tandan yang sama**, dengan test split yang cukup besar (perhitungan daya di
-§8). Tanpa itu, penambahan model, loss, atau ensemble tidak akan mengubah
-kesimpulan.
+§8), dan sebaiknya menargetkan **lokalisasi** — bukan kematangan, yang sudah
+terbukti redundan terhadap RGB. Tanpa itu, penambahan model, loss, atau
+ensemble tidak akan mengubah kesimpulan.
 
 ---
 
@@ -48,11 +58,12 @@ kesimpulan.
 
 | # | Pertanyaan | Jawaban | Sumber |
 |---|---|---|---|
-| 1 | Apakah depth menaikkan mAP50 deteksi? | **Tidak terjawab** dengan data ini. Perbandingan lintas-dataset tidak sah (§3); perbandingan di dalam 352 berada di bawah ambang deteksi statistik (§5). | V2-E-022, V2-E-023 |
+| 1 | Apakah depth menaikkan mAP50 deteksi **4 kelas**? | **Tidak terjawab** dengan data ini. Perbandingan lintas-dataset tidak sah (§1); perbandingan di dalam 352 berada di bawah ambang deteksi statistik (§5). | V2-E-022, V2-E-023 |
+| 1b | Apakah depth menaikkan AP50 **lokalisasi**? | **Ya menurut titik estimasi, belum terbukti signifikan.** 0,7636 vs 0,7358 berpasangan, +0,0278, P(Δ>0)=0,921. Menembus plafon 0,733 yang dikira batas dataset. | V2-E-024 |
 | 2 | Encoding depth mana yang terbaik? | `edge` (Sobel gradien depth) menang screening dan training penuh: test mAP50 0,4316 vs `inverse` 0,3919. Selisihnya tetap belum signifikan. | V2-E-008, V2-E-010 |
 | 3 | Apakah depth membawa informasi kematangan? | Ya, tapi **redundan secara kondisional** terhadap RGB: `I(Y;D) > 0` sementara `I(Y;D\|RGB) ≈ 0`. Depth saja 0,3756; RGB saja 0,6415; RGB+depth 0,6415. | V2-E-016 |
 | 4 | Di mana kemampuan detektor hilang? | Pada penamaan kelas, bukan pencarian objek. AP50 agnostik 0,7330 vs mAP50 0,45. | V2-E-013, V2-E-017 |
-| 5 | Apakah memperbesar model menolong? | Tidak. Dataset 953 dengan 9,8× lebih banyak kotak latih mencapai AP50 lokalisasi yang praktis sama (0,7374 vs 0,7330). Rencana `yolo26x` dibatalkan. | V2-E-017 |
+| 5 | Apakah memperbesar model menolong? | Tidak. Dataset 953 dengan 9,8× lebih banyak kotak latih mencapai AP50 lokalisasi yang praktis sama (0,7374 vs 0,7330). Rencana `yolo26x` dibatalkan. Yang menaikkannya justru **modalitas**, bukan kapasitas (§9.1). | V2-E-017, V2-E-024 |
 | 6 | Apakah pipeline dua-tahap mengalahkan satu-tahap? | Setara, tidak lebih baik. 0,4500 vs 0,4544, selisih 26× lebih kecil dari lebar CI-nya. | V2-E-020, V2-E-023 |
 
 ---
@@ -119,11 +130,14 @@ kelas itu tidak punya sisa ruang perbaikan. Seluruh sisa jarak ada di B2–B4.
 
 ### 4.3 Lokalisasi murni (AP50 class-agnostic)
 
-| Model | Split | AP50 | Catatan |
-|---|---|---|---|
-| `agn352_ft` | test 352 | **0,7330** | plafon mAP50 pipeline dua-tahap |
-| YOLO26l `v2repro` (class-aware dilipat) | test 953 | 0,7374 | **model berbeda**, bukan detektor agnostik |
-| `agn953_full` | val 953 | 0,8101 | lihat §7.3 untuk angka test |
+| Model | Masukan | Split | AP50 | Catatan |
+|---|---|---|---|---|
+| **`agn352_4ch`** | **RGB+D `edge`** | test 352 | **0,7636** | tertinggi; menembus plafon yang diklaim V2-E-017 (§9.1) |
+| `agn352_ft3` | RGB | test 352 | 0,7358 | kontrol berpasangan, resep identik |
+| `agn352_ft` | RGB | test 352 | 0,7330 | plafon mAP50 pipeline dua-tahap |
+| YOLO26l `v2repro` (class-aware dilipat) | RGB | test 953 | 0,7374 | **model berbeda**, bukan detektor agnostik |
+| `agn953_full` | RGB | test 953 bersih | 0,7702 | 19 pohon tak tersentuh (§9.2) |
+| `agn953_full` | RGB | val 953 | 0,8101 | dilaporkan selama ini; optimis 0,0399 vs set bersih |
 
 ---
 
@@ -273,7 +287,70 @@ Rancangan berpasangan: resep, inisialisasi (`agn953_full`), seed (42), jadwal
 (60 epoch, patience 45, cosine), resolusi (1280), dan batch (4) **identik**.
 Satu-satunya yang berbeda adalah jumlah kanal masukan.
 
-*(Hasil diisi di §9.1 setelah run selesai — lihat `V2-E-024`.)*
+### 9.1 Hasil (V2-E-024)
+
+| Model | val AP50 | @ep | **test AP50** | CI 95% | Lebar |
+|---|---|---|---|---|---|
+| `agn352_4ch` (RGB + `edge`) | **0,7893** | 33 | **0,7636** | [0,7144; 0,8123] | 0,0979 |
+| `agn352_ft3` (RGB) | 0,7473 | 42 | 0,7358 | [0,6820; 0,7917] | 0,1097 |
+
+Selisih berpasangan: **+0,0278**, CI 95% **[−0,0121; +0,0648]**,
+P(Δ>0) = **0,921** → belum signifikan pada taraf 95%.
+
+**Ini sinyal positif terkuat untuk depth di seluruh Volume 2**, dan
+satu-satunya yang datang dari perbandingan yang benar-benar bersih. Arahnya
+konsisten di val (+0,0420) dan test (+0,0278). Model 4-kanal juga menghasilkan
+lebih banyak deteksi (1.660 vs 1.226) — konsisten dengan recall yang lebih
+tinggi.
+
+**Ketidaksignifikanan di sini tidak boleh dibaca sebagai "tidak ada efek".**
+§5 sudah menetapkan bahwa split ini tidak mampu memisahkan efek di bawah ~0,10.
+Efek terukur 0,0278 berada jauh di bawah ambang itu, jadi hasil "tidak
+signifikan" sudah bisa diramalkan sebelum eksperimennya dijalankan dan tidak
+membawa informasi tentang ada-tidaknya efek. Yang kurang adalah data.
+
+**Koreksi terhadap plafon yang diklaim V2-E-017.** Entri itu menyimpulkan
+"mAP50 di dataset ini tidak mungkin melewati ~0,733" karena AP50 lokalisasi
+test-352 (0,7330) praktis sama dengan test-953 (0,7374) meski 953 punya 9,8×
+lebih banyak kotak latih. Kesimpulan itu benar sebagai pernyataan tentang
+masukan **RGB**, tetapi ditulis seolah berlaku umum. Dengan kanal depth, titik
+estimasi mencapai **0,7636** — di atas keduanya. Plafon itu sifat **modalitas
+masukan**, bukan sifat dataset. Perlu ditegaskan: 0,7636 masih berada di dalam
+CI angka 0,7330, jadi ini pembalikan titik estimasi, bukan pembalikan yang
+terbukti signifikan.
+
+**Yang membuat hasil ini layak dipercaya lebih dari percobaan sebelumnya:**
+depth menolong persis di tempat yang diprediksi teori §1 — lokalisasi, bukan
+kematangan. Label posisi bertahan melintasi jeda 80 hari; label kematangan
+tidak. Prediksi itu dibuat sebelum eksperimennya dijalankan.
+
+### 9.2 Angka test `agn953_full` yang selama ini tidak ada (V2-E-025)
+
+| Set evaluasi | Pohon | Citra | Kotak | AP50 agnostik |
+|---|---|---|---|---|
+| **test bersih** (tak tersentuh training) | 19 | 76 | 316 | **0,7702** |
+| test penuh (122/141 pohon terpakai saat training) | 141 | 588 | 2.612 | 0,8090 |
+| val (yang dilaporkan selama ini) | — | 364 | — | 0,8101 |
+
+Angka yang sah adalah **0,7702**, bukan 0,8101. Selisih 0,0388 antara set
+bersih dan set penuh adalah besarnya optimisme akibat kontaminasi — dan angka
+val hampir identik dengan set terkontaminasi, persis seperti yang diharapkan
+kalau keduanya berbagi pohon dengan training. Set bersih hanya 316 kotak, jadi
+0,7702 harus dibaca sebagai indikasi, bukan pengukuran presisi.
+
+### 9.3 CI untuk angka utama Fase 6 (V2-E-026)
+
+Konfigurasi v4 dijalankan ulang dan tereproduksi persis (mAP50 0,44999 vs
+0,4500; per kelas identik).
+
+| Model | mAP50 | CI 95% | Lebar |
+|---|---|---|---|
+| Dua-tahap v4 | 0,4500 | [0,4054; 0,5188] | 0,1133 |
+| YOLO26l-RGBD `edge` | 0,4270 | [0,3836; 0,4984] | 0,1148 |
+
+Selisih berpasangan +0,0230, CI 95% [−0,0286; +0,0663], P(Δ>0) = 0,789 →
+tidak signifikan. Enam versi rekomposisi tidak menghasilkan perbedaan yang bisa
+dibuktikan pada split ini.
 
 ---
 
@@ -286,10 +363,15 @@ model atau loss yang lebih baik, melainkan data:
    sama. Perbandingan RGB vs RGB+D lalu menjadi ablasi kanal murni, bukan
    perbandingan lintas-waktu.
 2. **Test split ≈4.000 kotak** (≈10× sekarang) supaya efek berukuran 0,03
-   mAP50 terdeteksi dengan daya 80%.
-3. **Anotasi ulang subset 953 dengan standar Juli**, atau sebaliknya, kalau
+   mAP50 terdeteksi dengan daya 80%. Ini bukan angka sembarangan: efek depth
+   yang terukur di §9.1 tepat berukuran 0,028.
+3. **Targetkan lokalisasi, bukan kematangan.** Di situlah satu-satunya sinyal
+   depth yang bertahan muncul (§9.1), dan itu konsisten dengan teori §1.
+   Kematangan sudah terbukti redundan terhadap RGB (`I(Y;D|RGB) ≈ 0`).
+4. **Anotasi ulang subset 953 dengan standar Juli**, atau sebaliknya, kalau
    korpus 953 tetap ingin dipakai sebagai sumber pretraining kematangan.
-   Untuk pretraining **lokalisasi** saja, korpus 953 tetap sah dan berguna.
+   Untuk pretraining **lokalisasi** saja, korpus 953 tetap sah dan berguna —
+   dan `agn953_full` (test bersih 0,7702) memang menjadi inisialisasi yang baik.
 
 **Yang tidak perlu diulang** (sudah terbukti tidak menolong): memperbesar model
 (V2-E-017), early fusion di stem (V2-E-005, V2-E-022 Volume 1), gate init-nol

@@ -53,8 +53,10 @@ setelah pooling di jalur klasifikasi — bukan early fusion di stem.
 | Fusi lintas-jalur dua-tahap + detektor class-aware | selesai — nihil (+0,0004), V2-E-023 |
 | Probe pergeseran temporal 953 vs 352 | selesai — **V2-E-022** |
 | Bootstrap CI seluruh angka Fase 6 | selesai — **V2-E-023** |
-| Test split bersih untuk `agn953_full` | selesai — 19 pohon tak tersentuh (§8 laporan) |
-| Depth untuk lokalisasi (`agn352_4ch`) | berjalan — V2-E-024 |
+| Test split bersih untuk `agn953_full` | selesai — AP50 **0,7702** (19 pohon), V2-E-025 |
+| Metadata split pada 6 berkas hasil | selesai — `_meta` ditambahkan, integritas terverifikasi |
+| **Depth untuk lokalisasi (`agn352_4ch`)** | **selesai — 0,7636 vs 0,7358 RGB, V2-E-024** |
+| CI angka utama Fase 6 | selesai — 0,4500 CI [0,4054; 0,5188], V2-E-026 |
 
 ### Hasil Fase 6 (test split 352, sebanding dengan Fase 1–5)
 
@@ -79,6 +81,10 @@ dari lebar CI. Jangan mengurutkan baris-baris ini sebagai peringkat.
    definisi, dan AP50 lokalisasi test-352 = 0,7330 — praktis sama dengan
    test-953 = 0,7374 yang punya 9,8× lebih banyak box latih (V2-E-017).
    Target mAP50 0,80 berada **di atas plafon**, bukan sekadar belum tercapai.
+   **DIKOREKSI oleh V2-E-024:** angka 0,733 itu plafon untuk masukan **RGB**,
+   bukan plafon dataset. Dengan kanal depth, AP50 lokalisasi mencapai **0,7636**
+   (kontrol RGB berpasangan: 0,7358; selisih +0,0278, P(Δ>0)=0,921, CI masih
+   memuat nol). Plafon itu sifat modalitas masukan.
 2. **Konfigurasi terbaik untuk mAP50 bukan yang terbaik untuk counting.**
    v4 menang mAP50 (0,4500), v3 menang counting (88,18%). mAP peduli urutan
    deteksi dalam kelas; counting memakai argmax sehingga sensitif kalibrasi

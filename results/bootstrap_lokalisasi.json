@@ -1,0 +1,57 @@
+{
+  "split": "test",
+  "n_citra": 220,
+  "n_boot": 1000,
+  "seed": 42,
+  "sumber": {
+    "agn352_4ch": "results/pred_agn4ch_test.npz",
+    "agn352_ft3_rgb": "results/pred_agnrgb_test.npz"
+  },
+  "per_sumber": {
+    "agn352_4ch": {
+      "mAP50": 0.7636,
+      "per_kelas": {
+        "AP50_agnostik": 0.7636
+      },
+      "CI95_mAP50": [
+        0.7144,
+        0.8123
+      ],
+      "lebar_CI": 0.0979,
+      "CI95_per_kelas": {
+        "AP50_agnostik": [
+          0.7144,
+          0.8123
+        ]
+      }
+    },
+    "agn352_ft3_rgb": {
+      "mAP50": 0.7358,
+      "per_kelas": {
+        "AP50_agnostik": 0.7358
+      },
+      "CI95_mAP50": [
+        0.682,
+        0.7917
+      ],
+      "lebar_CI": 0.1097,
+      "CI95_per_kelas": {
+        "AP50_agnostik": [
+          0.682,
+          0.7917
+        ]
+      }
+    }
+  },
+  "selisih_berpasangan": {
+    "agn352_4ch - agn352_ft3_rgb": {
+      "delta_titik": 0.0278,
+      "CI95_delta": [
+        -0.0121,
+        0.0648
+      ],
+      "P(delta>0)": 0.921,
+      "signifikan_95": false
+    }
+  }
+}

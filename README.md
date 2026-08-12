@@ -34,6 +34,13 @@ seluruh hasil, batasnya, dan alasan berhentinya dirangkum. Dua temuan penutup:
   mAP50 selebar ±0,058 pada 410 kotak GT, sementara selisih yang diperebutkan
   0,0044 (`V2-E-023`).
 
+Satu temuan positif menutup proyek: **depth menaikkan lokalisasi, bukan
+kematangan.** Uji berpasangan terakhir (resep identik, hanya kanal masukan yang
+beda) memberi AP50 lokalisasi **0,7636 dengan depth vs 0,7358 tanpa** —
+menembus plafon 0,733 yang sebelumnya dikira batas dataset, ternyata batas
+modalitas RGB. Selisih +0,0278 dengan P(Δ>0)=0,921; CI masih memuat nol karena
+split ini tidak mampu memisahkan efek di bawah ~0,10 (`V2-E-024`).
+
 Ringkasan per fase: [experiments/STATUS.md](experiments/STATUS.md).
 
 ### Matriks hasil (test split; mAP50 pycocotools / Class ±1 Acc Ridge+F_all)
