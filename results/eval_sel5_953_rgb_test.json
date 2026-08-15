@@ -1,0 +1,25 @@
+{
+  "nama": "sel5_953_rgb",
+  "bobot": "models/yolo26l_e60_i1280_v2repro/best.pt",
+  "ds_root": "/workspace/SawitMVC-YOLO",
+  "split": "test",
+  "imgsz": 1280,
+  "evaluator": "pycocotools",
+  "n_citra": 588,
+  "n_kotak_gt": 2612,
+  "mAP50": 0.5436,
+  "mAP50_95": 0.2565,
+  "per_kelas_AP50": {
+    "B1": 0.7708,
+    "B2": 0.4479,
+    "B3": 0.6051,
+    "B4": 0.3506
+  },
+  "per_kelas_AP50_95": {
+    "B1": 0.4021,
+    "B2": 0.2113,
+    "B3": 0.2748,
+    "B4": 0.1376
+  },
+  "dump_prediksi": "results/pred_sel5_953_rgb_test.npz"
+}

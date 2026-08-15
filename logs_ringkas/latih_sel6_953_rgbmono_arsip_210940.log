@@ -1,0 +1,773 @@
+New https://pypi.org/project/ultralytics/8.4.120 available 😃 Update with 'pip install -U ultralytics'
+Ultralytics 8.4.103 🚀 Python-3.12.3 torch-2.8.0+cu128 CUDA:0 (NVIDIA RTX 2000 Ada Generation, 15947MiB)
+engine/trainer: agnostic_nms=False, amp=True, angle=1.0, augment=False, auto_augment=randaugment, batch=4, bgr=0.0, box=7.5, cache=False, cfg=None, classes=None, close_mosaic=10, cls=0.5, cls_pw=0.0, cls_remap=True, compile=False, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=True, cutmix=0.0, data=/workspace/d953_rgbmono/data.yaml, degrees=0.0, deterministic=True, device=, dfl=1.5, dis=6.0, distill_model=None, dnn=False, dropout=0.0, dynamic=False, embed=None, end2end=None, epochs=60, erasing=0.4, exist_ok=False, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=None, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=1280, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.01, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolo26l.pt, momentum=0.937, mosaic=1.0, multi_scale=0.0, name=sel6_953_rgbmono, nbs=64, nms=False, opset=None, optimize=False, optimizer=auto, overlap_mask=True, patience=60, perspective=0.0, plots=True, pose=12.0, pretrained=True, profile=False, project=/workspace/project-expertise/runs, quantize=None, rect=False, resume=False, retina_masks=False, rle=1.0, save=True, save_conf=False, save_crop=False, save_dir=/workspace/project-expertise/runs/sel6_953_rgbmono, save_frames=False, save_json=False, save_period=-1, save_txt=False, scale=0.5, seed=42, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=tracktrack.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3.0, warmup_momentum=0.8, weight_decay=0.0005, workers=8, workspace=None
+Overriding model.yaml nc=80 with nc=4
+                   from  n    params  module                                       arguments                     
+  0                  -1  1      2432  ultralytics.nn.modules.conv.Conv             [4, 64, 3, 2]                 
+  1                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  2                  -1  2    173824  ultralytics.nn.modules.block.C3k2            [128, 256, 2, True, 0.25]     
+  3                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+  4                  -1  2    691712  ultralytics.nn.modules.block.C3k2            [256, 512, 2, True, 0.25]     
+  5                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  6                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  7                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  8                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  9                  -1  1    656896  ultralytics.nn.modules.block.SPPF            [512, 512, 5, 3, True]        
+ 10                  -1  2   1455616  ultralytics.nn.modules.block.C2PSA           [512, 512, 2]                 
+ 11                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 12             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 13                  -1  2   2496512  ultralytics.nn.modules.block.C3k2            [1024, 512, 2, True]          
+ 14                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 15             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 16                  -1  2    756736  ultralytics.nn.modules.block.C3k2            [1024, 256, 2, True]          
+ 17                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+ 18            [-1, 13]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 19                  -1  2   2365440  ultralytics.nn.modules.block.C3k2            [768, 512, 2, True]           
+ 20                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+ 21            [-1, 10]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 22                  -1  1   1974784  ultralytics.nn.modules.block.C3k2            [1024, 512, 1, True, 0.5, True]
+ 23        [16, 19, 22]  1   2804784  ultralytics.nn.modules.head.Detect           [4, 1, True, [256, 512, 512]] 
+YOLO26l summary: 392 layers, 26,183,088 parameters, 26,183,088 gradients, 93.3 GFLOPs
+Transferred 1080/1092 items from pretrained weights
+AMP: running Automatic Mixed Precision (AMP) checks...
+AMP: checks passed ✅
+train: Fast image access ✅ (ping: 3.3±2.2 ms, read: 139.5±39.0 MB/s, size: 4170.7 KB)
+train: Scanning /workspace/d953_rgbmono/labels/train... 9 images, 0 backgrounds, 0 corrupt: 0% ──────────── 9/3000 19.6it/s 0.1s<2:33
+train: Scanning /workspace/d953_rgbmono/labels/train... 38 images, 0 backgrounds, 0 corrupt: 1% ──────────── 38/3000 97.9it/s 0.2s<30.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 56 images, 0 backgrounds, 0 corrupt: 1% ──────────── 56/3000 121.1it/s 0.3s<24.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 80 images, 0 backgrounds, 0 corrupt: 2% ──────────── 80/3000 149.4it/s 0.5s<19.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 104 images, 0 backgrounds, 0 corrupt: 3% ──────────── 104/3000 171.7it/s 0.6s<16.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 117 images, 0 backgrounds, 0 corrupt: 3% ──────────── 117/3000 158.7it/s 0.7s<18.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 139 images, 0 backgrounds, 0 corrupt: 4% ╸─────────── 139/3000 175.2it/s 0.8s<16.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 139 images, 0 backgrounds, 1 corrupt: 4% ╸─────────── 140/3000 122.8it/s 4.0s<23.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 687 images, 2 backgrounds, 1 corrupt: 22% ━━╸───────── 688/3000 1.7Kit/s 4.1s<1.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 710 images, 2 backgrounds, 1 corrupt: 23% ━━╸───────── 711/3000 1.3Kit/s 4.2s<1.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 729 images, 2 backgrounds, 1 corrupt: 24% ━━╸───────── 730/3000 933.9it/s 4.3s<2.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 753 images, 3 backgrounds, 1 corrupt: 25% ━━━───────── 754/3000 723.5it/s 4.4s<3.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 775 images, 3 backgrounds, 1 corrupt: 25% ━━━───────── 776/3000 565.2it/s 4.5s<3.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 795 images, 3 backgrounds, 1 corrupt: 26% ━━━───────── 796/3000 455.6it/s 4.6s<4.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 815 images, 3 backgrounds, 1 corrupt: 27% ━━━───────── 816/3000 375.5it/s 4.7s<5.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 839 images, 3 backgrounds, 1 corrupt: 28% ━━━───────── 840/3000 329.9it/s 4.8s<6.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 863 images, 4 backgrounds, 1 corrupt: 28% ━━━───────── 864/3000 300.1it/s 4.9s<7.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 883 images, 4 backgrounds, 1 corrupt: 29% ━━━╸──────── 884/3000 268.3it/s 5.0s<7.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 905 images, 4 backgrounds, 1 corrupt: 30% ━━━╸──────── 906/3000 248.7it/s 5.2s<8.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 927 images, 4 backgrounds, 1 corrupt: 30% ━━━╸──────── 928/3000 237.5it/s 5.3s<8.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 949 images, 8 backgrounds, 1 corrupt: 31% ━━━╸──────── 950/3000 228.0it/s 5.4s<9.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 968 images, 8 backgrounds, 1 corrupt: 32% ━━━╸──────── 969/3000 206.5it/s 5.5s<9.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 992 images, 8 backgrounds, 1 corrupt: 33% ━━━╸──────── 993/3000 205.2it/s 5.6s<9.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1016 images, 8 backgrounds, 1 corrupt: 33% ━━━━──────── 1017/3000 210.0it/s 5.7s<9.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1040 images, 9 backgrounds, 1 corrupt: 34% ━━━━──────── 1041/3000 216.0it/s 5.8s<9.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1059 images, 9 backgrounds, 1 corrupt: 35% ━━━━──────── 1060/3000 208.1it/s 5.9s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1078 images, 9 backgrounds, 1 corrupt: 35% ━━━━──────── 1079/3000 198.9it/s 6.0s<9.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1100 images, 9 backgrounds, 1 corrupt: 36% ━━━━──────── 1101/3000 201.4it/s 6.1s<9.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1120 images, 9 backgrounds, 1 corrupt: 37% ━━━━──────── 1121/3000 200.3it/s 6.2s<9.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1141 images, 10 backgrounds, 1 corrupt: 38% ━━━━╸─────── 1142/3000 202.0it/s 6.3s<9.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1161 images, 10 backgrounds, 1 corrupt: 38% ━━━━╸─────── 1162/3000 200.9it/s 6.4s<9.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1181 images, 10 backgrounds, 1 corrupt: 39% ━━━━╸─────── 1182/3000 200.6it/s 6.5s<9.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1203 images, 10 backgrounds, 1 corrupt: 40% ━━━━╸─────── 1204/3000 203.2it/s 6.6s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1223 images, 10 backgrounds, 1 corrupt: 40% ━━━━╸─────── 1224/3000 201.5it/s 6.7s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1239 images, 10 backgrounds, 1 corrupt: 41% ━━━━╸─────── 1240/3000 187.5it/s 6.8s<9.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1255 images, 10 backgrounds, 1 corrupt: 41% ━━━━━─────── 1256/3000 177.8it/s 6.9s<9.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1277 images, 10 backgrounds, 1 corrupt: 42% ━━━━━─────── 1278/3000 186.0it/s 7.1s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1299 images, 10 backgrounds, 1 corrupt: 43% ━━━━━─────── 1300/3000 192.7it/s 7.2s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1317 images, 10 backgrounds, 1 corrupt: 43% ━━━━━─────── 1318/3000 187.4it/s 7.3s<9.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1337 images, 10 backgrounds, 1 corrupt: 44% ━━━━━─────── 1338/3000 191.1it/s 7.4s<8.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1356 images, 10 backgrounds, 1 corrupt: 45% ━━━━━─────── 1357/3000 187.5it/s 7.5s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1379 images, 10 backgrounds, 1 corrupt: 46% ━━━━━╸────── 1380/3000 190.8it/s 7.6s<8.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1402 images, 10 backgrounds, 1 corrupt: 46% ━━━━━╸────── 1403/3000 199.1it/s 7.7s<8.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1419 images, 10 backgrounds, 1 corrupt: 47% ━━━━━╸────── 1420/3000 186.9it/s 7.8s<8.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1442 images, 10 backgrounds, 1 corrupt: 48% ━━━━━╸────── 1443/3000 196.9it/s 7.9s<7.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1463 images, 10 backgrounds, 1 corrupt: 48% ━━━━━╸────── 1464/3000 200.7it/s 8.0s<7.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1481 images, 10 backgrounds, 1 corrupt: 49% ━━━━━╸────── 1482/3000 188.8it/s 8.1s<8.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1503 images, 10 backgrounds, 1 corrupt: 50% ━━━━━━────── 1504/3000 193.4it/s 8.2s<7.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1521 images, 10 backgrounds, 1 corrupt: 50% ━━━━━━────── 1522/3000 185.0it/s 8.3s<8.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1545 images, 10 backgrounds, 1 corrupt: 51% ━━━━━━────── 1546/3000 197.6it/s 8.4s<7.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1569 images, 14 backgrounds, 1 corrupt: 52% ━━━━━━────── 1570/3000 205.9it/s 8.5s<6.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1592 images, 14 backgrounds, 1 corrupt: 53% ━━━━━━────── 1593/3000 211.8it/s 8.6s<6.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1616 images, 14 backgrounds, 1 corrupt: 53% ━━━━━━────── 1617/3000 219.0it/s 8.7s<6.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1639 images, 14 backgrounds, 1 corrupt: 54% ━━━━━━╸───── 1640/3000 221.8it/s 8.8s<6.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1646 images, 14 backgrounds, 1 corrupt: 54% ━━━━━━╸───── 1647/3000 172.2it/s 9.0s<7.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1664 images, 14 backgrounds, 1 corrupt: 55% ━━━━━━╸───── 1665/3000 164.7it/s 9.1s<8.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1687 images, 14 backgrounds, 1 corrupt: 56% ━━━━━━╸───── 1688/3000 182.8it/s 9.2s<7.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1707 images, 14 backgrounds, 1 corrupt: 56% ━━━━━━╸───── 1708/3000 181.2it/s 9.3s<7.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1731 images, 14 backgrounds, 1 corrupt: 57% ━━━━━━╸───── 1732/3000 194.6it/s 9.4s<6.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1753 images, 14 backgrounds, 1 corrupt: 58% ━━━━━━━───── 1754/3000 200.9it/s 9.5s<6.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1772 images, 14 backgrounds, 1 corrupt: 59% ━━━━━━━───── 1773/3000 196.0it/s 9.6s<6.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1791 images, 14 backgrounds, 1 corrupt: 59% ━━━━━━━───── 1792/3000 190.4it/s 9.7s<6.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1811 images, 14 backgrounds, 1 corrupt: 60% ━━━━━━━───── 1812/3000 193.0it/s 9.8s<6.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1827 images, 14 backgrounds, 1 corrupt: 60% ━━━━━━━───── 1828/3000 178.5it/s 9.9s<6.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1840 images, 14 backgrounds, 1 corrupt: 61% ━━━━━━━───── 1841/3000 162.7it/s 10.0s<7.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1851 images, 14 backgrounds, 1 corrupt: 61% ━━━━━━━───── 1852/3000 146.4it/s 10.1s<7.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1867 images, 14 backgrounds, 1 corrupt: 62% ━━━━━━━───── 1868/3000 150.2it/s 10.2s<7.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1891 images, 14 backgrounds, 1 corrupt: 63% ━━━━━━━╸──── 1892/3000 163.9it/s 10.4s<6.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1915 images, 14 backgrounds, 1 corrupt: 63% ━━━━━━━╸──── 1916/3000 170.6it/s 10.5s<6.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1939 images, 14 backgrounds, 1 corrupt: 64% ━━━━━━━╸──── 1940/3000 185.4it/s 10.6s<5.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1962 images, 18 backgrounds, 1 corrupt: 65% ━━━━━━━╸──── 1963/3000 196.6it/s 10.7s<5.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1986 images, 18 backgrounds, 1 corrupt: 66% ━━━━━━━╸──── 1987/3000 205.0it/s 10.8s<4.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2009 images, 18 backgrounds, 1 corrupt: 67% ━━━━━━━━──── 2010/3000 210.4it/s 10.9s<4.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2034 images, 18 backgrounds, 1 corrupt: 67% ━━━━━━━━──── 2035/3000 221.4it/s 11.0s<4.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2056 images, 18 backgrounds, 1 corrupt: 68% ━━━━━━━━──── 2057/3000 215.8it/s 11.1s<4.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2080 images, 18 backgrounds, 1 corrupt: 69% ━━━━━━━━──── 2081/3000 222.3it/s 11.2s<4.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2104 images, 18 backgrounds, 1 corrupt: 70% ━━━━━━━━──── 2105/3000 225.5it/s 11.3s<4.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2128 images, 18 backgrounds, 1 corrupt: 70% ━━━━━━━━╸─── 2129/3000 229.4it/s 11.4s<3.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2153 images, 18 backgrounds, 1 corrupt: 71% ━━━━━━━━╸─── 2154/3000 230.5it/s 11.5s<3.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2177 images, 18 backgrounds, 1 corrupt: 72% ━━━━━━━━╸─── 2178/3000 228.0it/s 11.6s<3.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2182 images, 18 backgrounds, 1 corrupt: 72% ━━━━━━━━╸─── 2183/3000 165.7it/s 11.9s<4.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2240 images, 18 backgrounds, 1 corrupt: 74% ━━━━━━━━╸─── 2241/3000 280.4it/s 12.0s<2.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2262 images, 20 backgrounds, 1 corrupt: 75% ━━━━━━━━━─── 2263/3000 262.1it/s 12.1s<2.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2286 images, 20 backgrounds, 1 corrupt: 76% ━━━━━━━━━─── 2287/3000 255.3it/s 12.2s<2.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2307 images, 20 backgrounds, 1 corrupt: 76% ━━━━━━━━━─── 2308/3000 240.5it/s 12.3s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2331 images, 20 backgrounds, 1 corrupt: 77% ━━━━━━━━━─── 2332/3000 237.1it/s 12.4s<2.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2351 images, 20 backgrounds, 1 corrupt: 78% ━━━━━━━━━─── 2352/3000 224.0it/s 12.5s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2374 images, 20 backgrounds, 1 corrupt: 79% ━━━━━━━━━─── 2375/3000 225.8it/s 12.6s<2.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2394 images, 20 backgrounds, 1 corrupt: 79% ━━━━━━━━━╸── 2395/3000 211.8it/s 12.7s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2420 images, 20 backgrounds, 1 corrupt: 80% ━━━━━━━━━╸── 2421/3000 219.6it/s 12.8s<2.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2439 images, 20 backgrounds, 1 corrupt: 81% ━━━━━━━━━╸── 2440/3000 208.5it/s 12.9s<2.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2462 images, 20 backgrounds, 1 corrupt: 82% ━━━━━━━━━╸── 2463/3000 212.3it/s 13.0s<2.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2484 images, 20 backgrounds, 1 corrupt: 82% ━━━━━━━━━╸── 2485/3000 214.3it/s 13.1s<2.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2507 images, 20 backgrounds, 1 corrupt: 83% ━━━━━━━━━━── 2508/3000 206.7it/s 13.3s<2.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2531 images, 20 backgrounds, 1 corrupt: 84% ━━━━━━━━━━── 2532/3000 215.8it/s 13.4s<2.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2552 images, 20 backgrounds, 1 corrupt: 85% ━━━━━━━━━━── 2553/3000 212.9it/s 13.5s<2.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2572 images, 20 backgrounds, 1 corrupt: 85% ━━━━━━━━━━── 2573/3000 208.3it/s 13.6s<2.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2594 images, 20 backgrounds, 1 corrupt: 86% ━━━━━━━━━━── 2595/3000 211.0it/s 13.7s<1.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2616 images, 20 backgrounds, 1 corrupt: 87% ━━━━━━━━━━── 2617/3000 213.0it/s 13.8s<1.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2637 images, 20 backgrounds, 1 corrupt: 87% ━━━━━━━━━━╸─ 2638/3000 210.8it/s 13.9s<1.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2661 images, 20 backgrounds, 1 corrupt: 88% ━━━━━━━━━━╸─ 2662/3000 209.0it/s 14.0s<1.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2680 images, 20 backgrounds, 1 corrupt: 89% ━━━━━━━━━━╸─ 2681/3000 200.0it/s 14.1s<1.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2704 images, 20 backgrounds, 1 corrupt: 90% ━━━━━━━━━━╸─ 2705/3000 207.9it/s 14.2s<1.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2728 images, 21 backgrounds, 1 corrupt: 90% ━━━━━━━━━━╸─ 2729/3000 214.0it/s 14.3s<1.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2752 images, 22 backgrounds, 1 corrupt: 91% ━━━━━━━━━━━─ 2753/3000 218.9it/s 14.4s<1.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2776 images, 23 backgrounds, 1 corrupt: 92% ━━━━━━━━━━━─ 2777/3000 218.4it/s 14.5s<1.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2799 images, 24 backgrounds, 1 corrupt: 93% ━━━━━━━━━━━─ 2800/3000 219.7it/s 14.6s<0.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2823 images, 24 backgrounds, 1 corrupt: 94% ━━━━━━━━━━━─ 2824/3000 219.9it/s 14.7s<0.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2847 images, 25 backgrounds, 1 corrupt: 94% ━━━━━━━━━━━─ 2848/3000 225.7it/s 14.8s<0.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2872 images, 27 backgrounds, 1 corrupt: 95% ━━━━━━━━━━━─ 2873/3000 231.6it/s 14.9s<0.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2895 images, 27 backgrounds, 1 corrupt: 96% ━━━━━━━━━━━╸ 2896/3000 228.5it/s 15.0s<0.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2919 images, 27 backgrounds, 1 corrupt: 97% ━━━━━━━━━━━╸ 2920/3000 230.3it/s 15.1s<0.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2937 images, 33 backgrounds, 1 corrupt: 97% ━━━━━━━━━━━╸ 2938/3000 214.4it/s 15.2s<0.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2954 images, 33 backgrounds, 1 corrupt: 98% ━━━━━━━━━━━╸ 2955/3000 199.6it/s 15.3s<0.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2973 images, 36 backgrounds, 1 corrupt: 99% ━━━━━━━━━━━╸ 2974/3000 194.4it/s 15.4s<0.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2993 images, 40 backgrounds, 1 corrupt: 99% ━━━━━━━━━━━╸ 2994/3000 195.7it/s 15.5s<0.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 192.4it/s 15.6s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+train: New cache created: /workspace/d953_rgbmono/labels/train.cache
+val: Fast image access ✅ (ping: 2.6±1.4 ms, read: 171.5±47.2 MB/s, size: 6726.9 KB)
+val: Scanning /workspace/d953_rgbmono/labels/val... 17 images, 0 backgrounds, 0 corrupt: 4% ╸─────────── 17/404 47.4it/s 0.1s<8.2s
+val: Scanning /workspace/d953_rgbmono/labels/val... 41 images, 0 backgrounds, 0 corrupt: 10% ━─────────── 41/404 75.2it/s 0.3s<4.8s
+val: Scanning /workspace/d953_rgbmono/labels/val... 65 images, 0 backgrounds, 0 corrupt: 16% ━╸────────── 65/404 119.8it/s 0.4s<2.8s/workspace/project-expertise/.venv/lib/python3.12/site-packages/PIL/TiffImagePlugin.py:950: UserWarning: Corrupt EXIF data.  Expecting to read 12 bytes but only got 4. 
+  warnings.warn(str(msg))
+val: Scanning /workspace/d953_rgbmono/labels/val... 87 images, 0 backgrounds, 2 corrupt: 22% ━━╸───────── 89/404 149.4it/s 0.5s<2.1s
+val: Scanning /workspace/d953_rgbmono/labels/val... 110 images, 0 backgrounds, 2 corrupt: 27% ━━━───────── 112/404 173.1it/s 0.6s<1.7s
+val: Scanning /workspace/d953_rgbmono/labels/val... 127 images, 0 backgrounds, 2 corrupt: 31% ━━━╸──────── 129/404 171.6it/s 0.7s<1.6s
+val: Scanning /workspace/d953_rgbmono/labels/val... 150 images, 0 backgrounds, 2 corrupt: 37% ━━━━╸─────── 152/404 187.9it/s 0.8s<1.3s
+val: Scanning /workspace/d953_rgbmono/labels/val... 167 images, 0 backgrounds, 2 corrupt: 41% ━━━━━─────── 169/404 182.2it/s 0.9s<1.3s
+val: Scanning /workspace/d953_rgbmono/labels/val... 188 images, 0 backgrounds, 5 corrupt: 47% ━━━━━╸────── 193/404 197.1it/s 1.0s<1.1s
+val: Scanning /workspace/d953_rgbmono/labels/val... 210 images, 2 backgrounds, 5 corrupt: 53% ━━━━━━────── 215/404 203.1it/s 1.1s<0.9s
+val: Scanning /workspace/d953_rgbmono/labels/val... 230 images, 2 backgrounds, 5 corrupt: 58% ━━━━━━╸───── 235/404 201.0it/s 1.2s<0.8s
+val: Scanning /workspace/d953_rgbmono/labels/val... 248 images, 2 backgrounds, 6 corrupt: 62% ━━━━━━━╸──── 254/404 193.2it/s 1.3s<0.8s
+val: Scanning /workspace/d953_rgbmono/labels/val... 268 images, 2 backgrounds, 6 corrupt: 67% ━━━━━━━━──── 274/404 195.1it/s 1.4s<0.7s
+val: Scanning /workspace/d953_rgbmono/labels/val... 291 images, 2 backgrounds, 6 corrupt: 73% ━━━━━━━━╸─── 297/404 186.8it/s 1.6s<0.6s
+val: Scanning /workspace/d953_rgbmono/labels/val... 310 images, 2 backgrounds, 7 corrupt: 78% ━━━━━━━━━─── 317/404 189.1it/s 1.7s<0.5s
+val: Scanning /workspace/d953_rgbmono/labels/val... 327 images, 2 backgrounds, 8 corrupt: 82% ━━━━━━━━━╸── 335/404 185.1it/s 1.8s<0.4s
+val: Scanning /workspace/d953_rgbmono/labels/val... 350 images, 2 backgrounds, 8 corrupt: 88% ━━━━━━━━━━╸─ 358/404 187.0it/s 1.9s<0.2s
+val: Scanning /workspace/d953_rgbmono/labels/val... 376 images, 2 backgrounds, 9 corrupt: 95% ━━━━━━━━━━━─ 385/404 207.4it/s 2.0s<0.1s
+val: Scanning /workspace/d953_rgbmono/labels/val... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 195.2it/s 2.1s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+val: New cache created: /workspace/d953_rgbmono/labels/val.cache
+optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... 
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+Plotting labels to /workspace/project-expertise/runs/sel6_953_rgbmono/labels.jpg... 
+Image sizes 1280 train, 1280 val
+Using 8 dataloader workers
+Logging results to /workspace/project-expertise/runs/sel6_953_rgbmono
+Starting training for 60 epochs...
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Ultralytics 8.4.103 🚀 Python-3.12.3 torch-2.8.0+cu128 CUDA:0 (NVIDIA RTX 2000 Ada Generation, 15947MiB)
+                   from  n    params  module                                       arguments                     
+  0                  -1  1      2432  ultralytics.nn.modules.conv.Conv             [4, 64, 3, 2]                 
+  1                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  2                  -1  2    173824  ultralytics.nn.modules.block.C3k2            [128, 256, 2, True, 0.25]     
+  3                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+  4                  -1  2    691712  ultralytics.nn.modules.block.C3k2            [256, 512, 2, True, 0.25]     
+  5                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  6                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  8                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  9                  -1  1    656896  ultralytics.nn.modules.block.SPPF            [512, 512, 5, 3, True]        
+ 10                  -1  2   1455616  ultralytics.nn.modules.block.C2PSA           [512, 512, 2]                 
+ 11                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 12             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 13                  -1  2   2496512  ultralytics.nn.modules.block.C3k2            [1024, 512, 2, True]          
+ 14                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 15             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 16                  -1  2    756736  ultralytics.nn.modules.block.C3k2            [1024, 256, 2, True]          
+ 17                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+ 18            [-1, 13]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 19                  -1  2   2365440  ultralytics.nn.modules.block.C3k2            [768, 512, 2, True]           
+ 20                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+ 21            [-1, 10]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 22                  -1  1   1974784  ultralytics.nn.modules.block.C3k2            [1024, 512, 1, True, 0.5, True]
+ 23        [16, 19, 22]  1   2804784  ultralytics.nn.modules.head.Detect           [4, 1, True, [256, 512, 512]] 
+train: Fast image access ✅ (ping: 2.1±0.7 ms, read: 213.9±105.0 MB/s, size: 4170.7 KB)
+train: Scanning /workspace/d953_rgbmono/labels/train... 9 images, 0 backgrounds, 0 corrupt: 0% ──────────── 9/3000 23.5it/s 0.1s<2:07
+train: Scanning /workspace/d953_rgbmono/labels/train... 33 images, 0 backgrounds, 0 corrupt: 1% ──────────── 33/3000 79.0it/s 0.2s<37.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 57 images, 0 backgrounds, 0 corrupt: 1% ──────────── 57/3000 125.6it/s 0.3s<23.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 82 images, 0 backgrounds, 0 corrupt: 2% ──────────── 82/3000 155.8it/s 0.4s<18.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 106 images, 0 backgrounds, 0 corrupt: 3% ──────────── 106/3000 180.0it/s 0.5s<16.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 128 images, 0 backgrounds, 0 corrupt: 4% ╸─────────── 128/3000 191.6it/s 0.6s<15.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 139 images, 0 backgrounds, 1 corrupt: 4% ╸─────────── 140/3000 136.8it/s 2.0s<20.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 379 images, 1 backgrounds, 1 corrupt: 12% ━╸────────── 380/3000 781.1it/s 2.1s<3.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 402 images, 1 backgrounds, 1 corrupt: 13% ━╸────────── 403/3000 615.3it/s 2.2s<4.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 427 images, 1 backgrounds, 1 corrupt: 14% ━╸────────── 428/3000 504.8it/s 2.3s<5.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 449 images, 1 backgrounds, 1 corrupt: 15% ━╸────────── 450/3000 419.1it/s 2.4s<6.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 470 images, 1 backgrounds, 1 corrupt: 15% ━╸────────── 471/3000 356.1it/s 2.5s<7.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 494 images, 1 backgrounds, 1 corrupt: 16% ━╸────────── 495/3000 317.9it/s 2.6s<7.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 517 images, 1 backgrounds, 1 corrupt: 17% ━━────────── 518/3000 288.9it/s 2.7s<8.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 542 images, 1 backgrounds, 1 corrupt: 18% ━━────────── 543/3000 271.9it/s 2.8s<9.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 567 images, 1 backgrounds, 1 corrupt: 18% ━━────────── 568/3000 262.6it/s 2.9s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 587 images, 1 backgrounds, 1 corrupt: 19% ━━────────── 588/3000 243.3it/s 3.0s<9.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 607 images, 1 backgrounds, 1 corrupt: 20% ━━────────── 608/3000 229.9it/s 3.1s<10.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 631 images, 1 backgrounds, 1 corrupt: 21% ━━╸───────── 632/3000 232.6it/s 3.2s<10.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 654 images, 1 backgrounds, 1 corrupt: 21% ━━╸───────── 655/3000 229.1it/s 3.3s<10.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 677 images, 2 backgrounds, 1 corrupt: 22% ━━╸───────── 678/3000 229.1it/s 3.4s<10.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 699 images, 2 backgrounds, 1 corrupt: 23% ━━╸───────── 700/3000 213.4it/s 3.5s<10.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 727 images, 2 backgrounds, 1 corrupt: 24% ━━╸───────── 728/3000 229.9it/s 3.6s<9.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 751 images, 3 backgrounds, 1 corrupt: 25% ━━━───────── 752/3000 232.6it/s 3.7s<9.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 775 images, 3 backgrounds, 1 corrupt: 25% ━━━───────── 776/3000 228.0it/s 3.8s<9.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 799 images, 3 backgrounds, 1 corrupt: 26% ━━━───────── 800/3000 228.4it/s 4.0s<9.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 824 images, 3 backgrounds, 1 corrupt: 27% ━━━───────── 825/3000 234.3it/s 4.1s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 846 images, 4 backgrounds, 1 corrupt: 28% ━━━───────── 847/3000 229.8it/s 4.2s<9.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 866 images, 4 backgrounds, 1 corrupt: 28% ━━━───────── 867/3000 220.1it/s 4.3s<9.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 891 images, 4 backgrounds, 1 corrupt: 29% ━━━╸──────── 892/3000 228.9it/s 4.4s<9.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 915 images, 4 backgrounds, 1 corrupt: 30% ━━━╸──────── 916/3000 230.2it/s 4.5s<9.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 943 images, 8 backgrounds, 1 corrupt: 31% ━━━╸──────── 944/3000 231.1it/s 4.6s<8.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 967 images, 8 backgrounds, 1 corrupt: 32% ━━━╸──────── 968/3000 231.6it/s 4.7s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 991 images, 8 backgrounds, 1 corrupt: 33% ━━━╸──────── 992/3000 232.6it/s 4.8s<8.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1016 images, 8 backgrounds, 1 corrupt: 33% ━━━━──────── 1017/3000 225.4it/s 4.9s<8.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1038 images, 9 backgrounds, 1 corrupt: 34% ━━━━──────── 1039/3000 221.0it/s 5.0s<8.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1057 images, 9 backgrounds, 1 corrupt: 35% ━━━━──────── 1058/3000 211.3it/s 5.1s<9.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1067 images, 9 backgrounds, 1 corrupt: 35% ━━━━──────── 1068/3000 174.5it/s 5.2s<11.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1081 images, 9 backgrounds, 1 corrupt: 36% ━━━━──────── 1082/3000 160.0it/s 5.3s<12.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1095 images, 9 backgrounds, 1 corrupt: 36% ━━━━──────── 1096/3000 148.1it/s 5.4s<12.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1110 images, 9 backgrounds, 1 corrupt: 37% ━━━━──────── 1111/3000 147.2it/s 5.5s<12.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1127 images, 9 backgrounds, 1 corrupt: 37% ━━━━╸─────── 1128/3000 153.6it/s 5.7s<12.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1147 images, 10 backgrounds, 1 corrupt: 38% ━━━━╸─────── 1148/3000 163.1it/s 5.8s<11.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1165 images, 10 backgrounds, 1 corrupt: 38% ━━━━╸─────── 1166/3000 167.4it/s 5.9s<11.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1191 images, 10 backgrounds, 1 corrupt: 39% ━━━━╸─────── 1192/3000 194.4it/s 6.0s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1214 images, 10 backgrounds, 1 corrupt: 40% ━━━━╸─────── 1215/3000 204.4it/s 6.1s<8.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1237 images, 10 backgrounds, 1 corrupt: 41% ━━━━╸─────── 1238/3000 210.6it/s 6.2s<8.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1252 images, 10 backgrounds, 1 corrupt: 41% ━━━━━─────── 1253/3000 189.7it/s 6.3s<9.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1269 images, 10 backgrounds, 1 corrupt: 42% ━━━━━─────── 1270/3000 182.6it/s 6.4s<9.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1286 images, 10 backgrounds, 1 corrupt: 42% ━━━━━─────── 1287/3000 177.6it/s 6.5s<9.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1308 images, 10 backgrounds, 1 corrupt: 43% ━━━━━─────── 1309/3000 181.1it/s 6.6s<9.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1335 images, 10 backgrounds, 1 corrupt: 44% ━━━━━─────── 1336/3000 199.6it/s 6.7s<8.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1359 images, 10 backgrounds, 1 corrupt: 45% ━━━━━─────── 1360/3000 207.8it/s 6.8s<7.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1383 images, 10 backgrounds, 1 corrupt: 46% ━━━━━╸────── 1384/3000 214.5it/s 6.9s<7.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1395 images, 10 backgrounds, 1 corrupt: 46% ━━━━━╸────── 1396/3000 179.6it/s 7.0s<8.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1419 images, 10 backgrounds, 1 corrupt: 47% ━━━━━╸────── 1420/3000 189.8it/s 7.1s<8.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1442 images, 10 backgrounds, 1 corrupt: 48% ━━━━━╸────── 1443/3000 201.2it/s 7.2s<7.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1458 images, 10 backgrounds, 1 corrupt: 48% ━━━━━╸────── 1459/3000 187.5it/s 7.4s<8.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1483 images, 10 backgrounds, 1 corrupt: 49% ━━━━━╸────── 1484/3000 205.8it/s 7.5s<7.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1507 images, 10 backgrounds, 1 corrupt: 50% ━━━━━━────── 1508/3000 211.7it/s 7.6s<7.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1532 images, 10 backgrounds, 1 corrupt: 51% ━━━━━━────── 1533/3000 216.7it/s 7.7s<6.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1556 images, 14 backgrounds, 1 corrupt: 51% ━━━━━━────── 1557/3000 219.0it/s 7.8s<6.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1579 images, 14 backgrounds, 1 corrupt: 52% ━━━━━━────── 1580/3000 219.1it/s 7.9s<6.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1603 images, 14 backgrounds, 1 corrupt: 53% ━━━━━━────── 1604/3000 223.2it/s 8.0s<6.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1624 images, 14 backgrounds, 1 corrupt: 54% ━━━━━━────── 1625/3000 218.6it/s 8.1s<6.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1646 images, 14 backgrounds, 1 corrupt: 54% ━━━━━━╸───── 1647/3000 218.6it/s 8.2s<6.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1671 images, 14 backgrounds, 1 corrupt: 55% ━━━━━━╸───── 1672/3000 224.2it/s 8.3s<5.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1696 images, 14 backgrounds, 1 corrupt: 56% ━━━━━━╸───── 1697/3000 231.6it/s 8.4s<5.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1717 images, 14 backgrounds, 1 corrupt: 57% ━━━━━━╸───── 1718/3000 225.0it/s 8.5s<5.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1736 images, 14 backgrounds, 1 corrupt: 57% ━━━━━━╸───── 1737/3000 214.4it/s 8.6s<5.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1760 images, 14 backgrounds, 1 corrupt: 58% ━━━━━━━───── 1761/3000 220.7it/s 8.7s<5.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1784 images, 14 backgrounds, 1 corrupt: 59% ━━━━━━━───── 1785/3000 225.4it/s 8.8s<5.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1808 images, 14 backgrounds, 1 corrupt: 60% ━━━━━━━───── 1809/3000 225.1it/s 8.9s<5.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1829 images, 14 backgrounds, 1 corrupt: 61% ━━━━━━━───── 1830/3000 218.4it/s 9.0s<5.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1851 images, 14 backgrounds, 1 corrupt: 61% ━━━━━━━───── 1852/3000 217.5it/s 9.1s<5.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1874 images, 14 backgrounds, 1 corrupt: 62% ━━━━━━━───── 1875/3000 220.4it/s 9.2s<5.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1896 images, 14 backgrounds, 1 corrupt: 63% ━━━━━━━╸──── 1897/3000 207.6it/s 9.3s<5.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1920 images, 14 backgrounds, 1 corrupt: 64% ━━━━━━━╸──── 1921/3000 211.5it/s 9.4s<5.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1947 images, 18 backgrounds, 1 corrupt: 64% ━━━━━━━╸──── 1948/3000 222.2it/s 9.5s<4.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1971 images, 18 backgrounds, 1 corrupt: 65% ━━━━━━━╸──── 1972/3000 227.1it/s 9.7s<4.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 1994 images, 18 backgrounds, 1 corrupt: 66% ━━━━━━━╸──── 1995/3000 227.3it/s 9.8s<4.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2016 images, 18 backgrounds, 1 corrupt: 67% ━━━━━━━━──── 2017/3000 220.8it/s 9.9s<4.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2042 images, 18 backgrounds, 1 corrupt: 68% ━━━━━━━━──── 2043/3000 229.7it/s 10.0s<4.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2066 images, 18 backgrounds, 1 corrupt: 68% ━━━━━━━━──── 2067/3000 231.3it/s 10.1s<4.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2088 images, 18 backgrounds, 1 corrupt: 69% ━━━━━━━━──── 2089/3000 224.4it/s 10.2s<4.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2111 images, 18 backgrounds, 1 corrupt: 70% ━━━━━━━━──── 2112/3000 221.1it/s 10.3s<4.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2134 images, 18 backgrounds, 1 corrupt: 71% ━━━━━━━━╸─── 2135/3000 221.8it/s 10.4s<3.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2159 images, 18 backgrounds, 1 corrupt: 72% ━━━━━━━━╸─── 2160/3000 226.7it/s 10.5s<3.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2184 images, 18 backgrounds, 1 corrupt: 72% ━━━━━━━━╸─── 2185/3000 229.7it/s 10.6s<3.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2206 images, 18 backgrounds, 1 corrupt: 73% ━━━━━━━━╸─── 2207/3000 223.5it/s 10.7s<3.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2230 images, 18 backgrounds, 1 corrupt: 74% ━━━━━━━━╸─── 2231/3000 222.9it/s 10.8s<3.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2254 images, 20 backgrounds, 1 corrupt: 75% ━━━━━━━━━─── 2255/3000 213.3it/s 10.9s<3.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2281 images, 20 backgrounds, 1 corrupt: 76% ━━━━━━━━━─── 2282/3000 224.4it/s 11.0s<3.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2306 images, 20 backgrounds, 1 corrupt: 76% ━━━━━━━━━─── 2307/3000 227.4it/s 11.1s<3.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2330 images, 20 backgrounds, 1 corrupt: 77% ━━━━━━━━━─── 2331/3000 228.3it/s 11.2s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2352 images, 20 backgrounds, 1 corrupt: 78% ━━━━━━━━━─── 2353/3000 225.2it/s 11.4s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2373 images, 20 backgrounds, 1 corrupt: 79% ━━━━━━━━━─── 2374/3000 216.0it/s 11.5s<2.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2395 images, 20 backgrounds, 1 corrupt: 79% ━━━━━━━━━╸── 2396/3000 216.5it/s 11.6s<2.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2417 images, 20 backgrounds, 1 corrupt: 80% ━━━━━━━━━╸── 2418/3000 216.6it/s 11.7s<2.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2441 images, 20 backgrounds, 1 corrupt: 81% ━━━━━━━━━╸── 2442/3000 223.5it/s 11.8s<2.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2464 images, 20 backgrounds, 1 corrupt: 82% ━━━━━━━━━╸── 2465/3000 219.8it/s 11.9s<2.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2486 images, 20 backgrounds, 1 corrupt: 82% ━━━━━━━━━╸── 2487/3000 216.9it/s 12.0s<2.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2506 images, 20 backgrounds, 1 corrupt: 83% ━━━━━━━━━━── 2507/3000 209.8it/s 12.1s<2.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2527 images, 20 backgrounds, 1 corrupt: 84% ━━━━━━━━━━── 2528/3000 207.5it/s 12.2s<2.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2550 images, 20 backgrounds, 1 corrupt: 85% ━━━━━━━━━━── 2551/3000 209.4it/s 12.3s<2.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2572 images, 20 backgrounds, 1 corrupt: 85% ━━━━━━━━━━── 2573/3000 211.8it/s 12.4s<2.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2594 images, 20 backgrounds, 1 corrupt: 86% ━━━━━━━━━━── 2595/3000 204.4it/s 12.5s<2.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2619 images, 20 backgrounds, 1 corrupt: 87% ━━━━━━━━━━── 2620/3000 214.9it/s 12.6s<1.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2640 images, 20 backgrounds, 1 corrupt: 88% ━━━━━━━━━━╸─ 2641/3000 212.6it/s 12.7s<1.7s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2663 images, 20 backgrounds, 1 corrupt: 88% ━━━━━━━━━━╸─ 2664/3000 217.0it/s 12.8s<1.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2684 images, 20 backgrounds, 1 corrupt: 89% ━━━━━━━━━━╸─ 2685/3000 214.7it/s 12.9s<1.5s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2707 images, 20 backgrounds, 1 corrupt: 90% ━━━━━━━━━━╸─ 2708/3000 207.5it/s 13.0s<1.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2732 images, 21 backgrounds, 1 corrupt: 91% ━━━━━━━━━━╸─ 2733/3000 217.9it/s 13.1s<1.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2756 images, 22 backgrounds, 1 corrupt: 91% ━━━━━━━━━━━─ 2757/3000 224.0it/s 13.2s<1.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2777 images, 23 backgrounds, 1 corrupt: 92% ━━━━━━━━━━━─ 2778/3000 215.2it/s 13.3s<1.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2799 images, 24 backgrounds, 1 corrupt: 93% ━━━━━━━━━━━─ 2800/3000 212.7it/s 13.5s<0.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2818 images, 24 backgrounds, 1 corrupt: 93% ━━━━━━━━━━━─ 2819/3000 205.0it/s 13.6s<0.9s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2840 images, 25 backgrounds, 1 corrupt: 94% ━━━━━━━━━━━─ 2841/3000 207.2it/s 13.7s<0.8s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2863 images, 25 backgrounds, 1 corrupt: 95% ━━━━━━━━━━━─ 2864/3000 212.6it/s 13.8s<0.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2883 images, 27 backgrounds, 1 corrupt: 96% ━━━━━━━━━━━╸ 2884/3000 204.0it/s 13.9s<0.6s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2907 images, 27 backgrounds, 1 corrupt: 96% ━━━━━━━━━━━╸ 2908/3000 211.1it/s 14.0s<0.4s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2932 images, 33 backgrounds, 1 corrupt: 97% ━━━━━━━━━━━╸ 2933/3000 217.7it/s 14.1s<0.3s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2949 images, 33 backgrounds, 1 corrupt: 98% ━━━━━━━━━━━╸ 2950/3000 203.3it/s 14.2s<0.2s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2975 images, 36 backgrounds, 1 corrupt: 99% ━━━━━━━━━━━╸ 2976/3000 219.3it/s 14.3s<0.1s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2993 images, 40 backgrounds, 1 corrupt: 99% ━━━━━━━━━━━╸ 2994/3000 204.5it/s 14.4s<0.0s
+train: Scanning /workspace/d953_rgbmono/labels/train... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 208.4it/s 14.4s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Scanning /workspace/d953_rgbmono/labels/val... 17 images, 0 backgrounds, 0 corrupt: 4% ╸─────────── 17/404 36.7it/s 0.1s<10.6s
+val: Scanning /workspace/d953_rgbmono/labels/val... 41 images, 0 backgrounds, 0 corrupt: 10% ━─────────── 41/404 91.4it/s 0.2s<4.0s
+val: Scanning /workspace/d953_rgbmono/labels/val... 65 images, 0 backgrounds, 0 corrupt: 16% ━╸────────── 65/404 130.2it/s 0.4s<2.6s
+val: Scanning /workspace/d953_rgbmono/labels/val... 82 images, 0 backgrounds, 0 corrupt: 20% ━━────────── 82/404 130.2it/s 0.5s<2.5s/workspace/project-expertise/.venv/lib/python3.12/site-packages/PIL/TiffImagePlugin.py:950: UserWarning: Corrupt EXIF data.  Expecting to read 12 bytes but only got 4. 
+  warnings.warn(str(msg))
+val: Scanning /workspace/d953_rgbmono/labels/val... 97 images, 0 backgrounds, 2 corrupt: 24% ━━╸───────── 99/404 127.1it/s 0.6s<2.4s
+val: Scanning /workspace/d953_rgbmono/labels/val... 117 images, 0 backgrounds, 2 corrupt: 29% ━━━╸──────── 119/404 144.1it/s 0.7s<2.0s
+val: Scanning /workspace/d953_rgbmono/labels/val... 141 images, 0 backgrounds, 2 corrupt: 35% ━━━━──────── 143/404 171.8it/s 0.8s<1.5s
+val: Scanning /workspace/d953_rgbmono/labels/val... 157 images, 0 backgrounds, 2 corrupt: 39% ━━━━╸─────── 159/404 168.1it/s 0.9s<1.5s
+val: Scanning /workspace/d953_rgbmono/labels/val... 171 images, 0 backgrounds, 2 corrupt: 42% ━━━━━─────── 173/404 158.7it/s 1.0s<1.5s
+val: Scanning /workspace/d953_rgbmono/labels/val... 188 images, 0 backgrounds, 5 corrupt: 47% ━━━━━╸────── 193/404 161.9it/s 1.2s<1.3s
+val: Scanning /workspace/d953_rgbmono/labels/val... 215 images, 2 backgrounds, 5 corrupt: 54% ━━━━━━╸───── 220/404 188.3it/s 1.3s<1.0s
+val: Scanning /workspace/d953_rgbmono/labels/val... 236 images, 2 backgrounds, 6 corrupt: 59% ━━━━━━━───── 242/404 195.1it/s 1.4s<0.8s
+val: Scanning /workspace/d953_rgbmono/labels/val... 254 images, 2 backgrounds, 6 corrupt: 64% ━━━━━━━╸──── 260/404 189.7it/s 1.5s<0.8s
+val: Scanning /workspace/d953_rgbmono/labels/val... 269 images, 2 backgrounds, 6 corrupt: 68% ━━━━━━━━──── 275/404 175.8it/s 1.6s<0.7s
+val: Scanning /workspace/d953_rgbmono/labels/val... 290 images, 2 backgrounds, 6 corrupt: 73% ━━━━━━━━╸─── 296/404 185.4it/s 1.7s<0.6s
+val: Scanning /workspace/d953_rgbmono/labels/val... 308 images, 2 backgrounds, 7 corrupt: 77% ━━━━━━━━━─── 315/404 169.8it/s 1.8s<0.5s
+val: Scanning /workspace/d953_rgbmono/labels/val... 332 images, 2 backgrounds, 8 corrupt: 84% ━━━━━━━━━━── 340/404 193.3it/s 1.9s<0.3s
+val: Scanning /workspace/d953_rgbmono/labels/val... 354 images, 2 backgrounds, 8 corrupt: 89% ━━━━━━━━━━╸─ 362/404 199.7it/s 2.0s<0.2s
+val: Scanning /workspace/d953_rgbmono/labels/val... 374 images, 2 backgrounds, 9 corrupt: 94% ━━━━━━━━━━━─ 383/404 198.9it/s 2.1s<0.1s
+val: Scanning /workspace/d953_rgbmono/labels/val... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 181.5it/s 2.2s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+Using 8 dataloader workers
+Logging results to /workspace/project-expertise/runs/sel6_953_rgbmono
+Starting training for 60 epochs...
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+WARNING ⚠️ CUDA out of memory with batch=4. Reducing to batch=2 and retrying (1/3).
+train: Scanning /workspace/d953_rgbmono/labels/train.cache... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 1.0Git/s 0.0s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Scanning /workspace/d953_rgbmono/labels/val.cache... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 23.5Mit/s 0.0s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+: 0% ──────────── 0/750  17.7s
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+train: Scanning /workspace/d953_rgbmono/labels/train.cache... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 1.1Git/s 0.0s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Scanning /workspace/d953_rgbmono/labels/val.cache... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 17.1Mit/s 0.0s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+: 0% ──────────── 0/1500  20.8s
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+train: Fast image access ✅ (ping: 2.4±0.4 ms, read: 115.9±24.9 MB/s, size: 3978.1 KB)
+train: Scanning /workspace/d953_rgbmono/labels/train.cache... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 1.0Git/s 0.0s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Scanning /workspace/d953_rgbmono/labels/val.cache... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 18.4Mit/s 0.0s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Traceback (most recent call last):
+  File "/workspace/project-expertise/scripts/train_yolo_4ch_screening.py", line 68, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/project-expertise/scripts/train_yolo_4ch_screening.py", line 39, in main
+    model.train(
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/model.py", line 816, in train
+    self.trainer.train()
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/trainer.py", line 241, in train
+    self._do_train()
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/trainer.py", line 472, in _do_train
+    loss, self.loss_items = self.model(batch)
+                            ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 153, in forward
+    return self.loss(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 413, in loss
+    preds = self.forward(batch["img"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 154, in forward
+    return self.predict(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 171, in predict
+    return self._predict_once(x, profile, visualize, embed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 193, in _predict_once
+    x = m(x)  # run
+        ^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/head.py", line 164, in forward
+    one2one = self.forward_head(x_detach, **self.one2one)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/head.py", line 154, in forward_head
+    scores = torch.cat([cls_head[i](x[i]).view(bs, self.nc, -1) for i in range(self.nl)], dim=-1)
+                        ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/conv.py", line 78, in forward
+    return self.act(self.bn(self.conv(x)))
+                    ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+           ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/functional.py", line 2817, in batch_norm
+    return torch.batch_norm(
+           ^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.00 MiB. GPU 0 has a total capacity of 15.57 GiB of which 3.12 MiB is free. Process 15405 has 12.18 GiB memory in use. Including non-PyTorch memory, this process has 3.36 GiB memory in use. Of the allocated memory 3.11 GiB is allocated by PyTorch, and 71.43 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 2% ──────────── 1/50 6.5s/it 2.0s<5:19
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 4% ──────────── 2/50 1.1s/it 2.3s<50.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 6% ╸─────────── 3/50 1.5it/s 2.7s<31.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 8% ╸─────────── 4/50 1.9it/s 3.0s<24.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 10% ━─────────── 5/50 2.1it/s 3.4s<21.0s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 12% ━─────────── 6/50 2.3it/s 3.7s<18.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 14% ━╸────────── 7/50 2.5it/s 4.1s<17.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 16% ━╸────────── 8/50 2.6it/s 4.5s<16.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 18% ━━────────── 9/50 2.6it/s 4.8s<15.9s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 20% ━━────────── 10/50 2.6it/s 5.2s<15.2s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 22% ━━╸───────── 11/50 2.7it/s 5.6s<14.5s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 24% ━━╸───────── 12/50 2.7it/s 5.9s<14.0s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 26% ━━━───────── 13/50 2.7it/s 6.3s<13.6s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 28% ━━━───────── 14/50 2.7it/s 6.6s<13.1s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 30% ━━━╸──────── 15/50 2.8it/s 7.0s<12.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 32% ━━━╸──────── 16/50 2.8it/s 7.4s<12.2s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 34% ━━━━──────── 17/50 2.8it/s 7.7s<11.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 36% ━━━━──────── 18/50 2.8it/s 8.1s<11.4s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 38% ━━━━╸─────── 19/50 2.8it/s 8.4s<11.1s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 40% ━━━━╸─────── 20/50 2.8it/s 8.8s<10.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 42% ━━━━━─────── 21/50 2.8it/s 9.1s<10.4s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 44% ━━━━━─────── 22/50 2.7it/s 9.5s<10.2s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 46% ━━━━━╸────── 23/50 2.7it/s 9.9s<9.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 48% ━━━━━╸────── 24/50 2.8it/s 10.2s<9.4s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 50% ━━━━━━────── 25/50 2.8it/s 10.6s<9.0s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 52% ━━━━━━────── 26/50 2.8it/s 11.0s<8.6s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 54% ━━━━━━────── 27/50 2.8it/s 11.3s<8.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 56% ━━━━━━╸───── 28/50 2.7it/s 11.7s<8.2s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 57% ━━━━━━╸───── 29/50 2.7it/s 12.1s<7.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 60% ━━━━━━━───── 30/50 2.7it/s 12.5s<7.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 62% ━━━━━━━───── 31/50 2.7it/s 12.8s<7.1s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 64% ━━━━━━━╸──── 32/50 2.6it/s 13.2s<6.8s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 66% ━━━━━━━╸──── 33/50 2.6it/s 13.6s<6.6s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 68% ━━━━━━━━──── 34/50 2.6it/s 14.0s<6.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 70% ━━━━━━━━──── 35/50 2.5it/s 14.4s<5.9s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 72% ━━━━━━━━╸─── 36/50 2.4it/s 14.9s<5.9s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 74% ━━━━━━━━╸─── 37/50 2.3it/s 15.4s<5.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 76% ━━━━━━━━━─── 38/50 2.2it/s 15.9s<5.4s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 78% ━━━━━━━━━─── 39/50 2.3it/s 16.3s<4.9s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 80% ━━━━━━━━━╸── 40/50 2.3it/s 16.7s<4.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 82% ━━━━━━━━━╸── 41/50 2.5it/s 17.1s<3.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 84% ━━━━━━━━━━── 42/50 2.6it/s 17.5s<3.1s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 86% ━━━━━━━━━━── 43/50 2.6it/s 17.8s<2.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 88% ━━━━━━━━━━╸─ 44/50 2.6it/s 18.2s<2.3s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 90% ━━━━━━━━━━╸─ 45/50 2.6it/s 18.6s<1.9s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 92% ━━━━━━━━━━━─ 46/50 2.7it/s 18.9s<1.5s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 94% ━━━━━━━━━━━─ 47/50 2.7it/s 19.3s<1.1s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 96% ━━━━━━━━━━━╸ 48/50 2.7it/s 19.7s<0.7s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 98% ━━━━━━━━━━━╸ 49/50 2.8it/s 20.0s<0.4s
+                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100% ━━━━━━━━━━━━ 50/50 2.3it/s 21.9s
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+: 0% ──────────── 0/750  0.2s
+Traceback (most recent call last):
+  File "/workspace/project-expertise/scripts/train_yolo_4ch_screening.py", line 68, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/project-expertise/scripts/train_yolo_4ch_screening.py", line 39, in main
+    model.train(
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/model.py", line 816, in train
+    self.trainer.train()
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/trainer.py", line 241, in train
+    self._do_train()
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/engine/trainer.py", line 472, in _do_train
+    loss, self.loss_items = self.model(batch)
+                            ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 153, in forward
+    return self.loss(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 413, in loss
+    preds = self.forward(batch["img"])
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 154, in forward
+    return self.predict(x, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 171, in predict
+    return self._predict_once(x, profile, visualize, embed)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/tasks.py", line 193, in _predict_once
+    x = m(x)  # run
+        ^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/block.py", line 311, in forward
+    y.extend(m(y[-1]) for m in self.m)
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/block.py", line 311, in <genexpr>
+    y.extend(m(y[-1]) for m in self.m)
+             ^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/block.py", line 1377, in forward
+    x = x + self.ffn(x) if self.add else self.ffn(x)
+            ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/.venv/lib/python3.12/site-packages/ultralytics/nn/modules/conv.py", line 78, in forward
+    return self.act(self.bn(self.conv(x)))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 434, in forward
+    return F.silu(input, inplace=self.inplace)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/functional.py", line 2374, in silu
+    return torch._C._nn.silu_(input)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 15.57 GiB of which 3.12 MiB is free. Including non-PyTorch memory, this process has 9.53 GiB memory in use. Process 16448 has 6.00 GiB memory in use. Of the allocated memory 9.22 GiB is allocated by PyTorch, and 132.91 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+New https://pypi.org/project/ultralytics/8.4.120 available 😃 Update with 'pip install -U ultralytics'
+Ultralytics 8.4.103 🚀 Python-3.12.3 torch-2.8.0+cu128 CUDA:0 (NVIDIA RTX 2000 Ada Generation, 15947MiB)
+engine/trainer: agnostic_nms=False, amp=True, angle=1.0, augment=False, auto_augment=randaugment, batch=4, bgr=0.0, box=7.5, cache=False, cfg=None, classes=None, close_mosaic=10, cls=0.5, cls_pw=0.0, cls_remap=True, compile=False, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=True, cutmix=0.0, data=/workspace/d953_rgbmono/data.yaml, degrees=0.0, deterministic=True, device=, dfl=1.5, dis=6.0, distill_model=None, dnn=False, dropout=0.0, dynamic=False, embed=None, end2end=None, epochs=60, erasing=0.4, exist_ok=False, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=None, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=1280, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.01, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolo26l.pt, momentum=0.937, mosaic=1.0, multi_scale=0.0, name=sel6_953_rgbmono, nbs=64, nms=False, opset=None, optimize=False, optimizer=auto, overlap_mask=True, patience=60, perspective=0.0, plots=True, pose=12.0, pretrained=True, profile=False, project=/workspace/project-expertise/runs, quantize=None, rect=False, resume=False, retina_masks=False, rle=1.0, save=True, save_conf=False, save_crop=False, save_dir=/workspace/project-expertise/runs/sel6_953_rgbmono, save_frames=False, save_json=False, save_period=-1, save_txt=False, scale=0.5, seed=42, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=tracktrack.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3.0, warmup_momentum=0.8, weight_decay=0.0005, workers=8, workspace=None
+Overriding model.yaml nc=80 with nc=4
+                   from  n    params  module                                       arguments                     
+  0                  -1  1      2432  ultralytics.nn.modules.conv.Conv             [4, 64, 3, 2]                 
+  1                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  2                  -1  2    173824  ultralytics.nn.modules.block.C3k2            [128, 256, 2, True, 0.25]     
+  3                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+  4                  -1  2    691712  ultralytics.nn.modules.block.C3k2            [256, 512, 2, True, 0.25]     
+  5                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  6                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  7                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  8                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  9                  -1  1    656896  ultralytics.nn.modules.block.SPPF            [512, 512, 5, 3, True]        
+ 10                  -1  2   1455616  ultralytics.nn.modules.block.C2PSA           [512, 512, 2]                 
+ 11                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 12             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 13                  -1  2   2496512  ultralytics.nn.modules.block.C3k2            [1024, 512, 2, True]          
+ 14                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 15             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 16                  -1  2    756736  ultralytics.nn.modules.block.C3k2            [1024, 256, 2, True]          
+ 17                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+ 18            [-1, 13]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 19                  -1  2   2365440  ultralytics.nn.modules.block.C3k2            [768, 512, 2, True]           
+ 20                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+ 21            [-1, 10]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 22                  -1  1   1974784  ultralytics.nn.modules.block.C3k2            [1024, 512, 1, True, 0.5, True]
+ 23        [16, 19, 22]  1   2804784  ultralytics.nn.modules.head.Detect           [4, 1, True, [256, 512, 512]] 
+YOLO26l summary: 392 layers, 26,183,088 parameters, 26,183,088 gradients, 93.3 GFLOPs
+Transferred 1080/1092 items from pretrained weights
+AMP: running Automatic Mixed Precision (AMP) checks...
+AMP: checks passed ✅
+train: Fast image access ✅ (ping: 2.5±1.4 ms, read: 144.2±26.7 MB/s, size: 4170.7 KB)
+train: Scanning /workspace/d953_rgbmono/labels/train.cache... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 503.3Mit/s 0.0s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Fast image access ✅ (ping: 3.6±1.8 ms, read: 165.9±56.8 MB/s, size: 6726.9 KB)
+val: Scanning /workspace/d953_rgbmono/labels/val.cache... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 15.3Mit/s 0.0s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... 
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+Plotting labels to /workspace/project-expertise/runs/sel6_953_rgbmono/labels.jpg... 
+Image sizes 1280 train, 1280 val
+Using 8 dataloader workers
+Logging results to /workspace/project-expertise/runs/sel6_953_rgbmono
+Starting training for 60 epochs...
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size
+Ultralytics 8.4.103 🚀 Python-3.12.3 torch-2.8.0+cu128 CUDA:0 (NVIDIA RTX 2000 Ada Generation, 15947MiB)
+engine/trainer: agnostic_nms=False, amp=True, angle=1.0, augment=False, auto_augment=randaugment, batch=4, bgr=0.0, box=7.5, cache=False, cfg=None, classes=None, close_mosaic=10, cls=0.5, cls_pw=0.0, cls_remap=True, compile=False, conf=None, copy_paste=0.0, copy_paste_mode=flip, cos_lr=True, cutmix=0.0, data=/workspace/d953_rgbmono/data.yaml, degrees=0.0, deterministic=True, device=, dfl=1.5, dis=6.0, distill_model=None, dnn=False, dropout=0.0, dynamic=False, embed=None, end2end=None, epochs=60, erasing=0.4, exist_ok=False, fliplr=0.5, flipud=0.0, format=torchscript, fraction=1.0, freeze=None, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, imgsz=1280, iou=0.7, keras=False, kobj=1.0, line_width=None, lr0=0.01, lrf=0.01, mask_ratio=4, max_det=300, mixup=0.0, mode=train, model=yolo26l.pt, momentum=0.937, mosaic=1.0, multi_scale=0.0, name=sel6_953_rgbmono, nbs=64, nms=False, opset=None, optimize=False, optimizer=auto, overlap_mask=True, patience=60, perspective=0.0, plots=True, pose=12.0, pretrained=True, profile=False, project=/workspace/project-expertise/runs, quantize=None, rect=False, resume=False, retina_masks=False, rle=1.0, save=True, save_conf=False, save_crop=False, save_dir=/workspace/project-expertise/runs/sel6_953_rgbmono, save_frames=False, save_json=False, save_period=-1, save_txt=False, scale=0.5, seed=42, shear=0.0, show=False, show_boxes=True, show_conf=True, show_labels=True, simplify=True, single_cls=False, source=None, split=val, stream_buffer=False, task=detect, time=None, tracker=tracktrack.yaml, translate=0.1, val=True, verbose=True, vid_stride=1, visualize=False, warmup_bias_lr=0.1, warmup_epochs=3.0, warmup_momentum=0.8, weight_decay=0.0005, workers=8, workspace=None
+Overriding model.yaml nc=80 with nc=4
+                   from  n    params  module                                       arguments                     
+  0                  -1  1      2432  ultralytics.nn.modules.conv.Conv             [4, 64, 3, 2]                 
+  1                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               
+  2                  -1  2    173824  ultralytics.nn.modules.block.C3k2            [128, 256, 2, True, 0.25]     
+  3                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+  4                  -1  2    691712  ultralytics.nn.modules.block.C3k2            [256, 512, 2, True, 0.25]     
+  5                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  6                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  7                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+  8                  -1  2   2234368  ultralytics.nn.modules.block.C3k2            [512, 512, 2, True]           
+  9                  -1  1    656896  ultralytics.nn.modules.block.SPPF            [512, 512, 5, 3, True]        
+ 10                  -1  2   1455616  ultralytics.nn.modules.block.C2PSA           [512, 512, 2]                 
+ 11                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 12             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 13                  -1  2   2496512  ultralytics.nn.modules.block.C3k2            [1024, 512, 2, True]          
+ 14                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          
+ 15             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 16                  -1  2    756736  ultralytics.nn.modules.block.C3k2            [1024, 256, 2, True]          
+ 17                  -1  1    590336  ultralytics.nn.modules.conv.Conv             [256, 256, 3, 2]              
+ 18            [-1, 13]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 19                  -1  2   2365440  ultralytics.nn.modules.block.C3k2            [768, 512, 2, True]           
+ 20                  -1  1   2360320  ultralytics.nn.modules.conv.Conv             [512, 512, 3, 2]              
+ 21            [-1, 10]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           
+ 22                  -1  1   1974784  ultralytics.nn.modules.block.C3k2            [1024, 512, 1, True, 0.5, True]
+ 23        [16, 19, 22]  1   2804784  ultralytics.nn.modules.head.Detect           [4, 1, True, [256, 512, 512]] 
+YOLO26l summary: 392 layers, 26,183,088 parameters, 26,183,088 gradients, 93.3 GFLOPs
+Transferred 1080/1092 items from pretrained weights
+AMP: running Automatic Mixed Precision (AMP) checks...
+AMP: checks passed ✅
+train: Fast image access ✅ (ping: 6.4±9.9 ms, read: 145.1±20.7 MB/s, size: 4170.7 KB)
+train: Scanning /workspace/d953_rgbmono/labels/train.cache... 2999 images, 41 backgrounds, 1 corrupt: 100% ━━━━━━━━━━━━ 3000/3000 484.0Mit/s 0.0s
+train: /workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/train/DAMIMAS_A21B_0046_4.tiff'
+val: Fast image access ✅ (ping: 2.9±1.1 ms, read: 210.6±30.9 MB/s, size: 6726.9 KB)
+val: Scanning /workspace/d953_rgbmono/labels/val.cache... 394 images, 3 backgrounds, 10 corrupt: 100% ━━━━━━━━━━━━ 404/404 16.1Mit/s 0.0s
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0174_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0177_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0452_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0469_1.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0483_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0602_3.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0756_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0766_2.tiff'
+val: /workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/DAMIMAS_A21B_0840_8.tiff'
+val: /workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff: ignoring corrupt image/label: cannot identify image file '/workspace/d953_rgbmono/images/val/LONSUM_A21A_0094_4.tiff'
+optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... 
+optimizer: AdamW(lr=0.00125, momentum=0.9) with parameter groups 178 weight(decay=0.0), 190 weight(decay=0.0005), 190 bias(decay=0.0)
+Plotting labels to /workspace/project-expertise/runs/sel6_953_rgbmono/labels.jpg... 
+Image sizes 1280 train, 1280 val
+Using 8 dataloader workers
+Logging results to /workspace/project-expertise/runs/sel6_953_rgbmono
+Starting training for 60 epochs...
+      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size

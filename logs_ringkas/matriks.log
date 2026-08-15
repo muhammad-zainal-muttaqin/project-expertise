@@ -1,0 +1,61 @@
+[2026-08-14 16:09:03] MULAI  bangun_sel3
+[2026-08-14 17:11:32] SELESAI bangun_sel3
+[2026-08-14 17:11:32] MULAI  bangun_sel4
+[2026-08-14 18:16:32] SELESAI bangun_sel4
+[2026-08-14 18:16:32] MULAI  bangun_sel6
+[2026-08-14 19:20:00] SELESAI bangun_sel6
+[2026-08-14 19:20:00] MULAI  gerbang_a_reproduksi_sel5
+[2026-08-14 19:21:36] SELESAI gerbang_a_reproduksi_sel5
+[2026-08-14 19:21:36] MULAI  gerbang_b_kelayakan_5kanal
+[2026-08-14 19:25:38] SELESAI gerbang_b_kelayakan_5kanal
+[2026-08-14 19:25:38] MULAI  latih_sel6_953_rgbmono
+[2026-08-14 19:35:42] GAGAL  latih_sel6_953_rgbmono — lihat /workspace/project-expertise/logs/latih_sel6_953_rgbmono.log
+[2026-08-14 19:35:42] training sel6_953_rgbmono gagal
+[2026-08-14 19:35:42] MULAI  latih_sel3_352_rgbmono
+[2026-08-14 19:36:49] GAGAL  latih_sel3_352_rgbmono — lihat /workspace/project-expertise/logs/latih_sel3_352_rgbmono.log
+[2026-08-14 19:36:49] training sel3_352_rgbmono gagal
+[2026-08-14 19:36:49] MULAI  latih_sel4_352_rgbedgemono
+v)
+[2026-08-14 19:32:31] MULAI  latih_sel6_953_rgbmono
+[2026-08-14 19:34:51] GAGAL  latih_sel6_953_rgbmono — lihat /workspace/project-expertise/logs/latih_sel6_953_rgbmono.log
+[2026-08-14 19:34:51] training sel6_953_rgbmono gagal
+[2026-08-14 19:34:51] MULAI  latih_sel3_352_rgbmono
+[2026-08-14 21:04:54] kunci didapat (PID 19906)
+[2026-08-14 21:04:54] LEWAT  bangun_sel3 (sudah ada: /workspace/d352_rgbmono/data.yaml)
+[2026-08-14 21:04:54] LEWAT  bangun_sel4 (sudah ada: /workspace/d352_rgbedgemono/data.yaml)
+[2026-08-14 21:04:54] LEWAT  bangun_sel6 (sudah ada: /workspace/d953_rgbmono/data.yaml)
+[2026-08-14 21:04:54] LEWAT  gerbang_a_reproduksi_sel5 (sudah ada: results/eval_sel5_953_rgb_test.json)
+[2026-08-14 21:04:54] LEWAT  gerbang_b_kelayakan_5kanal (sudah ada: runs/uji5ch/results.csv)
+[2026-08-14 21:04:54] MULAI  latih_sel6_953_rgbmono
+Terminated
+[2026-08-14 21:07:32] GAGAL  latih_sel6_953_rgbmono — lihat /workspace/project-expertise/logs/latih_sel6_953_rgbmono.log
+[2026-08-14 21:07:32] training sel6_953_rgbmono gagal
+[2026-08-14 21:07:33] MULAI  latih_sel3_352_rgbmono
+[2026-08-14 21:08:31] kunci didapat (PID 20665)
+[2026-08-14 21:08:31] LEWAT  bangun_sel3 (sudah ada: /workspace/d352_rgbmono/data.yaml)
+[2026-08-14 21:08:31] LEWAT  bangun_sel4 (sudah ada: /workspace/d352_rgbedgemono/data.yaml)
+[2026-08-14 21:08:31] LEWAT  bangun_sel6 (sudah ada: /workspace/d953_rgbmono/data.yaml)
+[2026-08-14 21:08:31] LEWAT  gerbang_a_reproduksi_sel5 (sudah ada: results/eval_sel5_953_rgb_test.json)
+[2026-08-14 21:08:31] LEWAT  gerbang_b_kelayakan_5kanal (sudah ada: runs/uji5ch/results.csv)
+[2026-08-14 21:08:31] MULAI  latih_sel6_953_rgbmono
+[2026-08-15 01:33:18] kunci didapat (PID 30364)
+[2026-08-15 01:33:18] LEWAT  bangun_sel3 (sudah ada: /workspace/d352_rgbmono/data.yaml)
+[2026-08-15 01:33:18] LEWAT  bangun_sel4 (sudah ada: /workspace/d352_rgbedgemono/data.yaml)
+[2026-08-15 01:33:18] LEWAT  bangun_sel6 (sudah ada: /workspace/d953_rgbmono/data.yaml)
+[2026-08-15 01:33:18] LEWAT  gerbang_a_reproduksi_sel5 (sudah ada: results/eval_sel5_953_rgb_test.json)
+[2026-08-15 01:33:18] LEWAT  gerbang_b_kelayakan_5kanal (sudah ada: runs/uji5ch/results.csv)
+[2026-08-15 01:33:18] LEWAT  latih_sel6_953_rgbmono — dihentikan lebih awal atas keputusan pengguna (31/60 epoch)
+[2026-08-15 01:33:18] MULAI  eval_sel6_953_rgbmono
+[2026-08-15 01:33:31] GAGAL  eval_sel6_953_rgbmono — lihat /workspace/project-expertise/logs/eval_sel6_953_rgbmono.log
+[2026-08-15 01:33:31] eval sel6_953_rgbmono gagal
+[2026-08-15 01:33:31] MULAI  latih_sel3_352_rgbmono
+[2026-08-15 01:46:48] kunci didapat (PID 31507)
+[2026-08-15 01:46:48] LEWAT  bangun_sel3 (sudah ada: /workspace/d352_rgbmono/data.yaml)
+[2026-08-15 01:46:48] LEWAT  bangun_sel4 (sudah ada: /workspace/d352_rgbedgemono/data.yaml)
+[2026-08-15 01:46:48] LEWAT  bangun_sel6 (sudah ada: /workspace/d953_rgbmono/data.yaml)
+[2026-08-15 01:46:48] LEWAT  gerbang_a_reproduksi_sel5 (sudah ada: results/eval_sel5_953_rgb_test.json)
+[2026-08-15 01:46:48] LEWAT  gerbang_b_kelayakan_5kanal (sudah ada: runs/uji5ch/results.csv)
+[2026-08-15 01:46:48] LEWAT  latih_sel6_953_rgbmono — dihentikan lebih awal atas keputusan pengguna (31/60 epoch)
+[2026-08-15 01:46:48] MULAI  eval_sel6_953_rgbmono
+[2026-08-15 01:48:06] SELESAI eval_sel6_953_rgbmono
+[2026-08-15 01:48:06] MULAI  latih_sel3_352_rgbmono

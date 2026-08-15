@@ -1,0 +1,6 @@
+Dihentikan atas keputusan pengguna, 2026-08-15 01:45, setelah 31 dari 60 epoch.
+best.pt = checkpoint val terbaik (ep17, val mAP50 0,5012).
+last.pt = state ep31; bisa dilanjutkan kapan saja dengan:
+  .venv/bin/python scripts/train_yolo_4ch_screening.py \
+      --resume runs/sel6_953_rgbmono/weights/last.pt
+(hapus berkas penanda ini dulu kalau ingin runner melanjutkannya sendiri)

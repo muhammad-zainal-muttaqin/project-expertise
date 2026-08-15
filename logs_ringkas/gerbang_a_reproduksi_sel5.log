@@ -1,0 +1,45 @@
+creating index...
+index created!
+test: 588 citra, 2612 kotak GT
+  100/588
+  200/588
+  300/588
+  400/588
+  500/588
+Loading and preparing results...
+DONE (t=0.13s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=1.66s).
+Accumulating evaluation results...
+DONE (t=0.30s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.256
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.544
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.212
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.158
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.295
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.262
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.511
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.554
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.100
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.501
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.575
+{
+  "nama": "sel5_953_rgb",
+  "split": "test",
+  "n_citra": 588,
+  "n_kotak_gt": 2612,
+  "mAP50": 0.5436,
+  "mAP50_95": 0.2565,
+  "per_kelas_AP50": {
+    "B1": 0.7708,
+    "B2": 0.4479,
+    "B3": 0.6051,
+    "B4": 0.3506
+  }
+}
+prediksi -> results/pred_sel5_953_rgb_test.npz
+gerbang reproduksi LULUS: 0.5436 vs 0.5435 (selisih 0.0001)

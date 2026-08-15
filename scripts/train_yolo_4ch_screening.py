@@ -21,7 +21,11 @@ from pathlib import Path
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", required=True)
+    ap.add_argument("--data")
+    ap.add_argument("--resume", metavar="LAST_PT",
+                    help="lanjutkan run yang terputus dari weights/last.pt. "
+                         "Resep (epochs/batch/imgsz/seed) dibaca ultralytics dari "
+                         "args.yaml run itu, jadi TIDAK bisa berubah diam-diam.")
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--patience", type=int, default=3)
     ap.add_argument("--imgsz", type=int, default=1280)
@@ -34,19 +38,33 @@ def main() -> int:
 
     from ultralytics import YOLO
 
-    model = YOLO(args.weights)
     mulai = time.time()
-    model.train(
-        data=args.data,
-        epochs=args.epochs,
-        patience=args.patience,
-        imgsz=args.imgsz,
-        batch=args.batch,
-        seed=args.seed,
-        cos_lr=True,
-        project=args.project,
-        name=args.name,
-    )
+    if args.resume:
+        # Sengaja TIDAK mengoper ulang epochs/batch/imgsz/seed: ultralytics
+        # membacanya dari args.yaml run yang bersangkutan. Mengopernya lagi
+        # justru membuka celah resep berubah di tengah jalan tanpa jejak.
+        if not Path(args.resume).is_file():
+            raise SystemExit(f"FATAL: {args.resume} tidak ada — tidak bisa resume")
+        model = YOLO(args.resume)
+        model.train(resume=True)
+        out_dir = Path(args.resume).resolve().parent.parent
+        args.name = out_dir.name
+    else:
+        if not args.data or not args.name:
+            raise SystemExit("FATAL: --data dan --name wajib kalau bukan --resume")
+        model = YOLO(args.weights)
+        model.train(
+            data=args.data,
+            epochs=args.epochs,
+            patience=args.patience,
+            imgsz=args.imgsz,
+            batch=args.batch,
+            seed=args.seed,
+            cos_lr=True,
+            project=args.project,
+            name=args.name,
+        )
+        out_dir = Path(args.project) / args.name
     durasi = time.time() - mulai
 
     meta = {
@@ -57,8 +75,8 @@ def main() -> int:
         "imgsz": args.imgsz,
         "batch": args.batch,
         "durasi_detik": round(durasi, 1),
+        "resume_dari": args.resume or None,
     }
-    out_dir = Path(args.project) / args.name
     (out_dir / "hasil.json").write_text(json.dumps(meta, indent=2))
     print(json.dumps(meta, indent=2))
     return 0

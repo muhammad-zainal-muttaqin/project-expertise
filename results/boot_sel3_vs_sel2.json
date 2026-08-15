@@ -1,0 +1,49 @@
+{
+  "gt_root": "/workspace/SawitMVC-Depth-YOLO",
+  "split": "test",
+  "n_citra": 220,
+  "n_kotak_gt": 410,
+  "n_boot": 2000,
+  "seed": 42,
+  "agnostik_dilipat": false,
+  "model": {
+    "sel3_mono": {
+      "mAP50": 0.3943,
+      "per_kelas": {
+        "B1": 0.7232,
+        "B2": 0.4698,
+        "B3": 0.2546,
+        "B4": 0.1295
+      },
+      "CI95": [
+        0.3584,
+        0.4573
+      ],
+      "lebar_CI": 0.0989
+    },
+    "sel2_depth": {
+      "mAP50": 0.427,
+      "per_kelas": {
+        "B1": 0.7194,
+        "B2": 0.497,
+        "B3": 0.2207,
+        "B4": 0.2711
+      },
+      "CI95": [
+        0.3836,
+        0.4993
+      ],
+      "lebar_CI": 0.1157
+    }
+  },
+  "selisih": {
+    "a_minus_b": "sel3_mono - sel2_depth",
+    "titik": -0.0327,
+    "CI95": [
+      -0.0756,
+      0.0074
+    ],
+    "P_delta_positif": 0.0565,
+    "signifikan_95": false
+  }
+}

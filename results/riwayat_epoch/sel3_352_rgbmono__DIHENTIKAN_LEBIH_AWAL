@@ -1,0 +1,11 @@
+Dihentikan atas keputusan pengguna, 2026-08-15 04:26, setelah 53 dari 60 epoch.
+best.pt = checkpoint val terbaik ep41 (val mAP50 0,3888).
+
+Biaya komparabilitasnya kecil, berbeda dari sel 6: best.pt jatuh di ep41, jauh
+di dalam run, dan pembandingnya juga checkpoint tengah (sel 1 @ep45 0,4111;
+sel 2 @ep38 0,3856). Tujuh epoch yang dilewatkan seluruhnya di fase
+close_mosaic (ep51-60), yang pada sel 1, sel 2, DAN sel 3 sama-sama menurunkan
+val -- jadi peluang melewati 0,3888 praktis nol.
+
+last.pt = state ep53, bisa di-resume; hapus penanda ini dulu kalau ingin runner
+melanjutkannya.

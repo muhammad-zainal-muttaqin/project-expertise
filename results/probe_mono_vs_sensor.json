@@ -1,0 +1,68 @@
+{
+  "n_citra": 1408,
+  "spearman_global": {
+    "median": 0.8527,
+    "p25": 0.8171,
+    "p75": 0.8804,
+    "n": 1408
+  },
+  "spearman_dalam_kotak": {
+    "median": 0.6759,
+    "p25": 0.5233,
+    "p75": 0.7883,
+    "n": 2293
+  },
+  "rasio_skala_mono_per_sensor": {
+    "median": 0.776
+  },
+  "relief_cm": {
+    "sensor": {
+      "B1": {
+        "median": 2.12,
+        "n": 829
+      },
+      "B2": {
+        "median": 0.0,
+        "n": 1001
+      },
+      "B3": {
+        "median": -2.05,
+        "n": 321
+      },
+      "B4": {
+        "median": -5.14,
+        "n": 148
+      }
+    },
+    "mono": {
+      "B1": {
+        "median": 0.64,
+        "n": 829
+      },
+      "B2": {
+        "median": -0.96,
+        "n": 1001
+      },
+      "B3": {
+        "median": -1.48,
+        "n": 321
+      },
+      "B4": {
+        "median": -4.08,
+        "n": 148
+      }
+    }
+  },
+  "kruskal": {
+    "sensor": {
+      "H": 100.33,
+      "p": 1.31680639734145e-21,
+      "monoton_turun_B1_ke_B4": true
+    },
+    "mono": {
+      "H": 69.44,
+      "p": 5.6133115902044895e-15,
+      "monoton_turun_B1_ke_B4": true
+    }
+  }
+}

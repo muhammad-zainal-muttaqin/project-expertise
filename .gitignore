@@ -42,3 +42,12 @@ temp/
 
 # Hasil training Fase 6 (bobot besar; ikut backup HF bucket, ringkasan angka ada di results/)
 runs_fase6/
+
+# runtime pipeline matriks mono-depth (2026-08-15)
+.matriks.lock
+.pantau.lock
+.boot6_dilaporkan
+.build352.log
+# Log mentah ~12 MB, penuh progress bar. Versi ringkasnya ada di
+# logs_ringkas/ dan ITU yang ikut ter-commit (lihat CLAUDE.md).
+logs/

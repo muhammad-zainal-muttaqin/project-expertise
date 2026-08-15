@@ -1,0 +1,25 @@
+{
+  "nama": "sel6_953_rgbmono",
+  "bobot": "runs/sel6_953_rgbmono/weights/best.pt",
+  "ds_root": "/workspace/d953_rgbmono",
+  "split": "test",
+  "imgsz": 1280,
+  "evaluator": "pycocotools",
+  "n_citra": 588,
+  "n_kotak_gt": 2612,
+  "mAP50": 0.496,
+  "mAP50_95": 0.2322,
+  "per_kelas_AP50": {
+    "B1": 0.6902,
+    "B2": 0.4097,
+    "B3": 0.5635,
+    "B4": 0.3206
+  },
+  "per_kelas_AP50_95": {
+    "B1": 0.3696,
+    "B2": 0.1902,
+    "B3": 0.2452,
+    "B4": 0.1239
+  },
+  "dump_prediksi": "results/pred_sel6_953_rgbmono_test.npz"
+}

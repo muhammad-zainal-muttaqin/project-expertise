@@ -1,0 +1,123 @@
+{
+  "d953_rgbmono": {
+    "train": {
+      "total": 3000,
+      "rusak": 1,
+      "kanal": {
+        "4": 2999
+      },
+      "berkas_rusak": [
+        "DAMIMAS_A21B_0046_4.tiff"
+      ]
+    },
+    "val": {
+      "total": 404,
+      "rusak": 10,
+      "kanal": {
+        "4": 394
+      },
+      "berkas_rusak": [
+        "DAMIMAS_A21B_0174_3.tiff",
+        "DAMIMAS_A21B_0177_3.tiff",
+        "DAMIMAS_A21B_0452_3.tiff",
+        "DAMIMAS_A21B_0469_1.tiff",
+        "DAMIMAS_A21B_0483_2.tiff",
+        "DAMIMAS_A21B_0602_3.tiff",
+        "DAMIMAS_A21B_0756_2.tiff",
+        "DAMIMAS_A21B_0766_2.tiff",
+        "DAMIMAS_A21B_0840_8.tiff",
+        "LONSUM_A21A_0094_4.tiff"
+      ]
+    },
+    "test": {
+      "total": 588,
+      "rusak": 22,
+      "kanal": {
+        "4": 566
+      },
+      "berkas_rusak": [
+        "DAMIMAS_A21B_0009_3.tiff",
+        "DAMIMAS_A21B_0104_3.tiff",
+        "DAMIMAS_A21B_0227_2.tiff",
+        "DAMIMAS_A21B_0259_1.tiff",
+        "DAMIMAS_A21B_0278_3.tiff",
+        "DAMIMAS_A21B_0301_2.tiff",
+        "DAMIMAS_A21B_0331_2.tiff",
+        "DAMIMAS_A21B_0425_1.tiff",
+        "DAMIMAS_A21B_0425_2.tiff",
+        "DAMIMAS_A21B_0476_3.tiff",
+        "DAMIMAS_A21B_0542_1.tiff",
+        "DAMIMAS_A21B_0580_2.tiff",
+        "DAMIMAS_A21B_0611_4.tiff",
+        "DAMIMAS_A21B_0709_4.tiff",
+        "DAMIMAS_A21B_0730_4.tiff",
+        "DAMIMAS_A21B_0734_3.tiff",
+        "DAMIMAS_A21B_0793_2.tiff",
+        "DAMIMAS_A21B_0793_3.tiff",
+        "LONSUM_A21A_0018_1.tiff",
+        "LONSUM_A21A_0032_4.tiff",
+        "LONSUM_A21A_0069_4.tiff",
+        "LONSUM_A21A_0099_2.tiff"
+      ]
+    }
+  },
+  "d352_rgbmono": {
+    "train": {
+      "total": 980,
+      "rusak": 6,
+      "kanal": {
+        "4": 974
+      },
+      "berkas_rusak": [
+        "DAMIMAS_A21B_0105_4.tiff",
+        "DAMIMAS_A21B_0106_3.tiff",
+        "DAMIMAS_A21B_0109_1.tiff",
+        "DAMIMAS_A21B_0120_2.tiff",
+        "DAMIMAS_A21B_0120_4.tiff",
+        "DAMIMAS_A21B_0122_4.tiff"
+      ]
+    },
+    "val": {
+      "total": 208,
+      "rusak": 0,
+      "kanal": {
+        "4": 208
+      },
+      "berkas_rusak": []
+    },
+    "test": {
+      "total": 220,
+      "rusak": 0,
+      "kanal": {
+        "4": 220
+      },
+      "berkas_rusak": []
+    }
+  },
+  "d352_rgbedgemono": {
+    "train": {
+      "total": 980,
+      "rusak": 0,
+      "kanal": {
+        "5": 980
+      },
+      "berkas_rusak": []
+    },
+    "val": {
+      "total": 208,
+      "rusak": 0,
+      "kanal": {
+        "5": 208
+      },
+      "berkas_rusak": []
+    },
+    "test": {
+      "total": 220,
+      "rusak": 0,
+      "kanal": {
+        "5": 220
+      },
+      "berkas_rusak": []
+    }
+  }
+}

@@ -1313,3 +1313,268 @@ Selisih berpasangan: **+0,0230**, CI 95% **[−0,0286; +0,0663]**, P(Δ>0) = 0,7
 detektor satu-tahap yang jauh lebih sederhana, apalagi dari RF-DETR-L (0,4544)
 yang bahkan lebih tinggi titik estimasinya. Seluruh kerja rekomposisi enam versi
 tidak menghasilkan perbedaan yang bisa dibuktikan pada split ini.
+
+---
+
+## V2-E-027 — Monocular-depth sebagai kanal ke-4 pada SawitMVC 953: turun −0,0475 mAP50 di test
+
+**Tanggal:** 2026-08-15
+**Hipotesis:** peta monocular-depth (`yolo26l-depth.pt`, ukuran L) yang
+ditambahkan sebagai kanal ke-4 lewat early fusion menaikkan deteksi kelas-sadar
+pada SawitMVC 953 dibandingkan RGB murni. Ini sel 6 dari matriks
+mono-depth; satu-satunya sel yang punya daya statistik memadai (test 2.612
+kotak, bukan 410) dan bebas pergeseran temporal 80 hari.
+
+**Data:** `/workspace/d953_rgbmono` — TIFF 4 kanal `[B,G,R,mono]`, dibangun
+`scripts/buat_dataset_nch.py --dataset 953 --kanal mono`. Kanal mono = PNG uint8
+inverse-depth pada `[z_near, z_far] = [0,8; 15,0] m`, di-encode dengan
+`encode_inverse()` yang sama persis dengan kanal depth sensor (diimpor dari
+Research-Pipeline, bukan ditulis ulang). Split kanonik 716/96/141 pohon =
+3.000/404/588 citra, 14.041/1.887/**2.612** kotak.
+
+**Resep:** identik dengan sel 5 (`yolo26l_e60_i1280_v2repro`) — `yolo26l.pt`
+COCO init, imgsz 1280, batch 4, seed 42, `cos_lr`, `close_mosaic` 10,
+optimizer auto, lr0 0,01. Stem di-inflate 3 -> 4 kanal oleh ultralytics.
+
+### Metrik training (val split, 404 citra, evaluator native ultralytics)
+
+| | nilai | epoch |
+|---|---|---|
+| val mAP50 terbaik | **0,5012** | ep17 |
+| val mAP50-95 terbaik | 0,2295 | ep23 |
+| val terakhir (ep31) | 0,4870 / 0,2231 | ep31 |
+
+Perbandingan val-lawan-val dengan sel 5 pada epoch yang sama (kurva sel 5
+dipulihkan dari kunci `train_results` di dalam `best.pt`, disimpan ke
+`results/val_curve_sel5_953_rgb_v2repro.csv`):
+
+| ep | sel 6 RGB+Mono | sel 5 RGB | selisih |
+|---|---|---|---|
+| 7 | 0,4612 | 0,4407 | +0,0205 |
+| 17 | 0,5012 | 0,5003 | +0,0009 |
+| 24 | 0,4738 | 0,5181 | −0,0444 |
+| 28 | 0,4760 | 0,5219 | −0,0459 |
+| 31 | 0,4870 | 0,5195 | −0,0325 |
+
+Sel 6 tertinggal di 21 dari 31 epoch, dan di **setiap** epoch sejak ep18. Puncak
+sel 5 sendiri 0,5373 @ep34. **Peringatan:** kurva val sel 6 di atas dihitung
+atas 394 citra, bukan 404 — 10 citra val korup dan dilewati diam-diam oleh
+ultralytics (lihat V2-E-028). Baris "selisih" di atas karena itu tidak
+sepenuhnya sebanding dan tidak boleh dikutip sebagai angka; ia hanya
+menunjukkan arah.
+
+### Metrik test (pycocotools, 588 citra, 2.612 kotak GT — setelah perbaikan citra korup)
+
+| | sel 6 RGB+Mono | sel 5 RGB | selisih |
+|---|---|---|---|
+| **mAP50** | **0,4960** | **0,5436** | **−0,0475** |
+| mAP50-95 | 0,2322 | 0,2565 | −0,0243 |
+| AP75 | 0,186 | — | — |
+
+Per kelas AP50:
+
+| Kelas | sel 6 | sel 5 | selisih |
+|---|---|---|---|
+| B1 | 0,6902 | 0,7708 | −0,0806 |
+| B2 | 0,4097 | 0,4479 | −0,0382 |
+| B3 | 0,5635 | 0,6051 | −0,0416 |
+| B4 | 0,3206 | 0,3506 | −0,0300 |
+
+Turun di **keempat** kelas, terbesar di B1. AP per ukuran objek (sel 6):
+small 0,017 / medium 0,134 / large 0,270; AR@100 = 0,527.
+
+### Batas yang melekat pada angka ini
+
+1. **Dihentikan di 31 dari 60 epoch** atas keputusan pengguna, setelah kurva val
+   konsisten tertinggal. `best.pt` = checkpoint ep17; `last.pt` = ep31, masih
+   bisa di-resume. Sel 5 dilatih 60 epoch penuh dan puncaknya jatuh di ep34,
+   **di luar jangkauan** run ini. Perbandingan ini karena itu **timpang dan
+   condong menguntungkan sel 5**: cukup untuk menyimpulkan "mono tidak memberi
+   keunggulan yang terlihat", tidak cukup untuk mengukur besar kerugiannya
+   secara adil.
+2. Satu seed. Tidak ada replikasi.
+3. Training berjalan di atas 2.999 dari 3.000 citra train (satu korup).
+4. CI bootstrap berpasangan sedang dihitung; hasilnya menyusul di entri
+   terpisah. Sebelum itu, selisih −0,0475 belum boleh disebut signifikan.
+
+**Sumber:** `results/eval_sel6_953_rgbmono_test.json`,
+`results/pred_sel6_953_rgbmono_test.npz`, `runs/sel6_953_rgbmono/results.csv`,
+`runs/sel6_953_rgbmono/DIHENTIKAN_LEBIH_AWAL`,
+`results/val_curve_sel5_953_rgb_v2repro.csv`, `results/eval_sel5_953_rgb_test.json`.
+
+**Verdict:** hipotesis **tidak didukung**. Menambahkan monocular-depth sebagai
+kanal ke-4 menurunkan mAP50 sebesar 0,0475 di test, konsisten di keempat kelas,
+dan konsisten pula dengan catatan lama repo ini bahwa early fusion depth adalah
+regresi (E-022, E-027 Volume 1: −0,0230 pada YOLO26n). Yang **belum** bisa
+dipisahkan: apakah kerugian ini berasal dari isi peta mono, atau semata dari
+biaya menambah kanal pada stem yang bobot COCO-nya 3 kanal. Kontrol M_shuf
+lintas-pohon adalah uji yang memisahkan keduanya dan tetap layak dijalankan
+meski arahnya negatif.
+
+---
+
+## V2-E-028 — 39 citra TIFF korup di dataset turunan, dilewati diam-diam oleh ultralytics
+
+**Tanggal:** 2026-08-15
+**Bukan hipotesis** — catatan cacat data yang memengaruhi cara membaca V2-E-027.
+
+**Temuan:** eval sel 6 gagal dengan `gagal membaca ...tiff`. Berkasnya ada dan
+berukuran 8,5 MB tapi tidak bisa didekode oleh `cv2.imread`, pembaca
+ultralytics, maupun `cv2.imdecodemulti`. Pemindaian penuh
+(`scripts/perbaiki_tiff_korup.py`) menemukan 39 berkas korup:
+
+| Dataset | split | total | korup |
+|---|---|---|---|
+| d953_rgbmono | train | 3.000 | 1 |
+| d953_rgbmono | **val** | 404 | **10** |
+| d953_rgbmono | test | 588 | 22 |
+| d352_rgbmono | train | 980 | 6 |
+| d352_rgbmono | val / test | 208 / 220 | 0 |
+| d352_rgbedgemono (5 kanal) | semua | 1.408 | 0 |
+
+Dua tanda tangan galat: `TIFFReadRGBAStrip` gagal (data terpotong) dan
+`TIFFGetField PHOTOMETRIC` gagal (header rusak) — keduanya khas penulisan yang
+terputus. Menariknya berkas 5 kanal yang ditulis `cv2.imwritemulti` justru
+bersih seluruhnya; yang rusak hanya yang ditulis `cv2.imwrite`.
+
+**Kenapa ini berbahaya, dan ini pelajaran utamanya:** ultralytics **melewati**
+citra korup dengan peringatan lalu tetap menyelesaikan training. Tidak ada
+kegagalan, tidak ada jejak di metrik akhir. Akibat konkretnya, metrik val sel 6
+selama 31 epoch dihitung atas **394 citra** sementara baseline sel 5 dihitung
+atas **404** — perbandingan yang tampak sah sepanjang malam sebenarnya
+dilakukan di atas himpunan data yang berbeda. Cacat semacam ini tidak akan
+pernah terlihat dari angkanya sendiri.
+
+**Tindakan:** berkas korup dihapus (citra turunan, regenerable dalam hitungan
+menit; ATURAN #1 diperiksa — nol `.pt`/`.pth`/`.ckpt` di sasaran), dibangun
+ulang dengan `buat_dataset_nch.py`, cache label dibuang supaya ultralytics
+memindai ulang. Verifikasi setelahnya: **0 korup** di ketiga dataset, jumlah
+kanal terkonfirmasi 4/4/5, jumlah kotak kembali ke angka kanonik (test 953 =
+2.612, test 352 = 410). Eval test sel 6 di V2-E-027 dijalankan **setelah**
+perbaikan ini, jadi angka test-nya sah; yang tidak sepenuhnya sah hanya kurva
+val-nya.
+
+**Sumber:** `scripts/perbaiki_tiff_korup.py`, `results/tiff_korup.json`,
+`results/tiff_korup_setelah_perbaikan.json`.
+
+**Aturan yang lahir dari sini:** setiap dataset turunan diperiksa
+keterbacaannya sebelum dipakai melatih, bukan sesudah. Satu pemindaian penuh
+memakan ~3 menit; kalau dilewati, biayanya adalah seluruh run tidak bisa
+dibandingkan dan baru ketahuan berjam-jam kemudian.
+
+---
+
+## V2-E-029 — CI berpasangan sel 6 vs sel 5: penurunan −0,0476 mAP50 SIGNIFIKAN
+
+**Tanggal:** 2026-08-15
+**Metode:** bootstrap berpasangan 2.000 ulangan atas citra test (seed 42), dari
+dump prediksi yang disimpan saat evaluasi — `pred_sel6_953_rgbmono_test.npz` dan
+`pred_sel5_953_rgb_test.npz`. GT diambil dari dataset asli
+`/workspace/SawitMVC-YOLO` supaya kedua lengan dibandingkan terhadap sumber yang
+sama. 588 citra, 2.612 kotak.
+
+| Model | mAP50 | CI 95% | Lebar |
+|---|---|---|---|
+| Sel 6 — RGB+Mono (4 kanal) | 0,4960 | [0,4729; 0,5225] | 0,0496 |
+| Sel 5 — RGB (3 kanal) | 0,5436 | [0,5206; 0,5712] | 0,0506 |
+
+**Selisih berpasangan: −0,0476, CI 95% [−0,0671; −0,0274], P(Δ>0) = 0,000
+→ SIGNIFIKAN pada 95%.**
+
+CI selisih tidak memuat nol, dan tidak satu pun dari 2.000 ulangan menghasilkan
+Δ positif. Lebar CI 0,0496 sesuai perkiraan daya statistik untuk 2.612 kotak
+(bandingkan split 352 dengan 410 kotak, lebar CI ~0,11 — di sana selisih sebesar
+ini tidak akan bisa dibedakan dari nol).
+
+**Sumber:** `results/boot_sel6_vs_sel5.json`.
+
+**Verdict:** ini hasil negatif yang **tegas**, bukan sekadar tidak terbukti.
+Menambahkan monocular-depth sebagai kanal ke-4 pada SawitMVC 953 menurunkan
+mAP50 secara signifikan. Perlu diingat run sel 6 berhenti di 31 dari 60 epoch
+(V2-E-027 butir 1), sehingga besar penurunannya kemungkinan dilebih-lebihkan —
+tapi arahnya tidak diragukan, dan konsisten di keempat kelas serta di seluruh
+2.000 ulangan bootstrap. Menjalankan sel 6 sampai 60 epoch bisa memperkecil
+angkanya, tidak masuk akal membalikkan tandanya.
+
+Konsisten dengan catatan lama repo: early fusion depth adalah regresi (E-022,
+E-027 Volume 1, −0,0230 pada YOLO26n). Yang masih terbuka: apakah kerugian
+berasal dari isi peta mono atau dari biaya menambah kanal pada stem COCO
+3-kanal. M_shuf lintas-pohon memisahkan keduanya.
+
+---
+
+## V2-E-030 — Sel 3 (352 RGB+Mono): naik +0,0266 atas RGB tapi tidak signifikan, dan urutan val terbalik dari test
+
+**Tanggal:** 2026-08-15
+**Hipotesis:** monocular-depth sebagai kanal ke-4 menaikkan deteksi kelas-sadar
+pada SawitMVC-Depth 352, dataset yang sama tempat depth sensor terbukti menang.
+
+**Data:** `/workspace/d352_rgbmono`, TIFF 4 kanal `[B,G,R,mono]`, split kanonik
+`canonical_70_15_15` = 980/208/220 citra, 1.517/372/**410** kotak. Resep identik
+dengan sel 1 dan sel 2.
+
+**Training:** dihentikan atas keputusan pengguna di **54 dari 60 epoch** setelah
+plateau terkonfirmasi. `best.pt` = ep41 (val mAP50 0,3888). Biaya
+komparabilitasnya kecil — pembandingnya juga checkpoint tengah (sel 1 @ep45,
+sel 2 @ep38) dan tujuh epoch yang dilewatkan seluruhnya di fase `close_mosaic`
+yang menurunkan val di ketiga run. Detail: `runs/sel3_352_rgbmono/DIHENTIKAN_LEBIH_AWAL`.
+
+### Val vs test — urutannya TERBALIK, untuk ketiga sel
+
+| Sel | Input | ch | val puncak | test mAP50 |
+|---|---|---|---|---|
+| 1 | RGB | 3 | **0,4111** @ep45 | 0,3677 |
+| 3 | RGB+Mono | 4 | 0,3888 @ep41 | 0,3943 |
+| 2 | RGB+Depth `edge` | 4 | 0,3856 @ep38 | **0,4270** |
+
+Peringkat val (1 > 3 > 2) adalah **kebalikan persis** peringkat test (2 > 3 > 1).
+Ini pengulangan kedua dari pembalikan yang sudah terlihat pada sel 2 di V2-E-005
+dan sekarang terbukti berlaku untuk seluruh trio. Val 352 hanya 208 citra;
+**val split ini tidak boleh dipakai memeringkat model.** Bandingkan 953, di mana
+val 404 citra dan urutannya sejalan dengan test (sel 5 val 0,5373 -> test 0,5436;
+sel 6 val 0,5012 -> test 0,4960).
+
+### Test (pycocotools, 220 citra, 410 kotak)
+
+| | sel 3 RGB+Mono | sel 1 RGB | sel 2 RGB+Depth |
+|---|---|---|---|
+| mAP50 | **0,3943** | 0,3677 | 0,4270 |
+| mAP50-95 | 0,1360 | — | — |
+
+Per kelas AP50 sel 3: B1 0,7232 / B2 0,4698 / B3 0,2546 / B4 0,1295.
+
+### CI bootstrap berpasangan (2.000 ulangan, seed 42, dari dump .npz)
+
+| Perbandingan | Selisih | CI 95% | P(Δ>0) | Signifikan |
+|---|---|---|---|---|
+| sel 3 − sel 1 (mono vs RGB) | **+0,0266** | [−0,0270; +0,0739] | 0,830 | **tidak** |
+| sel 3 − sel 2 (mono vs depth sensor) | **−0,0327** | [−0,0756; +0,0074] | 0,057 | **tidak** |
+
+Lebar CI 0,099–0,116. Ketidaksignifikanan ini **sudah diperkirakan sebelum
+eksperimen dijalankan**: dengan 410 kotak, selisih di bawah ~0,06 memang tidak
+bisa dibedakan dari nol. Ini batas daya statistik split-nya, bukan bukti bahwa
+efeknya nol.
+
+Catatan angka: titik estimasi sel 1 dan sel 2 di sini (0,3677 dan 0,4270)
+dihitung ulang dari `.npz` lewat jalur kode yang sama dengan sel 3, sehingga
+perbandingan berpasangannya konsisten secara internal. Angka historis
+0,3711/0,4316 berasal dari skrip eval lama; selisihnya ~0,004 dan tidak
+mengubah kesimpulan apa pun.
+
+**Sumber:** `results/eval_sel3_352_rgbmono_test.json`,
+`results/pred_sel3_352_rgbmono_test.npz`, `results/boot_sel3_vs_sel1.json`,
+`results/boot_sel3_vs_sel2.json`, `runs/sel3_352_rgbmono/results.csv`.
+
+**Verdict:** arahnya **berlawanan dengan sel 6**. Di 953 mono menurunkan mAP50
+secara signifikan (−0,0476, V2-E-029); di 352 mono justru menaikkannya
+(+0,0266), meski tidak signifikan. Mono juga berada di antara RGB dan depth
+sensor pada dataset ini — konsisten dengan probe V2-E-0xx yang menemukan mono
+mereproduksi relief ordinal B1->B4 yang sama dengan sensor tapi dengan amplitudo
+lebih lemah (−4,08 cm vs −5,14 cm).
+
+Penjelasan yang tersisa dan belum diuji: (a) mono berguna pada dataset dengan
+citra dekat/terkendali (352, median 1,91 m) tapi merugikan pada citra lapangan
+yang lebih beragam (953, median 1,31 m); (b) perbedaannya berasal dari ukuran
+data latih (980 vs 3.000 citra); (c) sel 6 dihentikan di 31 epoch sehingga
+kerugiannya dilebih-lebihkan. Ketiganya bisa dibedakan, tapi butuh eksperimen
+tambahan yang belum dijadwalkan.

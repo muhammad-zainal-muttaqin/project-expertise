@@ -1,0 +1,80 @@
+{
+  "d953_rgbmono": {
+    "train": {
+      "total": 3000,
+      "rusak": 0,
+      "kanal": {
+        "4": 3000
+      },
+      "berkas_rusak": []
+    },
+    "val": {
+      "total": 404,
+      "rusak": 0,
+      "kanal": {
+        "4": 404
+      },
+      "berkas_rusak": []
+    },
+    "test": {
+      "total": 588,
+      "rusak": 0,
+      "kanal": {
+        "4": 588
+      },
+      "berkas_rusak": []
+    }
+  },
+  "d352_rgbmono": {
+    "train": {
+      "total": 980,
+      "rusak": 0,
+      "kanal": {
+        "4": 980
+      },
+      "berkas_rusak": []
+    },
+    "val": {
+      "total": 208,
+      "rusak": 0,
+      "kanal": {
+        "4": 208
+      },
+      "berkas_rusak": []
+    },
+    "test": {
+      "total": 220,
+      "rusak": 0,
+      "kanal": {
+        "4": 220
+      },
+      "berkas_rusak": []
+    }
+  },
+  "d352_rgbedgemono": {
+    "train": {
+      "total": 980,
+      "rusak": 0,
+      "kanal": {
+        "5": 980
+      },
+      "berkas_rusak": []
+    },
+    "val": {
+      "total": 208,
+      "rusak": 0,
+      "kanal": {
+        "5": 208
+      },
+      "berkas_rusak": []
+    },
+    "test": {
+      "total": 220,
+      "rusak": 0,
+      "kanal": {
+        "5": 220
+      },
+      "berkas_rusak": []
+    }
+  }
+}

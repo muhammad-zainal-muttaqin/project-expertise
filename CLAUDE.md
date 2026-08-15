@@ -68,8 +68,37 @@ Angka counting untuk YOLO26l, RT-DETR-L, RF-DETR-L **belum ada**.
   karena prediksinya tidak pernah disimpan, **CI untuk kedua arsitektur itu
   tidak bisa dihitung selamanya** (lihat `docs/LAPORAN-AKHIR.md` §Ancaman
   validitas butir 3). Satu berkas `.npz` ~90 KB menutup risiko itu.
+- **Riwayat per-epoch WAJIB ikut ter-commit ke git.** `runs/` ada di
+  `.gitignore`, dan `results.csv` hidup di dalamnya — jadi kalau tidak disalin
+  keluar, riwayat per-epoch hilang bersama direktori run. Setiap run yang
+  masuk matriks harus menyalin ke `results/riwayat_epoch/` dengan pola
+  `<nama_run>__<berkas>`:
+
+  | Berkas | Isi | Ukuran khas |
+  |---|---|---|
+  | `results.csv` | mAP50/mAP50-95/loss/lr per epoch | 2–7 KB |
+  | `args.yaml` | resep yang BENAR-BENAR dijalankan | 1,7 KB |
+  | `DIHENTIKAN_LEBIH_AWAL` | alasan + epoch, kalau ada | <1 KB |
+
+  Log training juga ikut, diringkas ke `logs_ringkas/` (buang progress bar:
+  `tr '\r' '\n' | sed 's/\x1b\[[0-9;]*[A-Za-z]//g'` lalu saring baris
+  `^ *[0-9]+/60 +[0-9.]+G` — 12 MB jadi ~2 MB). Yang berharga di sana adalah
+  peringatan citra korup, baris `Scanning`, dan konfirmasi batch.
+
+  **Kenapa wajib:** `results.csv` run sel 5 (`yolo26l_e60_i1280_v2repro`) hilang
+  bersama direktori run-nya. Kurva val 60 epoch-nya baru bisa dipulihkan
+  2026-08-15 karena kebetulan ultralytics menyimpannya di kunci `train_results`
+  di dalam `best.pt`. Kalau bobotnya ikut hilang — dan bobot RT-DETR-L serta
+  RF-DETR-L Volume 2 memang sudah hilang — riwayat itu hilang permanen. Total
+  biayanya 19 KB per tiga run; tidak ada alasan melewatkannya.
+
 - **Bobot tidak boleh dihapus** — `*.pt`, `*.pth`, `runs*/`, `models/`, di
   lokal maupun di bucket backup. Lihat ATURAN #1 di `/workspace/CLAUDE.md`.
+  Git tidak bisa menampungnya (`runs/` di-gitignore, ukurannya ratusan MB per
+  run), jadi **bobot butuh jalur backup terpisah ke bucket HF** — dan loop sync
+  otomatis sudah dihentikan permanen sejak 2026-08-12, artinya sync itu
+  sekarang manual dan harus dijalankan sadar. Commit git saja TIDAK melindungi
+  bobot.
 
 ## Hal yang sudah dicoba dan GAGAL (jangan diulang)
 
@@ -98,6 +127,34 @@ Ringkasan singkat:
   menyalakan run berikutnya.
 - Jangan mengarang eksperimen tambahan untuk "mengisi GPU".
 - Laporkan hasil apa adanya.
+
+### Eval dan langkah pendek: JALANKAN DI DEPAN, jangan lewat runner
+
+- **Evaluasi, bootstrap, pembangunan dataset, dan apa pun yang selesai dalam
+  hitungan menit dijalankan langsung di depan**, bukan lewat
+  `jalankan_matriks.sh` atau proses latar. Tujuannya satu: angkanya keluar
+  sekarang, dan kalau gagal, galatnya terlihat saat itu juga.
+- **Runner hanya untuk training panjang** (puluhan menit sampai berjam-jam),
+  di mana menunggu di depan memang tidak masuk akal.
+- **Kalau runner sudah gagal SEKALI, jangan dipakai lagi untuk langkah itu.**
+  Jalankan perintahnya langsung. Jangan berhenti untuk memperbaiki runner,
+  memburu penyebabnya, atau menulis pembungkus baru — itu membakar waktu untuk
+  perkakas, bukan untuk hasil.
+- Alasannya konkret, 2026-08-15: eval sel 6 gagal tiga kali berturut-turut
+  lewat runner (sekali karena citra korup, dua kali karena proses runner mati
+  tanpa menulis satu baris pun log). Dijalankan langsung di depan, eval yang
+  sama selesai dalam ~4 menit dan langsung mengeluarkan angkanya. Total waktu
+  yang hilang gara-gara memakai runner untuk langkah pendek: lebih dari
+  setengah jam, tanpa satu pun angka dihasilkan.
+- Catatan teknis kalau tetap perlu proses latar: `setsid ... &` **tidak
+  mem-fork** kalau pemanggilnya sudah process group leader, jadi prosesnya
+  tidak benar-benar terlepas dan ikut mati bersama shell-nya. Pakai
+  `setsid --fork`. Ini penyebab dua kematian runner di atas.
+- Jangan pernah memakai `pkill -f <pola>` untuk membunuh proses: baris perintah
+  shell pemanggil ikut memuat polanya, jadi perintah itu membunuh dirinya
+  sendiri (dan pernah membunuh training sel 6 yang sah). Pakai PID langsung,
+  atau pindai `/proc/<pid>/cmdline` dan pastikan `argv[0]` benar-benar
+  interpreter yang menjalankan skrip itu.
 
 ## Status sesi & handoff (2026-08-08) — BACA INI DULU kalau melanjutkan sesi
 
