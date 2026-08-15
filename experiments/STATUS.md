@@ -152,3 +152,62 @@ Format sel: `Det: mAP50 / Count: Class ±1 Acc`. Sumber: `results/*.json`
   asli) — menang atau kalah tergantung mana yang jadi pembanding. Bootstrap
   CI vs retrain: +3,18pp (P=94,3%, hampir signifikan). Vs angka asli:
   −2,28pp. Dilaporkan INCONCLUSIVE (V2-E-011), bukan salah satu arah saja.
+
+---
+
+## Fase 7 — Matriks monocular-depth (SELESAI 2026-08-15, enam sel terisi)
+
+Pertanyaan tunggal: **apakah monocular-depth menaikkan performa deteksi?**
+Enam sel, resep identik (`yolo26l.pt` COCO init, 60 epoch, patience 60,
+batch 4, imgsz 1280, seed 42, `cos_lr`), evaluator pycocotools pada split
+test, prediksi di-dump ke `.npz` saat evaluasi.
+
+| # | Dataset | Input | ch | test mAP50 | val puncak | Epoch |
+|---|---|---|---|---|---|---|
+| 1 | 352 | RGB | 3 | 0,3677 | 0,4111 @ep45 | 60 |
+| 2 | 352 | RGB+Depth `edge` | 4 | **0,4270** | 0,3856 @ep38 | 60 |
+| 3 | 352 | RGB+Mono | 4 | 0,3943 | 0,3888 @ep41 | 54 (dihentikan) |
+| 4 | 352 | RGB+Depth+Mono | 5 | 0,3766 | **0,4281** @ep50 | 60 |
+| 5 | 953 | RGB | 3 | **0,5436** | 0,5373 @ep34 | 60 |
+| 6 | 953 | RGB+Mono | 4 | 0,4960 | 0,5012 @ep17 | 31 (dihentikan) |
+
+Angka sel 1 dan 2 di tabel ini dari *resampler* bootstrap; padanan
+pycocotools-nya 0,3711 dan 0,4316 (baris matriks Fase 5 di atas). Beda ~0,004
+itu implementasi mAP, bukan model — jangan campur antar-evaluator dalam satu
+pengurangan (V2-E-032).
+
+### Bootstrap CI berpasangan (2.000 ulangan, seed 42)
+
+| Perbandingan | Selisih | CI 95% | Signifikan |
+|---|---|---|---|
+| sel 6 − sel 5 — mono vs RGB, 953 | **−0,0476** | [−0,0671; −0,0274] | **YA** |
+| sel 4 − sel 2 — mono di atas depth, 352 | **−0,0504** | [−0,1038; −0,0015] | **YA** |
+| sel 3 − sel 2 — mono vs depth sensor, 352 | −0,0327 | [−0,0756; +0,0074] | tidak |
+| sel 4 − sel 3 — 5ch vs 4ch mono, 352 | −0,0177 | [−0,0672; +0,0323] | tidak |
+| sel 3 − sel 1 — mono vs RGB, 352 | +0,0266 | [−0,0270; +0,0739] | tidak |
+
+**Jawaban: TIDAK.** Monocular-depth tidak menang signifikan di satu pun dari
+lima perbandingan, dan kalah signifikan di dua. Satu-satunya selisih positifnya
+(+0,0266) lebih kecil daripada lebar CI-nya sendiri. **Depth sensor tetap kanal
+keempat terbaik** (sel 2 = 0,4270, tertinggi di antara semua varian 352).
+
+**Tiga batas yang wajib ikut dikutip:**
+1. Split test 352 hanya 410 kotak → lebar CI ~0,10; selisih di bawah ~0,06
+   memang tidak bisa dibedakan dari nol. Hanya sel 6 vs sel 5 (2.612 kotak,
+   lebar CI 0,050) yang punya daya statistik memadai.
+2. Sel 3 dan sel 6 dihentikan lebih awal (54 dan 31 dari 60 epoch) atas
+   keputusan pengguna. Sel 6 paling terdampak — pembandingnya memuncak di
+   ep34, di luar jangkauan run itu, jadi −0,0476 kemungkinan dilebih-lebihkan.
+   Arahnya tidak diragukan (0 dari 2.000 ulangan positif), besarannya iya.
+3. **Val 208 citra di split 352 tidak boleh dipakai memeringkat model.**
+   Peringkat val (4 > 1 > 3 > 2) hampir persis kebalikan peringkat test
+   (2 > 3 > 4 > 1) — terjadi pada keempat sel 352. Di 953 (404 citra val)
+   val dan test sepakat. Lihat V2-E-030/031.
+
+**Belum dijalankan:** kontrol M_shuf lintas-pohon, yang memisahkan "isi peta
+mono" dari "biaya menambah kanal pada stem COCO 3-kanal". Selama itu belum
+ada, penyebab kerugiannya tetap tidak diketahui.
+
+Detail per sel: V2-E-027 (sel 6), V2-E-030 (sel 3), V2-E-031 (sel 4),
+V2-E-032 (sintesis matriks). Riwayat per-epoch tiap run ada di
+`results/riwayat_epoch/`, log training ringkas di `results/logs_ringkas/`.

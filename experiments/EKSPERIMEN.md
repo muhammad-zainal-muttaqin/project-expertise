@@ -1578,3 +1578,134 @@ yang lebih beragam (953, median 1,31 m); (b) perbedaannya berasal dari ukuran
 data latih (980 vs 3.000 citra); (c) sel 6 dihentikan di 31 epoch sehingga
 kerugiannya dilebih-lebihkan. Ketiganya bisa dibedakan, tapi butuh eksperimen
 tambahan yang belum dijadwalkan.
+
+---
+
+## V2-E-031 — Sel 4 (352 RGB+Depth+Mono, 5 kanal): mono DI ATAS depth sensor merugikan −0,0504, signifikan
+
+**Tanggal:** 2026-08-15
+**Hipotesis:** menambahkan monocular-depth sebagai kanal kelima di atas RGB +
+depth sensor menaikkan deteksi dibandingkan RGB+Depth 4 kanal (sel 2). Ini sel
+terakhir matriks mono-depth, dan satu-satunya yang tuntas **60 epoch penuh**.
+
+**Data:** `/workspace/d352_rgbedgemono`, TIFF 5 kanal `[B,G,R,edge,mono]`,
+disimpan sebagai 5 halaman satu-kanal (`cv2.imwritemulti`) karena `cv2.imwrite`
+menolak 5 kanal. Split kanonik 980/208/220 citra, 410 kotak test. Stem model
+diverifikasi `(64, 5, 3, 3)`.
+
+**Training:** 60/60 epoch tuntas, batch 4 utuh (nol `Reducing to batch`).
+`best.pt` = **ep50**, val mAP50 0,4281.
+
+### Val — sel 4 memuncaki SEMUA sel di 352
+
+| Sel | Input | ch | val puncak | epoch |
+|---|---|---|---|---|
+| **4** | **RGB+Depth+Mono** | **5** | **0,4281** | **ep50** |
+| 1 | RGB | 3 | 0,4111 | ep45 |
+| 3 | RGB+Mono | 4 | 0,3888 | ep41 |
+| 2 | RGB+Depth `edge` | 4 | 0,3856 | ep38 |
+
+Sel 4 juga satu-satunya dari empat run 352 yang **naik** saat `close_mosaic`
+menyala di ep51 — puncaknya justru tercapai di ep50, sementara tiga run lain
+melandai turun di fase itu.
+
+### Test (pycocotools, 220 citra, 410 kotak) — urutannya TERBALIK lagi
+
+| Sel | Input | ch | test mAP50 | mAP50-95 |
+|---|---|---|---|---|
+| 2 | RGB+Depth `edge` | 4 | **0,4270** | — |
+| 3 | RGB+Mono | 4 | 0,3943 | 0,1360 |
+| **4** | **RGB+Depth+Mono** | **5** | **0,3766** | 0,1290 |
+| 1 | RGB | 3 | 0,3677 | — |
+
+Peringkat val (4 > 1 > 3 > 2) kembali hampir kebalikan peringkat test
+(2 > 3 > 4 > 1). Ini pembalikan **keempat** berturut-turut di split 352 dan
+menutup kasusnya: **val 208 citra tidak boleh dipakai memeringkat model di
+dataset ini, titik.** Sel 4 memuncaki val dan tetap kalah dari sel 2 di test.
+
+Per kelas AP50 sel 4: B1 0,7014 / B2 0,4560 / B3 0,2138 / B4 0,1351.
+
+### CI bootstrap berpasangan (2.000 ulangan, seed 42)
+
+| Perbandingan | Selisih | CI 95% | P(Δ>0) | Signifikan |
+|---|---|---|---|---|
+| sel 4 − sel 2 (mono di atas depth) | **−0,0504** | [−0,1038; −0,0015] | 0,022 | **ya** |
+| sel 4 − sel 3 (5 kanal vs 4 kanal mono) | −0,0177 | [−0,0672; +0,0323] | 0,243 | tidak |
+
+Signifikansinya tipis — batas atas CI −0,0015, nyaris menyentuh nol — jadi
+sebaiknya dibaca sebagai "bukti cukup kuat untuk menolak bahwa mono membantu di
+atas depth", bukan sebagai pengukuran presisi atas besarnya kerugian.
+
+**Sumber:** `results/eval_sel4_352_rgbedgemono_test.json`,
+`results/pred_sel4_352_rgbedgemono_test.npz`, `results/boot_sel4_vs_sel2.json`,
+`results/boot_sel4_vs_sel3.json`, `results/riwayat_epoch/sel4_*`.
+
+**Verdict:** hipotesis **ditolak**. Mono tidak menambah apa pun di atas depth
+sensor; ia mengurangi −0,0504, dan itu signifikan meski di split yang cuma 410
+kotak. Kanal kelima bukan cuma sia-sia, ia mengencerkan sinyal yang sudah
+dibawa kanal depth.
+
+---
+
+## V2-E-032 — Matriks mono-depth lengkap: mono tidak pernah menang, dan dua kali kalah signifikan
+
+**Tanggal:** 2026-08-15
+**Ringkasan enam sel.** Semua memakai resep identik (`yolo26l.pt` COCO init,
+60 epoch, batch 4, imgsz 1280, seed 42, `cos_lr`), evaluator pycocotools pada
+split test, dump prediksi `.npz` disimpan saat evaluasi.
+
+| # | Dataset | Input | ch | test mAP50 | Epoch dijalankan |
+|---|---|---|---|---|---|
+| 1 | 352 | RGB | 3 | 0,3677 | 60 |
+| 2 | 352 | RGB+Depth `edge` | 4 | **0,4270** | 60 |
+| 3 | 352 | RGB+Mono | 4 | 0,3943 | 54 (dihentikan) |
+| 4 | 352 | RGB+Depth+Mono | 5 | 0,3766 | 60 |
+| 5 | 953 | RGB | 3 | **0,5436** | 60 |
+| 6 | 953 | RGB+Mono | 4 | 0,4960 | 31 (dihentikan) |
+
+**Semua perbandingan berpasangan:**
+
+| Perbandingan | Selisih | CI 95% | Signifikan |
+|---|---|---|---|
+| sel 6 − sel 5 — mono vs RGB, 953 | **−0,0476** | [−0,0671; −0,0274] | **YA** |
+| sel 4 − sel 2 — mono di atas depth, 352 | **−0,0504** | [−0,1038; −0,0015] | **YA** |
+| sel 3 − sel 2 — mono vs depth, 352 | −0,0327 | [−0,0756; +0,0074] | tidak |
+| sel 4 − sel 3 — 5ch vs 4ch mono, 352 | −0,0177 | [−0,0672; +0,0323] | tidak |
+| sel 3 − sel 1 — mono vs RGB, 352 | +0,0266 | [−0,0270; +0,0739] | tidak |
+
+**Kesimpulan: monocular-depth tidak pernah menang secara signifikan di satu
+pun dari lima perbandingan, dan kalah signifikan di dua.** Satu-satunya selisih
+positifnya (+0,0266, sel 3 vs sel 1) tidak signifikan dan lebih kecil daripada
+lebar CI-nya sendiri.
+
+**Depth sensor tetap kanal keempat terbaik.** Sel 2 (0,4270) mengungguli sel 3
+(0,3943) dan sel 4 (0,3766). Mono mereproduksi struktur yang sama dengan sensor
+tapi lebih lemah (Spearman dalam kotak 0,676; relief B1->B4 −4,08 cm vs sensor
+−5,14 cm), dan pelemahan itu tampaknya cukup untuk membalik manfaatnya jadi
+kerugian.
+
+**Dua batas yang harus ikut dikutip:**
+
+1. **Daya statistik split 352 tidak memadai.** 410 kotak memberi lebar CI
+   ~0,10; selisih di bawah ~0,06 memang tidak bisa dibedakan dari nol. Tiga
+   dari lima perbandingan di atas berada di zona itu. Hanya sel 6 vs sel 5
+   (2.612 kotak, lebar CI 0,050) yang punya daya memadai.
+2. **Sel 3 dan sel 6 dihentikan lebih awal** (54 dan 31 dari 60 epoch) atas
+   keputusan pengguna setelah kurva val menunjukkan arah yang jelas. Sel 6
+   paling terdampak: pembandingnya memuncak di ep34, di luar jangkauan run itu,
+   sehingga −0,0476 kemungkinan dilebih-lebihkan. Arahnya tidak diragukan
+   (nol dari 2.000 ulangan bootstrap positif), besarannya diragukan.
+
+**Catatan angka sel 1 dan sel 2 — jangan bingung dengan STATUS.md.** Tabel di
+atas memakai estimasi titik dari *resampler* bootstrap (0,3677 dan 0,4270),
+bukan dari pycocotools (0,3711 dan 0,4316 di STATUS.md / V2-E-010/011).
+Selisih ~0,004 itu murni beda implementasi mAP antar-evaluator, bukan model
+atau data yang berbeda: keduanya membaca `.npz` prediksi yang sama
+(`pred_rgb352_test.npz`, `pred_edge_test.npz`). Semua selisih dan CI di tabel
+perbandingan dihitung di dalam satu evaluator yang sama, jadi internal
+konsisten — tapi **jangan campur** angka pycocotools dengan angka bootstrap
+dalam satu pengurangan.
+
+**Yang belum terjawab, dan sengaja tidak ditebak:** apakah kerugian mono
+berasal dari isi petanya atau dari biaya menambah kanal pada stem COCO 3-kanal.
+Kontrol M_shuf lintas-pohon memisahkan keduanya dan belum dijalankan.
