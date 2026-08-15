@@ -71,12 +71,20 @@ def main() -> int:
     ap.add_argument("--periksa-saja", action="store_true")
     ap.add_argument("--proses", type=int, default=8)
     ap.add_argument("--out", default="results/tiff_korup.json")
+    ap.add_argument("--root", nargs="+", metavar="DIR",
+                    help="dataset yang dipindai (default: ketiga dataset matriks). "
+                         "Setiap dataset N-kanal BARU wajib lewat gerbang ini "
+                         "sebelum dilatih — ultralytics melewati citra korup "
+                         "diam-diam, jadi run-nya tetap 'sukses' di atas "
+                         "himpunan data yang lebih kecil dari pembandingnya.")
     args = ap.parse_args()
+
+    daftar = [Path(x) for x in args.root] if args.root else DATASET
 
     laporan: dict[str, dict] = {}
     total_rusak = 0
 
-    for ds in DATASET:
+    for ds in daftar:
         if not ds.is_dir():
             print(f"LEWAT {ds} (tidak ada)")
             continue
