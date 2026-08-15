@@ -1709,3 +1709,58 @@ dalam satu pengurangan.
 **Yang belum terjawab, dan sengaja tidak ditebak:** apakah kerugian mono
 berasal dari isi petanya atau dari biaya menambah kanal pada stem COCO 3-kanal.
 Kontrol M_shuf lintas-pohon memisahkan keduanya dan belum dijalankan.
+
+---
+
+## V2-E-033 — Dua kebocoran split yang membatasi cara membaca angka lama
+
+**Tanggal:** 2026-08-15
+**Konteks:** dua temuan sampingan yang muncul saat menelusuri daya statistik
+matriks mono-depth. Keduanya **tidak** mengubah satu pun angka yang sudah
+tercatat, tapi mengubah cara angka-angka itu boleh dikutip. Diverifikasi
+langsung dari berkas split, bukan dari ingatan.
+
+### 1. Pretraining agnostik Fase 6 bocor ke `test_penuh`
+
+Split pretraining `agnostic953` (train 3.200 + val 364 = 3.564 citra,
+846 pohon) berpotongan besar dengan split evaluasi `agnostic953_test_penuh`:
+
+| Himpunan uji | Citra | Pohon | Citra bocor | Pohon bocor |
+|---|---|---|---|---|
+| `test_penuh` | 588 | 141 | **512/588 (87%)** | **122/141 (87%)** |
+| `test_bersih` | 76 | 19 | **0/76** | **0/19** |
+
+Jadi 87% citra `test_penuh` **secara harfiah ikut dilatih** saat pretraining
+agnostik — bukan cuma pohon yang sama dari sudut lain, tapi berkas citra yang
+identik. Angka apa pun dari `test_penuh` untuk model yang melewati pretraining
+agnostik adalah angka **train-on-test** dan tidak boleh dikutip sebagai
+performa generalisasi.
+
+`test_bersih` (76 citra, 19 pohon) benar-benar bersih dan memang dibuat untuk
+alasan ini. Itu satu-satunya himpunan yang sah untuk menilai jalur agnostik —
+dengan konsekuensi 19 pohon terlalu sedikit untuk CI yang berguna.
+
+Perbandingan yang dilaporkan di V2-E-0xx Fase 6 memakai `pred_agn953_bersih.npz`
+maupun `pred_agn953_penuh.npz`; yang boleh dibaca sebagai hasil hanya yang
+`bersih`.
+
+### 2. 44 dari 55 pohon test-352 ada di dalam train-953
+
+Split kanonik 953 (`SawitMVC-YOLO`, train 716 pohon) memuat **44 dari 55
+pohon** di split test 352 (`SawitMVC-Depth-YOLO/test`).
+
+Ini **tidak** mencemari matriks mono-depth: keenam sel dilatih dari
+`yolo26l.pt` COCO, bukan dari bobot yang pernah melihat 953, jadi sel 1-4
+tidak pernah bersinggungan dengan train-953. Yang tercemar adalah **rantai
+transfer apa pun yang memakai bobot 953 sebagai inisialisasi untuk model 352** —
+di situ 80% pohon test-352 sudah pernah dilihat. Kalau nanti ada eksperimen
+finetune 953→352, hasilnya wajib dilaporkan dengan catatan ini, atau memakai
+subset 11 pohon yang bersih (yang lagi-lagi terlalu kecil untuk CI).
+
+**Verifikasi:** kedua angka dihitung dengan mencocokkan identitas pohon
+(`DAMIMAS_A21B_<id>`, sufiks nomor tampilan dibuang) langsung dari isi
+`splits/*.txt` dan direktori `images/`, 2026-08-15.
+
+**Verdict:** tidak ada angka lama yang ditarik, tapi dua pembatas kutipan
+ditambahkan: (a) hasil agnostik hanya sah dari `test_bersih`; (b) transfer
+953→352 tidak punya split test yang bersih.

@@ -211,3 +211,15 @@ ada, penyebab kerugiannya tetap tidak diketahui.
 Detail per sel: V2-E-027 (sel 6), V2-E-030 (sel 3), V2-E-031 (sel 4),
 V2-E-032 (sintesis matriks). Riwayat per-epoch tiap run ada di
 `results/riwayat_epoch/`, log training ringkas di `results/logs_ringkas/`.
+
+### Dua pembatas kutipan yang berlaku lintas fase (V2-E-033)
+
+1. **Hasil jalur agnostik Fase 6 hanya sah dari `test_bersih`.** 512 dari 588
+   citra `agnostic953_test_penuh` (87%) ikut dilatih saat pretraining agnostik
+   — berkas citra yang identik, bukan sekadar pohon yang sama. Angka dari
+   `test_penuh` adalah train-on-test. `test_bersih` bersih total (0/76) tapi
+   cuma 19 pohon.
+2. **Tidak ada split test bersih untuk transfer 953→352.** 44 dari 55 pohon
+   test-352 ada di train-953. Matriks mono-depth tidak terdampak (keenam sel
+   init dari COCO, bukan dari bobot 953), tapi eksperimen finetune 953→352
+   apa pun wajib mencantumkan catatan ini.
