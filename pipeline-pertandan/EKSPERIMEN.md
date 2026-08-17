@@ -723,3 +723,68 @@ secara independen**. Yang tidak replikasi adalah keuntungan kelas dari
 penggabungan, tetapi test 352 terlalu kecil untuk memutuskannya (CI 10,2 pp).
 
 **Sumber** — `scripts/uji_352.py` · `results/pt_e_010_uji_352.json`
+
+---
+
+## PT-E-011 — KOREKSI: hambatannya bukan mutu detektor, melainkan kepadatan adegan (2026-08-17)
+
+**Latar** — PT-E-009 dan PT-E-010 sama-sama menyimpulkan "yang membatasi adalah
+detektor". Pemilik data menolak kesimpulan itu: menurutnya mengganti detektor
+paling naik 1-2%, dan kalau memang seberpengaruh itu, efeknya akan terlihat
+lepas dari arsitektur backbone-nya. Klaim itu diuji langsung.
+
+**Yang tidak pernah saya periksa** — kepadatan objek per citra. Seluruh argumen
+"detektor 352 lebih bersih" bersandar pada 2,7 deteksi/citra lawan 8,2, tanpa
+membandingkannya dengan jumlah objek yang memang ada di sana.
+
+**Hasil (test, conf 0,10, IoU 0,5):**
+
+| | 953 | 352 |
+|---|---|---|
+| kotak GT / citra | 4,44 | 1,86 |
+| deteksi / citra | 6,26 | 2,15 |
+| rasio deteksi:GT | 1,41x | 1,16x |
+| **presisi deteksi** | **0,584** | **0,639** |
+| **recall deteksi** | **0,823** | 0,739 |
+
+**Putusan** — **KESIMPULAN PT-E-009/010 DIPALSUKAN.** Kedua detektor mutunya
+setara: presisi beda 5,5 pp, dan detektor 953 justru **lebih baik recall-nya**
+(0,823 vs 0,739). Deteksi/citra 2,90x lebih banyak di 953 hampir seluruhnya
+dijelaskan oleh objek yang 2,39x lebih padat, bukan oleh positif palsu berlebih.
+
+**Diagnosis pengganti — kepadatan adegan, bukan mutu detektor:**
+
+| | 953 | 352 |
+|---|---|---|
+| deteksi per pohon | ~25 | ~8,6 |
+| pasangan lintas-sisi per pohon | ~235 | ~28 |
+| **prevalensi pasangan benar** | **~4%** | **~21%** |
+
+Mencari 10 pasangan benar di antara 235 versus 6 di antara 28. Tugas penautan di
+953 **secara kombinatorik ~5x lebih sulit**, dan itu sifat korpusnya (10,3 tandan
+per pohon lawan 6,5), bukan sifat detektornya. Mengganti backbone tidak mengubah
+kepadatan adegan.
+
+**Apa yang ini batalkan:**
+- "Perbaikannya harus di detektornya, bukan di ambangnya" (PT-E-009) — separuh
+  benar: ambang memang bukan alatnya, tetapi detektor juga bukan.
+- "Selisih 3,6x di ruang deteksi mengonfirmasi diagnosis PT-E-009 secara
+  independen" (PT-E-010) — **tidak sah**. Selisih itu dijelaskan kepadatan.
+
+**Apa yang ini KUATKAN:** kenapa fitur arah putar (PT-E-008) memberi lompatan
+terbesar sepanjang sub-proyek ini. Ia bekerja bukan dengan memperbaiki
+diskriminasi per pasangan, melainkan dengan **memangkas ruang kandidat** —
+persis obat untuk masalah kombinatorik. Prior lain yang mempersempit kandidat
+lebih jauh (mis. depth di korpus 352) karena itu lebih menjanjikan daripada
+detektor baru. Kaveat: E-007 Volume 1 sudah pernah memalsukan penautan berbasis
+depth, tetapi tanpa prior arah dan tanpa penilai terlatih.
+
+**Pelajaran metodologis** — ini kesalahan penyebut yang **keempat** di sub-proyek
+ini, dalam bentuk baru: membandingkan hitungan mentah (deteksi/citra) antar
+korpus tanpa menormalkannya terhadap jumlah objek yang ada. Aturan di
+`docs/HASIL.md` §13 diperluas: **periksa penyebut setiap kali dua angka
+dibandingkan — termasuk saat penyebutnya adalah "berapa banyak yang seharusnya
+ada".**
+
+**Sumber** — diukur langsung dari `results/pred_skorpenuh{,_352}_test.npz` dan
+GT kedua korpus; perintahnya ada di riwayat percakapan sesi 2026-08-17.

@@ -38,7 +38,9 @@ lalu **membandingkannya dengan pipeline yang sudah ada**. Detektor dasar:
 | ✅ | **PT-E-004** counting diulang dengan penaut baru | **G3 tetap GUGUR** | 3,4610 vs 1,0542 (Ridge) |
 | ✅ | **PT-E-009** sapu ulang `conf` deteksi | **DIPALSUKAN** | conf 0,10 sudah optimal; menaikkannya memburuk monoton |
 | ✅ | **PT-E-010** konfigurasi terbaik diuji di **SawitMVC-Depth 352** | **SEBAGIAN DIKONFIRMASI** | penaut di ruang deteksi 0,196 → **0,708** dengan detektor lebih bersih |
-| ⏳ | Perbaiki **detektor** (bukan ambangnya) | belum | PT-E-010 mengonfirmasinya secara independen |
+| ✅ | **PT-E-011** uji klaim "hambatannya detektor" | **DIPALSUKAN** | presisi 0,584 vs 0,639, recall 953 justru lebih baik |
+| ❌ | ~~Perbaiki detektor~~ | **dibatalkan** | kedua detektor setara; yang beda kepadatan adegan |
+| ⏳ | Prior yang **memangkas ruang kandidat** (mis. depth) | belum | obat untuk masalah kombinatorik, bukan detektor |
 
 ## Angka yang sudah final
 
@@ -109,10 +111,12 @@ Ambang G1 = F1 0,65 / ARI 0,55. Tidak satu pun mendekati.
 | Pergeseran recall | **YA** | +8,11 pp | **+9,64 pp** |
 | Keuntungan kelas dari penggabungan | **tidak konklusif** | +4,36 pp CI [+2,33; +6,25] | +2,85 pp CI [−2,00; +8,24] |
 
-Selisih 3,6x di ruang deteksi **mengonfirmasi diagnosis PT-E-009 secara
-independen**: detektor 352 menghasilkan 2,7 deteksi/citra pada conf 0,10 lawan
-8,2 di 953, jadi beban positif palsunya jauh lebih ringan — dan penaut langsung
-bekerja mendekati mutunya di kotak GT (0,708 vs 0,685). Di 953 jaraknya menganga.
+~~Selisih 3,6x di ruang deteksi mengonfirmasi diagnosis PT-E-009~~ — **DIBATALKAN
+oleh PT-E-011.** Kedua detektor mutunya setara (presisi 0,584 vs 0,639; recall
+953 malah lebih baik, 0,823 vs 0,739). Selisihnya dijelaskan **kepadatan adegan**:
+953 punya ~235 pasangan lintas-sisi per pohon dengan prevalensi benar ~4%,
+352 punya ~28 dengan prevalensi ~21%. Tugasnya ~5x lebih sulit secara
+kombinatorik, dan itu sifat korpus, bukan sifat detektor.
 
 Yang tidak konklusif bukan karena efeknya hilang, melainkan karena test 352 cuma
 95 pool multi-tampak lawan 758 di 953: lebar CI 10,2 pp lawan 3,9 pp. Uji itu

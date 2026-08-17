@@ -508,9 +508,19 @@ seluruh positif palsu detektor, dan ambang bukan alatnya.
 
 ## 14. Yang tersisa
 
-1. **Detektor.** Satu-satunya modul yang belum disentuh, dan kini satu-satunya
-   yang membatasi. Cakupan 90% dengan 40% kelompok palsu adalah batas yang
-   ditentukan detektor, bukan penaut atau agregator.
+> **KOREKSI (PT-E-011).** Butir 1 versi pertama berbunyi "detektor adalah
+> satu-satunya yang membatasi". Itu **dipalsukan**: presisi deteksi 0,584 (953)
+> vs 0,639 (352) — beda 5,5 pp saja — dan recall 953 justru lebih baik
+> (0,823 vs 0,739). Kedua detektor setara. Yang berbeda adalah **kepadatan
+> adegan**: ~235 pasangan lintas-sisi per pohon di 953 dengan prevalensi benar
+> ~4%, lawan ~28 dengan ~21% di 352. Mengganti backbone tidak mengubah itu.
+
+1. **Prior yang memangkas ruang kandidat.** Inilah obat untuk masalah
+   kombinatorik, dan justru itu yang menjelaskan kenapa arah putar (§12) memberi
+   lompatan terbesar: ia tidak memperbaiki diskriminasi per pasangan, ia
+   memangkas kandidatnya. Kandidat berikutnya: **depth** di korpus 352. Kaveat
+   jujur: E-007 Volume 1 sudah memalsukan penautan berbasis depth — tetapi tanpa
+   prior arah dan tanpa penilai terlatih.
 2. **PT-E-005 — classifier multi-tampak (C3).** Bentuk paling setia terhadap
    sketsa asli; sah dikerjakan karena G0 lolos. Tidak memperbaiki penaut, tetapi
    memperbesar nilai dari tandan yang berhasil disatukan.

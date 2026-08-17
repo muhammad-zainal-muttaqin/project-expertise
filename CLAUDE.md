@@ -113,6 +113,23 @@ Ringkasan singkat:
 4. **Gate init-nol pada cabang samping** — gate tidak pernah terbuka, γ ≈ 0 (F-007).
 5. **Konsistensi lintas-sisi** — plafon hanya 0,2794 (F-003).
 6. **Fusi menengah/akhir dari nol** — tidak konklusif, semua CI memuat nol (E-032).
+7. **Mengganti detektor untuk menyelesaikan masalah hilir** — tidak pernah jadi
+   pengungkit besar, dan sekarang ada ukurannya (PT-E-011, 2026-08-17). Dua
+   detektor YOLO26l yang dilatih di korpus berbeda ternyata **mutunya setara**:
+   presisi deteksi 0,584 (953) lawan 0,639 (352), dan yang 953 justru **lebih
+   baik recall-nya** (0,823 lawan 0,739). Yang tampak seperti "detektor 953 lebih
+   kotor" — 6,26 deteksi/citra lawan 2,15 — hampir seluruhnya cuma **kepadatan
+   objek**: 4,44 kotak GT/citra lawan 1,86.
+   Konsekuensinya untuk tugas hilir apa pun yang bergantung pada kandidat:
+   **mengganti backbone tidak mengubah berapa banyak tandan ada di satu pohon.**
+   Yang berubah cuma marginnya, dan pemilik data sudah memperkirakan 1-2% —
+   perkiraan itu konsisten dengan angka di atas. Kalau sebuah masalah hilir
+   ternyata kombinatorik (lihat butir BERHASIL #5), detektor bukan obatnya.
+8. **Penampilan tangan (histogram HSV, warna, ketajaman) untuk mencocokkan
+   tandan lintas-sisi** — menambah nol (PT-E-002a: AUC 0,9301 → 0,9307).
+   Penyebabnya fisik: negatif yang harus dikalahkan semuanya dari **pohon yang
+   sama**, jadi warnanya nyaris identik, sementara tandan yang sama justru
+   berubah rupa dari sudut 90° berbeda.
 
 ## Hal yang BERHASIL (boleh dibangun di atasnya)
 
@@ -120,6 +137,77 @@ Ringkasan singkat:
 2. **Pipeline counting Ridge + F_all** sudah modular dan established.
 3. **Reproyeksi depth** ke RGB sudah tervalidasi untuk SawitMVC-Depth.
 4. **Frekuensi tinggi memisahkan tandan dari pelepah** (+0,0731 B4, F-002).
+5. **Prior yang MEMANGKAS RUANG KANDIDAT** — pengungkit terkuat yang ditemukan
+   sejauh ini untuk tugas pencocokan, dan cara berpikir yang layak dibawa ke
+   masalah lain (PT-E-008, 2026-08-17).
+
+   Foto diambil **memutari pohon searah jarum jam**. Seluruh fitur geometri
+   sebelumnya memakai `|dx|` — nilai mutlak — sehingga arah pergeseran dibuang.
+   Memakai pergeseran **bertanda** menaikkan F1 penautan **0,398 → 0,649** dan
+   membalikkan dua gerbang dari gugur menjadi lolos. Konsistensi arahnya
+   98,6%/99,7% di korpus 953 dan **98,4%/99,0% di korpus 352** — sesi akuisisi
+   terpisah ~80 hari, kamera dan orientasi citra berbeda. Jadi ini sifat
+   protokol pengambilan, bukan kebetulan satu sesi.
+
+   **Kenapa ini bekerja, dan kenapa detektor tidak.** Mencocokkan tandan di 953
+   berarti mencari ~10 pasangan benar di antara ~235 pasangan lintas-sisi per
+   pohon (prevalensi ~4%); di 352, ~6 di antara ~28 (~21%). Masalahnya
+   **kombinatorik**. Prior arah tidak mempertajam penilaian per pasangan — ia
+   membuang sebagian besar kandidat sebelum dinilai. Itu obat yang tepat.
+   Detektor yang lebih baik tidak mengurangi jumlah tandan per pohon.
+
+   **Yang belum dicoba dan paling menjanjikan berikutnya:** prior lain yang
+   memangkas kandidat, terutama **depth di korpus 352** — jarak fisik tandan
+   dari kamera, digabung arah putar, praktis menetapkan posisi 3D-nya. Kaveat
+   jujur: E-007 (Volume 1) sudah pernah memalsukan penautan berbasis depth,
+   tetapi **tanpa prior arah dan tanpa penilai terlatih**.
+
+6. **Agregasi multi-tampak menaikkan akurasi kelas** (PT-E-001/003). Pada tandan
+   yang terlihat di >=2 sisi: **+4,36 pp** dengan tautan sempurna (CI95
+   [+2,33; +6,25]) dan **+5,32 pp** saat pipeline berjalan tanpa GT sama sekali
+   (CI95 [+2,09; +8,42]), replikasi val→test. Aturan yang menang: **ekspektasi
+   ordinal** dengan ambang dilatih di val — bukan voting (85,5% tandan yang bisa
+   di-pool hanya punya DUA sisi, jadi voting selalu seri) dan bukan rerata
+   softmax biasa.
+
+   Kaveat: butuh split val yang cukup besar. Di 352 (52 pohon val) ambang
+   ordinalnya overfit dan aturan ini kalah dari rerata softmax di test.
+
+## Sub-proyek `pipeline-pertandan/` (2026-08-17)
+
+Satuan inferensi dipindah dari kotak-per-citra ke **tandan fisik per pohon**:
+deteksi per sisi → penautan lintas-sisi → satu keputusan kelas per tandan.
+Dua belas eksperimen (`PT-E-000`…`PT-E-011`) di dua dataset, penomoran terpisah
+dari deret `V2-E-*` supaya tidak tabrakan.
+
+Baca [`pipeline-pertandan/STATUS.md`](pipeline-pertandan/STATUS.md) dulu kalau
+melanjutkan. Ringkasnya:
+
+| Gerbang | Putusan | Angka (test 953) |
+|---|---|---|
+| G0 agregasi berguna | **LOLOS** | +4,36 pp, CI95 [+2,33; +6,25] |
+| G1 penaut cukup baik | **LOLOS** | val F1 0,6718 / ARI 0,6139 |
+| G2 pipeline utuh | **LOLOS** | −1,81 pp dari plafon oracle |
+| G3 counting | **GUGUR** | macro MAE 3,66 lawan 1,0542 (Ridge+F_all) |
+
+**Yang belum dikerjakan dan paling layak berikutnya:** modul **C3**, classifier
+multi-tampak — satu model melihat SEMUA foto tandan itu sekaligus dan
+memutuskan sendiri cara menggabungkannya, alih-alih tiap foto dinilai terpisah
+lalu digabung rumus di luar model. Ini bentuk yang paling setia terhadap sketsa
+asal (`pipeline-pertandan/docs/sketsa-asal-2026-07-22.png`), sah dikerjakan
+karena G0 lolos, dan biayanya ~4 jam GPU. Batasnya jujur: ia hanya memperbesar
+nilai dari tandan yang **berhasil** disatukan (22-29% di korpus 953, 60%+ di
+352) dan tidak menyentuh masalah kepadatan.
+
+**Untuk counting, jangan pakai jalur pool.** Ridge+F_all (1,0542) dan M01
+Baseline-SawitMVC yang dikalibrasi ulang di deteksi (1,18) sudah mendekati batas
+yang ditentukan detektor; menghitung pool mewarisi seluruh positif palsunya.
+
+**Kaveat pengutipan yang penting.** Angka `Acc±1 87,62% / macro MAE 0,3746` di
+`ULM-SawitMVC/Baseline-SawitMVC` `algorithms/README.md` adalah angka **kotak
+GT**, bukan end-to-end — tereproduksi persis sampai empat desimal (PT-E-006).
+Dengan deteksi nyata dari detektor repo itu sendiri, M01 memberi 1,1826. Jangan
+mengutipnya berdampingan dengan angka end-to-end.
 
 ## Cara kerja
 

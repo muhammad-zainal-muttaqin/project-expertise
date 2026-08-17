@@ -15,10 +15,12 @@ tandan yang sama, keluar satu label `B1/B2/B3`.
 
 | | |
 |---|---|
-| Proposal | **disetujui 2026-08-17** |
-| Eksperimen dijalankan | **belum satu pun** |
-| Penomoran | `PT-E-001` … `PT-E-005` (deret sendiri, bukan `V2-E-*`) |
-| Pemblokir aktif | lokasi algoritma dedup yang sudah ada — lihat [PROPOSAL §5.2](docs/PROPOSAL.md) |
+| Proposal | disetujui 2026-08-17 |
+| Eksperimen dijalankan | **PT-E-000 … PT-E-011, dua dataset** |
+| Penomoran | deret `PT-E-*` sendiri, bukan `V2-E-*` |
+| Gerbang | G0/G1/G2 **LOLOS**, G3 **GUGUR** — lihat [STATUS.md](STATUS.md) |
+| Diagnosis yang berlaku | **kepadatan adegan (kombinatorik)**, bukan mutu detektor — [CLAUDE.md §6](CLAUDE.md) |
+| Berikutnya | modul **C3** classifier multi-tampak, lalu prior depth — [CLAUDE.md §7](CLAUDE.md) |
 
 ## Mulai dari mana
 
