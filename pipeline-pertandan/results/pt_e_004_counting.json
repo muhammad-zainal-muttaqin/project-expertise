@@ -1,0 +1,139 @@
+{
+ "conf": 0.1,
+ "ambang_penaut": 0.3,
+ "tau": [
+  0.6,
+  1.7,
+  2.6
+ ],
+ "k_global": 1.8905,
+ "k_per_kelas_dari_train": [
+  2.5954,
+  1.6844,
+  2.8745,
+  2.8467
+ ],
+ "catatan_pas": "C3 dan C5 dipas di TRAIN (716 pohon), dievaluasi di TEST — protokol repo induk",
+ "split": {
+  "train": {
+   "C1_naif": {
+    "macro_mae": 4.4288,
+    "class_pm1_acc": 0.3506,
+    "tree_pm1_acc": 0.0056,
+    "bias_total": 16.8743,
+    "n_pohon": 716
+   },
+   "C2_k_global": {
+    "macro_mae": 1.5631,
+    "class_pm1_acc": 0.5024,
+    "tree_pm1_acc": 0.0531,
+    "bias_total": 4.0398,
+    "n_pohon": 716
+   },
+   "C3_k_per_kelas": {
+    "macro_mae": 1.0468,
+    "class_pm1_acc": 0.6226,
+    "tree_pm1_acc": 0.1732,
+    "bias_total": 0.0,
+    "n_pohon": 716
+   },
+   "C4_hitung_pool": {
+    "macro_mae": 2.764,
+    "class_pm1_acc": 0.4686,
+    "tree_pm1_acc": 0.0168,
+    "bias_total": 9.9106,
+    "n_pohon": 716
+   },
+   "C5_ridge_fall": {
+    "macro_mae": 0.9307,
+    "class_pm1_acc": 0.6536,
+    "tree_pm1_acc": 0.1941,
+    "bias_total": 0.0054,
+    "n_pohon": 716
+   }
+  },
+  "val": {
+   "C1_naif": {
+    "macro_mae": 4.5729,
+    "class_pm1_acc": 0.3385,
+    "tree_pm1_acc": 0.0104,
+    "bias_total": 16.8958,
+    "n_pohon": 96
+   },
+   "C2_k_global": {
+    "macro_mae": 1.7528,
+    "class_pm1_acc": 0.4453,
+    "tree_pm1_acc": 0.0521,
+    "bias_total": 4.0698,
+    "n_pohon": 96
+   },
+   "C3_k_per_kelas": {
+    "macro_mae": 1.1899,
+    "class_pm1_acc": 0.5755,
+    "tree_pm1_acc": 0.1562,
+    "bias_total": -0.0383,
+    "n_pohon": 96
+   },
+   "C4_hitung_pool": {
+    "macro_mae": 3.4714,
+    "class_pm1_acc": 0.3776,
+    "tree_pm1_acc": 0.0104,
+    "bias_total": 12.4062,
+    "n_pohon": 96
+   },
+   "C5_ridge_fall": {
+    "macro_mae": 1.0897,
+    "class_pm1_acc": 0.5807,
+    "tree_pm1_acc": 0.1562,
+    "bias_total": -0.0123,
+    "n_pohon": 96
+   }
+  },
+  "test": {
+   "C1_naif": {
+    "macro_mae": 4.3582,
+    "class_pm1_acc": 0.3741,
+    "tree_pm1_acc": 0.0142,
+    "bias_total": 16.1277,
+    "n_pohon": 141
+   },
+   "C2_k_global": {
+    "macro_mae": 1.6696,
+    "class_pm1_acc": 0.5,
+    "tree_pm1_acc": 0.078,
+    "bias_total": 3.8405,
+    "n_pohon": 141
+   },
+   "C3_k_per_kelas": {
+    "macro_mae": 1.1854,
+    "class_pm1_acc": 0.5709,
+    "tree_pm1_acc": 0.1064,
+    "bias_total": -0.0816,
+    "n_pohon": 141
+   },
+   "C4_hitung_pool": {
+    "macro_mae": 3.461,
+    "class_pm1_acc": 0.4113,
+    "tree_pm1_acc": 0.0426,
+    "bias_total": 12.539,
+    "n_pohon": 141
+   },
+   "C5_ridge_fall": {
+    "macro_mae": 1.0542,
+    "class_pm1_acc": 0.6064,
+    "tree_pm1_acc": 0.1489,
+    "bias_total": -0.0427,
+    "n_pohon": 141
+   }
+  }
+ },
+ "gerbang_G3": {
+  "syarat": "macro MAE C4 (hitung pool) < pembanding terbaik lainnya di test",
+  "C4": 3.461,
+  "pembanding_terbaik": [
+   1.0542,
+   "C5_ridge_fall"
+  ],
+  "putusan": "GUGUR"
+ }
+}

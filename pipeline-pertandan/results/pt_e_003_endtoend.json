@@ -1,0 +1,430 @@
+{
+ "conf": 0.1,
+ "skema": "conf_luas",
+ "tau": [
+  0.6,
+  1.7,
+  2.6
+ ],
+ "penaut": "E_reid_plus_kelas_prediksi",
+ "ambang_penaut": 0.45,
+ "pakai_kelas_sama": false,
+ "pakai_prob_prediksi": true,
+ "pakai_reid": true,
+ "sapuan_ambang_val_deteksi": {
+  "0.10": {
+   "R4_semua": 0.7067,
+   "n_multi": 290,
+   "R4_multi": 0.6828,
+   "f1_pasangan": 0.268,
+   "frac_pool_palsu": 0.3881
+  },
+  "0.18": {
+   "R4_semua": 0.7067,
+   "n_multi": 278,
+   "R4_multi": 0.6978,
+   "f1_pasangan": 0.2689,
+   "frac_pool_palsu": 0.3896
+  },
+  "0.25": {
+   "R4_semua": 0.7079,
+   "n_multi": 272,
+   "R4_multi": 0.6985,
+   "f1_pasangan": 0.2668,
+   "frac_pool_palsu": 0.389
+  },
+  "0.35": {
+   "R4_semua": 0.7079,
+   "n_multi": 261,
+   "R4_multi": 0.6973,
+   "f1_pasangan": 0.2596,
+   "frac_pool_palsu": 0.3893
+  },
+  "0.45": {
+   "R4_semua": 0.7112,
+   "n_multi": 246,
+   "R4_multi": 0.7114,
+   "f1_pasangan": 0.2595,
+   "frac_pool_palsu": 0.3896
+  }
+ },
+ "split": {
+  "val": {
+   "penautan_di_atas_deteksi": {
+    "presisi": 0.5037,
+    "recall": 0.1747,
+    "f1": 0.2595,
+    "ari": 0.1877,
+    "n_pool": 2202,
+    "n_pool_seluruhnya_positif_palsu": 858,
+    "frac_pool_palsu": 0.3896
+   },
+   "n_tandan_dievaluasi": 890,
+   "PENAUT_NYATA": {
+    "R0": {
+     "akurasi": 0.6967,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.2899,
+     "macro_f1": 0.6776,
+     "recall_per_kelas": {
+      "B1": 0.764,
+      "B2": 0.3596,
+      "B3": 0.8377,
+      "B4": 0.7186
+     },
+     "n": 890
+    },
+    "R0cal": {
+     "akurasi": 0.7022,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.291,
+     "macro_f1": 0.6787,
+     "recall_per_kelas": {
+      "B1": 0.7753,
+      "B2": 0.4213,
+      "B3": 0.8333,
+      "B4": 0.6527
+     },
+     "n": 890
+    },
+    "R1": {
+     "akurasi": 0.7124,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.2899,
+     "macro_f1": 0.6776,
+     "recall_per_kelas": {
+      "B1": 0.764,
+      "B2": 0.3596,
+      "B3": 0.8377,
+      "B4": 0.7186
+     },
+     "n": 890
+    },
+    "R2": {
+     "akurasi": 0.7067,
+     "akurasi_pm1": 0.9955,
+     "mae_ordinal": 0.2978,
+     "macro_f1": 0.673,
+     "recall_per_kelas": {
+      "B1": 0.7416,
+      "B2": 0.3596,
+      "B3": 0.8246,
+      "B4": 0.7365
+     },
+     "n": 890
+    },
+    "R3": {
+     "akurasi": 0.7112,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.291,
+     "macro_f1": 0.6786,
+     "recall_per_kelas": {
+      "B1": 0.764,
+      "B2": 0.3596,
+      "B3": 0.8311,
+      "B4": 0.7305
+     },
+     "n": 890
+    },
+    "R4": {
+     "akurasi": 0.7112,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.291,
+     "macro_f1": 0.6799,
+     "recall_per_kelas": {
+      "B1": 0.764,
+      "B2": 0.4382,
+      "B3": 0.8333,
+      "B4": 0.6407
+     },
+     "n": 890
+    }
+   },
+   "TAUTAN_ORACLE": {
+    "R0": {
+     "akurasi": 0.7062,
+     "akurasi_pm1": 0.9978,
+     "mae_ordinal": 0.2831,
+     "macro_f1": 0.6819,
+     "recall_per_kelas": {
+      "B1": 0.7753,
+      "B2": 0.3539,
+      "B3": 0.8443,
+      "B4": 0.7365
+     },
+     "n": 890
+    },
+    "R4": {
+     "akurasi": 0.7562,
+     "akurasi_pm1": 0.9966,
+     "mae_ordinal": 0.2472,
+     "macro_f1": 0.7368,
+     "recall_per_kelas": {
+      "B1": 0.8427,
+      "B2": 0.5393,
+      "B3": 0.8553,
+      "B4": 0.6707
+     },
+     "n": 890
+    }
+   },
+   "HANYA_multi_tampak": {
+    "n_nyata": 246,
+    "n_oracle": 565,
+    "nyata_R4": {
+     "akurasi": 0.7114,
+     "akurasi_pm1": 1.0,
+     "mae_ordinal": 0.2886,
+     "macro_f1": 0.6868,
+     "recall_per_kelas": {
+      "B1": 0.8462,
+      "B2": 0.5098,
+      "B3": 0.8291,
+      "B4": 0.4872
+     },
+     "n": 246
+    },
+    "nyata_R0cal": {
+     "akurasi": 0.6785,
+     "akurasi_pm1": 1.0,
+     "mae_ordinal": 0.2886,
+     "macro_f1": 0.6842,
+     "recall_per_kelas": {
+      "B1": 0.8718,
+      "B2": 0.451,
+      "B3": 0.8291,
+      "B4": 0.5385
+     },
+     "n": 246
+    },
+    "oracle_R4": {
+     "akurasi": 0.7982,
+     "akurasi_pm1": 0.9965,
+     "mae_ordinal": 0.2053,
+     "macro_f1": 0.7838,
+     "recall_per_kelas": {
+      "B1": 0.8767,
+      "B2": 0.6311,
+      "B3": 0.8649,
+      "B4": 0.7297
+     },
+     "n": 565
+    }
+   },
+   "bootstrap": {
+    "nyata_R4_vs_R0": {
+     "delta_pp": 1.488,
+     "ci95_pp": [
+      -0.507,
+      3.406
+     ],
+     "P_delta_gt_0": 0.9285,
+     "n_pohon": 96,
+     "n_pool": 890
+    },
+    "nyata_R4_vs_R0cal_multi": {
+     "delta_pp": 3.278,
+     "ci95_pp": [
+      -0.175,
+      6.543
+     ],
+     "P_delta_gt_0": 0.968,
+     "n_pohon": 79,
+     "n_pool": 246
+    }
+   }
+  },
+  "test": {
+   "penautan_di_atas_deteksi": {
+    "presisi": 0.4452,
+    "recall": 0.122,
+    "f1": 0.1915,
+    "ari": 0.1685,
+    "n_pool": 3213,
+    "n_pool_seluruhnya_positif_palsu": 1291,
+    "frac_pool_palsu": 0.4018
+   },
+   "n_tandan_dievaluasi": 1269,
+   "PENAUT_NYATA": {
+    "R0": {
+     "akurasi": 0.7056,
+     "akurasi_pm1": 0.9937,
+     "mae_ordinal": 0.2947,
+     "macro_f1": 0.6717,
+     "recall_per_kelas": {
+      "B1": 0.7652,
+      "B2": 0.3739,
+      "B3": 0.827,
+      "B4": 0.6923
+     },
+     "n": 1269
+    },
+    "R0cal": {
+     "akurasi": 0.7053,
+     "akurasi_pm1": 0.9968,
+     "mae_ordinal": 0.2947,
+     "macro_f1": 0.6776,
+     "recall_per_kelas": {
+      "B1": 0.7913,
+      "B2": 0.4622,
+      "B3": 0.8109,
+      "B4": 0.6197
+     },
+     "n": 1269
+    },
+    "R1": {
+     "akurasi": 0.7116,
+     "akurasi_pm1": 0.9937,
+     "mae_ordinal": 0.2947,
+     "macro_f1": 0.6717,
+     "recall_per_kelas": {
+      "B1": 0.7652,
+      "B2": 0.3739,
+      "B3": 0.827,
+      "B4": 0.6923
+     },
+     "n": 1269
+    },
+    "R2": {
+     "akurasi": 0.7139,
+     "akurasi_pm1": 0.9953,
+     "mae_ordinal": 0.2908,
+     "macro_f1": 0.675,
+     "recall_per_kelas": {
+      "B1": 0.7652,
+      "B2": 0.3782,
+      "B3": 0.824,
+      "B4": 0.7094
+     },
+     "n": 1269
+    },
+    "R3": {
+     "akurasi": 0.7108,
+     "akurasi_pm1": 0.9937,
+     "mae_ordinal": 0.2955,
+     "macro_f1": 0.6699,
+     "recall_per_kelas": {
+      "B1": 0.7652,
+      "B2": 0.3697,
+      "B3": 0.827,
+      "B4": 0.6923
+     },
+     "n": 1269
+    },
+    "R4": {
+     "akurasi": 0.7179,
+     "akurasi_pm1": 0.9976,
+     "mae_ordinal": 0.2845,
+     "macro_f1": 0.686,
+     "recall_per_kelas": {
+      "B1": 0.7913,
+      "B2": 0.4958,
+      "B3": 0.8182,
+      "B4": 0.6154
+     },
+     "n": 1269
+    }
+   },
+   "TAUTAN_ORACLE": {
+    "R0": {
+     "akurasi": 0.7122,
+     "akurasi_pm1": 0.9961,
+     "mae_ordinal": 0.2766,
+     "macro_f1": 0.6851,
+     "recall_per_kelas": {
+      "B1": 0.7739,
+      "B2": 0.3782,
+      "B3": 0.8475,
+      "B4": 0.7094
+     },
+     "n": 1269
+    },
+    "R4": {
+     "akurasi": 0.736,
+     "akurasi_pm1": 0.9984,
+     "mae_ordinal": 0.2656,
+     "macro_f1": 0.7084,
+     "recall_per_kelas": {
+      "B1": 0.7826,
+      "B2": 0.542,
+      "B3": 0.8343,
+      "B4": 0.6239
+     },
+     "n": 1269
+    }
+   },
+   "HANYA_multi_tampak": {
+    "n_nyata": 309,
+    "n_oracle": 758,
+    "nyata_R4": {
+     "akurasi": 0.7314,
+     "akurasi_pm1": 1.0,
+     "mae_ordinal": 0.2686,
+     "macro_f1": 0.6773,
+     "recall_per_kelas": {
+      "B1": 0.9091,
+      "B2": 0.5857,
+      "B3": 0.8452,
+      "B4": 0.35
+     },
+     "n": 309
+    },
+    "nyata_R0cal": {
+     "akurasi": 0.6798,
+     "akurasi_pm1": 0.9968,
+     "mae_ordinal": 0.3107,
+     "macro_f1": 0.6474,
+     "recall_per_kelas": {
+      "B1": 0.9091,
+      "B2": 0.4714,
+      "B3": 0.8129,
+      "B4": 0.375
+     },
+     "n": 309
+    },
+    "oracle_R4": {
+     "akurasi": 0.7691,
+     "akurasi_pm1": 1.0,
+     "mae_ordinal": 0.2309,
+     "macro_f1": 0.7321,
+     "recall_per_kelas": {
+      "B1": 0.8454,
+      "B2": 0.6025,
+      "B3": 0.8631,
+      "B4": 0.5604
+     },
+     "n": 758
+    }
+   },
+   "bootstrap": {
+    "nyata_R4_vs_R0": {
+     "delta_pp": 1.261,
+     "ci95_pp": [
+      -0.626,
+      3.184
+     ],
+     "P_delta_gt_0": 0.912,
+     "n_pohon": 138,
+     "n_pool": 1269
+    },
+    "nyata_R4_vs_R0cal_multi": {
+     "delta_pp": 5.104,
+     "ci95_pp": [
+      1.94,
+      8.333
+     ],
+     "P_delta_gt_0": 0.9995,
+     "n_pohon": 112,
+     "n_pool": 309
+    }
+   }
+  }
+ },
+ "gerbang_G2": {
+  "syarat": "akurasi R4 penaut nyata >= akurasi R4 oracle - 2,0 pp (test)",
+  "nyata": 0.7179,
+  "oracle": 0.736,
+  "selisih_pp": -1.81,
+  "putusan": "LOLOS"
+ }
+}

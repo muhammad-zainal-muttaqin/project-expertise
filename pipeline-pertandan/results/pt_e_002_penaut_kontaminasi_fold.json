@@ -1,0 +1,482 @@
+{
+ "seed": 0,
+ "fitur_geometri": [
+  "gap_sisi",
+  "gap_ternorm",
+  "n_sisi",
+  "abs_dcx",
+  "abs_dcy",
+  "rasio_area",
+  "rasio_w",
+  "rasio_h",
+  "delta_aspek",
+  "cy_rerata",
+  "kelas_sama",
+  "log_rasio_area"
+ ],
+ "fitur_penampilan": [
+  "hist_intersect",
+  "hist_chi2",
+  "hist_bhatt",
+  "d_mean_hsv",
+  "d_std_hsv",
+  "d_log_tajam"
+ ],
+ "varian": {
+  "A_geometri_saja": {
+   "n_pasangan_train": 121891,
+   "n_positif_train": 8034,
+   "per_pasangan_val": {
+    "roc_auc": 0.9301,
+    "f1_terbaik": 0.485,
+    "presisi": 0.3669,
+    "recall": 0.7155
+   },
+   "sapuan_val": {
+    "0.10": {
+     "presisi": 0.382,
+     "recall": 0.5408,
+     "f1": 0.4477,
+     "ari": 0.4282,
+     "bias_jumlah": -1.323,
+     "mae_jumlah": 1.594
+    },
+    "0.15": {
+     "presisi": 0.3909,
+     "recall": 0.5352,
+     "f1": 0.4518,
+     "ari": 0.4385,
+     "bias_jumlah": -1.062,
+     "mae_jumlah": 1.479
+    },
+    "0.20": {
+     "presisi": 0.3931,
+     "recall": 0.5061,
+     "f1": 0.4425,
+     "ari": 0.4166,
+     "bias_jumlah": -0.49,
+     "mae_jumlah": 1.469
+    },
+    "0.25": {
+     "presisi": 0.3997,
+     "recall": 0.4845,
+     "f1": 0.438,
+     "ari": 0.3966,
+     "bias_jumlah": 0.031,
+     "mae_jumlah": 1.51
+    },
+    "0.30": {
+     "presisi": 0.3988,
+     "recall": 0.4479,
+     "f1": 0.4219,
+     "ari": 0.3699,
+     "bias_jumlah": 0.719,
+     "mae_jumlah": 1.76
+    },
+    "0.40": {
+     "presisi": 0.4497,
+     "recall": 0.2601,
+     "f1": 0.3296,
+     "ari": 0.2435,
+     "bias_jumlah": 4.74,
+     "mae_jumlah": 4.76
+    },
+    "0.50": {
+     "presisi": 0.5257,
+     "recall": 0.0864,
+     "f1": 0.1484,
+     "ari": 0.0489,
+     "bias_jumlah": 8.177,
+     "mae_jumlah": 8.177
+    }
+   },
+   "ambang_dikunci_dari_val": 0.15,
+   "val": {
+    "presisi": 0.3909,
+    "recall": 0.5352,
+    "f1": 0.4518,
+    "ari": 0.4385,
+    "bias_jumlah": -1.062,
+    "mae_jumlah": 1.479
+   },
+   "pakai_kelas_sama": true,
+   "pakai_prob_prediksi": false,
+   "pakai_reid": false,
+   "test_sekali": {
+    "presisi": 0.3742,
+    "recall": 0.5003,
+    "f1": 0.4282,
+    "ari": 0.3912,
+    "bias_jumlah": -0.884,
+    "mae_jumlah": 1.319
+   }
+  },
+  "B_geo_penampilan": {
+   "n_pasangan_train": 121891,
+   "n_positif_train": 8034,
+   "per_pasangan_val": {
+    "roc_auc": 0.9307,
+    "f1_terbaik": 0.4865,
+    "presisi": 0.356,
+    "recall": 0.7681
+   },
+   "sapuan_val": {
+    "0.10": {
+     "presisi": 0.3826,
+     "recall": 0.5418,
+     "f1": 0.4485,
+     "ari": 0.426,
+     "bias_jumlah": -1.375,
+     "mae_jumlah": 1.708
+    },
+    "0.15": {
+     "presisi": 0.3879,
+     "recall": 0.5277,
+     "f1": 0.4471,
+     "ari": 0.4223,
+     "bias_jumlah": -1.0,
+     "mae_jumlah": 1.604
+    },
+    "0.20": {
+     "presisi": 0.3942,
+     "recall": 0.5089,
+     "f1": 0.4443,
+     "ari": 0.4149,
+     "bias_jumlah": -0.51,
+     "mae_jumlah": 1.365
+    },
+    "0.25": {
+     "presisi": 0.4046,
+     "recall": 0.4836,
+     "f1": 0.4405,
+     "ari": 0.3963,
+     "bias_jumlah": 0.094,
+     "mae_jumlah": 1.448
+    },
+    "0.30": {
+     "presisi": 0.4114,
+     "recall": 0.4423,
+     "f1": 0.4262,
+     "ari": 0.3733,
+     "bias_jumlah": 0.969,
+     "mae_jumlah": 1.802
+    },
+    "0.40": {
+     "presisi": 0.4524,
+     "recall": 0.2854,
+     "f1": 0.35,
+     "ari": 0.275,
+     "bias_jumlah": 4.177,
+     "mae_jumlah": 4.281
+    },
+    "0.50": {
+     "presisi": 0.4884,
+     "recall": 0.0789,
+     "f1": 0.1358,
+     "ari": 0.0513,
+     "bias_jumlah": 8.052,
+     "mae_jumlah": 8.052
+    }
+   },
+   "ambang_dikunci_dari_val": 0.1,
+   "val": {
+    "presisi": 0.3826,
+    "recall": 0.5418,
+    "f1": 0.4485,
+    "ari": 0.426,
+    "bias_jumlah": -1.375,
+    "mae_jumlah": 1.708
+   },
+   "pakai_kelas_sama": true,
+   "pakai_prob_prediksi": false,
+   "pakai_reid": false,
+   "test_sekali": {
+    "presisi": 0.3673,
+    "recall": 0.5156,
+    "f1": 0.429,
+    "ari": 0.3937,
+    "bias_jumlah": -1.232,
+    "mae_jumlah": 1.507
+   }
+  },
+  "B2_tanpa_fitur_kelas": {
+   "n_pasangan_train": 121891,
+   "n_positif_train": 8034,
+   "per_pasangan_val": {
+    "roc_auc": 0.8228,
+    "f1_terbaik": 0.3154,
+    "presisi": 0.2299,
+    "recall": 0.5023
+   },
+   "sapuan_val": {
+    "0.10": {
+     "presisi": 0.2172,
+     "recall": 0.3108,
+     "f1": 0.2557,
+     "ari": 0.2243,
+     "bias_jumlah": -1.104,
+     "mae_jumlah": 1.771
+    },
+    "0.15": {
+     "presisi": 0.225,
+     "recall": 0.2939,
+     "f1": 0.2549,
+     "ari": 0.2186,
+     "bias_jumlah": -0.281,
+     "mae_jumlah": 1.656
+    },
+    "0.20": {
+     "presisi": 0.2523,
+     "recall": 0.2545,
+     "f1": 0.2534,
+     "ari": 0.2005,
+     "bias_jumlah": 1.635,
+     "mae_jumlah": 2.052
+    },
+    "0.25": {
+     "presisi": 0.262,
+     "recall": 0.1484,
+     "f1": 0.1894,
+     "ari": 0.121,
+     "bias_jumlah": 5.156,
+     "mae_jumlah": 5.198
+    },
+    "0.30": {
+     "presisi": 0.2644,
+     "recall": 0.0817,
+     "f1": 0.1248,
+     "ari": 0.0588,
+     "bias_jumlah": 7.271,
+     "mae_jumlah": 7.271
+    },
+    "0.40": {
+     "presisi": 0.3247,
+     "recall": 0.0235,
+     "f1": 0.0438,
+     "ari": 0.0075,
+     "bias_jumlah": 8.812,
+     "mae_jumlah": 8.812
+    },
+    "0.50": {
+     "presisi": 0.2857,
+     "recall": 0.0056,
+     "f1": 0.011,
+     "ari": 0.0018,
+     "bias_jumlah": 9.146,
+     "mae_jumlah": 9.146
+    }
+   },
+   "ambang_dikunci_dari_val": 0.1,
+   "val": {
+    "presisi": 0.2172,
+    "recall": 0.3108,
+    "f1": 0.2557,
+    "ari": 0.2243,
+    "bias_jumlah": -1.104,
+    "mae_jumlah": 1.771
+   },
+   "pakai_kelas_sama": false,
+   "pakai_prob_prediksi": false,
+   "pakai_reid": false,
+   "test_sekali": {
+    "presisi": 0.2179,
+    "recall": 0.3079,
+    "f1": 0.2552,
+    "ari": 0.2123,
+    "bias_jumlah": -1.188,
+    "mae_jumlah": 1.609
+   }
+  },
+  "D_kelas_prediksi_lunak": {
+   "n_pasangan_train": 121891,
+   "n_positif_train": 8034,
+   "per_pasangan_val": {
+    "roc_auc": 0.8858,
+    "f1_terbaik": 0.4308,
+    "presisi": 0.3866,
+    "recall": 0.4864
+   },
+   "sapuan_val": {
+    "0.10": {
+     "presisi": 0.3078,
+     "recall": 0.4488,
+     "f1": 0.3652,
+     "ari": 0.3199,
+     "bias_jumlah": -1.312,
+     "mae_jumlah": 1.667
+    },
+    "0.15": {
+     "presisi": 0.3259,
+     "recall": 0.4366,
+     "f1": 0.3732,
+     "ari": 0.3228,
+     "bias_jumlah": -0.646,
+     "mae_jumlah": 1.5
+    },
+    "0.20": {
+     "presisi": 0.3377,
+     "recall": 0.4103,
+     "f1": 0.3705,
+     "ari": 0.3097,
+     "bias_jumlah": 0.219,
+     "mae_jumlah": 1.49
+    },
+    "0.25": {
+     "presisi": 0.3436,
+     "recall": 0.3869,
+     "f1": 0.364,
+     "ari": 0.3025,
+     "bias_jumlah": 0.854,
+     "mae_jumlah": 1.729
+    },
+    "0.30": {
+     "presisi": 0.3688,
+     "recall": 0.3484,
+     "f1": 0.3583,
+     "ari": 0.2952,
+     "bias_jumlah": 2.073,
+     "mae_jumlah": 2.448
+    },
+    "0.40": {
+     "presisi": 0.4496,
+     "recall": 0.2263,
+     "f1": 0.3011,
+     "ari": 0.2037,
+     "bias_jumlah": 5.323,
+     "mae_jumlah": 5.323
+    },
+    "0.50": {
+     "presisi": 0.6154,
+     "recall": 0.1052,
+     "f1": 0.1796,
+     "ari": 0.0713,
+     "bias_jumlah": 8.115,
+     "mae_jumlah": 8.115
+    }
+   },
+   "ambang_dikunci_dari_val": 0.15,
+   "val": {
+    "presisi": 0.3259,
+    "recall": 0.4366,
+    "f1": 0.3732,
+    "ari": 0.3228,
+    "bias_jumlah": -0.646,
+    "mae_jumlah": 1.5
+   },
+   "pakai_kelas_sama": false,
+   "pakai_prob_prediksi": true,
+   "pakai_reid": false,
+   "test_sekali": {
+    "presisi": 0.3153,
+    "recall": 0.4336,
+    "f1": 0.3651,
+    "ari": 0.3069,
+    "bias_jumlah": -0.957,
+    "mae_jumlah": 1.565
+   }
+  },
+  "E_reid_plus_kelas_prediksi": {
+   "n_pasangan_train": 121891,
+   "n_positif_train": 8034,
+   "per_pasangan_val": {
+    "roc_auc": 0.5778,
+    "f1_terbaik": 0.2353,
+    "presisi": 0.3455,
+    "recall": 0.1784
+   },
+   "sapuan_val": {
+    "0.10": {
+     "presisi": 0.3477,
+     "recall": 0.1671,
+     "f1": 0.2257,
+     "ari": 0.1542,
+     "bias_jumlah": 5.552,
+     "mae_jumlah": 5.615
+    },
+    "0.15": {
+     "presisi": 0.352,
+     "recall": 0.1653,
+     "f1": 0.2249,
+     "ari": 0.1541,
+     "bias_jumlah": 5.667,
+     "mae_jumlah": 5.708
+    },
+    "0.20": {
+     "presisi": 0.3579,
+     "recall": 0.1643,
+     "f1": 0.2252,
+     "ari": 0.1544,
+     "bias_jumlah": 5.74,
+     "mae_jumlah": 5.76
+    },
+    "0.25": {
+     "presisi": 0.3591,
+     "recall": 0.1615,
+     "f1": 0.2228,
+     "ari": 0.1514,
+     "bias_jumlah": 5.823,
+     "mae_jumlah": 5.823
+    },
+    "0.30": {
+     "presisi": 0.3646,
+     "recall": 0.1606,
+     "f1": 0.2229,
+     "ari": 0.1509,
+     "bias_jumlah": 5.854,
+     "mae_jumlah": 5.854
+    },
+    "0.40": {
+     "presisi": 0.3676,
+     "recall": 0.1577,
+     "f1": 0.2208,
+     "ari": 0.1466,
+     "bias_jumlah": 5.948,
+     "mae_jumlah": 5.948
+    },
+    "0.50": {
+     "presisi": 0.371,
+     "recall": 0.1512,
+     "f1": 0.2148,
+     "ari": 0.1393,
+     "bias_jumlah": 6.156,
+     "mae_jumlah": 6.156
+    }
+   },
+   "ambang_dikunci_dari_val": 0.1,
+   "val": {
+    "presisi": 0.3477,
+    "recall": 0.1671,
+    "f1": 0.2257,
+    "ari": 0.1542,
+    "bias_jumlah": 5.552,
+    "mae_jumlah": 5.615
+   },
+   "pakai_kelas_sama": false,
+   "pakai_prob_prediksi": true,
+   "pakai_reid": true,
+   "test_sekali": {
+    "presisi": 0.326,
+    "recall": 0.1244,
+    "f1": 0.1801,
+    "ari": 0.13,
+    "bias_jumlah": 5.732,
+    "mae_jumlah": 5.732
+   }
+  }
+ },
+ "kontribusi_val": {
+  "penampilan_tangan_B_vs_A": -0.0033,
+  "buang_fitur_kelas_B2_vs_B": -0.1928,
+  "kelas_prediksi_lunak_D_vs_B2": 0.1175,
+  "reid_E_vs_D": -0.1475
+ },
+ "varian_terbaik_di_val": "A_geometri_saja",
+ "varian_dipakai_endtoend": "D_kelas_prediksi_lunak",
+ "gerbang_G1": {
+  "syarat": "F1 pasangan val >= 0,65 DAN ARI val >= 0,55",
+  "varian": "A_geometri_saja",
+  "f1_val": 0.4518,
+  "ari_val": 0.4385,
+  "putusan": "GUGUR"
+ }
+}

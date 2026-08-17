@@ -1,0 +1,484 @@
+{
+ "penaut": "E_reid_plus_kelas_prediksi",
+ "skema": "conf_luas",
+ "conf_diuji": [
+  0.1,
+  0.2,
+  0.3,
+  0.4,
+  0.5,
+  0.6
+ ],
+ "ambang_diuji": [
+  0.25,
+  0.45,
+  0.65
+ ],
+ "sapuan_val": {
+  "conf0.10_ambang0.25": {
+   "tau": [
+    0.6,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.6361,
+   "R0_semua": 0.6263,
+   "cakupan": 0.8972,
+   "R4_terdeteksi": 0.709,
+   "R0_terdeteksi": 0.6981,
+   "R4_multi": 0.7085,
+   "n_tandan": 890,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.3045,
+   "f1_penaut": 0.2675,
+   "oracle_R4": 0.7562
+  },
+  "conf0.10_ambang0.45": {
+   "tau": [
+    0.6,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.6391,
+   "R0_semua": 0.6258,
+   "cakupan": 0.8972,
+   "R4_terdeteksi": 0.7124,
+   "R0_terdeteksi": 0.6975,
+   "R4_multi": 0.7224,
+   "n_tandan": 890,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2753,
+   "f1_penaut": 0.26,
+   "oracle_R4": 0.7562
+  },
+  "conf0.10_ambang0.65": {
+   "tau": [
+    0.6,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.6411,
+   "R0_semua": 0.6255,
+   "cakupan": 0.8972,
+   "R4_terdeteksi": 0.7146,
+   "R0_terdeteksi": 0.6972,
+   "R4_multi": 0.7342,
+   "n_tandan": 890,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2494,
+   "f1_penaut": 0.2507,
+   "oracle_R4": 0.7562
+  },
+  "conf0.20_ambang0.25": {
+   "tau": [
+    0.5,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.5978,
+   "R0_semua": 0.5906,
+   "cakupan": 0.8296,
+   "R4_terdeteksi": 0.7205,
+   "R0_terdeteksi": 0.7119,
+   "R4_multi": 0.6941,
+   "n_tandan": 823,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2661,
+   "f1_penaut": 0.3053,
+   "oracle_R4": 0.7618
+  },
+  "conf0.20_ambang0.45": {
+   "tau": [
+    0.5,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.5998,
+   "R0_semua": 0.5908,
+   "cakupan": 0.8296,
+   "R4_terdeteksi": 0.723,
+   "R0_terdeteksi": 0.7121,
+   "R4_multi": 0.715,
+   "n_tandan": 823,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.243,
+   "f1_penaut": 0.2965,
+   "oracle_R4": 0.7618
+  },
+  "conf0.20_ambang0.65": {
+   "tau": [
+    0.5,
+    1.7,
+    2.6
+   ],
+   "R4_semua": 0.6008,
+   "R0_semua": 0.5911,
+   "cakupan": 0.8296,
+   "R4_terdeteksi": 0.7242,
+   "R0_terdeteksi": 0.7125,
+   "R4_multi": 0.7258,
+   "n_tandan": 823,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.226,
+   "f1_penaut": 0.2844,
+   "oracle_R4": 0.7618
+  },
+  "conf0.30_ambang0.25": {
+   "tau": [
+    0.5,
+    1.6,
+    2.6
+   ],
+   "R4_semua": 0.5434,
+   "R0_semua": 0.5343,
+   "cakupan": 0.7359,
+   "R4_terdeteksi": 0.7384,
+   "R0_terdeteksi": 0.726,
+   "R4_multi": 0.6703,
+   "n_tandan": 730,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2493,
+   "f1_penaut": 0.3688,
+   "oracle_R4": 0.7658
+  },
+  "conf0.30_ambang0.45": {
+   "tau": [
+    0.5,
+    1.6,
+    2.6
+   ],
+   "R4_semua": 0.5454,
+   "R0_semua": 0.5343,
+   "cakupan": 0.7359,
+   "R4_terdeteksi": 0.7411,
+   "R0_terdeteksi": 0.726,
+   "R4_multi": 0.6901,
+   "n_tandan": 730,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2342,
+   "f1_penaut": 0.3608,
+   "oracle_R4": 0.7658
+  },
+  "conf0.30_ambang0.65": {
+   "tau": [
+    0.5,
+    1.6,
+    2.6
+   ],
+   "R4_semua": 0.5464,
+   "R0_semua": 0.5348,
+   "cakupan": 0.7359,
+   "R4_terdeteksi": 0.7425,
+   "R0_terdeteksi": 0.7267,
+   "R4_multi": 0.7152,
+   "n_tandan": 730,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2164,
+   "f1_penaut": 0.3526,
+   "oracle_R4": 0.7658
+  },
+  "conf0.40_ambang0.25": {
+   "tau": [
+    0.65,
+    1.65,
+    2.7
+   ],
+   "R4_semua": 0.4587,
+   "R0_semua": 0.4499,
+   "cakupan": 0.6179,
+   "R4_terdeteksi": 0.7423,
+   "R0_terdeteksi": 0.728,
+   "R4_multi": 0.6408,
+   "n_tandan": 613,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.2316,
+   "f1_penaut": 0.4055,
+   "oracle_R4": 0.7732
+  },
+  "conf0.40_ambang0.45": {
+   "tau": [
+    0.65,
+    1.65,
+    2.7
+   ],
+   "R4_semua": 0.4567,
+   "R0_semua": 0.4509,
+   "cakupan": 0.6179,
+   "R4_terdeteksi": 0.739,
+   "R0_terdeteksi": 0.7296,
+   "R4_multi": 0.6541,
+   "n_tandan": 613,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.217,
+   "f1_penaut": 0.3984,
+   "oracle_R4": 0.7732
+  },
+  "conf0.40_ambang0.65": {
+   "tau": [
+    0.65,
+    1.65,
+    2.7
+   ],
+   "R4_semua": 0.4587,
+   "R0_semua": 0.4509,
+   "cakupan": 0.6179,
+   "R4_terdeteksi": 0.7423,
+   "R0_terdeteksi": 0.7296,
+   "R4_multi": 0.6803,
+   "n_tandan": 613,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.199,
+   "f1_penaut": 0.3893,
+   "oracle_R4": 0.7732
+  },
+  "conf0.50_ambang0.25": {
+   "tau": [
+    0.75,
+    1.55,
+    2.7
+   ],
+   "R4_semua": 0.3549,
+   "R0_semua": 0.3505,
+   "cakupan": 0.4647,
+   "R4_terdeteksi": 0.7636,
+   "R0_terdeteksi": 0.7542,
+   "R4_multi": 0.7105,
+   "n_tandan": 461,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.1649,
+   "f1_penaut": 0.3971,
+   "oracle_R4": 0.7766
+  },
+  "conf0.50_ambang0.45": {
+   "tau": [
+    0.75,
+    1.55,
+    2.7
+   ],
+   "R4_semua": 0.3528,
+   "R0_semua": 0.3513,
+   "cakupan": 0.4647,
+   "R4_terdeteksi": 0.7592,
+   "R0_terdeteksi": 0.756,
+   "R4_multi": 0.7059,
+   "n_tandan": 461,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.1475,
+   "f1_penaut": 0.3864,
+   "oracle_R4": 0.7766
+  },
+  "conf0.50_ambang0.65": {
+   "tau": [
+    0.75,
+    1.55,
+    2.7
+   ],
+   "R4_semua": 0.3528,
+   "R0_semua": 0.3518,
+   "cakupan": 0.4647,
+   "R4_terdeteksi": 0.7592,
+   "R0_terdeteksi": 0.757,
+   "R4_multi": 0.7213,
+   "n_tandan": 461,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.1323,
+   "f1_penaut": 0.4,
+   "oracle_R4": 0.7766
+  },
+  "conf0.60_ambang0.25": {
+   "tau": [
+    0.45,
+    1.85,
+    2.25
+   ],
+   "R4_semua": 0.1986,
+   "R0_semua": 0.1971,
+   "cakupan": 0.245,
+   "R4_terdeteksi": 0.8107,
+   "R0_terdeteksi": 0.8045,
+   "R4_multi": 0.8667,
+   "n_tandan": 243,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.1235,
+   "f1_penaut": 0.5378,
+   "oracle_R4": 0.8148
+  },
+  "conf0.60_ambang0.45": {
+   "tau": [
+    0.45,
+    1.85,
+    2.25
+   ],
+   "R4_semua": 0.1986,
+   "R0_semua": 0.1971,
+   "cakupan": 0.245,
+   "R4_terdeteksi": 0.8107,
+   "R0_terdeteksi": 0.8045,
+   "R4_multi": 0.8621,
+   "n_tandan": 243,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.1193,
+   "f1_penaut": 0.5254,
+   "oracle_R4": 0.8148
+  },
+  "conf0.60_ambang0.65": {
+   "tau": [
+    0.45,
+    1.85,
+    2.25
+   ],
+   "R4_semua": 0.1986,
+   "R0_semua": 0.1971,
+   "cakupan": 0.245,
+   "R4_terdeteksi": 0.8107,
+   "R0_terdeteksi": 0.8045,
+   "R4_multi": 0.875,
+   "n_tandan": 243,
+   "n_tandan_GT": 992,
+   "frac_multi": 0.0988,
+   "f1_penaut": 0.531,
+   "oracle_R4": 0.8148
+  }
+ },
+ "acuan_lama": {
+  "conf": 0.1,
+  "R4_test": 0.7179,
+  "counting_C5_ridge_test": 1.0542,
+  "pipeline_lama_kelas": 0.7203
+ },
+ "terkunci": {
+  "conf": 0.1,
+  "ambang": 0.65,
+  "tau": [
+   0.6,
+   1.7,
+   2.6
+  ]
+ },
+ "val": {
+  "n_tandan_GT": 992,
+  "R4_semua": 0.6411,
+  "R0_semua": 0.6255,
+  "cakupan": 0.8972,
+  "n_tandan": 890,
+  "n_multi": 222,
+  "frac_multi": 0.2494,
+  "penautan": {
+   "presisi": 0.5138,
+   "recall": 0.1658,
+   "f1": 0.2507,
+   "ari": 0.1744
+  },
+  "R0": 0.6972,
+  "R4": 0.7146,
+  "R4_multi": 0.7342,
+  "R0cal_multi": 0.6944,
+  "oracle_R4": 0.7562,
+  "counting": {
+   "C1_naif": {
+    "macro_mae": 4.5729,
+    "class_pm1_acc": 0.3385,
+    "tree_pm1_acc": 0.0104,
+    "bias_total": 16.8958,
+    "n_pohon": 96
+   },
+   "C2_k_global": {
+    "macro_mae": 1.7528,
+    "class_pm1_acc": 0.4453,
+    "tree_pm1_acc": 0.0521,
+    "bias_total": 4.0698,
+    "n_pohon": 96
+   },
+   "C3_k_per_kelas": {
+    "macro_mae": 1.1899,
+    "class_pm1_acc": 0.5755,
+    "tree_pm1_acc": 0.1562,
+    "bias_total": -0.0383,
+    "n_pohon": 96
+   },
+   "C4_hitung_pool": {
+    "macro_mae": 3.6016,
+    "class_pm1_acc": 0.3698,
+    "tree_pm1_acc": 0.0104,
+    "bias_total": 13.0312,
+    "n_pohon": 96
+   },
+   "C5_ridge_fall": {
+    "macro_mae": 1.0897,
+    "class_pm1_acc": 0.5807,
+    "tree_pm1_acc": 0.1562,
+    "bias_total": -0.0123,
+    "n_pohon": 96
+   }
+  }
+ },
+ "test": {
+  "n_tandan_GT": 1404,
+  "R4_semua": 0.6474,
+  "R0_semua": 0.6374,
+  "cakupan": 0.9038,
+  "n_tandan": 1269,
+  "n_multi": 273,
+  "frac_multi": 0.2151,
+  "penautan": {
+   "presisi": 0.4672,
+   "recall": 0.1171,
+   "f1": 0.1873,
+   "ari": 0.1677
+  },
+  "R0": 0.7052,
+  "R4": 0.7163,
+  "R4_multi": 0.7253,
+  "R0cal_multi": 0.6809,
+  "oracle_R4": 0.736,
+  "counting": {
+   "C1_naif": {
+    "macro_mae": 4.3582,
+    "class_pm1_acc": 0.3741,
+    "tree_pm1_acc": 0.0142,
+    "bias_total": 16.1277,
+    "n_pohon": 141
+   },
+   "C2_k_global": {
+    "macro_mae": 1.6696,
+    "class_pm1_acc": 0.5,
+    "tree_pm1_acc": 0.078,
+    "bias_total": 3.8405,
+    "n_pohon": 141
+   },
+   "C3_k_per_kelas": {
+    "macro_mae": 1.1854,
+    "class_pm1_acc": 0.5709,
+    "tree_pm1_acc": 0.1064,
+    "bias_total": -0.0816,
+    "n_pohon": 141
+   },
+   "C4_hitung_pool": {
+    "macro_mae": 3.6571,
+    "class_pm1_acc": 0.3982,
+    "tree_pm1_acc": 0.0357,
+    "bias_total": 13.3143,
+    "n_pohon": 140
+   },
+   "C5_ridge_fall": {
+    "macro_mae": 1.0542,
+    "class_pm1_acc": 0.6064,
+    "tree_pm1_acc": 0.1489,
+    "bias_total": -0.0427,
+    "n_pohon": 141
+   }
+  }
+ },
+ "putusan": {
+  "CATATAN": "R4_semua dihitung atas SELURUH tandan GT (tak terdeteksi = salah) supaya sebanding antar conf; R4_terdeteksi tidak sebanding karena penyebutnya berubah",
+  "R4_semua_test": 0.6474,
+  "cakupan_test": 0.9038,
+  "kelas_terdeteksi_vs_pipeline_lama_pp": -0.4,
+  "kelas_vs_conf010_pp": -0.16,
+  "G2_selisih_ke_oracle_pp": -1.97,
+  "G2": "LOLOS",
+  "G3_C4": 3.6571,
+  "G3_pembanding_terbaik": 1.0542,
+  "G3": "GUGUR"
+ }
+}

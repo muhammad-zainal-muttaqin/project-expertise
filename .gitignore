@@ -51,3 +51,17 @@ runs_fase6/
 # Log mentah ~12 MB, penuh progress bar. Versi ringkasnya ada di
 # logs_ringkas/ dan ITU yang ikut ter-commit (lihat CLAUDE.md).
 logs/
+
+# Cache sub-proyek pipeline-pertandan (2026-08-17) — semuanya REGENERABLE,
+# resep di pipeline-pertandan/README.md. Yang WAJIB tetap ikut git adalah dump
+# prediksi `pred_skorpenuh*.npz` (~9 MB): itu yang membuat seluruh angka bisa
+# dihitung ulang tanpa GPU dan tanpa bobot (lihat ATURAN #1 di /workspace/CLAUDE.md).
+# CATATAN: .gitignore TIDAK mendukung komentar di akhir baris — komentarnya ikut
+# jadi bagian pola dan aturannya diam-diam tidak berlaku. Sudah terjadi sekali di
+# sini: cache 981 MB nyaris ikut ter-commit.
+# potongan_reid*.npz  = 981 MB, potongan citra 128x128 untuk melatih re-ID
+pipeline-pertandan/results/potongan_reid*.npz
+# deskriptor_crop*.npz = 10 MB, histogram HSV per potongan
+pipeline-pertandan/results/deskriptor_crop*.npz
+# reid_embedding*.npz  = 39 MB, turunan bobot re-ID
+pipeline-pertandan/results/reid_embedding*.npz

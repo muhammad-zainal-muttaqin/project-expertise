@@ -1,0 +1,242 @@
+{
+ "dataset": "/workspace/SawitMVC-YOLO",
+ "seed": 0,
+ "A_struktur_gt": {
+  "per_split": {
+   "test": {
+    "pohon": 141,
+    "kotak": 2612,
+    "tandan": 1404,
+    "tandan_multi_sisi": 1022,
+    "pohon_4sisi": 135,
+    "pohon_8sisi": 6,
+    "appearance_count": {
+     "1": 382,
+     "2": 871,
+     "3": 125,
+     "4": 18,
+     "5": 7,
+     "6": 1
+    }
+   },
+   "train": {
+    "pohon": 716,
+    "kotak": 14041,
+    "tandan": 7427,
+    "tandan_multi_sisi": 5546,
+    "pohon_4sisi": 682,
+    "pohon_8sisi": 34,
+    "appearance_count": {
+     "1": 1881,
+     "2": 4739,
+     "3": 626,
+     "4": 112,
+     "5": 58,
+     "6": 11
+    }
+   },
+   "val": {
+    "pohon": 96,
+    "kotak": 1887,
+    "tandan": 992,
+    "tandan_multi_sisi": 760,
+    "pohon_4sisi": 91,
+    "pohon_8sisi": 5,
+    "appearance_count": {
+     "1": 232,
+     "2": 654,
+     "3": 83,
+     "4": 17,
+     "5": 6
+    }
+   }
+  },
+  "total_tandan": 9823,
+  "total_tandan_multi_sisi": 7328,
+  "frac_multi_sisi": 0.746,
+  "appearance_count_global": {
+   "1": 2495,
+   "2": 6264,
+   "3": 834,
+   "4": 147,
+   "5": 71,
+   "6": 12
+  },
+  "frac_multi_yang_tepat_2_sisi": 0.8548,
+  "maks_appearance_per_pohon": {
+   "4": {
+    "0": 7,
+    "1": 6,
+    "2": 463,
+    "3": 432
+   },
+   "8": {
+    "4": 8,
+    "5": 28,
+    "6": 9
+   }
+  },
+  "n_class_mismatch": 0,
+  "catatan_mismatch": "0 berarti label kelas SELALU konsisten di semua sisi untuk tandan yang sama -- setiap ketidaksepakatan antar sisi murni galat model, bukan galat label"
+ },
+ "B_integritas_split": {
+  "manifest": {
+   "test": 141,
+   "val": 96,
+   "train": 716
+  },
+  "dari_folder_gambar": {
+   "train": 716,
+   "val": 96,
+   "test": 141
+  },
+  "field_split_di_json": {
+   "train": 610,
+   "test": 166,
+   "val": 177
+  },
+  "beda_manifest_vs_folder": 0,
+  "beda_manifest_vs_json": 465,
+  "PERINGATAN": "field `split` di dalam json/*.json BUKAN split kanonik. Pakai split_manifest.csv (identik dengan tata letak folder)."
+ },
+ "C_biaya_galat_gabung": {
+  "n_pasangan_lintas_sisi": 159198,
+  "n_setandan": 10538,
+  "frac_setandan": 0.0662,
+  "frac_setandan_yang_sekelas": 1.0,
+  "frac_bedatandan_yang_sekelas": 0.3774,
+  "arti": "frac_bedatandan_yang_sekelas = peluang sebuah galat-gabung TIDAK merusak kelas (kedua kotak kebetulan sekelas)"
+ },
+ "D_penaut_geometri_saja": {
+  "n_pasangan_train": 121891,
+  "n_positif_train": 8034,
+  "n_pasangan_val": 16037,
+  "n_positif_val": 1065,
+  "fitur": [
+   "gap_sisi",
+   "gap_ternorm",
+   "n_sisi",
+   "abs_dcx",
+   "abs_dcy",
+   "rasio_area",
+   "rasio_w",
+   "rasio_h",
+   "delta_aspek",
+   "cy_rerata",
+   "kelas_sama",
+   "log_rasio_area"
+  ],
+  "D1_ambang_per_pasangan_val": {
+   "roc_auc": 0.9301,
+   "f1_terbaik": 0.485,
+   "presisi": 0.3669,
+   "recall": 0.7155,
+   "ambang": 0.2463
+  },
+  "D2_penugasan_global_val": {
+   "0.15": {
+    "presisi": 0.3909,
+    "recall": 0.5352,
+    "f1": 0.4518,
+    "ari": 0.4385,
+    "bias_jumlah": -1.062,
+    "mae_jumlah": 1.479
+   },
+   "0.25": {
+    "presisi": 0.3997,
+    "recall": 0.4845,
+    "f1": 0.438,
+    "ari": 0.3966,
+    "bias_jumlah": 0.031,
+    "mae_jumlah": 1.51
+   },
+   "0.35": {
+    "presisi": 0.4016,
+    "recall": 0.3869,
+    "f1": 0.3941,
+    "ari": 0.3377,
+    "bias_jumlah": 1.844,
+    "mae_jumlah": 2.385
+   },
+   "0.45": {
+    "presisi": 0.4768,
+    "recall": 0.1446,
+    "f1": 0.2219,
+    "ari": 0.1098,
+    "bias_jumlah": 7.188,
+    "mae_jumlah": 7.188
+   },
+   "0.55": {
+    "presisi": 0.5581,
+    "recall": 0.0451,
+    "f1": 0.0834,
+    "ari": 0.0258,
+    "bias_jumlah": 8.698,
+    "mae_jumlah": 8.698
+   },
+   "0.65": {
+    "presisi": 0.5294,
+    "recall": 0.0085,
+    "f1": 0.0166,
+    "ari": 0.0029,
+    "bias_jumlah": 9.146,
+    "mae_jumlah": 9.146
+   }
+  },
+  "D2_ambang_dikunci_dari_val": 0.15,
+  "D2_test_sekali": {
+   "presisi": 0.3742,
+   "recall": 0.5003,
+   "f1": 0.4282,
+   "ari": 0.3912,
+   "bias_jumlah": -0.884,
+   "mae_jumlah": 1.319
+  },
+  "prevalensi_positif_per_jarak_sisi_val": {
+   "nsisi4_gap1": 0.0879,
+   "nsisi4_gap2": 0.016,
+   "nsisi8_gap1": 0.1447,
+   "nsisi8_gap2": 0.0833,
+   "nsisi8_gap3": 0.0374,
+   "nsisi8_gap4": 0.0154
+  }
+ },
+ "E_selisih_recall": {
+  "sumber_prediksi": "results/pred_sel5_953_rgb_test.npz",
+  "detektor": "YOLO26l @1280 (sel5 / yolo26l_e60_i1280_v2repro)",
+  "split": "test (141 pohon, 588 citra)",
+  "iou_min": 0.5,
+  "per_ambang_conf": {
+   "conf0.15": {
+    "recall_per_kemunculan": 0.7577,
+    "kelas_benar_per_kemunculan": 0.5498,
+    "recall_per_tandan": 0.8661,
+    "kelas_benar_min1_sisi_per_tandan": 0.6802,
+    "selisih_recall_pp": 10.84,
+    "n_tandan_terdeteksi_min2_sisi": 659,
+    "n_tandan_kelasnya_beda_antar_sisi": 169,
+    "frac_tidak_sepakat": 0.2564
+   },
+   "conf0.25": {
+    "recall_per_kemunculan": 0.6336,
+    "kelas_benar_per_kemunculan": 0.4678,
+    "recall_per_tandan": 0.7785,
+    "kelas_benar_min1_sisi_per_tandan": 0.6075,
+    "selisih_recall_pp": 14.49,
+    "n_tandan_terdeteksi_min2_sisi": 490,
+    "n_tandan_kelasnya_beda_antar_sisi": 114,
+    "frac_tidak_sepakat": 0.2327
+   },
+   "conf0.35": {
+    "recall_per_kemunculan": 0.5031,
+    "kelas_benar_per_kemunculan": 0.3779,
+    "recall_per_tandan": 0.6603,
+    "kelas_benar_min1_sisi_per_tandan": 0.5142,
+    "selisih_recall_pp": 15.72,
+    "n_tandan_terdeteksi_min2_sisi": 332,
+    "n_tandan_kelasnya_beda_antar_sisi": 71,
+    "frac_tidak_sepakat": 0.2139
+   }
+  }
+ }
+}
