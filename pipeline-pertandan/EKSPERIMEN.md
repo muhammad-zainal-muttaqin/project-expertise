@@ -788,3 +788,130 @@ ada".**
 
 **Sumber** — diukur langsung dari `results/pred_skorpenuh{,_352}_test.npz` dan
 GT kedua korpus; perintahnya ada di riwayat percakapan sesi 2026-08-17.
+
+---
+
+## PT-E-013 — Depth + arah putar → rekonstruksi 3D (352) (2026-08-17)
+
+**Hipotesis** — PT-E-011 menyimpulkan hambatannya kombinatorik, dan obatnya
+prior yang memangkas ruang kandidat. Korpus 352 punya depth metrik. Digabung
+arah putar yang sudah terbukti, seharusnya bisa merekonstruksi posisi 3D tiap
+tandan di kerangka berpusat-pohon — dan tandan yang sama harus mendarat di titik
+yang sama dari sisi mana pun ia dilihat. Itu prior pemangkas kandidat yang jauh
+lebih kuat daripada pergeseran horizontal saja.
+
+**Yang memalsukan** — jarak 3D antar pasangan setandan tidak lebih kecil
+daripada antar pasangan beda-tandan.
+
+**Cara** — depth mentah `.raw` (848x480, uint16 mm) direproyeksi penuh ke bidang
+warna 1280x800 memakai kalibrasi di sidecar tiap berkas: intrinsik depth ->
+ekstrinsik (`mTrans` = [-23,67; 0,07; 0,14] mm) -> intrinsik warna. Metadata
+dataset **eksplisit memperingatkan** bahwa me-resize buffer secara langsung
+meleset median 29 px, jadi reproyeksi penuh memang wajib. Distorsi diabaikan
+(koefisiennya kecil).
+
+Rekonstruksi: `Z` = median depth di dalam kotak; titik kamera
+`(Xc, Yc, Zc) = ((u-cx)Z/fx, (v-cy)Z/fy, Z)`; lalu diputar ke kerangka
+berpusat-pohon dengan `theta_i = ±i·2π/n` dan `R` = median depth per pohon.
+Kedua tanda putaran diuji.
+
+**Hasil (kotak GT, 120 pohon 4-sisi):**
+
+| Fitur | AUC |
+|---|---|
+| **rekonstruksi 3D, arah +** | **0,4511** |
+| **rekonstruksi 3D, arah −** | **0,5083** |
+| jarak depth mentah (ΔZ) | 0,4797 |
+| tinggi metrik (ΔY) | 0,6027 |
+| jarak horizontal MUTLAK | 0,2542 |
+
+Kewarasan: median depth per citra 2.524 mm (p10 1.122, p90 3.337) — reproyeksinya
+benar, ini bukan bug.
+
+**Putusan** — **DIPALSUKAN.** Rekonstruksi 3D tidak lebih baik daripada acak,
+untuk kedua arah putaran. Jarak 3D pasangan setandan (median 416 mm) justru
+**lebih besar** daripada pasangan beda-tandan (383 mm).
+
+**Kenapa gagal, dan ini penjelasan yang E-007 tidak punya.** Rekonstruksinya
+mengandaikan kamera mengorbit pada jari-jari tetap, selalu membidik sumbu pohon,
+dengan langkah azimut persis 90°. Pengambilannya handheld: jarak berubah, arah
+bidik berubah, sudutnya tidak persis. Rekonstruksi **memperbesar** galat itu
+alih-alih meniadakannya — sebab tiap galat pose masuk sebagai pergeseran
+sistematis seluruh titik dari citra tersebut.
+
+Ini mereproduksi pemalsuan E-007 (Volume 1) lewat jalur berbeda, **dengan
+sebabnya**: bukan "depth tidak informatif", melainkan "geometri pengambilan
+tidak terkendali sehingga tidak bisa direkonstruksi".
+
+**Satu yang bertahan, tapi tidak cukup.** Tinggi metrik (ΔY) mencapai AUC 0,6027,
+sedikit di atas tinggi-citra ternormalkan yang sudah dipakai (0,5926). Diuji
+gabungan pada held-out: 0,5648 → **0,5766**, naik 0,012 AUC. Terlalu kecil untuk
+berarti ketika penaut sudah di AUC 0,95. **Tidak dimasukkan ke fitur produksi.**
+
+**Konsekuensi** — depth **bukan** prior pemangkas kandidat yang dicari. Prior
+yang bekerja (arah putar) bekerja justru karena ia **tidak** memerlukan
+rekonstruksi: ia hanya butuh urutan sisi, bukan pose. Kandidat prior berikutnya
+sebaiknya punya sifat yang sama — bergantung pada hal yang terkendali dalam
+protokol pengambilan, bukan pada geometri yang tidak diukur.
+
+**Sumber** — diukur langsung dari `/workspace/SawitMVC-Depth/depth/*.{raw,json}`;
+skrip probe ada di riwayat percakapan sesi 2026-08-17.
+
+---
+
+## PT-E-012 — Modul C3, classifier multi-tampak (2026-08-17)
+
+**Hipotesis** — Sketsa asal menunjukkan seluruh potongan tandan masuk KE DALAM
+model, keluar satu label. Yang dibangun selama ini bukan itu: tiap potongan
+dinilai sendiri, digabung rumus R4 di luar model. Rumus itu buta konteks — tidak
+bisa tahu satu foto buram atau dua tampak beda kelas karena satu dari sisi
+bayangan. Model yang melihat semuanya sekaligus mestinya bisa mempelajarinya.
+
+**Yang memalsukan** — C3 tidak mengalahkan C2 (yang mengisolasi "melihat banyak
+tampak sekaligus" dari "punya classifier khusus").
+
+**Cara** — ketiganya dinilai pada POTONGAN GT dan TAUTAN ORACLE, himpunan tandan
+yang sama, supaya galat deteksi dan galat penautan tidak ikut campur.
+
+| Jalur | Isi |
+|---|---|
+| C1 | distribusi kelas detektor dipetakan ke kotak GT, digabung R4 (tanpa training) |
+| C2 | ResNet-18 dilatih di potongan, per-tampak, digabung R4 |
+| C3 | ResNet-18 + attention antar-tampak, seluruh tampak sekaligus, satu keluaran |
+
+**Hasil (test, 1.404 tandan / 1.022 multi-tampak):**
+
+| Jalur | Akurasi | Pada pool >=2 tampak |
+|---|---|---|
+| **C1 skor detektor + R4** | **0,7208** | **0,7583** |
+| C2 classifier per-tampak + R4 | 0,7087 | 0,7397 |
+| C3 multi-tampak (backbone sebagian beku) | 0,6781 | 0,7006 |
+| C3 multi-tampak (backbone **beku penuh**) | 0,6467 | 0,6820 |
+
+**Putusan** — **DIPALSUKAN.** C3 kalah dari C2 sebesar 3,06 pp dan dari C1
+sebesar 4,27 pp. Membekukan backbone penuh — dugaan perbaikan untuk overfit —
+**memperburuk lagi** menjadi 0,6467.
+
+**Dua temuan, dan yang kedua lebih luas dari yang pertama:**
+
+1. **C3 < C2.** Melihat seluruh tampak sekaligus tidak menolong pada skala data
+   ini. Penyebabnya overfit: C2 mencapai loss latih **0,0018** (praktis
+   menghafal), dan varian beku penuh tetap menunjukkan train 0,878 lawan val
+   0,643 meski kepalanya kecil dengan dropout 0,5 dan weight decay 1e-2.
+   Contoh latihnya cuma 7.427 tandan; C3 punya parameter lebih banyak dan
+   contoh lebih sedikit daripada C2 (yang berlatih per-tampak, ~14 ribu).
+
+2. **C2 < C1** — ini yang lebih penting. Classifier potongan khusus **kalah dari
+   skor kelas detektor yang sudah ada**. Detektor dilatih pada tugas deteksi
+   penuh di 3.000 citra dengan sinyal supervisi dan augmentasi jauh lebih kaya;
+   classifier potongan di 716 pohon tidak bisa menandinginya. **Jadi yang
+   tertutup bukan cuma C3, melainkan seluruh jalur "tingkatkan modul C".**
+
+**Batas klaim yang jujur** — ini memalsukan C3 **pada skala data ini**, bukan
+gagasan classifier multi-tampak secara umum. Kalau nanti korpusnya jauh lebih
+besar, pertanyaannya layak dibuka lagi. Yang TIDAK boleh disimpulkan dari sini:
+bahwa agregasi multi-tampak tidak berguna — R4 di atas C1 tetap memberi
++4,36 pp (PT-E-001), dan itu bertahan.
+
+**Sumber** — `scripts/c3_multitampak.py` · `results/pt_e_012_c3.json`; varian
+backbone beku penuh ada di riwayat percakapan sesi 2026-08-17.

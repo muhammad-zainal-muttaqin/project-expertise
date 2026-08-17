@@ -1,0 +1,214 @@
+{
+ "epoch": 25,
+ "lr": 0.0003,
+ "seed": 0,
+ "n_tandan": {
+  "train": 7427,
+  "val": 992,
+  "test": 1404
+ },
+ "split": {
+  "val": {
+   "C1": {
+    "R0": {
+     "akurasi": 0.6776,
+     "akurasi_pm1": 0.9879,
+     "mae_ordinal": 0.3085,
+     "macro_f1": 0.6618,
+     "recall_per_kelas": {
+      "B1": 0.8,
+      "B2": 0.303,
+      "B3": 0.8234,
+      "B4": 0.759
+     },
+     "n": 992
+    },
+    "R4": {
+     "akurasi": 0.7339,
+     "akurasi_pm1": 0.994,
+     "mae_ordinal": 0.2722,
+     "macro_f1": 0.7156,
+     "recall_per_kelas": {
+      "B1": 0.7474,
+      "B2": 0.5859,
+      "B3": 0.8274,
+      "B4": 0.6359
+     },
+     "n": 992
+    },
+    "R4_multi": {
+     "akurasi": 0.75,
+     "akurasi_pm1": 0.9947,
+     "mae_ordinal": 0.2553,
+     "macro_f1": 0.7297,
+     "recall_per_kelas": {
+      "B1": 0.7875,
+      "B2": 0.6144,
+      "B3": 0.8409,
+      "B4": 0.6107
+     },
+     "n": 760
+    }
+   },
+   "C2": {
+    "R0": {
+     "akurasi": 0.642,
+     "akurasi_pm1": 0.9879,
+     "mae_ordinal": 0.3538,
+     "macro_f1": 0.6098,
+     "recall_per_kelas": {
+      "B1": 0.7684,
+      "B2": 0.2929,
+      "B3": 0.8413,
+      "B4": 0.5026
+     },
+     "n": 992
+    },
+    "R4": {
+     "akurasi": 0.6956,
+     "akurasi_pm1": 0.9929,
+     "mae_ordinal": 0.3115,
+     "macro_f1": 0.6522,
+     "recall_per_kelas": {
+      "B1": 0.8,
+      "B2": 0.3737,
+      "B3": 0.879,
+      "B4": 0.4974
+     },
+     "n": 992
+    },
+    "R4_multi": {
+     "akurasi": 0.725,
+     "akurasi_pm1": 0.9961,
+     "mae_ordinal": 0.2789,
+     "macro_f1": 0.6783,
+     "recall_per_kelas": {
+      "B1": 0.8375,
+      "B2": 0.4118,
+      "B3": 0.899,
+      "B4": 0.4962
+     },
+     "n": 760
+    }
+   },
+   "C3": {
+    "akurasi": 0.6754,
+    "akurasi_multi": 0.6934,
+    "macro_f1": 0.6463,
+    "mae_ordinal": 0.3317,
+    "recall_per_kelas": {
+     "B1": 0.7789,
+     "B2": 0.4091,
+     "B3": 0.7817,
+     "B4": 0.6205
+    },
+    "n": 992,
+    "n_multi": 760
+   }
+  },
+  "test": {
+   "C1": {
+    "R0": {
+     "akurasi": 0.6811,
+     "akurasi_pm1": 0.9786,
+     "mae_ordinal": 0.3148,
+     "macro_f1": 0.6554,
+     "recall_per_kelas": {
+      "B1": 0.775,
+      "B2": 0.3281,
+      "B3": 0.8349,
+      "B4": 0.7173
+     },
+     "n": 1404
+    },
+    "R4": {
+     "akurasi": 0.7208,
+     "akurasi_pm1": 0.9907,
+     "mae_ordinal": 0.2885,
+     "macro_f1": 0.6951,
+     "recall_per_kelas": {
+      "B1": 0.7167,
+      "B2": 0.5898,
+      "B3": 0.8161,
+      "B4": 0.5901
+     },
+     "n": 1404
+    },
+    "R4_multi": {
+     "akurasi": 0.7583,
+     "akurasi_pm1": 0.999,
+     "mae_ordinal": 0.2427,
+     "macro_f1": 0.7261,
+     "recall_per_kelas": {
+      "B1": 0.7619,
+      "B2": 0.6462,
+      "B3": 0.8515,
+      "B4": 0.5706
+     },
+     "n": 1022
+    }
+   },
+   "C2": {
+    "R0": {
+     "akurasi": 0.665,
+     "akurasi_pm1": 0.9886,
+     "mae_ordinal": 0.3234,
+     "macro_f1": 0.6426,
+     "recall_per_kelas": {
+      "B1": 0.7583,
+      "B2": 0.3711,
+      "B3": 0.8376,
+      "B4": 0.5512
+     },
+     "n": 1404
+    },
+    "R4": {
+     "akurasi": 0.7087,
+     "akurasi_pm1": 0.9936,
+     "mae_ordinal": 0.2977,
+     "macro_f1": 0.6689,
+     "recall_per_kelas": {
+      "B1": 0.75,
+      "B2": 0.4414,
+      "B3": 0.8617,
+      "B4": 0.53
+     },
+     "n": 1404
+    },
+    "R4_multi": {
+     "akurasi": 0.7397,
+     "akurasi_pm1": 0.9961,
+     "mae_ordinal": 0.2642,
+     "macro_f1": 0.6913,
+     "recall_per_kelas": {
+      "B1": 0.781,
+      "B2": 0.4872,
+      "B3": 0.8855,
+      "B4": 0.5153
+     },
+     "n": 1022
+    }
+   },
+   "C3": {
+    "akurasi": 0.6781,
+    "akurasi_multi": 0.7006,
+    "macro_f1": 0.6451,
+    "mae_ordinal": 0.3369,
+    "recall_per_kelas": {
+     "B1": 0.7583,
+     "B2": 0.4492,
+     "B3": 0.7866,
+     "B4": 0.5654
+    },
+    "n": 1404,
+    "n_multi": 1022
+   }
+  }
+ },
+ "putusan": {
+  "C3_vs_C2_pp": -3.06,
+  "C3_vs_C1_pp": -4.27,
+  "C3_vs_C2_multi_pp": -3.91,
+  "arti": "C3 vs C2 mengisolasi 'melihat banyak tampak sekaligus'; C3 vs C1 mencampurnya dengan 'punya classifier khusus'"
+ }
+}
