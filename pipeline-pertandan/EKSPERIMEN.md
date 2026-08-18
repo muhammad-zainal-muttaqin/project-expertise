@@ -1728,3 +1728,57 @@ checkpoint terpilih.
 
 **Sumber** — `runs/rfdetr_l_damimas_s42/metrics.csv` (60 baris, ikut ter-commit
 ke `results/riwayat_epoch/`)
+
+---
+
+## PT-E-033 — Bagged ensemble selection tidak menolong: plafonnya di ANGGOTA (2026-08-18)
+
+**Hipotesis** — PT-E-029 memakai seleksi maju serakah di VAL, dan Caruana et al.
+(ICML 2004) mendokumentasikan bahwa prosedur itu **overfit himpunan hillclimb**.
+Himpunan seleksi di sini cuma 86 pohon, dan gejalanya sudah terukur empat kali
+dalam satu sesi (naik di VAL, tidak bertransfer ke TEST). Kalau penyebab
+stagnasi adalah VARIANS SELEKSI, penawar dari paper yang sama harus menolong:
+seleksi dengan pengembalian, bagging atas bootstrap himpunan hillclimb, dan
+sorted initialization.
+
+**Yang memalsukan** — bagging tidak menaikkan akurasi TEST.
+
+**Cara** — 200 bag, tiap bag: bootstrap tingkat POHON (bukan tandan -- tandan
+dalam satu pohon berbagi pencahayaan/varietas/sesi, jadi bootstrap per-tandan
+melaporkan stabilitas terlalu optimistis), 80% library ditawarkan, inisialisasi
+dari model tunggal terbaik pada bag itu, 25 langkah seleksi DENGAN pengembalian.
+Bobot dijumlahkan lintas bag. Aturan keputusan tetap dipilih lewat CV di dalam
+VAL. Nol training baru.
+
+**Hasil (test DAMIMAS, 1.316 tandan, 124 pohon):**
+
+| | val | test | 1-view | multi |
+|---|---|---|---|---|
+| PT-E-029 serakah biasa | 0,7639 | **0,7409** | 0,6676 | 0,7670 |
+| PT-E-033 bagged | 0,7606 | **0,7394** | 0,6532 | 0,7701 |
+
+delta **-0,15 pp**, CI95 [-1,67; +1,45], P(delta>0) = 0,42.
+
+Bobot memang jadi jauh lebih halus -- convnext224 0,4455 · corn224 0,1793 ·
+klasik 0,1661 · set_transformer 0,1496 · convnext128 0,0594 -- alih-alih 1/3
+keras pada tiga anggota. Jadi bagging BEKERJA sebagai peredam varians seleksi;
+ia hanya tidak mengubah hasilnya.
+
+**Putusan** — **DIPALSUKAN**, dan justru itu yang berguna. Seluruh varian
+ensemble yang dicoba sesi ini mendarat di pita sempit **0,7394-0,7439**: serakah
+biasa, serakah + corn224, dan bagged 200x. Kalau varians seleksi yang jadi
+hambatan, bagging seharusnya memisahkan diri dari pita itu. Ia tidak.
+
+**Kesimpulan yang mengikat untuk arah berikutnya: plafon ada di ANGGOTA, bukan
+di cara menggabungkannya.** Kombinasi terbaik dari lima bank yang ada sudah
+tercapai. Menambah metode penggabungan lain -- stacking, weighted majority,
+Bayesian model averaging -- menyerang bagian yang sudah tidak mengandung sisa
+sinyal. Yang tersisa hanya dua: anggota yang benar-benar lebih baik, atau
+anggota yang salah di tempat yang berbeda dari kelima ini.
+
+Catatan penting: ini TIDAK membatalkan diagnosis "VAL 86 pohon terlalu kecil".
+VAL kecil tetap membuat setiap kenaikan di bawah ~2 pp tidak terverifikasi -- ia
+hanya bukan penyebab plafon 0,74.
+
+**Sumber** — `scripts/ensemble_bagged_damimas.py` · `results/pt_e_033_bagged.json`
+· dump `results/pt_e_033_bagged_pred.npz`

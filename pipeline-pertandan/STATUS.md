@@ -292,7 +292,13 @@ pemilik repo pada 0,7439.
 | ✅ | **PT-E-030** CORAL vs CORN | **CORAL DIPALSUKAN** | CORAL 0,3305 lawan CORN **0,6983**, resep identik |
 | ✅ | **PT-E-032** RF-DETR 60 epoch | **selesai** | puncak val ema_mAP50 **epoch 5 = 0,5830**; epoch 59 = 0,4885 (-9,46 pp) |
 | ❌ | ~~PT-E-031 spesialis batas~~ | **tidak dijalankan** | task 3 CORN sudah dilatih tepat di {B3,B4}; skrip disimpan, belum dieksekusi |
-| ⏳ | Bagged ensemble selection (Caruana 2004) | **belum** | obat terdokumentasi untuk overfit himpunan seleksi; nol GPU |
+| ✅ | **PT-E-033** bagged ensemble selection (Caruana 2004) | **DIPALSUKAN** | test 0,7394 lawan 0,7409; delta -0,15 pp, CI [-1,67; +1,45] |
+
+**PT-E-033 menutup satu jalur dengan bersih.** Seluruh varian ensemble mendarat
+di pita 0,7394-0,7439 (serakah, serakah+corn, bagged 200x). Kalau varians seleksi
+yang jadi hambatan, bagging harus memisahkan diri dari pita itu -- ia tidak.
+**Plafon ada di ANGGOTA, bukan di cara menggabungkan.** Menambah metode
+penggabungan lain menyerang bagian yang sudah kering.
 
 ## Angka akhir klasifikasi per-tandan DAMIMAS
 

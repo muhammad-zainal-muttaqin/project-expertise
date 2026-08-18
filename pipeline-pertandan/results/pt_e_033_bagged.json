@@ -1,0 +1,45 @@
+{
+ "pt_e": "033",
+ "acuan": "Caruana et al. ICML 2004",
+ "n_bag": 200,
+ "n_iter": 25,
+ "frac_lib": 0.8,
+ "library": [
+  "convnext224",
+  "convnext128",
+  "klasik",
+  "set_transformer",
+  "corn224"
+ ],
+ "bobot": {
+  "convnext224": 0.4455,
+  "convnext128": 0.0594,
+  "klasik": 0.1661,
+  "set_transformer": 0.1496,
+  "corn224": 0.1793
+ },
+ "aturan": "ordinal",
+ "tau": [
+  0.4,
+  1.6,
+  2.5
+ ],
+ "cv_val": {
+  "argmax": 0.7454,
+  "ordinal": 0.7563
+ },
+ "val": 0.7606,
+ "test": 0.7394,
+ "test_1view": 0.6532,
+ "test_multi": 0.7701,
+ "vs_pt_e_029": {
+  "pt_e_029_test": 0.7409,
+  "delta_pp": -0.15,
+  "ci95": [
+   -1.67,
+   1.45
+  ],
+  "P(delta>0)": 0.42
+ },
+ "target_IDEA": 0.8
+}
