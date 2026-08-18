@@ -59,7 +59,9 @@ def main() -> None:
     template = muat(args.template)
     if not {"args", "model_config", "model"} <= set(template):
         raise ValueError("Template bukan payload inference RF-DETR lengkap")
-    sources = sorted(args.run.glob("checkpoint_*.ckpt"))
+    sources = sorted(set(args.run.glob("checkpoint_*.ckpt")) |
+                     ({args.run / "last.ckpt"} if (args.run / "last.ckpt").is_file()
+                      else set()))
     if not sources:
         raise FileNotFoundError(f"Tidak ada checkpoint_*.ckpt di {args.run}")
     for src in sources:
