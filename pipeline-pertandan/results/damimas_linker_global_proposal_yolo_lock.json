@@ -1,0 +1,38 @@
+{
+  "protokol": "salinan konfigurasi yang dipilih hanya dari VAL; tidak memuat metrik TEST",
+  "sumber": "damimas_linker_global_proposal_yolo.json",
+  "heads": {
+    "utility": {
+      "sumber": "hist_l31",
+      "bobot_skor": {"hist_l31": 1.0},
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7
+    },
+    "f1": {
+      "sumber": "hist_l31",
+      "bobot_skor": {"hist_l31": 1.0},
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7
+    },
+    "cakupan_atas_terdeteksi": {
+      "sumber": "hist_l31",
+      "bobot_skor": {"hist_l31": 1.0},
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "observasi",
+      "ambang": 0.05
+    },
+    "mae_jumlah_pool": {
+      "sumber": "hist_l31+hist_l15",
+      "bobot_skor": {"hist_l31": 0.5, "hist_l15": 0.5},
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "penuh",
+      "ambang": 0.05
+    }
+  }
+}

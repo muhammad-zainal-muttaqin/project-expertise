@@ -1,6 +1,6 @@
 # STATUS — lacakan kerja `pipeline-pertandan`
 
-Diperbarui: 2026-08-18 (PT-E-012..018 masuk; lihat bagian baru di bawah). **Berkas ini hidup** — dicentang saat langkah selesai.
+Diperbarui: 2026-08-18 (PT-E-012..024 masuk; lihat bagian baru di bawah). **Berkas ini hidup** — dicentang saat langkah selesai.
 Aturan mainnya di [`CLAUDE.md`](CLAUDE.md), rencananya di
 [`docs/PROPOSAL.md`](docs/PROPOSAL.md), catatan hasilnya di
 [`EKSPERIMEN.md`](EKSPERIMEN.md).
@@ -184,11 +184,23 @@ yang sudah pernah dicoba.
 | ✅ | **PT-E-018** ensemble C1+C2 | **DIKONFIRMASI** | **0,7208 -> 0,7464** (+2,56 pp, CI [+0,52; +4,53]) |
 | ✅ | **PT-E-019** gabungan end-to-end | **DIPALSUKAN (klaim berlipat)** | +0,87 pp lawan jumlah 1,74 pp; cakupan 29,3% -> 51,2% |
 | ✅ | **PT-E-020** linker global strict DAMIMAS | **NAIK** | F1 test 0,4704; cakupan terdeteksi 64,0%; cakupan semua 47,84% |
+| ✅ | **PT-E-021** proposal unik + relabel probabilistik | **NAIK** | proposal AP50 0,8381; mAP50 0,5881; macro-F1 operasi 0,5773 |
+| ✅ | **PT-E-022** linker di proposal unik | **NAIK** | F1 0,5171; coverage terdeteksi 70,62%; coverage semua 51,55% |
+| ✅ | **PT-E-023a** MoE per-tandan strict | **DITOLAK** | VAL memilih klasik; test 0,7234 < ConvNeXt 0,7378 |
+| ✅ | **PT-E-023b** MoE per-view strict | **NAIK TIPIS** | akurasi 0,7111; macro-F1 0,6894 |
+| ✅ | **PT-E-024** propagasi confidence lintas-view | **NAIK** | mAP50 0,5965; mAP50-95 0,2743; macro-F1 operasi 0,5906 |
+| 🔄 | **PT-E-025** RF-DETR-L strict DAMIMAS | **TRAINING** | 60 epoch, 1280 px, TEST tidak dipakai saat training |
 
 PT-E-020 menyimpan kepala terpisah yang seluruhnya dipilih di VAL. Kepala
 association terbaik tidak sama dengan kepala coverage atau hitung-pool; MAE
 pool terbaik 2,880 tetap kalah dari regresor counting sekitar 1,00, sehingga
 jumlah klaster hanya dijadikan fitur hilir.
+
+PT-E-021/022 mengubah representasi masukan linker, bukan sekadar ambangnya.
+Deduplikasi class-agnostic menurunkan pasangan train 225.918 -> 144.277 dan
+menaikkan prevalensi positif 2,763% -> 4,237%. Hasilnya kepala coverage melewati
+70% atas tandan yang terdeteksi dan MAE pool turun ke 1,864. Target 70% atas
+seluruh tandan belum tercapai; nilai sekarang 51,55%.
 
 ## PT-E-019: kedua perbaikan saling menggantikan, bukan menambah
 

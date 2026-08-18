@@ -33,6 +33,7 @@ def main() -> None:
         grad_accum_steps=args.grad_accum, lr=1e-4,
         lr_scheduler="cosine", lr_min_factor=.01, warmup_epochs=1.,
         seed=args.seed, early_stopping=False,
+        multi_scale=False, expanded_scales=False,
         checkpoint_interval=5, run_test=False, tensorboard=False,
         num_workers=args.workers, progress_bar="tqdm", device="cuda",
         notes={"dataset": "SawitMVC-YOLO-Damimas",

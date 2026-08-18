@@ -503,6 +503,8 @@ def main() -> None:
     ap.add_argument("--tanpa-ilp", action="store_true")
     ap.add_argument("--output", type=Path,
                     default=SUB / "results" / "damimas_linker_global.json")
+    ap.add_argument("--model-out", type=Path,
+                    default=SUB / "runs" / "linker_global_damimas" / "model.joblib")
     args = ap.parse_args()
     random.seed(42); np.random.seed(42); torch.manual_seed(42)
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -610,10 +612,9 @@ def main() -> None:
         "detik": time.time() - t0,
     }
     args.output.write_text(json.dumps(serial(hasil), indent=2, ensure_ascii=False))
-    run = SUB / "runs" / "linker_global_damimas"
-    run.mkdir(parents=True, exist_ok=True)
+    args.model_out.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump({"models": models, "prior": prior, "config": terbaik,
-                 "fitur_dim": X.shape[1]}, run / "model.joblib", compress=3)
+                 "fitur_dim": X.shape[1]}, args.model_out, compress=3)
     print(json.dumps({"val": terbaik["metrik"], "test": mt},
                      indent=2, ensure_ascii=False))
     print(f"-> {args.output}")

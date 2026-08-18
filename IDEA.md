@@ -57,3 +57,35 @@ DAMIMAS. Strategi pengembangan bersifat *greedy gain*: setiap kepala tugas
 (deteksi, klasifikasi per-tampak/per-tandan, penautan, dan counting) boleh
 berlapis atau memakai ensemble selama tidak menggunakan label test untuk
 pemilihan konfigurasi.
+
+## 6. Pembaruan Eksperimental DAMIMAS — 18 Agustus 2026
+
+Angka 73,60% pada §4 adalah plafon historis **C1 YOLO lama**, bukan plafon
+pendekatan multi-view. Eksperimen strict DAMIMAS dan pipeline proposal baru
+telah mempersempit bottleneck secara lebih tepat:
+
+- propagasi confidence lintas-view yang dikunci di validation menaikkan kepala
+  deteksi class-aware menjadi test mAP50 **0,5965**, mAP50-95 **0,2743**, dan
+  macro-F1 titik-operasi **0,5906**, tanpa mengubah kotak atau jumlah deteksi;
+- setelah kelas dilipat, proposal fisik yang sama mencapai AP50 **0,8381** dan
+  F1 operasi **0,7984**. Selisih sekitar 25 pp terhadap mAP class-aware adalah
+  bukti bahwa klasifikasi kematangan, bukan pencarian objek, kini menjadi
+  pengungkit terbesar;
+- relabel probabilistik berbasis classifier crop menaikkan keempat AP50 kelas,
+  terutama B4 0,3983 -> **0,4106**, tanpa menggandakan objek di jalur fisik;
+- propagasi multi-view berikutnya kembali menaikkan keempat AP50 kelas menjadi
+  **0,8042 / 0,5035 / 0,6570 / 0,4214** untuk B1--B4;
+- proposal unik sebelum linker menaikkan F1 association **0,4631 -> 0,5171**.
+  Kepala coverage mencapai **70,62% atas tandan terdeteksi** dan 51,55% atas
+  seluruh tandan;
+- classifier strict terbaik pada kotak dan tautan GT masih ConvNeXt residual:
+  akurasi per-tandan **0,7378**, macro-F1 **0,7166**, dan akurasi multi-tampak
+  **0,7753**. Mixture-of-experts per-tandan tidak mengalahkannya;
+- counting terbaik tetap regresor multi-ambang dengan macro-MAE **1,0039**.
+  MAE jumlah pool linker membaik ke 1,864 tetapi belum layak menggantikannya.
+
+Konsekuensinya, pipeline final memakai kepala berbeda atas bank kandidat yang
+sama: skor multi-label untuk mAP, proposal unik untuk identitas fisik, agregasi
+ordinal untuk kelas tandan, dan regresi multi-bank untuk counting. RF-DETR-L,
+RT-DETR-L, serta detektor agnostik DAMIMAS sedang/akan ditambahkan sebagai
+anggota bank; konfigurasi tetap dipilih di validation sebelum test dibuka.

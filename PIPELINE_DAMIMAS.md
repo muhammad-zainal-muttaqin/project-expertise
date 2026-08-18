@@ -38,32 +38,37 @@ validation; test baru dihitung setelah konfigurasi terkunci.
 
 | Tugas | Baseline DAMIMAS | Kepala greedy saat ini | Perubahan |
 |---|---:|---:|---:|
-| Deteksi test mAP50 | 0,5503 | **0,5839** | **+3,36 pp** |
-| Deteksi test mAP50-95 | 0,2604 | **0,2711** | **+1,06 pp** |
-| Deteksi macro-F1 operasional | 0,5557 | **0,5752** | **+1,96 pp** |
+| Deteksi test mAP50 | 0,5503 | **0,5965** | **+4,62 pp** |
+| Deteksi test mAP50-95 | 0,2604 | **0,2743** | **+1,39 pp** |
+| Deteksi macro-F1 operasional | 0,5557 | **0,5906** | **+3,49 pp** |
+| Proposal fisik AP50 / AP50-95 | — | **0,8381 / 0,3662** | kepala lokalisasi |
+| Proposal fisik P/R/F1 operasi | — | **0,8017 / 0,7952 / 0,7984** | threshold VAL |
 | Recall fisik oracle-link @ conf 0,01 | 0,9704 | 0,9704 | baseline plafon |
 | Klasifikasi per-tandan, strict DAMIMAS (kotak/link GT) | 0,7242 | **0,7378** | **+1,36 pp** |
 | Macro-F1 per-tandan, strict DAMIMAS | 0,7014 | **0,7166** | **+1,52 pp** |
 | Akurasi tandan multi-tampak, strict DAMIMAS | — | **0,7753** | mendekati 80% |
 | Akurasi tandan satu-tampak, strict DAMIMAS | — | 0,6329 | bottleneck utama kelas |
-| Akurasi per-view, classifier klasik strict DAMIMAS | — | **0,7103** | anggota komplementer |
+| Akurasi / macro-F1 per-view strict DAMIMAS | 0,7103 / 0,6793 (klasik) | **0,7111 / 0,6894** | meta ordinal |
 | Counting macro MAE | 1,0236 (single model, dipilih di val) | **1,0039** | **−0,0197** |
 | Counting class ±1 | 74,61% (single model, dipilih di val) | **75,79%** | **+1,18 pp** |
 | Counting tree ±1 | **37,80%** (single model) | 32,28% | ensemble belum menang di metrik ini |
-| Linker F1 di ruang deteksi | 0,3788 (acuan lama, dua varietas) | **0,4704** | scope acuan tidak identik |
-| Cakupan multi-tampak atas tandan terdeteksi | 38,39% (acuan lama) | **64,00%** | kepala coverage VAL-locked |
-| Cakupan multi-tampak atas seluruh tandan | 28,47% (acuan lama) | **47,84%** | target 70% belum tercapai |
+| Linker F1 di ruang deteksi | 0,4704 (PT-E-020, DAMIMAS) | **0,5171** | proposal unik |
+| Cakupan multi-tampak atas tandan terdeteksi | 64,00% (PT-E-020) | **70,62%** | target terdeteksi tercapai |
+| Cakupan multi-tampak atas seluruh tandan | 47,84% (PT-E-020) | **51,55%** | target global belum tercapai |
+| MAE jumlah pool linker | 2,880 (PT-E-020) | **1,864** | tetap bukan counter final |
 
 Pembanding counting di tabel memakai fitur 1.683-dim dan protokol split yang
 sama. Ensemble menang pada macro-MAE dan akurasi sel-kelas, tetapi belum pada
 akurasi gabungan empat kelas per pohon. Karena itu counting belum dianggap
 selesai dan akan menerima fitur dari detektor kedua/ketiga.
 
-Kepala deteksi saat ini adalah routing per kelas yang dipilih di validation:
-B1 memakai WBF fine-tune+inferensi 1536, B2 WBF baseline+fine-tune, B3 WBF
-baseline+1536, dan B4 WBF seluruh bank termasuk tile. AP50 test B1/B2/B3/B4
-semuanya naik menjadi **0,7912 / 0,4916 / 0,6546 / 0,3983**. Jadi kenaikan mAP
-tidak dibeli dengan mengorbankan satu kelas kecil.
+Kepala deteksi mempertahankan routing YOLO terdahulu sebagai sumber koordinat,
+lalu memancarkan distribusi kelas dari classifier crop. Setelah proposal fisik
+ditautkan lintas-view, confidence kelas dipropagasikan kembali ke baris deteksi.
+Konfigurasi propagasi dipilih per kelas seluruhnya di validation dan tidak
+mengubah kotak, kelas, atau jumlah deteksi. AP50 test B1/B2/B3/B4 menjadi
+**0,8042 / 0,5035 / 0,6570 / 0,4214**; semuanya naik. Proposal fisik tetap satu
+kotak per objek, sehingga ekspansi empat hipotesis kelas tidak masuk counting.
 
 ## Status Kepala Klasifikasi
 
@@ -78,6 +83,10 @@ Hasil model yang dipasang ulang hanya dengan DAMIMAS adalah:
 - Set Transformer: 0,7310;
 - stacking seluruh model strict: 0,7272.
 
+Mixture-of-experts baru juga ditolak untuk per-tandan: OOF VAL memilih klasik
+saja dan test berhenti di 0,7234. Pada per-view, meta ordinal memberi champion
+baru tipis, akurasi 0,7111 dengan macro-F1 0,6894.
+
 Semua kandidat non-pemenang tetap disimpan sebagai bank probabilitas, tetapi
 tidak dipaksa masuk champion. Angka modul ini belum boleh disebut end-to-end:
 potongannya berasal dari kotak GT dan pengelompokan view memakai identitas
@@ -85,12 +94,13 @@ oracle. Evaluasi deploy baru sah setelah detektor dan linker DAMIMAS dipasang.
 
 ## Urutan Kerja Berikutnya
 
-1. Tuntaskan relabel probabilistik crop deteksi dan pilih campuran di validation.
-2. Latih RF-DETR-L lalu RT-DETR-L khusus DAMIMAS; perluas fusion per kelas.
+1. Selesaikan training RF-DETR-L yang sedang berjalan, infer train/val/test,
+   lalu perluas fusion per kelas dan proposal fisik.
+2. Latih RT-DETR-L khusus DAMIMAS sebagai anggota arsitektur berbeda.
 3. Latih detektor satu-kelas pada view
    `/workspace/SawitMVC-YOLO-Damimas-Agnostic` untuk memanfaatkan plafon
    lokalisasi proposal yang pada fusion awal sudah >0,83 AP50.
-4. Masukkan statistik seluruh detektor dan linker sebagai fitur counting,
+4. Masukkan statistik seluruh detektor dan linker proposal-unik sebagai fitur counting,
    kemudian kunci ensemble dari validation.
 5. Setelah semua konfigurasi tetap, jalankan laporan test final dan bootstrap
    berkelompok pada tingkat pohon.

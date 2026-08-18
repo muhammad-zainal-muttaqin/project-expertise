@@ -1294,3 +1294,131 @@ dipaksa menjadi hasil counting akhir.
 **Sumber** — `scripts/linker_global_damimas.py` ·
 `scripts/laporkan_kepala_linker_damimas.py` ·
 `results/damimas_linker_global.json`
+
+---
+
+## PT-E-021 — Kepala proposal fisik dan relabel probabilistik DAMIMAS (2026-08-18)
+
+**Tujuan engineering** — memisahkan dua keputusan yang sebelumnya bercampur:
+proposal fisik dibuat unik lintas kelas untuk lokalisasi/linker, sedangkan
+kepala mAP boleh memancarkan empat hipotesis kelas berperingkat untuk satu
+proposal. Semua ambang NMS, temperatur, smoothing ordinal, eksponen skor, dan
+routing dipilih di 86 pohon VAL; TEST dibuka setelah konfigurasi terkunci.
+
+**Proposal fisik.** NMS class-agnostic IoU 0,60 dengan kotak dari baris skor
+tertinggi menang di VAL. Ia menghasilkan test AP50 lokalisasi **0,8381**,
+AP50-95 **0,3662**, dan titik operasi P/R/F1 **0,8017 / 0,7952 / 0,7984**.
+Dengan tautan oracle pada `conf=0,01`, recall fisik test **0,9620**, R4
+**0,7464**, macro-F1 **0,7162**, dan R4 pada 883 tandan multi-tampak **0,7724**.
+Utility `accuracy x recall` 0,7180 belum mengalahkan baseline 0,7204, sehingga
+proposal ini menjadi kepala lokalisasi/linker dan tidak menggusur kepala recall.
+
+**Relabel probabilistik.** Konfigurasi VAL-locked memakai classifier hibrida,
+campuran label asal 0,5, `T=0,6`, gamma 2, top-4, eksponen lokalisasi 1,25, dan
+smoothing ordinal 0,2. Dibanding fusion YOLO PT-E-019/awal, hasil test berubah:
+
+| metrik | fusion YOLO | relabel | routing mAP akhir |
+|---|---:|---:|---:|
+| mAP50 | 0,5839 | 0,5880 | **0,5881** |
+| mAP50-95 | 0,2711 | 0,2721 | **0,2723** |
+| macro-F1 operasi | 0,5752 | **0,5773** | 0,5759 |
+| AP50 B4 | 0,3983 | **0,4106** | **0,4106** |
+
+Keempat AP50 kelas naik pada relabel: **0,7923 / 0,4942 / 0,6548 / 0,4106**.
+Routing akhir hanya mengganti skor B3 dengan WBF original+relabel dan menjadi
+kepala mAP; relabel murni tetap kepala titik-operasi karena macro-F1-nya lebih
+baik. Ekspansi multi-kelas hanya dipakai evaluator deteksi; counting dan linker
+tetap menerima satu proposal fisik, sehingga satu tandan tidak dihitung empat
+kali.
+
+**Sumber** — `../scripts/relabel_detektor_damimas.py` ·
+`../scripts/fusi_proposal_damimas.py` · `../scripts/fusi_detektor_damimas.py` ·
+`../results/damimas_relabel_classifier.json` ·
+`../results/damimas_fusi_yolo_relabel.json`
+
+---
+
+## PT-E-022 — Linker global di atas proposal unik (2026-08-18)
+
+**Hipotesis** — deduplikasi class-agnostic sebelum membentuk graf mengurangi
+kompetitor palsu tanpa membuang distribusi kelas lunak. Pair model dipasang pada
+proposal unik TRAIN dari C1; model/perakit/ambang dipilih pada proposal fusion
+VAL; TEST proposal fusion baru dinilai setelah lock.
+
+Pasangan train turun **225.918 -> 144.277**, sementara prevalensi pasangan benar
+naik **2,763% -> 4,237%**. Average-link HGB ambang 0,70 menang di VAL.
+
+| kepala VAL-locked | F1 test | presisi | recall | cakupan terdeteksi | cakupan semua | MAE pool |
+|---|---:|---:|---:|---:|---:|---:|
+| utility/F1 | **0,5171** | **0,5000** | 0,5354 | 0,6229 | 0,4546 | 3,672 |
+| cakupan | 0,4977 | 0,4014 | **0,6549** | **0,7062** | **0,5155** | **1,864** |
+| hitung-pool | 0,4816 | 0,3877 | 0,6356 | 0,6977 | 0,5093 | 1,880 |
+
+Terhadap PT-E-020 dengan protokol DAMIMAS yang sama, kepala utility naik F1
+**0,4631 -> 0,5171** dan cakupan-terdeteksi **0,5628 -> 0,6229**. Kepala
+coverage melewati target 70% bila penyebutnya tandan yang terdeteksi; cakupan
+atas seluruh tandan masih 51,55%, jadi target global belum tercapai. MAE pool
+1,864 juga masih kalah dari regresor counting 1,004 dan tetap hanya menjadi
+fitur, bukan hasil counting final.
+
+**Sumber** — `scripts/linker_global_damimas.py` ·
+`scripts/laporkan_kepala_linker_damimas.py` ·
+`results/damimas_linker_global_proposal_yolo.json`
+
+---
+
+## PT-E-023 — Mixture-of-experts strict DAMIMAS (2026-08-18)
+
+Empat classifier per-tandan strict mempunyai oracle-disagreement sekitar 83%
+di VAL, tetapi meta-model 120 fitur tidak dapat memprediksi anggota yang benar
+secara stabil. OOF GroupKFold per pohon memilih classifier klasik saja;
+hasil test 0,7234 / macro-F1 0,7055, di bawah champion ConvNeXt 0,7378 / 0,7166.
+Kepala per-tandan ini **DITOLAK**.
+
+Pada tugas per-view, meta ordinal berbasis classifier klasik, ConvNeXt-224,
+jumlah sisi, arah view, dan konteks pohon memberi test akurasi **0,7111** dan
+macro-F1 **0,6894**. Akurasi hanya +0,08 pp dari klasik 0,7103, tetapi macro-F1
+naik +1,01 pp; ia diterima sebagai kepala per-view sementara. Semua meta-model,
+blend, dan ambang dipilih dari prediksi OOF VAL sebelum TEST dibaca.
+
+**Sumber** — `scripts/moe_classifier_damimas.py` · `scripts/moe_view_damimas.py`
+· `results/damimas_moe_classifier.json` · `results/damimas_moe_view.json`
+
+---
+
+## PT-E-024 — Propagasi confidence kelas lintas-view (2026-08-18)
+
+**Hipotesis** — linker proposal-unik tidak hanya berguna untuk laporan
+per-tandan. Evidence kelas dari view lain pada klaster prediksi yang sama dapat
+dipropagasikan kembali ke confidence deteksi per-citra, sehingga memperbaiki
+ranking COCO tanpa menciptakan kotak baru.
+
+**Protokol** — baris deteksi routing PT-E-021 dipetakan ke proposal fisik unik.
+Kepala linker, agregasi, kekuatan campuran, eksponen objectness/kelas, dan
+score-blend disapu hanya pada 86 pohon VAL. Setelah konfigurasi global terkunci,
+router per kelas mengambil konfigurasi terbaik untuk masing-masing AP kelas
+(AP COCO memang separabel per kategori). B1/B3/B4 memilih kepala utility,
+sedangkan B2 memilih kepala coverage. TEST baru dibuka setelah keempat rute
+tetap.
+
+| metrik test | PT-E-021 | propagasi | perubahan |
+|---|---:|---:|---:|
+| mAP50 | 0,5881 | **0,5965** | **+0,84 pp** |
+| mAP50-95 | 0,2723 | **0,2743** | **+0,20 pp** |
+| macro-F1 operasional | 0,5759 | **0,5906** | **+1,47 pp** |
+| AP50 B1/B2/B3/B4 | 0,7923/0,4942/0,6554/0,4106 | **0,8042/0,5035/0,6570/0,4214** | semua naik |
+
+Validation juga bergerak searah: mAP50 **0,5881 -> 0,6024** dan mAP50-95
+**0,2716 -> 0,2774**. Audit invariant atas 44.926 baris VAL dan 66.539 baris
+TEST membuktikan delta koordinat maksimum 0, delta label maksimum 0, dan jumlah
+baris identik. Hanya 5.714/7.751 confidence yang berubah. Dengan demikian gain
+ini benar-benar berasal dari evidence multi-view, bukan penambahan proposal.
+
+**Putusan** — **DITERIMA** sebagai kepala deteksi class-aware sementara. Ia
+memberi gain pada seluruh kelas dan tiga metrik utama sekaligus. Jalur proposal
+fisik/linker/counting tetap terpisah agar empat hipotesis kelas tidak pernah
+menjadi empat objek.
+
+**Sumber** — `../scripts/propagasi_multiview_damimas.py` ·
+`../results/damimas_propagasi_multiview.json` ·
+`../results/pred_damimas_propagasi_multiview_{val,test}.npz`

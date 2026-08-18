@@ -1,0 +1,175 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "fusi+threshold dipilih VAL; TEST sekali",
+  "anggota": {
+    "maphead": {
+      "val": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_relabel_val.npz",
+      "test": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_relabel_test.npz"
+    }
+  },
+  "agnostik": [],
+  "terpilih_di_val": {
+    "config": {
+      "anggota": [
+        "maphead"
+      ],
+      "bobot": [
+        1.0
+      ],
+      "iou_intra": 0.6,
+      "box_intra": "max",
+      "iou_inter": 0.65,
+      "box_inter": "max",
+      "skor": "max"
+    },
+    "metrik": {
+      "AP50": 0.8303743936564668,
+      "AP50_95": 0.36594400688056794
+    },
+    "objective": 0.6678237582849021
+  },
+  "operasi_val": {
+    "threshold": 0.11068665236234665,
+    "precision": 0.8012387387387387,
+    "recall": 0.8099032441661924,
+    "f1": 0.8055476931786018,
+    "n_gt": 1757
+  },
+  "test": {
+    "AP50": 0.8353398589942164,
+    "AP50_95": 0.36391002113444143
+  },
+  "operasi_test": {
+    "threshold": 0.11068665236234665,
+    "precision": 0.7972256221950225,
+    "recall": 0.7939861844778545,
+    "f1": 0.7956026058631922,
+    "n_gt": 2461
+  },
+  "ranking_val": [
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8303743936564668,
+        "AP50_95": 0.36594400688056794
+      },
+      "objective": 0.6678237582849021
+    },
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8296916904275208,
+        "AP50_95": 0.3659739046570777
+      },
+      "objective": 0.6673904654078657
+    },
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.829648392657514,
+        "AP50_95": 0.36597636367642933
+      },
+      "objective": 0.6673631825141343
+    },
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8290039406687932,
+        "AP50_95": 0.3664896950451914
+      },
+      "objective": 0.6671239547005325
+    },
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8288105986787043,
+        "AP50_95": 0.3666074643890473
+      },
+      "objective": 0.6670395016773244
+    },
+    {
+      "config": {
+        "anggota": [
+          "maphead"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8279451332301524,
+        "AP50_95": 0.36703063615898635
+      },
+      "objective": 0.6666250592552443
+    }
+  ],
+  "prediksi_fisik": {
+    "val": "/workspace/project-expertise/results/pred_damimas_proposal_relabel_val.npz",
+    "test": "/workspace/project-expertise/results/pred_damimas_proposal_relabel_test.npz"
+  }
+}

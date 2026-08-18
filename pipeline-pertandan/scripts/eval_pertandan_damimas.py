@@ -58,6 +58,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--conf", type=float, nargs="+",
                     default=[.01, .03, .05, .075, .10, .15, .20, .25, .30])
+    ap.add_argument("--pred-val", type=Path,
+                    default=SUB / "results" / "pred_skorpenuh_val.npz")
+    ap.add_argument("--pred-test", type=Path,
+                    default=SUB / "results" / "pred_skorpenuh_test.npz")
+    ap.add_argument("--nama-detektor", default="YOLO26l 953 lama, difilter DAMIMAS")
     ap.add_argument("--keluaran", type=Path,
                     default=SUB / "results" / "damimas_baseline_pertandan.json")
     args = ap.parse_args()
@@ -66,8 +71,8 @@ def main() -> int:
     ids = {s: [t for t, sp in man.items()
                if sp == s and t.startswith("DAMIMAS_")] for s in ("val", "test")}
     pohon = {s: [EP.muat_pohon(t) for t in ids[s]] for s in ids}
-    z = {s: np.load(SUB / "results" / f"pred_skorpenuh_{s}.npz", allow_pickle=True)
-         for s in ids}
+    z = {"val": np.load(args.pred_val, allow_pickle=True),
+         "test": np.load(args.pred_test, allow_pickle=True)}
 
     sapuan, terbaik = {}, None
     for conf in args.conf:
@@ -95,7 +100,8 @@ def main() -> int:
     hasil = {
         "dataset": "SawitMVC-YOLO-Damimas",
         "tautan": "oracle; plafon klasifikasi/agregasi, bukan hasil deploy",
-        "detektor": "YOLO26l 953 lama, difilter DAMIMAS",
+        "detektor": args.nama_detektor,
+        "prediksi": {"val": str(args.pred_val), "test": str(args.pred_test)},
         "pemilihan_val": "maksimum accuracy_R4 * recall_fisik",
         "sapuan_val": sapuan,
         "terkunci": {"conf": conf, "skema": skema, "tau": tau},
