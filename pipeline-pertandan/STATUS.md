@@ -191,7 +191,7 @@ yang sudah pernah dicoba.
 | ✅ | **PT-E-024** propagasi confidence lintas-view | **NAIK** | mAP50 0,5965; mAP50-95 0,2743; macro-F1 operasi 0,5906 |
 | ✅ | **PT-E-025** evaluasi end-to-end global 1-ke-1 | **SELESAI** | P/R pool 0,8530/0,8116; acc matched 0,7322; macro-F1 fisik 0,5867 |
 | ✅ | **PT-E-026** counting multi-bank | **SELESAI / DIKOREKSI** | macro tetap 1,0039; regresor total compact best observed TEST 1,4882, bukan Σ4 lama 1,7795 |
-| 🔄 | **PT-E-027** RF-DETR-L strict DAMIMAS | **TRAINING** | 60 epoch, 1280 px, TEST tidak dipakai saat training |
+| ✅ | **PT-E-027** RF-DETR-L strict DAMIMAS | **SELESAI** | 60 epoch, 1280 px, TEST tidak dipakai saat training; hasilnya dianalisis di PT-E-032 (puncak val ema_mAP50 epoch 5 = 0,5830, epoch 59 = 0,4885) |
 | ✅ | **PT-E-028** counting CatBoost regularized | **SELESAI / TIDAK JADI CHAMPION** | TEST macro 1,0236; class ±1 0,7480; tree ±1 0,3386; kepala total langsung 1,5512 |
 
 PT-E-020 menyimpan kepala terpisah yang seluruhnya dipilih di VAL. Kepala
@@ -290,8 +290,8 @@ pemilik repo pada 0,7439.
 |---|---|---|---|
 | ✅ | **PT-E-029** ensemble kelas DAMIMAS | **DIKONFIRMASI** | 0,7378 -> **0,7439** (+1,67 pp vs champion pilihan-VAL, CI95 [-0,15; +3,55]) |
 | ✅ | **PT-E-030** CORAL vs CORN | **CORAL DIPALSUKAN** | CORAL 0,3305 lawan CORN **0,6983**, resep identik |
+| ✅ | **PT-E-031** spesialis batas | **DIPALSUKAN** | CV dalam VAL +0,33/+0,43 pp (lam 0,15 di kedua batas) tidak bertahan: test 0,7340 lawan acuan argmax 0,7356 (-0,15 pp, CI95 [-1,05; +0,76]); sempat dicatat "tidak dijalankan", dieksekusi di akhir sesi |
 | ✅ | **PT-E-032** RF-DETR 60 epoch | **selesai** | puncak val ema_mAP50 **epoch 5 = 0,5830**; epoch 59 = 0,4885 (-9,46 pp) |
-| ❌ | ~~PT-E-031 spesialis batas~~ | **tidak dijalankan** | task 3 CORN sudah dilatih tepat di {B3,B4}; skrip disimpan, belum dieksekusi |
 | ✅ | **PT-E-033** bagged ensemble selection (Caruana 2004) | **DIPALSUKAN** | test 0,7394 lawan 0,7409; delta -0,15 pp, CI [-1,67; +1,45] |
 
 **PT-E-034 (plafon) menjawab apakah 0,80 masih mungkin.** Oracle pilih-anggota

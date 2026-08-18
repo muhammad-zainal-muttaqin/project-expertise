@@ -1,0 +1,49 @@
+
+=== spesialis B2_vs_B3 ===
+  latih 9268 potongan (2504 vs 6764)
+    [B2_vs_B3] epoch 1/10 loss 0.3001
+    [B2_vs_B3] epoch 2/10 loss 0.2528
+    [B2_vs_B3] epoch 3/10 loss 0.2073
+    [B2_vs_B3] epoch 4/10 loss 0.1433
+    [B2_vs_B3] epoch 5/10 loss 0.0867
+    [B2_vs_B3] epoch 6/10 loss 0.0442
+    [B2_vs_B3] epoch 7/10 loss 0.0344
+    [B2_vs_B3] epoch 8/10 loss 0.0144
+    [B2_vs_B3] epoch 9/10 loss 0.0074
+    [B2_vs_B3] epoch 10/10 loss 0.0078
+  CV val: {0.0: 0.7497, 0.15: 0.753, 0.3: 0.753, 0.45: 0.7497, 0.6: 0.7519, 0.75: 0.7486, 0.9: 0.7508}
+  -> lam dikunci 0.15
+  val 0.753 | test 0.7363
+
+=== spesialis B3_vs_B4 ===
+  latih 9154 potongan (6764 vs 2390)
+    [B3_vs_B4] epoch 1/10 loss 0.8193
+    [B3_vs_B4] epoch 2/10 loss 0.6941
+    [B3_vs_B4] epoch 3/10 loss 0.5528
+    [B3_vs_B4] epoch 4/10 loss 0.3900
+    [B3_vs_B4] epoch 5/10 loss 0.2342
+    [B3_vs_B4] epoch 6/10 loss 0.1323
+    [B3_vs_B4] epoch 7/10 loss 0.0707
+    [B3_vs_B4] epoch 8/10 loss 0.0354
+    [B3_vs_B4] epoch 9/10 loss 0.0253
+    [B3_vs_B4] epoch 10/10 loss 0.0205
+  CV val: {0.0: 0.753, 0.15: 0.7573, 0.3: 0.7476, 0.45: 0.741, 0.6: 0.7454, 0.75: 0.7388, 0.9: 0.7356}
+  -> lam dikunci 0.15
+  val 0.7573 | test 0.734
+
+=== AKHIR ===
+{
+ "test": 0.734,
+ "test_1view": 0.6676,
+ "test_multi": 0.7577,
+ "macro_f1": 0.6988,
+ "vs_ensemble": {
+  "delta_pp": -0.15,
+  "ci95": [
+   -1.05,
+   0.76
+  ],
+  "P(delta>0)": 0.344
+ },
+ "target_IDEA": 0.8
+}

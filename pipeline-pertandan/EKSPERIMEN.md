@@ -1693,6 +1693,98 @@ bobot `runs/classifier_{coral,corn}_damimas_s42/best.pt`
 
 ---
 
+## PT-E-031 — Spesialis per-batas: 86% galat duduk di dua batas, memperbaikinya tetap tidak menolong (2026-08-18)
+
+**Hipotesis** — Analisis galat ensemble PT-E-029 (test DAMIMAS, 1.316 tandan,
+337 galat) menunjukkan akurasi +-1 = 0,9962, jadi hampir SELURUH galat adalah
+kelas bertetangga, dan galat itu menumpuk:
+
+| batas | galat | porsi |
+|---|---|---|
+| B3<->B4 | 152 | 45% |
+| B2<->B3 | 137 | 41% |
+| B1<->B2 | 43 | 13% |
+
+Dua batas memuat 86% galat. Model empat-kelas membagi kapasitasnya untuk enam
+keputusan pasangan padahal empat di antaranya nyaris tak pernah salah
+(B1<->B3 tiga kasus, B1<->B4 nol, B2<->B4 satu). Spesialis biner yang hanya
+belajar satu batas mestinya memakai seluruh kapasitasnya untuk keputusan yang
+menentukan.
+
+**Yang memalsukan** — spesialis batas tidak mengalahkan ensemble PT-E-029.
+
+**Cara** — dua ConvNeXt-Tiny biner (stem..stage2 dibekukan, 10 epoch, BCE
+`pos_weight`), masing-masing dilatih HANYA pada potongan train dua kelas yang
+bersangkutan: B2 vs B3 (9.268 potongan, 2.504 vs 6.764) dan B3 vs B4 (9.154
+potongan, 6.764 vs 2.390). Intervensinya sengaja seminimal mungkin — satu
+parameter per batas. Spesialis tidak menggantikan keputusan, ia hanya membagi
+ulang massa probabilitas yang SUDAH ada di dua kelas bertetangga:
+
+    q = (1-lam)*q_ensemble + lam*q_spesialis
+    p'[bawah], p'[atas] = (p[bawah]+p[atas])*(1-q), (p[bawah]+p[atas])*q
+
+Total massa tidak berubah, dan `lam = 0` mengembalikan ensemble persis — jadi
+secara konstruksi ia tidak bisa merusak kecuali memang lebih buruk. `lam`
+dipilih lewat CV 5-fold tingkat pohon di DALAM VAL, bukan fit VAL (alasannya di
+PT-E-029: `tau` per-nview menang di fit VAL 0,7595 lalu jatuh ke 0,7318 di
+TEST). TEST dibuka SEKALI setelah kedua `lam` terkunci.
+
+**CV di dalam VAL — keuntungannya ada, tetapi tipis:**
+
+| lam | B2_vs_B3 | B3_vs_B4 |
+|---|---|---|
+| 0,00 (= ensemble) | 0,7497 | 0,7530 |
+| **0,15** | **0,7530** | **0,7573** |
+| 0,30 | 0,7530 | 0,7476 |
+| 0,45 | 0,7497 | 0,7410 |
+| 0,60 | 0,7519 | 0,7454 |
+| 0,75 | 0,7486 | 0,7388 |
+| 0,90 | 0,7508 | 0,7356 |
+
+Kedua batas mengunci `lam = 0,15`, yaitu +0,33 pp dan +0,43 pp di CV. Karena CV
+positif, TEST dibuka.
+
+**Hasil (test DAMIMAS, 1.316 tandan):**
+
+| | test | 1-view | multi | macro-F1 |
+|---|---|---|---|---|
+| ensemble PT-E-029 (argmax, acuan skrip) | 0,7356 | — | — | — |
+| + spesialis B2/B3 | 0,7363 | — | — | — |
+| **+ spesialis B3/B4 (akhir)** | **0,7340** | 0,6676 | 0,7577 | 0,6988 |
+
+vs acuan: **-0,15 pp, CI95 [-1,05; +0,76], P(delta>0) = 0,344**. Waktu 533 detik.
+
+**Putusan** — **DIPALSUKAN.** Keuntungan CV sebesar 0,33-0,43 pp tidak bertahan
+ke TEST; besarnya persis seukuran derau seleksi pada VAL 86 pohon.
+
+**Catatan acuan yang harus dibaca bersama angkanya.** Skrip ini memakai argmax
+atas dump probabilitas PT-E-029, yang memberi 0,7356 — BUKAN 0,7439 yang jadi
+angka juara PT-E-029 (itu memakai aturan keputusan ordinal `tau`). Jadi -0,15 pp
+di atas adalah selisih terhadap varian argmax; terhadap pipeline juara yang
+sebenarnya, hasil akhir 0,7340 tertinggal 0,99 pp. Tidak ada pembacaan yang
+membuat spesialis menang.
+
+**Arti bersama PT-E-033/034/035/036.** Ini kegagalan dari arah yang berbeda dan
+karena itu informatif. PT-E-033..036 mencoba membaca "anggota mana yang benar"
+dari keluaran anggota dan gagal. PT-E-031 tidak menebak anggota sama sekali: ia
+melatih model BARU yang melihat citra, khusus untuk keputusan yang paling sering
+salah — dan tetap tidak menambah apa pun. Artinya sisa galat di batas B2/B3 dan
+B3/B4 bukan soal kapasitas yang terbagi-bagi; potongan di kedua sisi batas itu
+memang tidak terpisahkan oleh citra 224 px sendirian.
+
+**Kaveat jujur** — entri ini ditulis 2026-08-18 setelah `STATUS.md` sempat
+mencatat PT-E-031 "tidak dijalankan". Eksperimennya memang sempat dilewati
+(alasan waktu itu: task 3 CORN sudah dilatih tepat di {B3,B4}), lalu dieksekusi
+di akhir sesi; catatan statusnya yang tertinggal, bukan hasilnya.
+
+**Sumber** — `scripts/spesialis_batas_damimas.py` ·
+`results/pt_e_031_spesialis_batas.json` ·
+dump `results/pt_e_031_spesialis_batas_pred.npz` ·
+log `logs_ringkas/pt_e_031_spesialis_batas.log` ·
+bobot `runs/spesialis_B2_vs_B3_damimas/best.pt`, `runs/spesialis_B3_vs_B4_damimas/best.pt`
+
+---
+
 ## PT-E-032 — RF-DETR DAMIMAS memuncak di epoch 5, lalu memburuk 55 epoch (2026-08-18)
 
 **Konteks** — Training RF-DETR-L DAMIMAS (`scripts/train_rfdetr_damimas.py`,
