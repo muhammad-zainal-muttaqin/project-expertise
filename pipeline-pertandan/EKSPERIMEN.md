@@ -1782,3 +1782,59 @@ hanya bukan penyebab plafon 0,74.
 
 **Sumber** — `scripts/ensemble_bagged_damimas.py` · `results/pt_e_033_bagged.json`
 · dump `results/pt_e_033_bagged_pred.npz`
+
+---
+
+## PT-E-034 — Plafon: 0,80 masih mungkin, tapi tidak lewat rata-rata berbobot (2026-08-18)
+
+**Pertanyaan** — Setelah PT-E-033 memalsukan bagging dan seluruh varian ensemble
+mendarat di pita 0,7394-0,7439, apakah target 0,80 masih bisa dicapai dari lima
+bank yang ada, atau sudah habis?
+
+**Cara** — tiga plafon dihitung, dua di antaranya SENGAJA CURANG (parameter dipas
+langsung di TEST) supaya batas atas tiap keluarga metode terlihat. Nol training.
+
+**Hasil (test DAMIMAS, 1.316 tandan):**
+
+| | akurasi | arti |
+|---|---|---|
+| set_transformer (anggota terbaik) | 0,7386 | model tunggal |
+| **dicapai jujur, terkunci VAL** | **0,7439** | PT-E-029 |
+| `tau` dipas langsung di TEST | 0,7470 | plafon curang aturan ordinal |
+| bobot dipas langsung di TEST | 0,7523 | **plafon curang SELURUH rata-rata berbobot** |
+| **oracle pilih-anggota** | **0,8739** | selalu pilih anggota yang kebetulan benar |
+
+Oracle per-populasi: satu-tampak 0,8353 · multi-tampak 0,8876.
+
+**Putusan — dua fakta yang bertabrakan, dan itu petunjuknya:**
+
+1. **Informasinya ADA.** Oracle pilih-anggota 0,8739 jauh melewati 0,80. Kelima
+   bank secara kolektif sudah memuat jawaban benar untuk 87% tandan.
+
+2. **Rata-rata berbobot TIDAK BISA mengaksesnya.** Dengan bobot dipas langsung di
+   TEST -- kecurangan telak yang mustahil di deployment -- keluarga metode ini
+   mentok di 0,7523. Hasil jujur 0,7439 hanya **0,84 pp** di bawahnya.
+
+Jadi pita sempit 0,7394-0,7439 di PT-E-029/033 bukan kebetulan dan bukan akibat
+VAL kecil: **itu dinding keluarga metodenya.** Menyetel bobot, menambah bag,
+mengganti aturan ambang, atau memperbesar himpunan seleksi tidak bisa memberi
+lebih dari ~0,84 pp lagi, berapa pun usahanya.
+
+**Konsekuensi untuk arah berikutnya.** Kesenjangan 0,8739 lawan 0,7523 adalah
+**12,2 pp yang hanya bisa diambil penggabung BERGANTUNG-MASUKAN** -- yang belajar
+KAPAN mempercayai anggota mana, bukan bobot global tetap. Nama keluarganya
+Dynamic Classifier Selection / Dynamic Ensemble Selection (lihat Cruz, Sabourin
+& Cavalcanti, "Dynamic classifier selection: Recent advances and perspectives",
+Information Fusion 2018).
+
+Kaveat jujur yang harus dibawa: `moe_classifier` DAMIMAS yang sudah ada adalah
+percobaan ke arah itu dan ia **merosot jadi "pilih klasik saja"** -- OOF VAL
+memilih satu anggota dan test berhenti di 0,7234. Itu gejala gating yang gagal
+belajar pada data seleksi kecil, bukan bukti keluarga metodenya salah; tetapi ia
+memperingatkan bahwa gating pun akan menghadapi masalah VAL 86 pohon yang sama.
+Karena itu langkah pertama yang masuk akal bukan gating yang lebih besar,
+melainkan **fitur gating yang murah dan bermakna** (jumlah tampak, keyakinan
+antar-anggota, ketidaksepakatan antar-anggota) yang parameternya sedikit.
+
+**Sumber** — dihitung langsung dari dump bank di `results/damimas_*_pred.npz`;
+angka tereproduksi dengan potongan skrip di entri ini dan `PT-E-033`.

@@ -294,6 +294,14 @@ pemilik repo pada 0,7439.
 | ❌ | ~~PT-E-031 spesialis batas~~ | **tidak dijalankan** | task 3 CORN sudah dilatih tepat di {B3,B4}; skrip disimpan, belum dieksekusi |
 | ✅ | **PT-E-033** bagged ensemble selection (Caruana 2004) | **DIPALSUKAN** | test 0,7394 lawan 0,7409; delta -0,15 pp, CI [-1,67; +1,45] |
 
+**PT-E-034 (plafon) menjawab apakah 0,80 masih mungkin.** Oracle pilih-anggota
+= **0,8739** (informasinya ADA), tetapi rata-rata berbobot dengan bobot dipas
+LANGSUNG di TEST mentok **0,7523** -- hasil jujur 0,7439 cuma 0,84 pp di bawahnya.
+Jadi 0,80 masih mungkin dari bank yang ada, tetapi **tidak lewat rata-rata
+berbobot apa pun**. Yang bisa mengambil 12,2 pp sisanya hanya penggabung
+BERGANTUNG-MASUKAN (Dynamic Ensemble Selection). Kaveat: `moe_classifier` yang
+sudah ada adalah percobaan ke arah itu dan merosot jadi "pilih klasik saja".
+
 **PT-E-033 menutup satu jalur dengan bersih.** Seluruh varian ensemble mendarat
 di pita 0,7394-0,7439 (serakah, serakah+corn, bagged 200x). Kalau varians seleksi
 yang jadi hambatan, bagging harus memisahkan diri dari pita itu -- ia tidak.
