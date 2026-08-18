@@ -27,14 +27,21 @@ import eval_dump_damimas as ED  # noqa: E402
 def parse_anggota(items):
     out = {}
     for x in items:
-        bagian = x.split("=", 2)
-        if len(bagian) != 3:
-            raise SystemExit("--anggota harus NAMA=VAL.npz=TEST.npz")
-        nama, val, test = bagian
+        bagian = x.split("=")
+        if len(bagian) == 3:
+            nama, val, test = bagian
+            paths = {"val_path": val, "test_path": test}
+        elif len(bagian) == 4:
+            nama, train, val, test = bagian
+            paths = {"train_path": train, "val_path": val,
+                     "test_path": test}
+        else:
+            raise SystemExit(
+                "--anggota harus NAMA=VAL.npz=TEST.npz atau "
+                "NAMA=TRAIN.npz=VAL.npz=TEST.npz")
         if nama in out:
             raise SystemExit(f"Nama anggota duplikat: {nama}")
-        out[nama] = {"val_path": str(Path(val).resolve()),
-                     "test_path": str(Path(test).resolve())}
+        out[nama] = {k: str(Path(v).resolve()) for k, v in paths.items()}
     if len(out) < 2:
         raise SystemExit("Fusi membutuhkan sedikitnya dua anggota")
     return out
@@ -96,6 +103,12 @@ def wbf_satu(rows: list[tuple[np.ndarray, float, int]], ambang: float,
         bobot = np.asarray([r[1] for r in g])
         if aturan_skor == "max":
             s = float(skor.max())
+        elif aturan_skor == "noisy_or":
+            # Bukti independen dari beberapa arsitektur menaikkan confidence.
+            # Bobot bekerja sebagai eksponen evidence; seluruh kandidat bobot
+            # tetap dipilih di VAL sehingga perbedaan kalibrasi tidak ditebak.
+            s = float(1. - np.prod(np.power(
+                np.clip(1. - skor, 1e-9, 1.), bobot)))
         elif aturan_skor == "avg_all":
             # Satu model boleh menyumbang paling banyak sekali ke penyebut.
             terbaik = {}
@@ -158,7 +171,8 @@ def buat_pred(cfg: dict, bank: dict[str, dict[str, np.ndarray]]) -> dict[str, np
 def coco_detail(coco, paths, pred):
     det = []
     for image_id, path in enumerate(paths, 1):
-        for x1, y1, x2, y2, conf, kelas in pred[path.stem]:
+        for row in pred[path.stem]:
+            x1, y1, x2, y2, conf, kelas = row[:6]
             det.append({"image_id": image_id, "category_id": int(kelas) + 1,
                         "bbox": [float(x1), float(y1), float(x2 - x1), float(y2 - y1)],
                         "score": float(conf)})
@@ -182,7 +196,8 @@ def objektif(m):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--anggota", action="append", required=True,
-                    help="ulang: NAMA=pred_val.npz=pred_test.npz")
+                    help=("ulang: NAMA=VAL.npz=TEST.npz atau "
+                          "NAMA=TRAIN.npz=VAL.npz=TEST.npz"))
     ap.add_argument("--dataset", type=Path,
                     default=Path("/workspace/SawitMVC-YOLO-Damimas"))
     ap.add_argument("--keluaran", type=Path,
@@ -191,35 +206,46 @@ def main() -> None:
                     default=ROOT / "results" / "pred_damimas_fusi_val.npz")
     ap.add_argument("--pred-test-out", type=Path,
                     default=ROOT / "results" / "pred_damimas_fusi_test.npz")
+    ap.add_argument("--pred-train-out", type=Path,
+                    default=ROOT / "results" / "pred_damimas_fusi_train.npz")
     args = ap.parse_args()
     sumber = parse_anggota(args.anggota)
 
-    gt, bank, coco_data = {}, {"val": {}, "test": {}}, {}
-    for split in ("val", "test"):
-        coco, paths, g = ED.bangun_gt(args.dataset, split)
-        gt[split] = g; coco_data[split] = (coco, paths)
-        for nama, info in sumber.items():
-            bank[split][nama] = ED.muat_prediksi(
-                Path(info[f"{split}_path"]), set(g))
+    # Fase seleksi hanya membuka VAL. Selain mencegah pemakaian label test,
+    # pemisahan akses ini membuat urutan lock dapat diaudit dari eksekusi:
+    # dump dan anotasi TEST bahkan belum dimuat saat konfigurasi dibandingkan.
+    coco_v, paths_v, gt_v = ED.bangun_gt(args.dataset, "val")
+    bank_v = {
+        nama: ED.muat_prediksi(Path(info["val_path"]), set(gt_v))
+        for nama, info in sumber.items()
+    }
 
     configs = [{"jenis": "individual", "anggota": n} for n in sumber]
     names = list(sumber)
     # Pasangan dan seluruh bank memberi keragaman; tiga rumus skor menangani
     # perbedaan kalibrasi confidence antar-arsitektur.
-    subsets = list(combinations(names, 2)) + ([tuple(names)] if len(names) > 2 else [])
+    subsets = [sub for ukuran in range(2, len(names) + 1)
+               for sub in combinations(names, ukuran)]
     for sub in subsets:
+        # Confidence antar-arsitektur tidak terkalibrasi sama. Equal-weight
+        # tetap kandidat, lalu setiap anggota diberi kesempatan menjadi sumber
+        # dominan. Skala absolut tidak penting; rasio bobotlah yang diuji.
+        weight_grid = [[1.] * len(sub)]
+        for j in range(len(sub)):
+            w = [1.] * len(sub); w[j] = 2.
+            weight_grid.append(w)
         for ambang in (.45, .55, .65, .75):
-            configs.append({"jenis": "nms", "anggota": list(sub),
-                            "bobot": [1.] * len(sub), "iou": ambang})
-            for skor in ("avg_present", "avg_all", "max"):
-                configs.append({"jenis": "wbf", "anggota": list(sub),
-                                "bobot": [1.] * len(sub), "iou": ambang,
-                                "skor": skor})
+            for bobot in weight_grid:
+                configs.append({"jenis": "nms", "anggota": list(sub),
+                                "bobot": bobot, "iou": ambang})
+                for skor in ("avg_present", "avg_all", "max", "noisy_or"):
+                    configs.append({"jenis": "wbf", "anggota": list(sub),
+                                    "bobot": bobot, "iou": ambang,
+                                    "skor": skor})
 
-    coco_v, paths_v = coco_data["val"]
     dinilai = []
     for i, cfg in enumerate(configs, 1):
-        pred = buat_pred(cfg, bank["val"])
+        pred = buat_pred(cfg, bank_v)
         m = coco_detail(coco_v, paths_v, pred)
         dinilai.append({"config": cfg, "metrik": m, "objective": objektif(m)})
         print(f"{i:03d}/{len(configs)} obj={objektif(m):.4f} "
@@ -232,24 +258,47 @@ def main() -> None:
                 + .35 * r["metrik"]["AP50_95_per_kelas"][nama])
         per_kelas.append(q["config"])
     route = {"jenis": "route", "per_kelas": per_kelas}
-    pred_route = buat_pred(route, bank["val"])
+    pred_route = buat_pred(route, bank_v)
     mr = coco_detail(coco_v, paths_v, pred_route)
     dinilai.append({"config": route, "metrik": mr, "objective": objektif(mr)})
     terbaik = max(dinilai, key=lambda r: r["objective"])
 
-    # Konfigurasi kini terkunci; baru bangun dan nilai prediksi TEST.
-    pred_val = buat_pred(terbaik["config"], bank["val"])
-    pred_test = buat_pred(terbaik["config"], bank["test"])
-    coco_t, paths_t = coco_data["test"]
+    # Konfigurasi kini terkunci; baru buka anotasi dan dump prediksi TEST.
+    print("TERKUNCI DI VAL", json.dumps(terbaik, indent=2,
+                                        ensure_ascii=False), flush=True)
+    pred_val = buat_pred(terbaik["config"], bank_v)
+
+    # TRAIN tidak ikut seleksi. Bila semua anggota menyediakannya, terapkan
+    # lock yang sama agar proposal/linker/counting tidak mengalami domain
+    # shift base-vs-fusion antara train dan val/test.
+    pred_train = None
+    if all("train_path" in info for info in sumber.values()):
+        stems_tr = {p.stem for p in (args.dataset / "images" / "train").glob("*.jpg")}
+        bank_tr = {
+            nama: ED.muat_prediksi(Path(info["train_path"]), stems_tr)
+            for nama, info in sumber.items()
+        }
+        pred_train = buat_pred(terbaik["config"], bank_tr)
+
+    coco_t, paths_t, gt_t = ED.bangun_gt(args.dataset, "test")
+    bank_t = {
+        nama: ED.muat_prediksi(Path(info["test_path"]), set(gt_t))
+        for nama, info in sumber.items()
+    }
+    pred_test = buat_pred(terbaik["config"], bank_t)
     mt = coco_detail(coco_t, paths_t, pred_test)
-    ambang_info = ED.pilih_ambang(gt["val"], pred_val)
+    ambang_info = ED.pilih_ambang(gt_v, pred_val)
     ambang = {n: ambang_info[n]["ambang"] for n in NAMA}
-    operasi = {"val": ED.nilai_ambang(gt["val"], pred_val, ambang),
-               "test": ED.nilai_ambang(gt["test"], pred_test, ambang)}
+    operasi = {"val": ED.nilai_ambang(gt_v, pred_val, ambang),
+               "test": ED.nilai_ambang(gt_t, pred_test, ambang)}
 
     args.pred_val_out.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(args.pred_val_out, **pred_val)
     np.savez_compressed(args.pred_test_out, **pred_test)
+    pred_paths = {"val": str(args.pred_val_out), "test": str(args.pred_test_out)}
+    if pred_train is not None:
+        np.savez_compressed(args.pred_train_out, **pred_train)
+        pred_paths["train"] = str(args.pred_train_out)
     hasil = {
         "dataset": "SawitMVC-YOLO-Damimas",
         "protokol": "semua seleksi/routing di VAL; TEST sekali setelah terkunci",
@@ -259,7 +308,7 @@ def main() -> None:
         "ambang_dipilih_di_val": ambang_info,
         "titik_operasi": operasi,
         "ranking_val": sorted(dinilai, key=lambda r: r["objective"], reverse=True)[:20],
-        "prediksi": {"val": str(args.pred_val_out), "test": str(args.pred_test_out)},
+        "prediksi": pred_paths,
     }
     args.keluaran.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))
     print(json.dumps({"terpilih": terbaik, "test": mt,

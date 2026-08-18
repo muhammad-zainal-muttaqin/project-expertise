@@ -14,6 +14,7 @@ from ultralytics import RTDETR
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = Path("/workspace/SawitMVC-YOLO-Damimas/data.yaml")
+RUNS = ROOT / "pipeline-pertandan" / "runs"
 
 
 def main() -> None:
@@ -29,7 +30,9 @@ def main() -> None:
 
     model = RTDETR(args.weights)
     model.train(
-        data=str(DATA), project=str(ROOT / "runs"), name=args.name,
+        # Semua bobot eksperimen aktif diletakkan di direktori runs yang
+        # dicadangkan daemon artefak, sama dengan RF-DETR dan classifier.
+        data=str(DATA), project=str(RUNS), name=args.name,
         exist_ok=False, epochs=args.epochs, patience=args.patience,
         imgsz=args.imgsz, batch=args.batch, workers=8, seed=args.seed,
         deterministic=True, cos_lr=True,

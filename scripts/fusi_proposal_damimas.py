@@ -137,7 +137,8 @@ def fusi_stem(blok, cfg, agnostik):
         elif cfg["skor"] == "avg_all":
             obj = float(np.sum(conf * bw) / max(total_bobot, 1e-9))
         elif cfg["skor"] == "noisy_or":
-            obj = float(1 - np.prod(1 - np.clip(conf, 0, 1)))
+            obj = float(1 - np.prod(np.power(
+                np.clip(1 - conf, 1e-9, 1), bw)))
         else:
             obj = float(np.average(conf, weights=bw))
         bukti = [(x[0]["kelas"], x[1]) for x in g if x[0]["kelas"].sum() > 0]
@@ -225,10 +226,8 @@ def main() -> None:
     bank_v = {n: ED.muat_prediksi(Path(q["val"]), set(gt_v))
               for n, q in sumber.items()}
     nama = list(sumber)
-    subsets = [(n,) for n in nama]
-    subsets += list(itertools.combinations(nama, 2))
-    if len(nama) >= 3:
-        subsets += [tuple(nama)]
+    subsets = [sub for ukuran in range(1, len(nama) + 1)
+               for sub in itertools.combinations(nama, ukuran)]
     configs = []
     for sub in subsets:
         for intra in (.60, .70, .80):
@@ -254,6 +253,24 @@ def main() -> None:
             print(f"{i}/{len(configs)} best={max(x['objective'] for x in ranking):.5f}",
                   flush=True)
     terbaik = max(ranking, key=lambda x: x["objective"])
+    # Refine rasio confidence hanya pada keluarga konfigurasi pemenang. Ini
+    # menangkap beda kalibrasi antar-arsitektur tanpa meledakkan grid penuh.
+    # Seluruh evaluasi tetap menggunakan VAL.
+    cfg_ref = dict(terbaik["config"])
+    for j in range(len(cfg_ref["anggota"])):
+        pilih = terbaik
+        for w in (.25, .5, 1., 2., 4.):
+            q = dict(cfg_ref); q["bobot"] = list(cfg_ref["bobot"])
+            q["bobot"][j] = w
+            p = buat_pred(q, bank_v, agnostik); m = nilai_coco(cv, paths_v, p)
+            row = {"config": q, "metrik": m,
+                   "objective": .65 * m["AP50"] + .35 * m["AP50_95"]}
+            ranking.append(row)
+            if row["objective"] > pilih["objective"] + 1e-12:
+                pilih = row
+        terbaik = pilih; cfg_ref = dict(terbaik["config"])
+        print(f"refine bobot {cfg_ref['anggota'][j]}: "
+              f"{terbaik['objective']:.5f}", flush=True)
     pred_val = buat_pred(terbaik["config"], bank_v, agnostik)
     score, pv, rv, fv, ng = kurva_objek(gt_v, pred_val)
     j = int(np.argmax(fv)); threshold = float(score[j])

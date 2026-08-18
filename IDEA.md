@@ -78,6 +78,10 @@ telah mempersempit bottleneck secara lebih tepat:
 - proposal unik sebelum linker menaikkan F1 association **0,4631 -> 0,5171**.
   Kepala coverage mencapai **70,62% atas tandan terdeteksi** dan 51,55% atas
   seluruh tandan;
+- evaluasi deploy satu-ke-satu tanpa kotak/link GT memilih probabilitas hasil
+  propagasi + linker coverage + R4 dan mencapai precision/recall pool fisik
+  **85,30% / 81,16%**, akurasi kelas pada pool terpasang **73,22%**, serta
+  macro-F1 fisik end-to-end **58,67%** saat miss dan pool palsu ikut dihitung;
 - classifier strict terbaik pada kotak dan tautan GT masih ConvNeXt residual:
   akurasi per-tandan **0,7378**, macro-F1 **0,7166**, dan akurasi multi-tampak
   **0,7753**. Mixture-of-experts per-tandan tidak mengalahkannya;

@@ -20,6 +20,7 @@ from pathlib import Path
 import joblib
 import numpy as np
 from sklearn.base import clone
+from sklearn.cross_decomposition import PLSRegression
 
 
 SUB = Path(__file__).resolve().parents[1]
@@ -69,7 +70,11 @@ def rakit(g, score, q):
 def fitur_graf(g, bundle, heads):
     model_names = sorted(bundle["models"])
     # Panjang dibuat eksplisit agar pohon tanpa graf mendapat vektor identik.
-    dim = 5 + 4 * 8 + 8 + len(model_names) * 8 + len(heads) * (3 + 4 * 8)
+    # Tiap head: 3 statistik jumlah, 4x8 statistik struktur, lalu 24 fitur
+    # kelas cluster (hard/soft count + confidence/entropy). Seluruhnya berasal
+    # dari probabilitas prediksi, tidak pernah dari ``bid``/kelas GT cache.
+    dim = (5 + 4 * 8 + 8 + len(model_names) * 8
+           + len(heads) * (3 + 4 * 8 + 24))
     if g is None:
         return np.zeros(dim, np.float32)
     det = g["kotak"]
@@ -100,6 +105,19 @@ def fitur_graf(g, bundle, heads):
         f += stats([conf[v].mean() for v in grup.values()])
         f += stats([eks[v].mean() for v in grup.values()])
         f += stats([len(np.unique(sisi[v])) for v in grup.values()])
+        Q = []
+        for v in grup.values():
+            ww = np.maximum(conf[v], 1e-6)
+            qq = np.average(p[v], axis=0, weights=ww)
+            Q.append(qq / max(float(qq.sum()), 1e-9))
+        Q = np.stack(Q) if Q else np.zeros((0, 4), float)
+        if len(Q):
+            f += np.bincount(Q.argmax(1), minlength=4).astype(float).tolist()
+            f += Q.sum(0).tolist()
+            f += stats(Q.max(1))
+            f += stats(-(Q * np.log(np.clip(Q, 1e-9, 1))).sum(1))
+        else:
+            f += [0.] * 24
     out = np.asarray(f, np.float32)
     if len(out) != dim:
         raise RuntimeError(f"Dimensi fitur linker berubah: {len(out)} != {dim}")
@@ -137,18 +155,17 @@ def muat_split(split, banks, cache, model_linker, hasil_linker):
 
 def spesifikasi_kelas():
     base = CD.kandidat()
-    pilihan = {
-        "anchor": ("ridge_robust_a10", "gbr_huber_d1", "hist_l7_l10", "extra_l4_f07"),
-        "proposal": ("ridge_robust_a10", "gbr_huber_d1", "hist_l7_l10", "extra_l4_f07"),
-        "concat": ("ridge_a10", "ridge_robust_a10", "gbr_huber_d1",
-                   "gbr_huber_d2", "hist_l7_l10", "extra_l4_f07"),
-        "concat_linker": ("ridge_a10", "ridge_robust_a10", "gbr_huber_d1",
-                          "gbr_huber_d2", "hist_l7_l10", "extra_l4_f07"),
-    }
     out = {}
-    for view, models in pilihan.items():
-        for nama in models:
+    # Pencarian penuh: setiap keluarga baseline dijalankan pada setiap ruang
+    # fitur. Ini menjamin anchor lama menjadi kandidat persis, bukan baseline
+    # yang diam-diam hilang karena penghematan waktu.
+    for view in ("anchor", "proposal", "concat", "concat_linker"):
+        for nama in base:
             out[f"{view}__{nama}"] = (view, base[nama])
+        for ncomp in (8, 16):
+            out[f"{view}__pls{ncomp}"] = (
+                view, PLSRegression(n_components=ncomp, scale=True,
+                                    max_iter=1000, tol=1e-6))
     return out
 
 
@@ -156,7 +173,7 @@ def spesifikasi_total():
     base = CD.kandidat_total()
     out = {}
     for view in ("anchor", "proposal", "concat", "concat_linker"):
-        for nama in ("total_ridge10", "total_ridge100", "total_gbr_huber"):
+        for nama in base:
             out[f"{view}__{nama}"] = (view, base[nama])
     return out
 

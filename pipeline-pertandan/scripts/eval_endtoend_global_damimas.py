@@ -154,6 +154,23 @@ def metrik_fisik(records, total_gt, gt_per_tree, aturan, skema, tau):
     else:
         pm = rm = fm = np.zeros(4); acc = mae = macro_matched = 0.
 
+    subgrup = {}
+    nview = np.asarray([len(q["pool"]) for q in records], int)
+    for nama, mask in (("satu_tampak", matched & (nview == 1)),
+                       ("multi_tampak", matched & (nview >= 2))):
+        if mask.any():
+            _p, _r, _f, _ = precision_recall_fscore_support(
+                y[mask], yhat[mask], labels=np.arange(4), zero_division=0)
+            subgrup[nama] = {
+                "n": int(mask.sum()),
+                "akurasi": float((y[mask] == yhat[mask]).mean()),
+                "macro_f1": float(_f.mean()),
+                "mae_ordinal": float(np.abs(y[mask] - yhat[mask]).mean()),
+            }
+        else:
+            subgrup[nama] = {"n": 0, "akurasi": 0., "macro_f1": 0.,
+                             "mae_ordinal": 0.}
+
     pred_tree = Counter(q["tree"] for q in records)
     mae_pool = float(np.mean([
         abs(pred_tree[t] - sum(gt_per_tree[t].values())) for t in gt_per_tree
@@ -169,6 +186,7 @@ def metrik_fisik(records, total_gt, gt_per_tree, aturan, skema, tau):
         "correct_class_recall_endtoend": float(tp.sum() / max(total, 1)),
         "macro_f1_endtoend": float(f1.mean()),
         "mae_jumlah_pool_per_pohon": mae_pool,
+        "menurut_jumlah_tampak": subgrup,
         "precision_per_kelas_endtoend": {KELAS[k]: float(precision[k]) for k in range(4)},
         "recall_per_kelas_endtoend": {KELAS[k]: float(recall[k]) for k in range(4)},
         "f1_per_kelas_endtoend": {KELAS[k]: float(f1[k]) for k in range(4)},

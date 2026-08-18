@@ -13,6 +13,7 @@ from ultralytics import YOLO
 
 
 ROOT = Path(__file__).resolve().parents[1]
+RUNS = ROOT / "pipeline-pertandan" / "runs"
 
 
 def main() -> None:
@@ -38,7 +39,7 @@ def main() -> None:
         raise RuntimeError("Run dikunci ke dataset DAMIMAS class-aware/agnostic")
     model = YOLO(args.weights)
     model.train(
-        data=str(data), project=str(ROOT / "runs"), name=args.name,
+        data=str(data), project=str(RUNS), name=args.name,
         exist_ok=False, epochs=args.epochs, patience=args.patience,
         imgsz=args.imgsz, batch=args.batch, workers=8, seed=args.seed,
         deterministic=True, optimizer="AdamW", lr0=args.lr0, lrf=0.05,

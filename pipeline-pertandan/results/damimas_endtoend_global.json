@@ -1,0 +1,3798 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "seluruh source/head/threshold/agregasi/tau dipilih VAL; TEST dibuka sekali setelah lock",
+  "definisi": "pool-GT Hungarian satu-ke-satu; pool tak terpasang=FP; GT tak terpasang=FN",
+  "sumber_prob": {
+    "routing": {
+      "val": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_relabel_val.npz",
+      "test": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_relabel_test.npz"
+    },
+    "propagasi": {
+      "val": "/workspace/project-expertise/results/pred_damimas_propagasi_multiview_val.npz",
+      "test": "/workspace/project-expertise/results/pred_damimas_propagasi_multiview_test.npz"
+    }
+  },
+  "terkunci_di_val": {
+    "config": {
+      "head": "cakupan_atas_terdeteksi",
+      "sumber_prob": "propagasi",
+      "ambang_pool": 0.15,
+      "aturan": "R4",
+      "skema": "conf",
+      "tau": [
+        0.4,
+        1.75,
+        2.5
+      ]
+    },
+    "metrik": {
+      "n_gt": 919,
+      "n_pool_pred": 883,
+      "n_gt_terpasang": 755,
+      "recall_pool_fisik": 0.8215451577801959,
+      "precision_pool_fisik": 0.855039637599094,
+      "akurasi_kelas_pada_pool_terpasang": 0.7576158940397351,
+      "macro_f1_kelas_pada_pool_terpasang": 0.735561004525459,
+      "mae_ordinal_pada_pool_terpasang": 0.2423841059602649,
+      "correct_class_recall_endtoend": 0.6224156692056583,
+      "macro_f1_endtoend": 0.6240193720495051,
+      "mae_jumlah_pool_per_pohon": 1.558139534883721,
+      "precision_per_kelas_endtoend": {
+        "B1": 0.7582417582417582,
+        "B2": 0.6214285714285714,
+        "B3": 0.6514851485148515,
+        "B4": 0.5918367346938775
+      },
+      "recall_per_kelas_endtoend": {
+        "B1": 0.7419354838709677,
+        "B2": 0.47540983606557374,
+        "B3": 0.7183406113537117,
+        "B4": 0.4702702702702703
+      },
+      "f1_per_kelas_endtoend": {
+        "B1": 0.75,
+        "B2": 0.5386996904024769,
+        "B3": 0.6832814122533749,
+        "B4": 0.5240963855421686
+      },
+      "support_gt": {
+        "B1": 93,
+        "B2": 183,
+        "B3": 458,
+        "B4": 185
+      },
+      "matched_classifier": {
+        "precision": {
+          "B1": 0.8117647058823529,
+          "B2": 0.6744186046511628,
+          "B3": 0.7741176470588236,
+          "B4": 0.75
+        },
+        "recall": {
+          "B1": 0.8117647058823529,
+          "B2": 0.5612903225806452,
+          "B3": 0.8567708333333334,
+          "B4": 0.6641221374045801
+        },
+        "f1": {
+          "B1": 0.8117647058823529,
+          "B2": 0.6126760563380281,
+          "B3": 0.8133498145859085,
+          "B4": 0.7044534412955465
+        }
+      },
+      "objective": 0.6779902239007468
+    },
+    "objective": 0.6779902239007468
+  },
+  "test": {
+    "n_gt": 1316,
+    "n_pool_pred": 1252,
+    "n_gt_terpasang": 1068,
+    "recall_pool_fisik": 0.8115501519756839,
+    "precision_pool_fisik": 0.853035143769968,
+    "akurasi_kelas_pada_pool_terpasang": 0.7322097378277154,
+    "macro_f1_kelas_pada_pool_terpasang": 0.7027741064760293,
+    "mae_ordinal_pada_pool_terpasang": 0.2705992509363296,
+    "correct_class_recall_endtoend": 0.5942249240121581,
+    "macro_f1_endtoend": 0.5867397420092404,
+    "mae_jumlah_pool_per_pohon": 1.6377952755905512,
+    "precision_per_kelas_endtoend": {
+      "B1": 0.7280701754385965,
+      "B2": 0.5317073170731708,
+      "B3": 0.6473755047106325,
+      "B4": 0.5736842105263158
+    },
+    "recall_per_kelas_endtoend": {
+      "B1": 0.6974789915966386,
+      "B2": 0.44129554655870445,
+      "B3": 0.7032163742690059,
+      "B4": 0.40977443609022557
+    },
+    "f1_per_kelas_endtoend": {
+      "B1": 0.7124463519313304,
+      "B2": 0.4823008849557522,
+      "B3": 0.6741415557112824,
+      "B4": 0.4780701754385965
+    },
+    "support_gt": {
+      "B1": 119,
+      "B2": 247,
+      "B3": 684,
+      "B4": 266
+    },
+    "matched_classifier": {
+      "precision": {
+        "B1": 0.8217821782178217,
+        "B2": 0.5989010989010989,
+        "B3": 0.7610759493670886,
+        "B4": 0.7124183006535948
+      },
+      "recall": {
+        "B1": 0.7757009345794392,
+        "B2": 0.5317073170731708,
+        "B3": 0.8365217391304348,
+        "B4": 0.6022099447513812
+      },
+      "f1": {
+        "B1": 0.7980769230769231,
+        "B2": 0.5633074935400517,
+        "B3": 0.7970173985086992,
+        "B4": 0.6526946107784432
+      }
+    },
+    "objective": 0.6518728835474337
+  },
+  "ranking_val": [
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7576158940397351,
+        "macro_f1_kelas_pada_pool_terpasang": 0.735561004525459,
+        "mae_ordinal_pada_pool_terpasang": 0.2423841059602649,
+        "correct_class_recall_endtoend": 0.6224156692056583,
+        "macro_f1_endtoend": 0.6240193720495051,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7582417582417582,
+          "B2": 0.6214285714285714,
+          "B3": 0.6514851485148515,
+          "B4": 0.5918367346938775
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.47540983606557374,
+          "B3": 0.7183406113537117,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.75,
+          "B2": 0.5386996904024769,
+          "B3": 0.6832814122533749,
+          "B4": 0.5240963855421686
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8117647058823529,
+            "B2": 0.6744186046511628,
+            "B3": 0.7741176470588236,
+            "B4": 0.75
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.5612903225806452,
+            "B3": 0.8567708333333334,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.8117647058823529,
+            "B2": 0.6126760563380281,
+            "B3": 0.8133498145859085,
+            "B4": 0.7044534412955465
+          }
+        },
+        "objective": 0.6779902239007468
+      },
+      "objective": 0.6779902239007468
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7579365079365079,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7300679518434703,
+        "mae_ordinal_pada_pool_terpasang": 0.24206349206349206,
+        "correct_class_recall_endtoend": 0.6235038084874864,
+        "macro_f1_endtoend": 0.618543554218015,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7528089887640449,
+          "B2": 0.6028368794326241,
+          "B3": 0.65,
+          "B4": 0.6240601503759399
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.4644808743169399,
+          "B3": 0.7379912663755459,
+          "B4": 0.4486486486486487
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7362637362637361,
+          "B2": 0.5246913580246915,
+          "B3": 0.6912065439672802,
+          "B4": 0.5220125786163523
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6589147286821705,
+            "B3": 0.7681818181818182,
+            "B4": 0.8058252427184466
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5555555555555556,
+            "B3": 0.8779220779220779,
+            "B4": 0.6194029850746269
+          },
+          "f1": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6028368794326241,
+            "B3": 0.8193939393939393,
+            "B4": 0.70042194092827
+          }
+        },
+        "objective": 0.6773288996289015
+      },
+      "objective": 0.6773288996289015
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7566137566137566,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7290443248243803,
+        "mae_ordinal_pada_pool_terpasang": 0.24338624338624337,
+        "correct_class_recall_endtoend": 0.6224156692056583,
+        "macro_f1_endtoend": 0.6180081542686602,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7613636363636364,
+          "B2": 0.6099290780141844,
+          "B3": 0.6475095785440613,
+          "B4": 0.6136363636363636
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.46994535519125685,
+          "B3": 0.7379912663755459,
+          "B4": 0.43783783783783786
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7403314917127072,
+          "B2": 0.5308641975308642,
+          "B3": 0.689795918367347,
+          "B4": 0.5110410094637224
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8072289156626506,
+            "B2": 0.6666666666666666,
+            "B3": 0.7647058823529411,
+            "B4": 0.7941176470588235
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5620915032679739,
+            "B3": 0.8779220779220779,
+            "B4": 0.6044776119402985
+          },
+          "f1": {
+            "B1": 0.8023952095808383,
+            "B2": 0.6099290780141844,
+            "B3": 0.8174123337363967,
+            "B4": 0.6864406779661016
+          }
+        },
+        "objective": 0.6765069742663274
+      },
+      "objective": 0.6765069742663274
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7549668874172185,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7334043554476377,
+        "mae_ordinal_pada_pool_terpasang": 0.24503311258278146,
+        "correct_class_recall_endtoend": 0.6202393906420022,
+        "macro_f1_endtoend": 0.6230603778227065,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7640449438202247,
+          "B2": 0.6068965517241379,
+          "B3": 0.6506986027944112,
+          "B4": 0.5945945945945946
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.4808743169398907,
+          "B3": 0.7117903930131004,
+          "B4": 0.4756756756756757
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7472527472527474,
+          "B2": 0.5365853658536585,
+          "B3": 0.6798748696558916,
+          "B4": 0.5285285285285285
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8095238095238095,
+            "B2": 0.6616541353383458,
+            "B3": 0.7761904761904762,
+            "B4": 0.7457627118644068
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.567741935483871,
+            "B3": 0.8489583333333334,
+            "B4": 0.6717557251908397
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6111111111111112,
+            "B3": 0.8109452736318408,
+            "B4": 0.7068273092369478
+          }
+        },
+        "objective": 0.6763737989970244
+      },
+      "objective": 0.6763737989970244
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7549668874172185,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7322464940227273,
+        "mae_ordinal_pada_pool_terpasang": 0.24503311258278146,
+        "correct_class_recall_endtoend": 0.6202393906420022,
+        "macro_f1_endtoend": 0.621334503311805,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.75,
+          "B2": 0.6142857142857143,
+          "B3": 0.6495049504950495,
+          "B4": 0.5958904109589042
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.46994535519125685,
+          "B3": 0.7161572052401747,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7459459459459459,
+          "B2": 0.5325077399380805,
+          "B3": 0.6812045690550363,
+          "B4": 0.5256797583081572
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8023255813953488,
+            "B2": 0.6666666666666666,
+            "B3": 0.7735849056603774,
+            "B4": 0.75
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.5548387096774193,
+            "B3": 0.8541666666666666,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.8070175438596491,
+            "B2": 0.6056338028169014,
+            "B3": 0.8118811881188119,
+            "B4": 0.7044534412955465
+          }
+        },
+        "objective": 0.6759423303692991
+      },
+      "objective": 0.6759423303692991
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7552910052910053,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7273521865960595,
+        "mae_ordinal_pada_pool_terpasang": 0.2447089947089947,
+        "correct_class_recall_endtoend": 0.6213275299238302,
+        "macro_f1_endtoend": 0.616459979730227,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7528089887640449,
+          "B2": 0.6028368794326241,
+          "B3": 0.6480769230769231,
+          "B4": 0.6165413533834586
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.4644808743169399,
+          "B3": 0.7358078602620087,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7362637362637361,
+          "B2": 0.5246913580246915,
+          "B3": 0.689161554192229,
+          "B4": 0.5157232704402516
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6589147286821705,
+            "B3": 0.7659090909090909,
+            "B4": 0.7961165048543689
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5555555555555556,
+            "B3": 0.8753246753246753,
+            "B4": 0.6119402985074627
+          },
+          "f1": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6028368794326241,
+            "B3": 0.816969696969697,
+            "B4": 0.6919831223628692
+          }
+        },
+        "objective": 0.6754318552564839
+      },
+      "objective": 0.6754318552564839
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7536423841059603,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7311682929588607,
+        "mae_ordinal_pada_pool_terpasang": 0.24635761589403973,
+        "correct_class_recall_endtoend": 0.6191512513601741,
+        "macro_f1_endtoend": 0.6205959378149687,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.75,
+          "B2": 0.6142857142857143,
+          "B3": 0.6488095238095238,
+          "B4": 0.5918367346938775
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.46994535519125685,
+          "B3": 0.7139737991266376,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7459459459459459,
+          "B2": 0.5325077399380805,
+          "B3": 0.6798336798336799,
+          "B4": 0.5240963855421686
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8023255813953488,
+            "B2": 0.6666666666666666,
+            "B3": 0.7730496453900709,
+            "B4": 0.7435897435897436
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.5548387096774193,
+            "B3": 0.8515625,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.8070175438596491,
+            "B2": 0.6056338028169014,
+            "B3": 0.8104089219330854,
+            "B4": 0.7016129032258065
+          }
+        },
+        "objective": 0.6750693508215786
+      },
+      "objective": 0.6750693508215786
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.752317880794702,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7308658040642304,
+        "mae_ordinal_pada_pool_terpasang": 0.247682119205298,
+        "correct_class_recall_endtoend": 0.6180631120783461,
+        "macro_f1_endtoend": 0.6195407389449676,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7555555555555555,
+          "B2": 0.6041666666666666,
+          "B3": 0.6539235412474849,
+          "B4": 0.5789473684210527
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.47540983606557374,
+          "B3": 0.7096069868995634,
+          "B4": 0.4756756756756757
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7431693989071038,
+          "B2": 0.5321100917431192,
+          "B3": 0.680628272251309,
+          "B4": 0.5222551928783383
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8095238095238095,
+            "B2": 0.6590909090909091,
+            "B3": 0.7738095238095238,
+            "B4": 0.7394957983193278
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.5612903225806452,
+            "B3": 0.8463541666666666,
+            "B4": 0.6717557251908397
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6062717770034843,
+            "B3": 0.8084577114427861,
+            "B4": 0.704
+          }
+        },
+        "objective": 0.674117212930567
+      },
+      "objective": 0.674117212930567
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7533875338753387,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7310307164640962,
+        "mae_ordinal_pada_pool_terpasang": 0.24796747967479674,
+        "correct_class_recall_endtoend": 0.6050054406964092,
+        "macro_f1_endtoend": 0.6232290812541155,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7727272727272727,
+          "B2": 0.625,
+          "B3": 0.6659751037344398,
+          "B4": 0.6456692913385826
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.4644808743169399,
+          "B3": 0.7008733624454149,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7513812154696133,
+          "B2": 0.5329153605015674,
+          "B3": 0.6829787234042553,
+          "B4": 0.5256410256410255
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8095238095238095,
+            "B2": 0.6746031746031746,
+            "B3": 0.7679425837320574,
+            "B4": 0.7454545454545455
+          },
+          "recall": {
+            "B1": 0.8095238095238095,
+            "B2": 0.551948051948052,
+            "B3": 0.856,
+            "B4": 0.656
+          },
+          "f1": {
+            "B1": 0.8095238095238095,
+            "B2": 0.6071428571428571,
+            "B3": 0.8095838587641866,
+            "B4": 0.6978723404255319
+          }
+        },
+        "objective": 0.673961005971119
+      },
+      "objective": 0.673961005971119
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7533875338753387,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7258112749096813,
+        "mae_ordinal_pada_pool_terpasang": 0.24796747967479674,
+        "correct_class_recall_endtoend": 0.6050054406964092,
+        "macro_f1_endtoend": 0.6173629514501726,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7586206896551724,
+          "B2": 0.6102941176470589,
+          "B3": 0.6639676113360324,
+          "B4": 0.6869565217391305
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.453551912568306,
+          "B3": 0.7161572052401747,
+          "B4": 0.42702702702702705
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7333333333333333,
+          "B2": 0.5203761755485893,
+          "B3": 0.689075630252101,
+          "B4": 0.5266666666666667
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7951807228915663,
+            "B2": 0.6587301587301587,
+            "B3": 0.7627906976744186,
+            "B4": 0.797979797979798
+          },
+          "recall": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5460526315789473,
+            "B3": 0.8746666666666667,
+            "B4": 0.6171875
+          },
+          "f1": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5971223021582733,
+            "B3": 0.8149068322981367,
+            "B4": 0.6960352422907489
+          }
+        },
+        "objective": 0.6726542008726127
+      },
+      "objective": 0.6726542008726127
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.75,
+        "macro_f1_kelas_pada_pool_terpasang": 0.724745063140246,
+        "mae_ordinal_pada_pool_terpasang": 0.25,
+        "correct_class_recall_endtoend": 0.6169749727965179,
+        "macro_f1_endtoend": 0.6153100886558246,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7674418604651163,
+          "B2": 0.5850340136054422,
+          "B3": 0.646484375,
+          "B4": 0.6086956521739131
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.46994535519125685,
+          "B3": 0.722707423580786,
+          "B4": 0.4540540540540541
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7374301675977655,
+          "B2": 0.5212121212121212,
+          "B3": 0.6824742268041237,
+          "B4": 0.5201238390092879
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8048780487804879,
+            "B2": 0.6417910447761194,
+            "B3": 0.7662037037037037,
+            "B4": 0.7777777777777778
+          },
+          "recall": {
+            "B1": 0.7857142857142857,
+            "B2": 0.5620915032679739,
+            "B3": 0.8597402597402597,
+            "B4": 0.6268656716417911
+          },
+          "f1": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5993031358885017,
+            "B3": 0.8102815177478581,
+            "B4": 0.6942148760330579
+          }
+        },
+        "objective": 0.6723920809869419
+      },
+      "objective": 0.6723920809869419
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7506775067750677,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7288893880776953,
+        "mae_ordinal_pada_pool_terpasang": 0.2506775067750677,
+        "correct_class_recall_endtoend": 0.602829162132753,
+        "macro_f1_endtoend": 0.6220859684029132,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7790697674418605,
+          "B2": 0.6099290780141844,
+          "B3": 0.6666666666666666,
+          "B4": 0.6434108527131783
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.46994535519125685,
+          "B3": 0.6943231441048034,
+          "B4": 0.4486486486486487
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7486033519553073,
+          "B2": 0.5308641975308642,
+          "B3": 0.6802139037433156,
+          "B4": 0.5286624203821656
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8072289156626506,
+            "B2": 0.6615384615384615,
+            "B3": 0.7699757869249395,
+            "B4": 0.7410714285714286
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5584415584415584,
+            "B3": 0.848,
+            "B4": 0.664
+          },
+          "f1": {
+            "B1": 0.8023952095808383,
+            "B2": 0.6056338028169014,
+            "B3": 0.8071065989847716,
+            "B4": 0.70042194092827
+          }
+        },
+        "objective": 0.6722893983396324
+      },
+      "objective": 0.6722893983396324
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7520325203252033,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7266212143706579,
+        "mae_ordinal_pada_pool_terpasang": 0.24932249322493225,
+        "correct_class_recall_endtoend": 0.6039173014145811,
+        "macro_f1_endtoend": 0.6190953667106962,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7640449438202247,
+          "B2": 0.6176470588235294,
+          "B3": 0.6605691056910569,
+          "B4": 0.6724137931034483
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.45901639344262296,
+          "B3": 0.7096069868995634,
+          "B4": 0.42162162162162165
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7472527472527474,
+          "B2": 0.5266457680250783,
+          "B3": 0.6842105263157894,
+          "B4": 0.5182724252491695
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8,
+            "B2": 0.6666666666666666,
+            "B3": 0.7629107981220657,
+            "B4": 0.7722772277227723
+          },
+          "recall": {
+            "B1": 0.8095238095238095,
+            "B2": 0.5454545454545454,
+            "B3": 0.8666666666666667,
+            "B4": 0.624
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6,
+            "B3": 0.8114856429463171,
+            "B4": 0.6902654867256637
+          }
+        },
+        "objective": 0.6722346626259212
+      },
+      "objective": 0.6722346626259212
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7520325203252033,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7263643405306751,
+        "mae_ordinal_pada_pool_terpasang": 0.24932249322493225,
+        "correct_class_recall_endtoend": 0.6039173014145811,
+        "macro_f1_endtoend": 0.6183324471297897,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7674418604651163,
+          "B2": 0.6176470588235294,
+          "B3": 0.6646216768916156,
+          "B4": 0.6611570247933884
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.45901639344262296,
+          "B3": 0.7096069868995634,
+          "B4": 0.43243243243243246
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7374301675977655,
+          "B2": 0.5266457680250783,
+          "B3": 0.6863780359028512,
+          "B4": 0.5228758169934641
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8048780487804879,
+            "B2": 0.6666666666666666,
+            "B3": 0.7629107981220657,
+            "B4": 0.7692307692307693
+          },
+          "recall": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5526315789473685,
+            "B3": 0.8666666666666667,
+            "B4": 0.625
+          },
+          "f1": {
+            "B1": 0.8,
+            "B2": 0.60431654676259,
+            "B3": 0.8114856429463171,
+            "B4": 0.6896551724137931
+          }
+        },
+        "objective": 0.672203660083174
+      },
+      "objective": 0.672203660083174
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.4,
+          1.65,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7506775067750677,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7251273162647277,
+        "mae_ordinal_pada_pool_terpasang": 0.2506775067750677,
+        "correct_class_recall_endtoend": 0.602829162132753,
+        "macro_f1_endtoend": 0.6174468694481517,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7701149425287356,
+          "B2": 0.626984126984127,
+          "B3": 0.6652977412731006,
+          "B4": 0.631578947368421
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.43169398907103823,
+          "B3": 0.7074235807860262,
+          "B4": 0.4540540540540541
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7444444444444445,
+          "B2": 0.5113268608414239,
+          "B3": 0.6857142857142857,
+          "B4": 0.5283018867924528
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8072289156626506,
+            "B2": 0.6810344827586207,
+            "B3": 0.7623529411764706,
+            "B4": 0.7368421052631579
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.512987012987013,
+            "B3": 0.864,
+            "B4": 0.672
+          },
+          "f1": {
+            "B1": 0.8023952095808383,
+            "B2": 0.5851851851851851,
+            "B3": 0.81,
+            "B4": 0.702928870292887
+          }
+        },
+        "objective": 0.6711296236009421
+      },
+      "objective": 0.6711296236009421
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7493224932249323,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7265557347660935,
+        "mae_ordinal_pada_pool_terpasang": 0.25203252032520324,
+        "correct_class_recall_endtoend": 0.6017410228509249,
+        "macro_f1_endtoend": 0.6195076880781607,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7640449438202247,
+          "B2": 0.6176470588235294,
+          "B3": 0.6645833333333333,
+          "B4": 0.640625
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.45901639344262296,
+          "B3": 0.6965065502183406,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7472527472527474,
+          "B2": 0.5266457680250783,
+          "B3": 0.6801705756929638,
+          "B4": 0.5239616613418532
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8,
+            "B2": 0.6666666666666666,
+            "B3": 0.7668269230769231,
+            "B4": 0.7387387387387387
+          },
+          "recall": {
+            "B1": 0.8095238095238095,
+            "B2": 0.5454545454545454,
+            "B3": 0.8506666666666667,
+            "B4": 0.656
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6,
+            "B3": 0.8065739570164349,
+            "B4": 0.6949152542372882
+          }
+        },
+        "objective": 0.6709519135491014
+      },
+      "objective": 0.6709519135491014
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7506775067750677,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7229875137254528,
+        "mae_ordinal_pada_pool_terpasang": 0.2506775067750677,
+        "correct_class_recall_endtoend": 0.602829162132753,
+        "macro_f1_endtoend": 0.6151710746994723,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7586206896551724,
+          "B2": 0.6102941176470589,
+          "B3": 0.6619433198380567,
+          "B4": 0.6782608695652174
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.453551912568306,
+          "B3": 0.7139737991266376,
+          "B4": 0.42162162162162165
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7333333333333333,
+          "B2": 0.5203761755485893,
+          "B3": 0.6869747899159664,
+          "B4": 0.52
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7951807228915663,
+            "B2": 0.6587301587301587,
+            "B3": 0.7604651162790698,
+            "B4": 0.7878787878787878
+          },
+          "recall": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5460526315789473,
+            "B3": 0.872,
+            "B4": 0.609375
+          },
+          "f1": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5971223021582733,
+            "B3": 0.8124223602484472,
+            "B4": 0.6872246696035242
+          }
+        },
+        "objective": 0.6707204022662516
+      },
+      "objective": 0.6707204022662516
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.5,
+          1.7,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7486772486772487,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7189547763080046,
+        "mae_ordinal_pada_pool_terpasang": 0.25132275132275134,
+        "correct_class_recall_endtoend": 0.6158868335146899,
+        "macro_f1_endtoend": 0.6102754767357962,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.75,
+          "B2": 0.6209677419354839,
+          "B3": 0.6377358490566037,
+          "B4": 0.5985401459854015
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.4207650273224044,
+          "B3": 0.7379912663755459,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7459459459459459,
+          "B2": 0.501628664495114,
+          "B3": 0.6842105263157895,
+          "B4": 0.5093167701863354
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7931034482758621,
+            "B2": 0.6754385964912281,
+            "B3": 0.7544642857142857,
+            "B4": 0.7663551401869159
+          },
+          "recall": {
+            "B1": 0.8214285714285714,
+            "B2": 0.5032679738562091,
+            "B3": 0.8779220779220779,
+            "B4": 0.6119402985074627
+          },
+          "f1": {
+            "B1": 0.8070175438596491,
+            "B2": 0.5767790262172284,
+            "B3": 0.8115246098439376,
+            "B4": 0.6804979253112033
+          }
+        },
+        "objective": 0.6704453526316996
+      },
+      "objective": 0.6704453526316996
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.7,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.75,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7159100966703571,
+        "mae_ordinal_pada_pool_terpasang": 0.25,
+        "correct_class_recall_endtoend": 0.6169749727965179,
+        "macro_f1_endtoend": 0.6068576283072817,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7619047619047619,
+          "B2": 0.6,
+          "B3": 0.6399253731343284,
+          "B4": 0.6165413533834586
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6881720430107527,
+          "B2": 0.4262295081967213,
+          "B3": 0.7489082969432315,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7231638418079096,
+          "B2": 0.49840255591054317,
+          "B3": 0.6901408450704226,
+          "B4": 0.5157232704402516
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8,
+            "B2": 0.6554621848739496,
+            "B3": 0.7555066079295154,
+            "B4": 0.7961165048543689
+          },
+          "recall": {
+            "B1": 0.7619047619047619,
+            "B2": 0.5098039215686274,
+            "B3": 0.8909090909090909,
+            "B4": 0.6119402985074627
+          },
+          "f1": {
+            "B1": 0.7804878048780488,
+            "B2": 0.5735294117647058,
+            "B3": 0.8176400476758046,
+            "B4": 0.6919831223628692
+          }
+        },
+        "objective": 0.6702789658998061
+      },
+      "objective": 0.6702789658998061
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.55,
+          1.7,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.75,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7151328417009488,
+        "mae_ordinal_pada_pool_terpasang": 0.25,
+        "correct_class_recall_endtoend": 0.6169749727965179,
+        "macro_f1_endtoend": 0.6062809486874206,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7244897959183674,
+          "B2": 0.6228070175438597,
+          "B3": 0.638733705772812,
+          "B4": 0.6119402985074627
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7634408602150538,
+          "B2": 0.3879781420765027,
+          "B3": 0.7489082969432315,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7434554973821991,
+          "B2": 0.4781144781144781,
+          "B3": 0.6894472361809045,
+          "B4": 0.5141065830721003
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7634408602150538,
+            "B2": 0.6826923076923077,
+            "B3": 0.7538461538461538,
+            "B4": 0.7884615384615384
+          },
+          "recall": {
+            "B1": 0.8452380952380952,
+            "B2": 0.46405228758169936,
+            "B3": 0.8909090909090909,
+            "B4": 0.6119402985074627
+          },
+          "f1": {
+            "B1": 0.8022598870056498,
+            "B2": 0.5525291828793775,
+            "B3": 0.8166666666666667,
+            "B4": 0.6890756302521008
+          }
+        },
+        "objective": 0.6701347959948409
+      },
+      "objective": 0.6701347959948409
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.5,
+          1.7,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7483443708609272,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7207551540810971,
+        "mae_ordinal_pada_pool_terpasang": 0.25165562913907286,
+        "correct_class_recall_endtoend": 0.6147986942328618,
+        "macro_f1_endtoend": 0.6116927767897828,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7473684210526316,
+          "B2": 0.6290322580645161,
+          "B3": 0.635673624288425,
+          "B4": 0.5912408759124088
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7634408602150538,
+          "B2": 0.4262295081967213,
+          "B3": 0.7314410480349345,
+          "B4": 0.43783783783783786
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7553191489361704,
+          "B2": 0.50814332247557,
+          "B3": 0.6802030456852791,
+          "B4": 0.5031055900621119
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.797752808988764,
+            "B2": 0.6842105263157895,
+            "B3": 0.7545045045045045,
+            "B4": 0.75
+          },
+          "recall": {
+            "B1": 0.8352941176470589,
+            "B2": 0.5032258064516129,
+            "B3": 0.8723958333333334,
+            "B4": 0.6183206106870229
+          },
+          "f1": {
+            "B1": 0.8160919540229885,
+            "B2": 0.5799256505576208,
+            "B3": 0.8091787439613527,
+            "B4": 0.6778242677824268
+          }
+        },
+        "objective": 0.6700902078712367
+      },
+      "objective": 0.6700902078712367
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 946,
+        "n_gt_terpasang": 764,
+        "recall_pool_fisik": 0.8313384113166485,
+        "precision_pool_fisik": 0.8076109936575053,
+        "akurasi_kelas_pada_pool_terpasang": 0.756544502617801,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7350745943935194,
+        "mae_ordinal_pada_pool_terpasang": 0.24345549738219896,
+        "correct_class_recall_endtoend": 0.6289445048966268,
+        "macro_f1_endtoend": 0.6092664488026056,
+        "mae_jumlah_pool_per_pohon": 1.5930232558139534,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.71875,
+          "B2": 0.6111111111111112,
+          "B3": 0.6205607476635514,
+          "B4": 0.52046783625731
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.4808743169398907,
+          "B3": 0.7248908296943232,
+          "B4": 0.4810810810810811
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7301587301587302,
+          "B2": 0.5382262996941896,
+          "B3": 0.6686807653575025,
+          "B4": 0.5
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8117647058823529,
+            "B2": 0.676923076923077,
+            "B3": 0.772093023255814,
+            "B4": 0.7478991596638656
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.5605095541401274,
+            "B3": 0.8556701030927835,
+            "B4": 0.664179104477612
+          },
+          "f1": {
+            "B1": 0.8117647058823529,
+            "B2": 0.6132404181184669,
+            "B3": 0.8117359413202934,
+            "B4": 0.7035573122529645
+          }
+        },
+        "objective": 0.6699649638454295
+      },
+      "objective": 0.6699649638454295
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7483443708609272,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7199700617993751,
+        "mae_ordinal_pada_pool_terpasang": 0.25165562913907286,
+        "correct_class_recall_endtoend": 0.6147986942328618,
+        "macro_f1_endtoend": 0.610975164781874,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7586206896551724,
+          "B2": 0.6076923076923076,
+          "B3": 0.6416184971098265,
+          "B4": 0.5918367346938775
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.43169398907103823,
+          "B3": 0.7270742358078602,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7333333333333333,
+          "B2": 0.5047923322683706,
+          "B3": 0.6816786079836233,
+          "B4": 0.5240963855421686
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8048780487804879,
+            "B2": 0.6638655462184874,
+            "B3": 0.7620137299771167,
+            "B4": 0.7435897435897436
+          },
+          "recall": {
+            "B1": 0.7764705882352941,
+            "B2": 0.5096774193548387,
+            "B3": 0.8671875,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.7904191616766467,
+            "B2": 0.5766423357664233,
+            "B3": 0.8112058465286236,
+            "B4": 0.7016129032258065
+          }
+        },
+        "objective": 0.6699108048692595
+      },
+      "objective": 0.6699108048692595
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.35,
+          1.7,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.75,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7144648531451595,
+        "mae_ordinal_pada_pool_terpasang": 0.25,
+        "correct_class_recall_endtoend": 0.6169749727965179,
+        "macro_f1_endtoend": 0.6053528841551583,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7654320987654321,
+          "B2": 0.5984848484848485,
+          "B3": 0.6405959031657356,
+          "B4": 0.6165413533834586
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6666666666666666,
+          "B2": 0.43169398907103823,
+          "B3": 0.7510917030567685,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7126436781609194,
+          "B2": 0.5015873015873016,
+          "B3": 0.6914572864321608,
+          "B4": 0.5157232704402516
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8051948051948052,
+            "B2": 0.6528925619834711,
+            "B3": 0.756043956043956,
+            "B4": 0.7961165048543689
+          },
+          "recall": {
+            "B1": 0.7380952380952381,
+            "B2": 0.5163398692810458,
+            "B3": 0.8935064935064935,
+            "B4": 0.6119402985074627
+          },
+          "f1": {
+            "B1": 0.7701863354037267,
+            "B2": 0.5766423357664233,
+            "B3": 0.819047619047619,
+            "B4": 0.6919831223628692
+          }
+        },
+        "objective": 0.6699027798617754
+      },
+      "objective": 0.6699027798617754
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.4,
+          1.65,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7486772486772487,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7174663097239493,
+        "mae_ordinal_pada_pool_terpasang": 0.25132275132275134,
+        "correct_class_recall_endtoend": 0.6158868335146899,
+        "macro_f1_endtoend": 0.6079003319162757,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7586206896551724,
+          "B2": 0.6015625,
+          "B3": 0.64030131826742,
+          "B4": 0.6058394160583942
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7096774193548387,
+          "B2": 0.4207650273224044,
+          "B3": 0.74235807860262,
+          "B4": 0.4486486486486487
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7333333333333333,
+          "B2": 0.49517684887459806,
+          "B3": 0.6875631951466127,
+          "B4": 0.515527950310559
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8048780487804879,
+            "B2": 0.6637931034482759,
+            "B3": 0.753880266075388,
+            "B4": 0.7757009345794392
+          },
+          "recall": {
+            "B1": 0.7857142857142857,
+            "B2": 0.5032679738562091,
+            "B3": 0.8831168831168831,
+            "B4": 0.6194029850746269
+          },
+          "f1": {
+            "B1": 0.7951807228915663,
+            "B2": 0.5724907063197026,
+            "B3": 0.8133971291866029,
+            "B4": 0.6887966804979253
+          }
+        },
+        "objective": 0.6698515664268194
+      },
+      "objective": 0.6698515664268194
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.35,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7483443708609272,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7186157302894781,
+        "mae_ordinal_pada_pool_terpasang": 0.25165562913907286,
+        "correct_class_recall_endtoend": 0.6147986942328618,
+        "macro_f1_endtoend": 0.6095558300384155,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7619047619047619,
+          "B2": 0.6060606060606061,
+          "B3": 0.6423076923076924,
+          "B4": 0.5918367346938775
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6881720430107527,
+          "B2": 0.4371584699453552,
+          "B3": 0.7292576419213974,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7231638418079096,
+          "B2": 0.5079365079365079,
+          "B3": 0.6830265848670758,
+          "B4": 0.5240963855421686
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.810126582278481,
+            "B2": 0.6611570247933884,
+            "B3": 0.7625570776255708,
+            "B4": 0.7435897435897436
+          },
+          "recall": {
+            "B1": 0.7529411764705882,
+            "B2": 0.5161290322580645,
+            "B3": 0.8697916666666666,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.7804878048780488,
+            "B2": 0.5797101449275363,
+            "B3": 0.8126520681265207,
+            "B4": 0.7016129032258065
+          }
+        },
+        "objective": 0.6695559711833948
+      },
+      "objective": 0.6695559711833948
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.55,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7483443708609272,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7178982430925657,
+        "mae_ordinal_pada_pool_terpasang": 0.25165562913907286,
+        "correct_class_recall_endtoend": 0.6147986942328618,
+        "macro_f1_endtoend": 0.6087211433842429,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.72,
+          "B2": 0.6260869565217392,
+          "B3": 0.6423076923076924,
+          "B4": 0.5878378378378378
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7741935483870968,
+          "B2": 0.39344262295081966,
+          "B3": 0.7292576419213974,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7461139896373057,
+          "B2": 0.4832214765100672,
+          "B3": 0.6830265848670758,
+          "B4": 0.5225225225225226
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7659574468085106,
+            "B2": 0.6857142857142857,
+            "B3": 0.7608200455580866,
+            "B4": 0.7435897435897436
+          },
+          "recall": {
+            "B1": 0.8470588235294118,
+            "B2": 0.4645161290322581,
+            "B3": 0.8697916666666666,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.8044692737430168,
+            "B2": 0.5538461538461539,
+            "B3": 0.8116646415552855,
+            "B4": 0.7016129032258065
+          }
+        },
+        "objective": 0.6693472995198517
+      },
+      "objective": 0.6693472995198517
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.6,
+          1.6,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7486772486772487,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7134803801894491,
+        "mae_ordinal_pada_pool_terpasang": 0.2526455026455027,
+        "correct_class_recall_endtoend": 0.6158868335146899,
+        "macro_f1_endtoend": 0.6049488657163006,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.72,
+          "B2": 0.625,
+          "B3": 0.6363636363636364,
+          "B4": 0.6136363636363636
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7741935483870968,
+          "B2": 0.3825136612021858,
+          "B3": 0.7489082969432315,
+          "B4": 0.43783783783783786
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7461139896373057,
+          "B2": 0.4745762711864407,
+          "B3": 0.6880641925777333,
+          "B4": 0.5110410094637224
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7578947368421053,
+            "B2": 0.693069306930693,
+            "B3": 0.75054704595186,
+            "B4": 0.7864077669902912
+          },
+          "recall": {
+            "B1": 0.8571428571428571,
+            "B2": 0.45751633986928103,
+            "B3": 0.8909090909090909,
+            "B4": 0.6044776119402985
+          },
+          "f1": {
+            "B1": 0.8044692737430168,
+            "B2": 0.5511811023622047,
+            "B3": 0.8147268408551069,
+            "B4": 0.6835443037974683
+          }
+        },
+        "objective": 0.6691136998768257
+      },
+      "objective": 0.6691136998768257
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.6,
+          1.6,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.7486772486772487,
+        "macro_f1_kelas_pada_pool_terpasang": 0.712699625484196,
+        "mae_ordinal_pada_pool_terpasang": 0.2526455026455027,
+        "correct_class_recall_endtoend": 0.6158868335146899,
+        "macro_f1_endtoend": 0.6044394347067639,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.72,
+          "B2": 0.6330275229357798,
+          "B3": 0.6346863468634686,
+          "B4": 0.6136363636363636
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7741935483870968,
+          "B2": 0.3770491803278688,
+          "B3": 0.7510917030567685,
+          "B4": 0.43783783783783786
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7461139896373057,
+          "B2": 0.4726027397260274,
+          "B3": 0.6880000000000001,
+          "B4": 0.5110410094637224
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7578947368421053,
+            "B2": 0.696969696969697,
+            "B3": 0.7494553376906318,
+            "B4": 0.7864077669902912
+          },
+          "recall": {
+            "B1": 0.8571428571428571,
+            "B2": 0.45098039215686275,
+            "B3": 0.8935064935064935,
+            "B4": 0.6044776119402985
+          },
+          "f1": {
+            "B1": 0.8044692737430168,
+            "B2": 0.5476190476190477,
+            "B3": 0.8151658767772512,
+            "B4": 0.6835443037974683
+          }
+        },
+        "objective": 0.6689863421244414
+      },
+      "objective": 0.6689863421244414
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.5,
+          1.6,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7470198675496689,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7171611931599955,
+        "mae_ordinal_pada_pool_terpasang": 0.2543046357615894,
+        "correct_class_recall_endtoend": 0.6137105549510338,
+        "macro_f1_endtoend": 0.6079500236844074,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7391304347826086,
+          "B2": 0.6229508196721312,
+          "B3": 0.638095238095238,
+          "B4": 0.5902777777777778
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.41530054644808745,
+          "B3": 0.7314410480349345,
+          "B4": 0.4594594594594595
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7351351351351352,
+          "B2": 0.4983606557377049,
+          "B3": 0.6815869786368259,
+          "B4": 0.5167173252279635
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7906976744186046,
+            "B2": 0.6785714285714286,
+            "B3": 0.7562076749435666,
+            "B4": 0.7456140350877193
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.49032258064516127,
+            "B3": 0.8723958333333334,
+            "B4": 0.648854961832061
+          },
+          "f1": {
+            "B1": 0.7953216374269005,
+            "B2": 0.5692883895131086,
+            "B3": 0.8101571946795647,
+            "B4": 0.6938775510204082
+          }
+        },
+        "objective": 0.6684661814213815
+      },
+      "objective": 0.6684661814213815
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.5,
+          1.6,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7470198675496689,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7164630308328367,
+        "mae_ordinal_pada_pool_terpasang": 0.2543046357615894,
+        "correct_class_recall_endtoend": 0.6137105549510338,
+        "macro_f1_endtoend": 0.6075206960587636,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7391304347826086,
+          "B2": 0.6302521008403361,
+          "B3": 0.6363636363636364,
+          "B4": 0.5902777777777778
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.4098360655737705,
+          "B3": 0.7336244541484717,
+          "B4": 0.4594594594594595
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7351351351351352,
+          "B2": 0.4966887417218543,
+          "B3": 0.6815415821501014,
+          "B4": 0.5167173252279635
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7906976744186046,
+            "B2": 0.6818181818181818,
+            "B3": 0.755056179775281,
+            "B4": 0.7456140350877193
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.4838709677419355,
+            "B3": 0.875,
+            "B4": 0.648854961832061
+          },
+          "f1": {
+            "B1": 0.7953216374269005,
+            "B2": 0.5660377358490566,
+            "B3": 0.8106151990349819,
+            "B4": 0.6938775510204082
+          }
+        },
+        "objective": 0.6683588495149706
+      },
+      "objective": 0.6683588495149706
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 946,
+        "n_gt_terpasang": 764,
+        "recall_pool_fisik": 0.8313384113166485,
+        "precision_pool_fisik": 0.8076109936575053,
+        "akurasi_kelas_pada_pool_terpasang": 0.7539267015706806,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7329120057575034,
+        "mae_ordinal_pada_pool_terpasang": 0.24607329842931938,
+        "correct_class_recall_endtoend": 0.6267682263329706,
+        "macro_f1_endtoend": 0.6082343724492943,
+        "mae_jumlah_pool_per_pohon": 1.5930232558139534,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.723404255319149,
+          "B2": 0.5973154362416108,
+          "B3": 0.6195856873822976,
+          "B4": 0.5232558139534884
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.48633879781420764,
+          "B3": 0.7183406113537117,
+          "B4": 0.4864864864864865
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7272727272727273,
+          "B2": 0.536144578313253,
+          "B3": 0.6653185035389283,
+          "B4": 0.504201680672269
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8095238095238095,
+            "B2": 0.664179104477612,
+            "B3": 0.7741176470588236,
+            "B4": 0.743801652892562
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.5668789808917197,
+            "B3": 0.8479381443298969,
+            "B4": 0.6716417910447762
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6116838487972509,
+            "B3": 0.8093480934809348,
+            "B4": 0.7058823529411765
+          }
+        },
+        "objective": 0.6683349492463883
+      },
+      "objective": 0.6683349492463883
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.4,
+          1.65,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7479674796747967,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7172555323872097,
+        "mae_ordinal_pada_pool_terpasang": 0.25338753387533874,
+        "correct_class_recall_endtoend": 0.6006528835690969,
+        "macro_f1_endtoend": 0.610608811991506,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7738095238095238,
+          "B2": 0.608,
+          "B3": 0.6567460317460317,
+          "B4": 0.6722689075630253
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6989247311827957,
+          "B2": 0.41530054644808745,
+          "B3": 0.722707423580786,
+          "B4": 0.43243243243243246
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7344632768361582,
+          "B2": 0.4935064935064935,
+          "B3": 0.688149688149688,
+          "B4": 0.5263157894736842
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8024691358024691,
+            "B2": 0.6666666666666666,
+            "B3": 0.7522727272727273,
+            "B4": 0.7766990291262136
+          },
+          "recall": {
+            "B1": 0.7831325301204819,
+            "B2": 0.5,
+            "B3": 0.8826666666666667,
+            "B4": 0.625
+          },
+          "f1": {
+            "B1": 0.7926829268292683,
+            "B2": 0.5714285714285714,
+            "B3": 0.8122699386503067,
+            "B4": 0.6926406926406926
+          }
+        },
+        "objective": 0.6681940071705742
+      },
+      "objective": 0.6681940071705742
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.4,
+          1.65,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7479674796747967,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7171721033589835,
+        "mae_ordinal_pada_pool_terpasang": 0.25338753387533874,
+        "correct_class_recall_endtoend": 0.6006528835690969,
+        "macro_f1_endtoend": 0.6099847280039737,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7647058823529411,
+          "B2": 0.616,
+          "B3": 0.6567460317460317,
+          "B4": 0.6694915254237288
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6989247311827957,
+          "B2": 0.4207650273224044,
+          "B3": 0.722707423580786,
+          "B4": 0.42702702702702705
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7303370786516853,
+          "B2": 0.5000000000000001,
+          "B3": 0.688149688149688,
+          "B4": 0.5214521452145214
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8024691358024691,
+            "B2": 0.6695652173913044,
+            "B3": 0.7522727272727273,
+            "B4": 0.7745098039215687
+          },
+          "recall": {
+            "B1": 0.7831325301204819,
+            "B2": 0.506578947368421,
+            "B3": 0.8826666666666667,
+            "B4": 0.6171875
+          },
+          "f1": {
+            "B1": 0.7926829268292683,
+            "B2": 0.5767790262172284,
+            "B3": 0.8122699386503067,
+            "B4": 0.6869565217391305
+          }
+        },
+        "objective": 0.668037986173691
+      },
+      "objective": 0.668037986173691
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.5,
+          1.7,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7466124661246613,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7189367151729453,
+        "mae_ordinal_pada_pool_terpasang": 0.25474254742547425,
+        "correct_class_recall_endtoend": 0.5995647442872688,
+        "macro_f1_endtoend": 0.6132091323019215,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7608695652173914,
+          "B2": 0.6363636363636364,
+          "B3": 0.651394422310757,
+          "B4": 0.652542372881356
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7526881720430108,
+          "B2": 0.4207650273224044,
+          "B3": 0.7139737991266376,
+          "B4": 0.41621621621621624
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7567567567567567,
+          "B2": 0.506578947368421,
+          "B3": 0.68125,
+          "B4": 0.5082508250825083
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7954545454545454,
+            "B2": 0.6875,
+            "B3": 0.7517241379310344,
+            "B4": 0.7475728155339806
+          },
+          "recall": {
+            "B1": 0.8333333333333334,
+            "B2": 0.5,
+            "B3": 0.872,
+            "B4": 0.616
+          },
+          "f1": {
+            "B1": 0.813953488372093,
+            "B2": 0.5789473684210527,
+            "B3": 0.8074074074074075,
+            "B4": 0.6754385964912281
+          }
+        },
+        "objective": 0.6679914451863557
+      },
+      "objective": 0.6679914451863557
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 945,
+        "n_gt_terpasang": 763,
+        "recall_pool_fisik": 0.8302502720348205,
+        "precision_pool_fisik": 0.8074074074074075,
+        "akurasi_kelas_pada_pool_terpasang": 0.7562254259501966,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7295111841201205,
+        "mae_ordinal_pada_pool_terpasang": 0.2437745740498034,
+        "correct_class_recall_endtoend": 0.6278563656147987,
+        "macro_f1_endtoend": 0.6035381185968676,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.6041666666666666,
+          "B3": 0.6137184115523465,
+          "B4": 0.538961038961039
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.47540983606557374,
+          "B3": 0.74235807860262,
+          "B4": 0.4486486486486487
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.5321100917431192,
+          "B3": 0.6719367588932805,
+          "B4": 0.48967551622418887
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8072289156626506,
+            "B2": 0.6692307692307692,
+            "B3": 0.7623318385650224,
+            "B4": 0.7980769230769231
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5612903225806452,
+            "B3": 0.8785529715762274,
+            "B4": 0.6058394160583942
+          },
+          "f1": {
+            "B1": 0.8023952095808383,
+            "B2": 0.6105263157894737,
+            "B3": 0.8163265306122449,
+            "B4": 0.6887966804979253
+          }
+        },
+        "objective": 0.6679648191795169
+      },
+      "objective": 0.6679648191795169
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 946,
+        "n_gt_terpasang": 764,
+        "recall_pool_fisik": 0.8313384113166485,
+        "precision_pool_fisik": 0.8076109936575053,
+        "akurasi_kelas_pada_pool_terpasang": 0.7539267015706806,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7317820377159889,
+        "mae_ordinal_pada_pool_terpasang": 0.24607329842931938,
+        "correct_class_recall_endtoend": 0.6267682263329706,
+        "macro_f1_endtoend": 0.6066252496469238,
+        "mae_jumlah_pool_per_pohon": 1.5930232558139534,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.711340206185567,
+          "B2": 0.6041666666666666,
+          "B3": 0.6186915887850467,
+          "B4": 0.5235294117647059
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.47540983606557374,
+          "B3": 0.722707423580786,
+          "B4": 0.4810810810810811
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7263157894736842,
+          "B2": 0.5321100917431192,
+          "B3": 0.6666666666666666,
+          "B4": 0.5014084507042254
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8023255813953488,
+            "B2": 0.6692307692307692,
+            "B3": 0.7715617715617715,
+            "B4": 0.7478991596638656
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.554140127388535,
+            "B3": 0.8530927835051546,
+            "B4": 0.664179104477612
+          },
+          "f1": {
+            "B1": 0.8070175438596491,
+            "B2": 0.6062717770034843,
+            "B3": 0.8102815177478581,
+            "B4": 0.7035573122529645
+          }
+        },
+        "objective": 0.6679326685457956
+      },
+      "objective": 0.6679326685457956
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.75,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 945,
+        "n_gt_terpasang": 763,
+        "recall_pool_fisik": 0.8302502720348205,
+        "precision_pool_fisik": 0.8074074074074075,
+        "akurasi_kelas_pada_pool_terpasang": 0.7562254259501966,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7293959416986614,
+        "mae_ordinal_pada_pool_terpasang": 0.2437745740498034,
+        "correct_class_recall_endtoend": 0.6278563656147987,
+        "macro_f1_endtoend": 0.6032643940964642,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7127659574468085,
+          "B2": 0.5972222222222222,
+          "B3": 0.6152450090744102,
+          "B4": 0.5448717948717948
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7204301075268817,
+          "B2": 0.46994535519125685,
+          "B3": 0.740174672489083,
+          "B4": 0.4594594594594595
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7165775401069518,
+          "B2": 0.525993883792049,
+          "B3": 0.6719524281466799,
+          "B4": 0.49853372434017595
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6615384615384615,
+            "B3": 0.7652370203160271,
+            "B4": 0.8018867924528302
+          },
+          "recall": {
+            "B1": 0.7976190476190477,
+            "B2": 0.5548387096774193,
+            "B3": 0.875968992248062,
+            "B4": 0.6204379562043796
+          },
+          "f1": {
+            "B1": 0.7976190476190477,
+            "B2": 0.6035087719298246,
+            "B3": 0.8168674698795181,
+            "B4": 0.6995884773662552
+          }
+        },
+        "objective": 0.6678963880544161
+      },
+      "objective": 0.6678963880544161
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.5,
+          1.65,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7456953642384105,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7159584317062857,
+        "mae_ordinal_pada_pool_terpasang": 0.2543046357615894,
+        "correct_class_recall_endtoend": 0.6126224156692056,
+        "macro_f1_endtoend": 0.6078575058280341,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7446808510638298,
+          "B2": 0.6153846153846154,
+          "B3": 0.6374045801526718,
+          "B4": 0.5878378378378378
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7526881720430108,
+          "B2": 0.39344262295081966,
+          "B3": 0.7292576419213974,
+          "B4": 0.4702702702702703
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7486631016042781,
+          "B2": 0.48,
+          "B3": 0.6802443991853361,
+          "B4": 0.5225225225225226
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7865168539325843,
+            "B2": 0.6792452830188679,
+            "B3": 0.755656108597285,
+            "B4": 0.7372881355932204
+          },
+          "recall": {
+            "B1": 0.8235294117647058,
+            "B2": 0.4645161290322581,
+            "B3": 0.8697916666666666,
+            "B4": 0.6641221374045801
+          },
+          "f1": {
+            "B1": 0.8045977011494253,
+            "B2": 0.5517241379310345,
+            "B3": 0.8087167070217918,
+            "B4": 0.6987951807228916
+          }
+        },
+        "objective": 0.6677547137837768
+      },
+      "objective": 0.6677547137837768
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.5,
+          1.7,
+          2.65
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7479674796747967,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7150661915878495,
+        "mae_ordinal_pada_pool_terpasang": 0.25338753387533874,
+        "correct_class_recall_endtoend": 0.6006528835690969,
+        "macro_f1_endtoend": 0.6086256712590283,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7555555555555555,
+          "B2": 0.628099173553719,
+          "B3": 0.6492248062015504,
+          "B4": 0.6952380952380952
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.41530054644808745,
+          "B3": 0.7314410480349345,
+          "B4": 0.3945945945945946
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7431693989071038,
+          "B2": 0.5,
+          "B3": 0.6878850102669405,
+          "B4": 0.503448275862069
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7906976744186046,
+            "B2": 0.6785714285714286,
+            "B3": 0.7461024498886414,
+            "B4": 0.8021978021978022
+          },
+          "recall": {
+            "B1": 0.8192771084337349,
+            "B2": 0.5,
+            "B3": 0.8933333333333333,
+            "B4": 0.5703125
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.5757575757575758,
+            "B3": 0.8131067961165048,
+            "B4": 0.6666666666666666
+          }
+        },
+        "objective": 0.6676982219874548
+      },
+      "objective": 0.6676982219874548
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.5,
+          1.6,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7456953642384105,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7155719267111879,
+        "mae_ordinal_pada_pool_terpasang": 0.2556291390728477,
+        "correct_class_recall_endtoend": 0.6126224156692056,
+        "macro_f1_endtoend": 0.6067629790947056,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7391304347826086,
+          "B2": 0.6198347107438017,
+          "B3": 0.635673624288425,
+          "B4": 0.5944055944055944
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.4098360655737705,
+          "B3": 0.7314410480349345,
+          "B4": 0.4594594594594595
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7351351351351352,
+          "B2": 0.4934210526315789,
+          "B3": 0.6802030456852791,
+          "B4": 0.5182926829268293
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7906976744186046,
+            "B2": 0.6756756756756757,
+            "B3": 0.7545045045045045,
+            "B4": 0.7456140350877193
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.4838709677419355,
+            "B3": 0.8723958333333334,
+            "B4": 0.648854961832061
+          },
+          "f1": {
+            "B1": 0.7953216374269005,
+            "B2": 0.5639097744360902,
+            "B3": 0.8091787439613527,
+            "B4": 0.6938775510204082
+          }
+        },
+        "objective": 0.6674810821004447
+      },
+      "objective": 0.6674810821004447
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.3,
+          1.7,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7466124661246613,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7155627411538465,
+        "mae_ordinal_pada_pool_terpasang": 0.25474254742547425,
+        "correct_class_recall_endtoend": 0.5995647442872688,
+        "macro_f1_endtoend": 0.6095915035373933,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.8108108108108109,
+          "B2": 0.6015037593984962,
+          "B3": 0.6573705179282868,
+          "B4": 0.6585365853658537
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6451612903225806,
+          "B2": 0.4371584699453552,
+          "B3": 0.7205240174672489,
+          "B4": 0.43783783783783786
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.718562874251497,
+          "B2": 0.5063291139240507,
+          "B3": 0.6874999999999999,
+          "B4": 0.525974025974026
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8333333333333334,
+            "B2": 0.6557377049180327,
+            "B3": 0.7534246575342466,
+            "B4": 0.7641509433962265
+          },
+          "recall": {
+            "B1": 0.7228915662650602,
+            "B2": 0.5263157894736842,
+            "B3": 0.88,
+            "B4": 0.6328125
+          },
+          "f1": {
+            "B1": 0.7741935483870968,
+            "B2": 0.583941605839416,
+            "B3": 0.8118081180811808,
+            "B4": 0.6923076923076923
+          }
+        },
+        "objective": 0.6672467653477031
+      },
+      "objective": 0.6672467653477031
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 946,
+        "n_gt_terpasang": 764,
+        "recall_pool_fisik": 0.8313384113166485,
+        "precision_pool_fisik": 0.8076109936575053,
+        "akurasi_kelas_pada_pool_terpasang": 0.7526178010471204,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7307250629624253,
+        "mae_ordinal_pada_pool_terpasang": 0.24738219895287958,
+        "correct_class_recall_endtoend": 0.6256800870511425,
+        "macro_f1_endtoend": 0.6059371154654911,
+        "mae_jumlah_pool_per_pohon": 1.5930232558139534,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.711340206185567,
+          "B2": 0.6041666666666666,
+          "B3": 0.6179775280898876,
+          "B4": 0.52046783625731
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7419354838709677,
+          "B2": 0.47540983606557374,
+          "B3": 0.7205240174672489,
+          "B4": 0.4810810810810811
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7263157894736842,
+          "B2": 0.5321100917431192,
+          "B3": 0.6653225806451613,
+          "B4": 0.5
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8023255813953488,
+            "B2": 0.6692307692307692,
+            "B3": 0.7710280373831776,
+            "B4": 0.7416666666666667
+          },
+          "recall": {
+            "B1": 0.8117647058823529,
+            "B2": 0.554140127388535,
+            "B3": 0.8505154639175257,
+            "B4": 0.664179104477612
+          },
+          "f1": {
+            "B1": 0.8070175438596491,
+            "B2": 0.6062717770034843,
+            "B3": 0.8088235294117647,
+            "B4": 0.7007874015748031
+          }
+        },
+        "objective": 0.6670746372450808
+      },
+      "objective": 0.6670746372450808
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf",
+        "tau": [
+          0.3,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7452574525745257,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7164389663848247,
+        "mae_ordinal_pada_pool_terpasang": 0.25609756097560976,
+        "correct_class_recall_endtoend": 0.5984766050054406,
+        "macro_f1_endtoend": 0.61115782553308,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.8133333333333334,
+          "B2": 0.6044776119402985,
+          "B3": 0.657258064516129,
+          "B4": 0.640625
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6559139784946236,
+          "B2": 0.4426229508196721,
+          "B3": 0.7117903930131004,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.726190476190476,
+          "B2": 0.5110410094637223,
+          "B3": 0.6834381551362683,
+          "B4": 0.5239616613418532
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8356164383561644,
+            "B2": 0.6585365853658537,
+            "B3": 0.7563805104408353,
+            "B4": 0.7387387387387387
+          },
+          "recall": {
+            "B1": 0.7261904761904762,
+            "B2": 0.525974025974026,
+            "B3": 0.8693333333333333,
+            "B4": 0.656
+          },
+          "f1": {
+            "B1": 0.7770700636942676,
+            "B2": 0.5848375451263538,
+            "B3": 0.8089330024813896,
+            "B4": 0.6949152542372882
+          }
+        },
+        "objective": 0.6667857037848024
+      },
+      "objective": 0.6667857037848024
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7452574525745257,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7167243775041067,
+        "mae_ordinal_pada_pool_terpasang": 0.25609756097560976,
+        "correct_class_recall_endtoend": 0.5984766050054406,
+        "macro_f1_endtoend": 0.6111059634683305,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7738095238095238,
+          "B2": 0.6141732283464567,
+          "B3": 0.6578947368421053,
+          "B4": 0.640625
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6989247311827957,
+          "B2": 0.4262295081967213,
+          "B3": 0.7096069868995634,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7344632768361582,
+          "B2": 0.5032258064516129,
+          "B3": 0.6827731092436975,
+          "B4": 0.5239616613418532
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8024691358024691,
+            "B2": 0.6666666666666666,
+            "B3": 0.7575757575757576,
+            "B4": 0.7387387387387387
+          },
+          "recall": {
+            "B1": 0.7738095238095238,
+            "B2": 0.5064935064935064,
+            "B3": 0.8666666666666667,
+            "B4": 0.656
+          },
+          "f1": {
+            "B1": 0.7878787878787878,
+            "B2": 0.5756457564575646,
+            "B3": 0.8084577114427861,
+            "B4": 0.6949152542372882
+          }
+        },
+        "objective": 0.6667727382686149
+      },
+      "objective": 0.6667727382686149
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "proposal",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.55,
+          1.6,
+          2.55
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 755,
+        "recall_pool_fisik": 0.8215451577801959,
+        "precision_pool_fisik": 0.855039637599094,
+        "akurasi_kelas_pada_pool_terpasang": 0.7443708609271523,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7145536667059947,
+        "mae_ordinal_pada_pool_terpasang": 0.2556291390728477,
+        "correct_class_recall_endtoend": 0.6115342763873776,
+        "macro_f1_endtoend": 0.6060414418829474,
+        "mae_jumlah_pool_per_pohon": 1.558139534883721,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7319587628865979,
+          "B2": 0.6186440677966102,
+          "B3": 0.6361904761904762,
+          "B4": 0.5874125874125874
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7634408602150538,
+          "B2": 0.3989071038251366,
+          "B3": 0.7292576419213974,
+          "B4": 0.4540540540540541
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7473684210526316,
+          "B2": 0.4850498338870432,
+          "B3": 0.6795523906408952,
+          "B4": 0.5121951219512196
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7802197802197802,
+            "B2": 0.6759259259259259,
+            "B3": 0.7539503386004515,
+            "B4": 0.7433628318584071
+          },
+          "recall": {
+            "B1": 0.8352941176470589,
+            "B2": 0.47096774193548385,
+            "B3": 0.8697916666666666,
+            "B4": 0.6412213740458015
+          },
+          "f1": {
+            "B1": 0.8068181818181818,
+            "B2": 0.5551330798479087,
+            "B3": 0.8077388149939541,
+            "B4": 0.6885245901639344
+          }
+        },
+        "objective": 0.6666123596239937
+      },
+      "objective": 0.6666123596239937
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas_tepi",
+        "tau": [
+          0.4,
+          1.7,
+          2.6
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 832,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.8870192307692307,
+        "akurasi_kelas_pada_pool_terpasang": 0.7466124661246613,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7129185206990898,
+        "mae_ordinal_pada_pool_terpasang": 0.25474254742547425,
+        "correct_class_recall_endtoend": 0.5995647442872688,
+        "macro_f1_endtoend": 0.6065537968343017,
+        "mae_jumlah_pool_per_pohon": 1.6627906976744187,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7682926829268293,
+          "B2": 0.6062992125984252,
+          "B3": 0.655511811023622,
+          "B4": 0.6782608695652174
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6774193548387096,
+          "B2": 0.4207650273224044,
+          "B3": 0.7270742358078602,
+          "B4": 0.42162162162162165
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7199999999999999,
+          "B2": 0.4967741935483871,
+          "B3": 0.6894409937888198,
+          "B4": 0.52
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7974683544303798,
+            "B2": 0.6581196581196581,
+            "B3": 0.7516930022573364,
+            "B4": 0.7878787878787878
+          },
+          "recall": {
+            "B1": 0.7590361445783133,
+            "B2": 0.506578947368421,
+            "B3": 0.888,
+            "B4": 0.609375
+          },
+          "f1": {
+            "B1": 0.7777777777777778,
+            "B2": 0.5724907063197026,
+            "B3": 0.8141809290953546,
+            "B4": 0.6872246696035242
+          }
+        },
+        "objective": 0.6664873386719302
+      },
+      "objective": 0.6664873386719302
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.2,
+        "aturan": "R4",
+        "skema": "conf_luas",
+        "tau": [
+          0.35,
+          1.7,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 833,
+        "n_gt_terpasang": 738,
+        "recall_pool_fisik": 0.8030467899891186,
+        "precision_pool_fisik": 0.885954381752701,
+        "akurasi_kelas_pada_pool_terpasang": 0.7452574525745257,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7153463747421006,
+        "mae_ordinal_pada_pool_terpasang": 0.25609756097560976,
+        "correct_class_recall_endtoend": 0.5984766050054406,
+        "macro_f1_endtoend": 0.6096662869605516,
+        "mae_jumlah_pool_per_pohon": 1.697674418604651,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7777777777777778,
+          "B2": 0.6124031007751938,
+          "B3": 0.6585858585858586,
+          "B4": 0.640625
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.6774193548387096,
+          "B2": 0.43169398907103823,
+          "B3": 0.7117903930131004,
+          "B4": 0.44324324324324327
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7241379310344828,
+          "B2": 0.5064102564102563,
+          "B3": 0.6841552990556139,
+          "B4": 0.5239616613418532
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8076923076923077,
+            "B2": 0.6638655462184874,
+            "B3": 0.7581395348837209,
+            "B4": 0.7387387387387387
+          },
+          "recall": {
+            "B1": 0.75,
+            "B2": 0.512987012987013,
+            "B3": 0.8693333333333333,
+            "B4": 0.656
+          },
+          "f1": {
+            "B1": 0.7777777777777778,
+            "B2": 0.5787545787545788,
+            "B3": 0.8099378881987578,
+            "B4": 0.6949152542372882
+          }
+        },
+        "objective": 0.6664128191416703
+      },
+      "objective": 0.6664128191416703
+    },
+    {
+      "config": {
+        "head": "mae_jumlah_pool",
+        "sumber_prob": "routing",
+        "ambang_pool": 0.15,
+        "aturan": "R4",
+        "skema": "luas",
+        "tau": [
+          0.5,
+          1.65,
+          2.65
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 883,
+        "n_gt_terpasang": 756,
+        "recall_pool_fisik": 0.8226332970620239,
+        "precision_pool_fisik": 0.8561721404303511,
+        "akurasi_kelas_pada_pool_terpasang": 0.746031746031746,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7067634132057149,
+        "mae_ordinal_pada_pool_terpasang": 0.25396825396825395,
+        "correct_class_recall_endtoend": 0.6137105549510338,
+        "macro_f1_endtoend": 0.5992921113700576,
+        "mae_jumlah_pool_per_pohon": 1.5116279069767442,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7472527472527473,
+          "B2": 0.6068376068376068,
+          "B3": 0.6283662477558348,
+          "B4": 0.635593220338983
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.3879781420765027,
+          "B3": 0.7641921397379913,
+          "B4": 0.40540540540540543
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7391304347826086,
+          "B2": 0.47333333333333333,
+          "B3": 0.6896551724137931,
+          "B4": 0.49504950495049516
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.7816091954022989,
+            "B2": 0.6698113207547169,
+            "B3": 0.7415254237288136,
+            "B4": 0.8241758241758241
+          },
+          "recall": {
+            "B1": 0.8095238095238095,
+            "B2": 0.46405228758169936,
+            "B3": 0.9090909090909091,
+            "B4": 0.5597014925373134
+          },
+          "f1": {
+            "B1": 0.7953216374269005,
+            "B2": 0.5482625482625483,
+            "B3": 0.8168028004667445,
+            "B4": 0.6666666666666666
+          }
+        },
+        "objective": 0.6663233605397942
+      },
+      "objective": 0.6663233605397942
+    },
+    {
+      "config": {
+        "head": "cakupan_atas_terdeteksi",
+        "sumber_prob": "propagasi",
+        "ambang_pool": 0.1,
+        "aturan": "R4",
+        "skema": "seragam",
+        "tau": [
+          0.4,
+          1.75,
+          2.5
+        ]
+      },
+      "metrik": {
+        "n_gt": 919,
+        "n_pool_pred": 946,
+        "n_gt_terpasang": 764,
+        "recall_pool_fisik": 0.8313384113166485,
+        "precision_pool_fisik": 0.8076109936575053,
+        "akurasi_kelas_pada_pool_terpasang": 0.7513089005235603,
+        "macro_f1_kelas_pada_pool_terpasang": 0.7304108371038693,
+        "mae_ordinal_pada_pool_terpasang": 0.2486910994764398,
+        "correct_class_recall_endtoend": 0.6245919477693145,
+        "macro_f1_endtoend": 0.6049327789660758,
+        "mae_jumlah_pool_per_pohon": 1.5930232558139534,
+        "precision_per_kelas_endtoend": {
+          "B1": 0.7157894736842105,
+          "B2": 0.5945945945945946,
+          "B3": 0.6223908918406073,
+          "B4": 0.5113636363636364
+        },
+        "recall_per_kelas_endtoend": {
+          "B1": 0.7311827956989247,
+          "B2": 0.4808743169398907,
+          "B3": 0.7161572052401747,
+          "B4": 0.4864864864864865
+        },
+        "f1_per_kelas_endtoend": {
+          "B1": 0.7234042553191489,
+          "B2": 0.5317220543806647,
+          "B3": 0.6659898477157361,
+          "B4": 0.4986149584487535
+        },
+        "support_gt": {
+          "B1": 93,
+          "B2": 183,
+          "B3": 458,
+          "B4": 185
+        },
+        "matched_classifier": {
+          "precision": {
+            "B1": 0.8095238095238095,
+            "B2": 0.6616541353383458,
+            "B3": 0.7717647058823529,
+            "B4": 0.7377049180327869
+          },
+          "recall": {
+            "B1": 0.8,
+            "B2": 0.5605095541401274,
+            "B3": 0.845360824742268,
+            "B4": 0.6716417910447762
+          },
+          "f1": {
+            "B1": 0.8047337278106509,
+            "B2": 0.6068965517241379,
+            "B3": 0.8068880688806888,
+            "B4": 0.703125
+          }
+        },
+        "objective": 0.6661375553648703
+      },
+      "objective": 0.6661375553648703
+    }
+  ]
+}

@@ -44,6 +44,9 @@ validation; test baru dihitung setelah konfigurasi terkunci.
 | Proposal fisik AP50 / AP50-95 | — | **0,8381 / 0,3662** | kepala lokalisasi |
 | Proposal fisik P/R/F1 operasi | — | **0,8017 / 0,7952 / 0,7984** | threshold VAL |
 | Recall fisik oracle-link @ conf 0,01 | 0,9704 | 0,9704 | baseline plafon |
+| End-to-end precision / recall pool fisik | — | **0,8530 / 0,8116** | matching 1-ke-1 |
+| End-to-end akurasi / macro-F1 kelas pada pool terpasang | — | **0,7322 / 0,7028** | tanpa kotak/link GT |
+| Correct-class recall / macro-F1 fisik end-to-end | — | **0,5942 / 0,5867** | miss+pool palsu ikut dihitung |
 | Klasifikasi per-tandan, strict DAMIMAS (kotak/link GT) | 0,7242 | **0,7378** | **+1,36 pp** |
 | Macro-F1 per-tandan, strict DAMIMAS | 0,7014 | **0,7166** | **+1,52 pp** |
 | Akurasi tandan multi-tampak, strict DAMIMAS | — | **0,7753** | mendekati 80% |
@@ -90,7 +93,9 @@ baru tipis, akurasi 0,7111 dengan macro-F1 0,6894.
 Semua kandidat non-pemenang tetap disimpan sebagai bank probabilitas, tetapi
 tidak dipaksa masuk champion. Angka modul ini belum boleh disebut end-to-end:
 potongannya berasal dari kotak GT dan pengelompokan view memakai identitas
-oracle. Evaluasi deploy baru sah setelah detektor dan linker DAMIMAS dipasang.
+oracle. Evaluasi deploy terpisah setelah proposal dan linker DAMIMAS dipasang
+mencapai akurasi 0,7322 pada pool terpasang dan macro-F1 fisik 0,5867 ketika
+miss serta pool palsu ikut dihitung.
 
 ## Urutan Kerja Berikutnya
 

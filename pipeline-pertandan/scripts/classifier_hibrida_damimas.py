@@ -59,6 +59,11 @@ class Hibrida(nn.Module):
                 weights=torchvision.models.ConvNeXt_Tiny_Weights.IMAGENET1K_V1)
             b.classifier[2] = nn.Identity(); d_backbone = 768
             beku = (0, 1)
+        elif backbone == "convnext_base":
+            b = torchvision.models.convnext_base(
+                weights=torchvision.models.ConvNeXt_Base_Weights.IMAGENET1K_V1)
+            b.classifier[2] = nn.Identity(); d_backbone = 1024
+            beku = (0, 1)
         elif backbone == "efficientnet_v2_s":
             b = torchvision.models.efficientnet_v2_s(
                 weights=torchvision.models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
@@ -181,13 +186,16 @@ def nilai_val(p_h, p_c1, y_view, y_bunch, data_split):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="convnext_tiny_s42")
-    ap.add_argument("--backbone", choices=("convnext_tiny", "efficientnet_v2_s", "swin_t"),
+    ap.add_argument("--backbone", choices=("convnext_tiny", "convnext_base",
+                                             "efficientnet_v2_s", "swin_t"),
                     default="convnext_tiny")
     ap.add_argument("--mode-c1", choices=("residual", "bebas"), default="residual",
                     help="residual mengoreksi log-prob C1; bebas menjadi classifier visual mandiri")
     ap.add_argument("--epochs", type=int, default=40)
     ap.add_argument("--patience", type=int, default=10)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--grad-accum", type=int, default=1,
+                    help="akumulasi gradien; batch efektif = batch x nilai ini")
     ap.add_argument("--ukuran", type=int, default=160)
     ap.add_argument("--crop-img", type=Path, default=None,
                     help="cache NPY crop resolusi tinggi; default memakai cache re-ID 128")
@@ -197,6 +205,8 @@ def main() -> None:
     ap.add_argument("--lr-head", type=float, default=3e-4)
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
+    if args.grad_accum < 1:
+        raise ValueError("--grad-accum harus >= 1")
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
 
@@ -262,7 +272,8 @@ def main() -> None:
     t0 = time.time()
     for ep in range(1, args.epochs + 1):
         m.train(); jumlah = n_batch = 0.
-        for im, aux, pc1, y, _idx in train_loader:
+        opt.zero_grad(set_to_none=True)
+        for ib, (im, aux, pc1, y, _idx) in enumerate(train_loader):
             x = olah_img(im, True, args.ukuran)
             aux = aux.cuda(non_blocking=True); pc1 = pc1.cuda(non_blocking=True)
             y = y.cuda(non_blocking=True)
@@ -275,9 +286,12 @@ def main() -> None:
                     prob @ torch.arange(4, device="cuda", dtype=torch.float32),
                     y.float())
                 loss = ce + .10 * ordinal
-            opt.zero_grad(set_to_none=True); loss.backward()
-            torch.nn.utils.clip_grad_norm_(m.parameters(), 5.)
-            opt.step(); jumlah += float(loss.detach()); n_batch += 1
+            (loss / args.grad_accum).backward()
+            if ((ib + 1) % args.grad_accum == 0 or
+                    ib + 1 == len(train_loader)):
+                torch.nn.utils.clip_grad_norm_(m.parameters(), 5.)
+                opt.step(); opt.zero_grad(set_to_none=True)
+            jumlah += float(loss.detach()); n_batch += 1
         sch.step()
 
         phv = infer(m, loaders["val"], args.ukuran)

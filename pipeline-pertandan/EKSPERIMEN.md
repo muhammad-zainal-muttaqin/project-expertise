@@ -1422,3 +1422,38 @@ menjadi empat objek.
 **Sumber** — `../scripts/propagasi_multiview_damimas.py` ·
 `../results/damimas_propagasi_multiview.json` ·
 `../results/pred_damimas_propagasi_multiview_{val,test}.npz`
+
+---
+
+## PT-E-025 — Evaluasi end-to-end global satu-ke-satu (2026-08-18)
+
+**Tujuan** — mengganti angka classifier strict/oracle dengan evaluasi deploy
+yang benar-benar memakai proposal dan cluster prediksi. Pool dipasangkan ke GT
+secara Hungarian satu-ke-satu hanya pada lapisan evaluator. Pool tak terpasang
+menjadi FP dan tandan tak terpasang menjadi FN; satu pool tidak boleh mengklaim
+dua tandan.
+
+Seluruh sumber probabilitas, kepala linker, threshold pool, aturan agregasi,
+skema bobot, dan tau ordinal dipilih pada VAL. Konfigurasi final memakai
+probabilitas PT-E-024, kepala linker coverage, threshold 0,15, serta R4 berbobot
+confidence dengan tau `(0,40; 1,75; 2,50)`. TEST baru dibuka setelah lock.
+
+| metrik fisik | VAL | TEST |
+|---|---:|---:|
+| precision pool | 0,8550 | **0,8530** |
+| recall pool | 0,8215 | **0,8116** |
+| akurasi kelas pada pool terpasang | 0,7576 | **0,7322** |
+| macro-F1 kelas pada pool terpasang | 0,7356 | **0,7028** |
+| correct-class recall atas seluruh GT | 0,6224 | **0,5942** |
+| macro-F1 end-to-end (miss+FP dihitung) | 0,6240 | **0,5867** |
+| MAE jumlah pool per pohon | 1,558 | **1,638** |
+
+F1 end-to-end per kelas test adalah **0,7124 / 0,4823 / 0,6741 / 0,4781**
+untuk B1--B4. Ini sengaja lebih rendah daripada angka strict karena sekaligus
+memuat kegagalan deteksi, pemecahan/penggabungan identitas, klasifikasi, dan
+pool palsu. Probabilitas hasil propagasi mengalahkan routing lokal dan proposal
+C1 pada objective VAL, sehingga gain PT-E-024 bertahan setelah seluruh lapisan
+disambungkan.
+
+**Sumber** — `scripts/eval_endtoend_global_damimas.py` ·
+`results/damimas_endtoend_global.json`
