@@ -252,7 +252,8 @@ def main():
     pfinal_val = CD.terapkan_rekonsiliasi(pval, total_val, rek)
     lock = {"kepala_per_kelas": CD.serial_kepala(kepala),
             "kepala_total": {"nama": nama_total, "skala": a_total,
-                              "bias": b_total},
+                              "bias": b_total,
+                              "metrik_val_saja": met_total_val},
             "rekonsiliasi": {"mode": rek[1], "beta": rek[2],
                               "alokasi": None if rek[3] is None else rek[3].tolist(),
                               "proyeksi": rek[4]},
@@ -284,6 +285,13 @@ def main():
              "terkunci_di_val": lock,
              "test": CD.metrik(y["test"], pfinal_test),
              "test_sebelum_rekonsiliasi": CD.metrik(y["test"], ptest),
+             "kepala_total_terpisah": {
+                 "definisi": "regresor langsung untuk jumlah B1+B2+B3+B4",
+                 "val": met_total_val,
+                 "test": CD.metrik_total(y["test"].sum(1), total_test)},
+             "catatan_total_mae": (
+                 "test.total_mae adalah MAE jumlah empat kepala kelas; ketika "
+                 "rekonsiliasi mode raw, ia bukan metrik kepala total terpisah"),
              "ranking_val": [{"model": r[2], "metrik": r[3]} for r in ranking],
              "ranking_total_val": [{"model": r[1], "skala": r[2],
                                      "bias": r[3], "metrik": r[4]}

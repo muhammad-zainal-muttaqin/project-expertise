@@ -1,0 +1,80 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "audit proposal TRAIN+VAL; TEST tidak dibuka",
+  "ambang": {
+    "positif_iou": 0.4,
+    "background_iou": 0.15
+  },
+  "train": {
+    "split": "train",
+    "n_citra": 2700,
+    "n_proposal": 59625,
+    "n_gt": 13227,
+    "proposal_positif": 26403,
+    "proposal_background_keras": 16252,
+    "proposal_ambigu": 16970,
+    "gt_tercakup_iou50": 13029,
+    "gt_tercakup_iou_pos": 13175,
+    "recall_gt_iou50": 0.9850306191880245,
+    "recall_gt_iou_pos": 0.9960686474635216,
+    "gt_per_kelas": {
+      "B1": 1569,
+      "B2": 2504,
+      "B3": 6764,
+      "B4": 2390
+    },
+    "gt_tercakup_per_kelas": {
+      "B1": 1566,
+      "B2": 2495,
+      "B3": 6738,
+      "B4": 2376
+    },
+    "recall_per_kelas": {
+      "B1": 0.9980879541108987,
+      "B2": 0.9964057507987221,
+      "B3": 0.9961561206386753,
+      "B4": 0.994142259414226
+    },
+    "prediksi": {
+      "path": "/workspace/project-expertise/results/pred_damimas_proposal_base_train.npz",
+      "size": 2426481,
+      "mtime_ns": 1787052644000000000
+    }
+  },
+  "val": {
+    "split": "val",
+    "n_citra": 364,
+    "n_proposal": 11373,
+    "n_gt": 1757,
+    "proposal_positif": 3824,
+    "proposal_background_keras": 4438,
+    "proposal_ambigu": 3111,
+    "gt_tercakup_iou50": 1707,
+    "gt_tercakup_iou_pos": 1744,
+    "recall_gt_iou50": 0.9715424018212863,
+    "recall_gt_iou_pos": 0.9926010244735345,
+    "gt_per_kelas": {
+      "B1": 197,
+      "B2": 361,
+      "B3": 874,
+      "B4": 325
+    },
+    "gt_tercakup_per_kelas": {
+      "B1": 196,
+      "B2": 356,
+      "B3": 871,
+      "B4": 321
+    },
+    "recall_per_kelas": {
+      "B1": 0.9949238578680203,
+      "B2": 0.9861495844875346,
+      "B3": 0.9965675057208238,
+      "B4": 0.9876923076923076
+    },
+    "prediksi": {
+      "path": "/workspace/project-expertise/results/pred_damimas_proposal_yolo_val.npz",
+      "size": 411689,
+      "mtime_ns": 1787052550000000000
+    }
+  }
+}

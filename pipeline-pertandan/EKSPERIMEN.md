@@ -1500,3 +1500,56 @@ tidak tertimpa.
 **Sumber** — `scripts/counting_multibank_damimas.py` ·
 `results/damimas_counting_multibank_{compact,full}.json` ·
 `runs/counting_multibank_damimas/ensemble_{compact,full}.joblib`
+
+---
+
+## PT-E-028 — CatBoost regularized dengan seleksi OOF+VAL (2026-08-18)
+
+**Hipotesis** — regularisasi kuat dan pemilihan kepala dari prediksi OOF TRAIN
+ditambah VAL bersih dapat mengurangi variance PT-E-026 dan menurunkan
+macro-MAE counting terhadap champion anchor 1,0039. Resep CatBoost ditetapkan
+sebelum run: MultiRMSE 500 iterasi, depth 5, learning rate 0,035,
+`l2_leaf_reg=20`, `rsm=0,25`, dan 5 fold.
+
+**Protokol** — empat ruang fitur (`anchor`, `proposal`, `concat`, dan
+`concat_linker`) menghasilkan prediksi OOF TRAIN serta prediksi VAL. Kepala per
+kelas, kalibrasi, kepala jumlah-total, dan rekonsiliasi dikunci pada gabungan
+OOF+VAL. Konfigurasi tercetak sebelum cache, label, serta fitur TEST dibuka.
+Model terpakai kemudian dipasang ulang pada TRAIN+VAL tanpa mengubah lock.
+
+| keluaran empat kelas | OOF TRAIN+VAL | VAL bersih | TEST |
+|---|---:|---:|---:|
+| macro-MAE | 0,9006 | 0,9244 | 1,0236 |
+| class ±1 | 0,7861 | 0,7791 | 0,7480 |
+| tree ±1 | 0,3920 | 0,4186 | 0,3386 |
+| MAE jumlah empat kepala | 1,5915 | 1,5581 | 1,7323 |
+
+CatBoost tidak mengganti champion macro 1,0039 ataupun class ±1 0,7579.
+Tree ±1 naik dari ensemble anchor 0,3228 menjadi 0,3386, tetapi masih di bawah
+single-model 0,3780. Hipotesis gain macro karena itu **DIPALSUKAN**; dump dan
+model tetap disimpan sebagai kandidat diversity untuk stacker final.
+
+**Koreksi terminologi PT-E-026** — rekonsiliasi seluruh run terkunci pada mode
+`raw`. Akibatnya kolom `total-MAE` PT-E-026 dan angka CatBoost 1,7323 adalah MAE
+penjumlahan empat kepala kelas, bukan metrik regresor jumlah-total yang sudah
+dipilih terpisah. Audit inference-only atas model yang telah terkunci memberi:
+
+| kepala jumlah-total langsung | VAL saat seleksi | TEST audit |
+|---|---:|---:|
+| baseline anchor | 1,3837 | 1,5669 |
+| compact multi-bank | 1,3605 | **1,4882** |
+| full multi-bank | **1,3140** | 1,5276 |
+| CatBoost | 1,3721 | 1,5512 |
+
+Compact 1,4882 adalah hasil TEST terbaik yang teramati, tetapi ranking audit
+TEST tidak dijadikan lock final. Full menang pada VAL, sementara stacker
+counting final akan dipilih dari OOF/VAL setelah bank RF-DETR/RT-DETR lengkap.
+Prediksi per-pohon dan hash model disimpan agar koreksi dapat dihitung ulang
+tanpa fitting atau pemilihan ulang.
+
+**Sumber** — source run `edfeb5c` ·
+`scripts/counting_catboost_damimas.py` ·
+`scripts/audit_counting_total_damimas.py` ·
+`results/damimas_counting_catboost.json` ·
+`results/damimas_counting_total_head_audit.json` ·
+`results/damimas_counting_total_head_audit_pred.npz`

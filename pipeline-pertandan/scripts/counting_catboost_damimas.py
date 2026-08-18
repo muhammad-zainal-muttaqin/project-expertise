@@ -130,12 +130,14 @@ def main() -> None:
         else pred_val[nama_total].sum(1)
     total_val = a_total * total_val_raw + b_total
     pfinal_val = CD.terapkan_rekonsiliasi(pval, total_val, rek)
+    met_total_val_saja = CD.metrik_total(y["val"].sum(1), total_val)
     lock = {
         "resep": {"iterations": 500, "depth": 5, "learning_rate": .035,
                   "l2_leaf_reg": 20., "rsm": .25, "folds": args.folds},
         "kepala_per_kelas": CD.serial_kepala(kepala),
         "kepala_total": {"nama": nama_total, "skala": a_total,
-                          "bias": b_total, "metrik_seleksi": met_total},
+                          "bias": b_total, "metrik_seleksi": met_total,
+                          "metrik_val_saja": met_total_val_saja},
         "rekonsiliasi": {"mode": rek[1], "beta": rek[2],
                           "alokasi": None if rek[3] is None else rek[3].tolist(),
                           "proyeksi": rek[4]},
@@ -173,6 +175,14 @@ def main() -> None:
         "terkunci": lock,
         "test": CD.metrik(y["test"], pfinal_test),
         "test_sebelum_rekonsiliasi": CD.metrik(y["test"], ptest),
+        "kepala_total_terpisah": {
+            "definisi": "regresor langsung untuk jumlah B1+B2+B3+B4",
+            "val": met_total_val_saja,
+            "test": CD.metrik_total(y["test"].sum(1), total_test),
+        },
+        "catatan_total_mae": (
+            "test.total_mae adalah MAE jumlah empat kepala kelas; ketika "
+            "rekonsiliasi mode raw, ia bukan metrik kepala total terpisah"),
         "ranking_total_seleksi": [
             {"nama": r[1], "skala": r[2], "bias": r[3], "metrik": r[4]}
             for r in rank_total],

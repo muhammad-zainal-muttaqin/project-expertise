@@ -1,0 +1,306 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "resep tetap; kepala dipilih pada OOF TRAIN + VAL bersih; TEST dibuka setelah lock",
+  "bank": {
+    "anchor": {
+      "train": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_train.npz",
+      "val": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_val.npz",
+      "test": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_test.npz"
+    },
+    "proposal": {
+      "train": "/workspace/project-expertise/results/pred_damimas_proposal_base_train.npz",
+      "val": "/workspace/project-expertise/results/pred_damimas_proposal_yolo_val.npz",
+      "test": "/workspace/project-expertise/results/pred_damimas_proposal_yolo_test.npz"
+    }
+  },
+  "fitur": {
+    "train": {
+      "anchor": 1683,
+      "proposal": 1683,
+      "concat": 3366,
+      "concat_linker": 3687
+    },
+    "val": {
+      "anchor": 1683,
+      "proposal": 1683,
+      "concat": 3366,
+      "concat_linker": 3687
+    },
+    "test": {
+      "anchor": 1683,
+      "proposal": 1683,
+      "concat": 3366,
+      "concat_linker": 3687
+    }
+  },
+  "terkunci": {
+    "resep": {
+      "iterations": 500,
+      "depth": 5,
+      "learning_rate": 0.035,
+      "l2_leaf_reg": 20.0,
+      "rsm": 0.25,
+      "folds": 5
+    },
+    "kepala_per_kelas": [
+      {
+        "kelas": "B1",
+        "anggota": [
+          "cat_proposal",
+          "cat_concat_linker"
+        ],
+        "bobot": [
+          0.6499999999999999,
+          0.3500000000000001
+        ],
+        "skala": 1.1000000000000003,
+        "bias": -0.29999999999999893
+      },
+      {
+        "kelas": "B2",
+        "anggota": [
+          "cat_concat",
+          "cat_anchor"
+        ],
+        "bobot": [
+          0.9,
+          0.1
+        ],
+        "skala": 1.0250000000000004,
+        "bias": -0.349999999999999
+      },
+      {
+        "kelas": "B3",
+        "anggota": [
+          "cat_concat_linker",
+          "cat_concat",
+          "cat_proposal"
+        ],
+        "bobot": [
+          0.49499999999999994,
+          0.4050000000000001,
+          0.1
+        ],
+        "skala": 1.1500000000000004,
+        "bias": -0.8999999999999995
+      },
+      {
+        "kelas": "B4",
+        "anggota": [
+          "cat_concat_linker",
+          "cat_proposal"
+        ],
+        "bobot": [
+          0.85,
+          0.15000000000000002
+        ],
+        "skala": 0.9750000000000002,
+        "bias": -0.349999999999999
+      }
+    ],
+    "kepala_total": {
+      "nama": "cat_proposal",
+      "skala": 1.0000000000000002,
+      "bias": 1.7763568394002505e-15,
+      "metrik_seleksi": {
+        "mae": 1.3810178817056395,
+        "pm1_acc": 0.6189821182943603,
+        "bias": -0.024759284731774415
+      },
+      "metrik_val_saja": {
+        "mae": 1.372093023255814,
+        "pm1_acc": 0.6511627906976745,
+        "bias": 0.09302325581395349
+      }
+    },
+    "rekonsiliasi": {
+      "mode": "raw",
+      "beta": 0.0,
+      "alokasi": null,
+      "proyeksi": false
+    },
+    "metrik_oof_train_plus_val": {
+      "macro_mae": 0.9006189821182944,
+      "class_pm1_acc": 0.7861072902338377,
+      "tree_pm1_acc": 0.3920220082530949,
+      "total_mae": 1.5914718019257221,
+      "bias_total": -0.9972489683631361,
+      "per_kelas": {
+        "B1": {
+          "mae": 0.3686382393397524,
+          "pm1_acc": 0.9683631361760661,
+          "bias": -0.16506189821182943
+        },
+        "B2": {
+          "mae": 0.9037138927097662,
+          "pm1_acc": 0.8005502063273727,
+          "bias": -0.3562585969738652
+        },
+        "B3": {
+          "mae": 1.330123796423659,
+          "pm1_acc": 0.6134800550206327,
+          "bias": -0.07015130674002751
+        },
+        "B4": {
+          "mae": 1.0,
+          "pm1_acc": 0.7620357634112792,
+          "bias": -0.405777166437414
+        }
+      }
+    },
+    "metrik_val_saja": {
+      "macro_mae": 0.9244186046511628,
+      "class_pm1_acc": 0.7790697674418605,
+      "tree_pm1_acc": 0.4186046511627907,
+      "total_mae": 1.558139534883721,
+      "bias_total": -0.813953488372093,
+      "per_kelas": {
+        "B1": {
+          "mae": 0.45348837209302323,
+          "pm1_acc": 0.9534883720930233,
+          "bias": -0.08139534883720931
+        },
+        "B2": {
+          "mae": 0.9418604651162791,
+          "pm1_acc": 0.7906976744186046,
+          "bias": -0.6627906976744186
+        },
+        "B3": {
+          "mae": 1.255813953488372,
+          "pm1_acc": 0.627906976744186,
+          "bias": 0.2558139534883721
+        },
+        "B4": {
+          "mae": 1.0465116279069768,
+          "pm1_acc": 0.7441860465116279,
+          "bias": -0.32558139534883723
+        }
+      }
+    }
+  },
+  "test": {
+    "macro_mae": 1.0236220472440944,
+    "class_pm1_acc": 0.7480314960629921,
+    "tree_pm1_acc": 0.33858267716535434,
+    "total_mae": 1.7322834645669292,
+    "bias_total": -1.0078740157480315,
+    "per_kelas": {
+      "B1": {
+        "mae": 0.4015748031496063,
+        "pm1_acc": 0.9606299212598425,
+        "bias": -0.13385826771653545
+      },
+      "B2": {
+        "mae": 0.984251968503937,
+        "pm1_acc": 0.7952755905511811,
+        "bias": -0.48031496062992124
+      },
+      "B3": {
+        "mae": 1.5275590551181102,
+        "pm1_acc": 0.5748031496062992,
+        "bias": 0.015748031496062992
+      },
+      "B4": {
+        "mae": 1.1811023622047243,
+        "pm1_acc": 0.6614173228346457,
+        "bias": -0.4094488188976378
+      }
+    }
+  },
+  "test_sebelum_rekonsiliasi": {
+    "macro_mae": 1.0236220472440944,
+    "class_pm1_acc": 0.7480314960629921,
+    "tree_pm1_acc": 0.33858267716535434,
+    "total_mae": 1.7322834645669292,
+    "bias_total": -1.0078740157480315,
+    "per_kelas": {
+      "B1": {
+        "mae": 0.4015748031496063,
+        "pm1_acc": 0.9606299212598425,
+        "bias": -0.13385826771653545
+      },
+      "B2": {
+        "mae": 0.984251968503937,
+        "pm1_acc": 0.7952755905511811,
+        "bias": -0.48031496062992124
+      },
+      "B3": {
+        "mae": 1.5275590551181102,
+        "pm1_acc": 0.5748031496062992,
+        "bias": 0.015748031496062992
+      },
+      "B4": {
+        "mae": 1.1811023622047243,
+        "pm1_acc": 0.6614173228346457,
+        "bias": -0.4094488188976378
+      }
+    }
+  },
+  "kepala_total_terpisah": {
+    "definisi": "regresor langsung untuk jumlah B1+B2+B3+B4",
+    "val": {
+      "mae": 1.372093023255814,
+      "pm1_acc": 0.6511627906976745,
+      "bias": 0.09302325581395349
+    },
+    "test": {
+      "mae": 1.5511811023622046,
+      "pm1_acc": 0.5826771653543307,
+      "bias": -0.1968503937007874
+    }
+  },
+  "catatan_total_mae": "test.total_mae adalah MAE jumlah empat kepala kelas; ketika rekonsiliasi mode raw, ia bukan metrik kepala total terpisah",
+  "ranking_total_seleksi": [
+    {
+      "nama": "cat_proposal",
+      "skala": 1.0000000000000002,
+      "bias": 1.7763568394002505e-15,
+      "metrik": {
+        "mae": 1.3810178817056395,
+        "pm1_acc": 0.6189821182943603,
+        "bias": -0.024759284731774415
+      }
+    },
+    {
+      "nama": "kepala",
+      "skala": 0.9500000000000002,
+      "bias": 1.2500000000000027,
+      "metrik": {
+        "mae": 1.3933975240715268,
+        "pm1_acc": 0.6272352132049519,
+        "bias": -0.20495185694635487
+      }
+    },
+    {
+      "nama": "cat_concat_linker",
+      "skala": 1.0000000000000002,
+      "bias": 0.0500000000000016,
+      "metrik": {
+        "mae": 1.3975240715268225,
+        "pm1_acc": 0.6286107290233838,
+        "bias": 0.052269601100412656
+      }
+    },
+    {
+      "nama": "cat_anchor",
+      "skala": 1.0000000000000002,
+      "bias": -0.04999999999999827,
+      "metrik": {
+        "mae": 1.4167812929848693,
+        "pm1_acc": 0.6121045392022009,
+        "bias": -0.04676753782668501
+      }
+    },
+    {
+      "nama": "cat_concat",
+      "skala": 1.1000000000000003,
+      "bias": -1.1499999999999992,
+      "metrik": {
+        "mae": 1.4264099037138926,
+        "pm1_acc": 0.6121045392022009,
+        "bias": -0.0811554332874828
+      }
+    }
+  ],
+  "prediksi_per_pohon": "/workspace/project-expertise/pipeline-pertandan/results/damimas_counting_catboost_pred.npz"
+}

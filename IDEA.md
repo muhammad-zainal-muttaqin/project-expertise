@@ -86,9 +86,12 @@ telah mempersempit bottleneck secara lebih tepat:
   akurasi per-tandan **0,7378**, macro-F1 **0,7166**, dan akurasi multi-tampak
   **0,7753**. Mixture-of-experts per-tandan tidak mengalahkannya;
 - counting macro terbaik tetap regresor multi-ambang dengan macro-MAE
-  **1,0039**. Full multi-bank overfit (VAL 0,8110, TEST 1,0374), tetapi kepala
-  compact khusus jumlah total menurunkan total-MAE **1,8583 menjadi 1,7795**.
-  MAE jumlah pool linker 1,864 tetap tidak dipakai sebagai counter akhir.
+  **1,0039**. Full multi-bank overfit (VAL 0,8110, TEST 1,0374). Audit memisahkan
+  MAE jumlah empat kelas dari regresor jumlah-total yang sebenarnya: kepala
+  compact memberi best observed TEST **1,4882**, dibandingkan anchor 1,5669.
+  Pemilihan final tidak boleh didasarkan pada ranking TEST ini dan akan dikunci
+  ulang melalui OOF/VAL setelah bank detektor lengkap. MAE jumlah pool linker
+  1,864 tetap tidak dipakai sebagai counter akhir.
 
 Konsekuensinya, pipeline final memakai kepala berbeda atas bank kandidat yang
 sama: skor multi-label untuk mAP, proposal unik untuk identitas fisik, agregasi
@@ -104,3 +107,7 @@ residual lima kelas `B1--B4 + background` disiapkan untuk dilatih pada proposal
 fusion final. Ia sekaligus dapat memperbaiki label kematangan dan menekan false
 positive tanpa mengubah koordinat proposal; TEST tetap tidak masuk training
 atau pemilihan checkpoint.
+
+Sumber angka dukungan proposal: `pipeline-pertandan/scripts/classifier_deteksi_damimas.py`
+mode `--audit-only` dan
+`pipeline-pertandan/results/damimas_proposal_classifier_audit.json`.

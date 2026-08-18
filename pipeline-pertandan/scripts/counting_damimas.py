@@ -492,6 +492,8 @@ def main() -> int:
                               "metrik": r[4]} for r in rank_total],
             "terpilih": nama_total, "skala": skala_total, "bias": bias_total,
             "val": met_total_val,
+            "test": metrik_total(y["test"].sum(1), total_test),
+            "definisi": "regresor langsung untuk jumlah B1+B2+B3+B4",
         },
         "final_rekonsiliasi": {
             "mode": rek[1], "beta": rek[2],
@@ -499,6 +501,9 @@ def main() -> int:
             "proyeksi_integer": rek[4], "val": met_final_val,
             "test": met_final_test,
         },
+        "catatan_total_mae": (
+            "final_rekonsiliasi.test.total_mae adalah MAE jumlah empat kepala "
+            "kelas; ketika mode raw, ia bukan metrik kepala_total.test"),
     }
     args.keluaran.parent.mkdir(parents=True, exist_ok=True)
     args.keluaran.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))

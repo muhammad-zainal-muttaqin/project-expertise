@@ -1,0 +1,65 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "audit inference-only atas kepala total yang sebelumnya sudah dikunci; tanpa fit, kalibrasi, atau seleksi di TEST",
+  "definisi": {
+    "kepala_total_terpisah": "regresor langsung untuk jumlah B1+B2+B3+B4",
+    "total_mae_laporan_lama": "MAE penjumlahan empat kepala kelas ketika rekonsiliasi terkunci pada mode raw"
+  },
+  "n_test": 127,
+  "dimensi": {
+    "anchor": 1683,
+    "proposal": 1683,
+    "linker_legacy": 225,
+    "linker_full": 321,
+    "compact": 3591,
+    "full": 3687
+  },
+  "test_kepala_total_terpisah": {
+    "baseline_anchor": {
+      "mae": 1.5669291338582678,
+      "pm1_acc": 0.5511811023622047,
+      "bias": -0.3700787401574803
+    },
+    "compact_multibank": {
+      "mae": 1.4881889763779528,
+      "pm1_acc": 0.5984251968503937,
+      "bias": -0.33858267716535434
+    },
+    "full_multibank": {
+      "mae": 1.5275590551181102,
+      "pm1_acc": 0.5984251968503937,
+      "bias": -0.6141732283464567
+    },
+    "catboost": {
+      "mae": 1.5511811023622046,
+      "pm1_acc": 0.5826771653543307,
+      "bias": -0.1968503937007874
+    }
+  },
+  "ranking_test_deskriptif_bukan_kunci_seleksi": [
+    "compact_multibank",
+    "full_multibank",
+    "catboost",
+    "baseline_anchor"
+  ],
+  "catatan_seleksi": "Ranking TEST ini hanya audit deskriptif. Kepala final paper harus dipilih kembali dari OOF/VAL sebelum evaluasi konfirmatori.",
+  "artefak": {
+    "baseline_anchor": {
+      "path": "/workspace/project-expertise/pipeline-pertandan/runs/counting_damimas/ensemble.joblib",
+      "sha256": "f3d63b13b7f27354a8d1de3163eb95f8cc691d035463997f7accbce4abf16eb0"
+    },
+    "compact_multibank": {
+      "path": "/workspace/project-expertise/pipeline-pertandan/runs/counting_multibank_damimas/ensemble_compact.joblib",
+      "sha256": "decd587c6d3769b8d768f032313b0536e3876ff28b8eef846cd104c5ca6d575d"
+    },
+    "full_multibank": {
+      "path": "/workspace/project-expertise/pipeline-pertandan/runs/counting_multibank_damimas/ensemble_full.joblib",
+      "sha256": "f8a1fc6fde0b6bbe1d69d720a014b473ae4c749156346d6e66c6435a1c7f3a79"
+    },
+    "catboost": {
+      "path": "/workspace/project-expertise/pipeline-pertandan/runs/counting_catboost_damimas/ensemble.joblib",
+      "sha256": "f3f90d2538a53f403c59a4db86719cfe52c92d57e759fded4161e6af255430ba"
+    }
+  },
+  "prediksi_per_pohon": "/workspace/project-expertise/pipeline-pertandan/results/damimas_counting_total_head_audit_pred.npz"
+}

@@ -132,6 +132,47 @@ def jalur_cache(cache_dir: Path, tag: str, split: str) -> dict[str, Path]:
             "manifest": dasar.with_name(dasar.name + "_manifest.json")}
 
 
+def audit_proposal(dataset: Path, split: str, pred_path: Path,
+                   pos_iou: float, neg_iou: float) -> dict:
+    """Hitung dukungan label detected-space tanpa membuat crop atau memakai TEST."""
+    paths = sorted((dataset / "images" / split).glob("*.jpg"))
+    z = np.load(pred_path, allow_pickle=True)
+    n_prop = n_gt = pos = bg = gt50 = gtpos = 0
+    gt_kelas = np.zeros(4, int)
+    covered_kelas = np.zeros(4, int)
+    for i, path in enumerate(paths, 1):
+        D = (np.asarray(z[path.stem], np.float32)
+             if path.stem in z.files else np.zeros((0, 11), np.float32))
+        G = baca_gt(dataset, split, path)
+        M = iou_matriks(D[:, :4], G[:, 1:])
+        bp = M.max(1) if len(D) and len(G) else np.zeros(len(D))
+        bg_gt = M.max(0) if len(D) and len(G) else np.zeros(len(G))
+        n_prop += len(D); n_gt += len(G)
+        pos += int((bp >= pos_iou).sum())
+        bg += int((bp <= neg_iou).sum())
+        gt50 += int((bg_gt >= .50).sum())
+        gtpos += int((bg_gt >= pos_iou).sum())
+        for k in range(4):
+            m = G[:, 0].astype(int) == k
+            gt_kelas[k] += int(m.sum())
+            covered_kelas[k] += int((bg_gt[m] >= pos_iou).sum())
+        if i % 500 == 0:
+            print(f"audit {split}: {i}/{len(paths)}", flush=True)
+    z.close()
+    return {"split": split, "n_citra": len(paths), "n_proposal": n_prop,
+            "n_gt": n_gt, "proposal_positif": pos,
+            "proposal_background_keras": bg,
+            "proposal_ambigu": n_prop - pos - bg,
+            "gt_tercakup_iou50": gt50, "gt_tercakup_iou_pos": gtpos,
+            "recall_gt_iou50": gt50 / max(n_gt, 1),
+            "recall_gt_iou_pos": gtpos / max(n_gt, 1),
+            "gt_per_kelas": dict(zip(KELAS[:4], gt_kelas.tolist())),
+            "gt_tercakup_per_kelas": dict(zip(KELAS[:4], covered_kelas.tolist())),
+            "recall_per_kelas": dict(zip(
+                KELAS[:4], (covered_kelas / np.maximum(gt_kelas, 1)).tolist())),
+            "prediksi": fingerprint(pred_path)}
+
+
 def bangun_cache(dataset: Path, split: str, pred_path: Path, cache_dir: Path,
                  tag: str, ukuran: int, pad: float, pos_iou: float,
                  neg_iou: float, rebuild: bool) -> dict[str, Path]:
@@ -387,6 +428,10 @@ def main() -> None:
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--rebuild-cache", action="store_true")
+    ap.add_argument("--audit-only", action="store_true",
+                    help="simpan statistik dukungan TRAIN+VAL lalu berhenti")
+    ap.add_argument("--audit-out", type=Path, default=SUB / "results" /
+                    "damimas_proposal_classifier_audit.json")
     args = ap.parse_args()
     if not (0 <= args.neg_iou < args.pos_iou <= 1):
         raise ValueError("Harus 0 <= neg-iou < pos-iou <= 1")
@@ -394,6 +439,24 @@ def main() -> None:
         raise ValueError("epochs/patience/batch/grad-accum harus positif")
     random.seed(args.seed); np.random.seed(args.seed); torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
+
+    if args.audit_only:
+        hasil_audit = {
+            "dataset": "SawitMVC-YOLO-Damimas",
+            "protokol": "audit proposal TRAIN+VAL; TEST tidak dibuka",
+            "ambang": {"positif_iou": args.pos_iou,
+                        "background_iou": args.neg_iou},
+            "train": audit_proposal(args.dataset, "train", args.pred_train,
+                                    args.pos_iou, args.neg_iou),
+            "val": audit_proposal(args.dataset, "val", args.pred_val,
+                                  args.pos_iou, args.neg_iou),
+        }
+        args.audit_out.parent.mkdir(parents=True, exist_ok=True)
+        args.audit_out.write_text(json.dumps(hasil_audit, indent=2,
+                                              ensure_ascii=False))
+        print(json.dumps(hasil_audit, indent=2, ensure_ascii=False), flush=True)
+        print(f"-> {args.audit_out}")
+        return
 
     cache = {
         "train": bangun_cache(args.dataset, "train", args.pred_train,

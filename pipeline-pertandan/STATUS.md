@@ -190,9 +190,9 @@ yang sudah pernah dicoba.
 | ✅ | **PT-E-023b** MoE per-view strict | **NAIK TIPIS** | akurasi 0,7111; macro-F1 0,6894 |
 | ✅ | **PT-E-024** propagasi confidence lintas-view | **NAIK** | mAP50 0,5965; mAP50-95 0,2743; macro-F1 operasi 0,5906 |
 | ✅ | **PT-E-025** evaluasi end-to-end global 1-ke-1 | **SELESAI** | P/R pool 0,8530/0,8116; acc matched 0,7322; macro-F1 fisik 0,5867 |
-| ✅ | **PT-E-026** counting multi-bank | **SELESAI / DIPISAH PER KEPALA** | full test 1,0374 ditolak untuk macro; compact total-MAE 1,7795 diterima khusus total |
+| ✅ | **PT-E-026** counting multi-bank | **SELESAI / DIKOREKSI** | macro tetap 1,0039; regresor total compact best observed TEST 1,4882, bukan Σ4 lama 1,7795 |
 | 🔄 | **PT-E-027** RF-DETR-L strict DAMIMAS | **TRAINING** | 60 epoch, 1280 px, TEST tidak dipakai saat training |
-| 🔄 | **PT-E-028** counting CatBoost regularized | **BERJALAN** | resep tetap; seleksi OOF TRAIN + VAL; TEST belum dibuka sebelum lock |
+| ✅ | **PT-E-028** counting CatBoost regularized | **SELESAI / TIDAK JADI CHAMPION** | TEST macro 1,0236; class ±1 0,7480; tree ±1 0,3386; kepala total langsung 1,5512 |
 
 PT-E-020 menyimpan kepala terpisah yang seluruhnya dipilih di VAL. Kepala
 association terbaik tidak sama dengan kepala coverage atau hitung-pool; MAE
