@@ -1,0 +1,742 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "tautan": "oracle; plafon klasifikasi/agregasi, bukan hasil deploy",
+  "detektor": "YOLO26l 953 lama, difilter DAMIMAS",
+  "pemilihan_val": "maksimum accuracy_R4 * recall_fisik",
+  "sapuan_val": {
+    "0.010": {
+      "skema": "conf_luas",
+      "tau": [
+        0.6,
+        1.65,
+        2.6
+      ],
+      "akurasi_R4": 0.7534,
+      "macro_f1": 0.7313,
+      "recall_fisik": 0.9706,
+      "akurasi_x_recall": 0.73125,
+      "n_tandan": 892
+    },
+    "0.030": {
+      "skema": "conf_luas",
+      "tau": [
+        0.6,
+        1.7,
+        2.6
+      ],
+      "akurasi_R4": 0.7554,
+      "macro_f1": 0.7375,
+      "recall_fisik": 0.9521,
+      "akurasi_x_recall": 0.719216,
+      "n_tandan": 875
+    },
+    "0.050": {
+      "skema": "conf_luas",
+      "tau": [
+        0.6,
+        1.7,
+        2.6
+      ],
+      "akurasi_R4": 0.7608,
+      "macro_f1": 0.7433,
+      "recall_fisik": 0.9325,
+      "akurasi_x_recall": 0.709446,
+      "n_tandan": 857
+    },
+    "0.075": {
+      "skema": "conf_luas",
+      "tau": [
+        0.6,
+        1.7,
+        2.6
+      ],
+      "akurasi_R4": 0.7628,
+      "macro_f1": 0.7454,
+      "recall_fisik": 0.9129,
+      "akurasi_x_recall": 0.69636,
+      "n_tandan": 839
+    },
+    "0.100": {
+      "skema": "conf_luas",
+      "tau": [
+        0.6,
+        1.7,
+        2.6
+      ],
+      "akurasi_R4": 0.7609,
+      "macro_f1": 0.7439,
+      "recall_fisik": 0.901,
+      "akurasi_x_recall": 0.685571,
+      "n_tandan": 828
+    },
+    "0.150": {
+      "skema": "seragam",
+      "tau": [
+        0.6,
+        1.6,
+        2.65
+      ],
+      "akurasi_R4": 0.7635,
+      "macro_f1": 0.7346,
+      "recall_fisik": 0.8694,
+      "akurasi_x_recall": 0.663787,
+      "n_tandan": 799
+    },
+    "0.200": {
+      "skema": "seragam",
+      "tau": [
+        0.65,
+        1.6,
+        2.65
+      ],
+      "akurasi_R4": 0.7652,
+      "macro_f1": 0.7385,
+      "recall_fisik": 0.839,
+      "akurasi_x_recall": 0.642003,
+      "n_tandan": 771
+    },
+    "0.250": {
+      "skema": "conf",
+      "tau": [
+        0.5,
+        1.7,
+        2.6
+      ],
+      "akurasi_R4": 0.7624,
+      "macro_f1": 0.7443,
+      "recall_fisik": 0.7922,
+      "akurasi_x_recall": 0.603973,
+      "n_tandan": 728
+    },
+    "0.300": {
+      "skema": "conf",
+      "tau": [
+        0.6,
+        1.6,
+        2.6
+      ],
+      "akurasi_R4": 0.7672,
+      "macro_f1": 0.7421,
+      "recall_fisik": 0.7573,
+      "akurasi_x_recall": 0.581001,
+      "n_tandan": 696
+    }
+  },
+  "terkunci": {
+    "conf": 0.01,
+    "skema": "conf_luas",
+    "tau": [
+      0.6,
+      1.65,
+      2.6
+    ]
+  },
+  "split": {
+    "val": {
+      "cakupan": {
+        "n_tandan_gt": 919,
+        "n_tandan_terdeteksi": 892,
+        "recall_per_tandan": 0.9706,
+        "n_kemunculan_gt": 1757,
+        "n_kemunculan_terdeteksi": 1642,
+        "recall_per_kemunculan": 0.9345
+      },
+      "PEMBANDING_per_kemunculan": {
+        "n_kemunculan": 1642,
+        "akurasi": 0.7071
+      },
+      "n_pool": 892,
+      "n_pool_multi_tampak": 636,
+      "semua_pool": {
+        "R0": {
+          "akurasi": 0.7096,
+          "akurasi_pm1": 0.9966,
+          "mae_ordinal": 0.2758,
+          "macro_f1": 0.6905,
+          "recall_per_kelas": {
+            "B1": 0.7667,
+            "B2": 0.3547,
+            "B3": 0.8396,
+            "B4": 0.7845
+          },
+          "n": 892
+        },
+        "R0cal": {
+          "akurasi": 0.7152,
+          "akurasi_pm1": 0.9966,
+          "mae_ordinal": 0.2691,
+          "macro_f1": 0.6997,
+          "recall_per_kelas": {
+            "B1": 0.7778,
+            "B2": 0.4128,
+            "B3": 0.8597,
+            "B4": 0.7072
+          },
+          "n": 892
+        },
+        "R1": {
+          "akurasi": 0.7276,
+          "akurasi_pm1": 0.9966,
+          "mae_ordinal": 0.2758,
+          "macro_f1": 0.6905,
+          "recall_per_kelas": {
+            "B1": 0.7667,
+            "B2": 0.3547,
+            "B3": 0.8396,
+            "B4": 0.7845
+          },
+          "n": 892
+        },
+        "R2": {
+          "akurasi": 0.7309,
+          "akurasi_pm1": 0.9966,
+          "mae_ordinal": 0.2724,
+          "macro_f1": 0.6962,
+          "recall_per_kelas": {
+            "B1": 0.7889,
+            "B2": 0.3488,
+            "B3": 0.8374,
+            "B4": 0.8011
+          },
+          "n": 892
+        },
+        "R3": {
+          "akurasi": 0.7332,
+          "akurasi_pm1": 0.9966,
+          "mae_ordinal": 0.2702,
+          "macro_f1": 0.6988,
+          "recall_per_kelas": {
+            "B1": 0.8,
+            "B2": 0.3547,
+            "B3": 0.8486,
+            "B4": 0.7735
+          },
+          "n": 892
+        },
+        "R4": {
+          "akurasi": 0.7534,
+          "akurasi_pm1": 0.9955,
+          "mae_ordinal": 0.2511,
+          "macro_f1": 0.7313,
+          "recall_per_kelas": {
+            "B1": 0.8333,
+            "B2": 0.4942,
+            "B3": 0.8597,
+            "B4": 0.6961
+          },
+          "n": 892
+        }
+      },
+      "HANYA_pool_multi_tampak": {
+        "R0": {
+          "akurasi": 0.7154,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.261,
+          "macro_f1": 0.7078,
+          "recall_per_kelas": {
+            "B1": 0.7922,
+            "B2": 0.4048,
+            "B3": 0.8549,
+            "B4": 0.7523
+          },
+          "n": 636
+        },
+        "R0cal": {
+          "akurasi": 0.7201,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.2547,
+          "macro_f1": 0.7165,
+          "recall_per_kelas": {
+            "B1": 0.8052,
+            "B2": 0.4603,
+            "B3": 0.8673,
+            "B4": 0.6789
+          },
+          "n": 636
+        },
+        "R1": {
+          "akurasi": 0.7406,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.261,
+          "macro_f1": 0.7078,
+          "recall_per_kelas": {
+            "B1": 0.7922,
+            "B2": 0.4048,
+            "B3": 0.8549,
+            "B4": 0.7523
+          },
+          "n": 636
+        },
+        "R2": {
+          "akurasi": 0.7453,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.2563,
+          "macro_f1": 0.7156,
+          "recall_per_kelas": {
+            "B1": 0.8182,
+            "B2": 0.3968,
+            "B3": 0.8519,
+            "B4": 0.7798
+          },
+          "n": 636
+        },
+        "R3": {
+          "akurasi": 0.7484,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.2531,
+          "macro_f1": 0.7179,
+          "recall_per_kelas": {
+            "B1": 0.8312,
+            "B2": 0.4048,
+            "B3": 0.8673,
+            "B4": 0.7339
+          },
+          "n": 636
+        },
+        "R4": {
+          "akurasi": 0.7736,
+          "akurasi_pm1": 0.9969,
+          "mae_ordinal": 0.2296,
+          "macro_f1": 0.756,
+          "recall_per_kelas": {
+            "B1": 0.8701,
+            "B2": 0.5714,
+            "B3": 0.8673,
+            "B4": 0.6606
+          },
+          "n": 636
+        }
+      },
+      "menurut_jumlah_tampak": {
+        "1": {
+          "n": 256,
+          "R0": 0.6953,
+          "R0cal": 0.7031,
+          "R4": 0.7031
+        },
+        "2": {
+          "n": 548,
+          "R0": 0.7272,
+          "R0cal": 0.7354,
+          "R4": 0.7865
+        },
+        "3": {
+          "n": 68,
+          "R0": 0.6422,
+          "R0cal": 0.6225,
+          "R4": 0.7059
+        },
+        "4": {
+          "n": 20,
+          "R0": 0.64,
+          "R0cal": 0.6325,
+          "R4": 0.65
+        }
+      },
+      "dekomposisi": {
+        "rekalibrasi_R0cal_vs_R0": {
+          "delta_pp": 0.547,
+          "ci95_pp": [
+            -0.939,
+            2.139
+          ],
+          "P_delta_gt_0": 0.7505,
+          "n_pohon": 86,
+          "n_pool": 892
+        },
+        "PENGGABUNGAN_R4_vs_R0cal": {
+          "delta_pp": 3.804,
+          "ci95_pp": [
+            2.261,
+            5.326
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 86,
+          "n_pool": 892
+        },
+        "PENGGABUNGAN_multi_R4_vs_R0cal": {
+          "delta_pp": 5.334,
+          "ci95_pp": [
+            3.256,
+            7.358
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 86,
+          "n_pool": 636
+        },
+        "total_R4_vs_R0": {
+          "delta_pp": 4.352,
+          "ci95_pp": [
+            2.56,
+            6.153
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 86,
+          "n_pool": 892
+        },
+        "R2_vs_R0_gaya_E016": {
+          "delta_pp": 2.133,
+          "ci95_pp": [
+            0.748,
+            3.575
+          ],
+          "P_delta_gt_0": 0.998,
+          "n_pohon": 86,
+          "n_pool": 892
+        }
+      },
+      "R4_precision_recall_f1_per_kelas": {
+        "B1": {
+          "precision": 0.7978723404255319,
+          "recall": 0.8333333333333334,
+          "f1": 0.8152173913043478,
+          "support_terdeteksi": 90
+        },
+        "B2": {
+          "precision": 0.6538461538461539,
+          "recall": 0.4941860465116279,
+          "f1": 0.5629139072847682,
+          "support_terdeteksi": 172
+        },
+        "B3": {
+          "precision": 0.7583497053045186,
+          "recall": 0.8596881959910914,
+          "f1": 0.8058455114822547,
+          "support_terdeteksi": 449
+        },
+        "B4": {
+          "precision": 0.7924528301886793,
+          "recall": 0.6961325966850829,
+          "f1": 0.7411764705882353,
+          "support_terdeteksi": 181
+        }
+      },
+      "recall_fisik_per_kelas": {
+        "B1": {
+          "gt": 93,
+          "terdeteksi": 90,
+          "recall": 0.967741935483871
+        },
+        "B2": {
+          "gt": 183,
+          "terdeteksi": 172,
+          "recall": 0.9398907103825137
+        },
+        "B3": {
+          "gt": 458,
+          "terdeteksi": 449,
+          "recall": 0.980349344978166
+        },
+        "B4": {
+          "gt": 185,
+          "terdeteksi": 181,
+          "recall": 0.9783783783783784
+        }
+      },
+      "akurasi_x_recall_fisik": 0.7313
+    },
+    "test": {
+      "cakupan": {
+        "n_tandan_gt": 1316,
+        "n_tandan_terdeteksi": 1277,
+        "recall_per_tandan": 0.9704,
+        "n_kemunculan_gt": 2461,
+        "n_kemunculan_terdeteksi": 2327,
+        "recall_per_kemunculan": 0.9456
+      },
+      "PEMBANDING_per_kemunculan": {
+        "n_kemunculan": 2327,
+        "akurasi": 0.7168
+      },
+      "n_pool": 1277,
+      "n_pool_multi_tampak": 897,
+      "semua_pool": {
+        "R0": {
+          "akurasi": 0.7101,
+          "akurasi_pm1": 0.9961,
+          "mae_ordinal": 0.2749,
+          "macro_f1": 0.6907,
+          "recall_per_kelas": {
+            "B1": 0.7672,
+            "B2": 0.3891,
+            "B3": 0.8368,
+            "B4": 0.748
+          },
+          "n": 1277
+        },
+        "R0cal": {
+          "akurasi": 0.7122,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.2694,
+          "macro_f1": 0.6997,
+          "recall_per_kelas": {
+            "B1": 0.7931,
+            "B2": 0.4561,
+            "B3": 0.8383,
+            "B4": 0.685
+          },
+          "n": 1277
+        },
+        "R1": {
+          "akurasi": 0.7291,
+          "akurasi_pm1": 0.9961,
+          "mae_ordinal": 0.2749,
+          "macro_f1": 0.6907,
+          "recall_per_kelas": {
+            "B1": 0.7672,
+            "B2": 0.3891,
+            "B3": 0.8368,
+            "B4": 0.748
+          },
+          "n": 1277
+        },
+        "R2": {
+          "akurasi": 0.7377,
+          "akurasi_pm1": 0.9953,
+          "mae_ordinal": 0.267,
+          "macro_f1": 0.6985,
+          "recall_per_kelas": {
+            "B1": 0.7759,
+            "B2": 0.3849,
+            "B3": 0.8488,
+            "B4": 0.7598
+          },
+          "n": 1277
+        },
+        "R3": {
+          "akurasi": 0.7353,
+          "akurasi_pm1": 0.9977,
+          "mae_ordinal": 0.267,
+          "macro_f1": 0.6972,
+          "recall_per_kelas": {
+            "B1": 0.7759,
+            "B2": 0.3933,
+            "B3": 0.8473,
+            "B4": 0.7441
+          },
+          "n": 1277
+        },
+        "R4": {
+          "akurasi": 0.7424,
+          "akurasi_pm1": 0.9984,
+          "mae_ordinal": 0.2592,
+          "macro_f1": 0.7122,
+          "recall_per_kelas": {
+            "B1": 0.7759,
+            "B2": 0.5105,
+            "B3": 0.8533,
+            "B4": 0.6535
+          },
+          "n": 1277
+        }
+      },
+      "HANYA_pool_multi_tampak": {
+        "R0": {
+          "akurasi": 0.721,
+          "akurasi_pm1": 0.9978,
+          "mae_ordinal": 0.2542,
+          "macro_f1": 0.7072,
+          "recall_per_kelas": {
+            "B1": 0.81,
+            "B2": 0.419,
+            "B3": 0.8651,
+            "B4": 0.7206
+          },
+          "n": 897
+        },
+        "R0cal": {
+          "akurasi": 0.7241,
+          "akurasi_pm1": 1.0,
+          "mae_ordinal": 0.2475,
+          "macro_f1": 0.7155,
+          "recall_per_kelas": {
+            "B1": 0.84,
+            "B2": 0.4916,
+            "B3": 0.8631,
+            "B4": 0.6397
+          },
+          "n": 897
+        },
+        "R1": {
+          "akurasi": 0.748,
+          "akurasi_pm1": 0.9978,
+          "mae_ordinal": 0.2542,
+          "macro_f1": 0.7072,
+          "recall_per_kelas": {
+            "B1": 0.81,
+            "B2": 0.419,
+            "B3": 0.8651,
+            "B4": 0.7206
+          },
+          "n": 897
+        },
+        "R2": {
+          "akurasi": 0.7603,
+          "akurasi_pm1": 0.9967,
+          "mae_ordinal": 0.243,
+          "macro_f1": 0.7184,
+          "recall_per_kelas": {
+            "B1": 0.82,
+            "B2": 0.4134,
+            "B3": 0.8817,
+            "B4": 0.7426
+          },
+          "n": 897
+        },
+        "R3": {
+          "akurasi": 0.757,
+          "akurasi_pm1": 1.0,
+          "mae_ordinal": 0.243,
+          "macro_f1": 0.7159,
+          "recall_per_kelas": {
+            "B1": 0.82,
+            "B2": 0.4246,
+            "B3": 0.8797,
+            "B4": 0.7132
+          },
+          "n": 897
+        },
+        "R4": {
+          "akurasi": 0.767,
+          "akurasi_pm1": 1.0,
+          "mae_ordinal": 0.233,
+          "macro_f1": 0.73,
+          "recall_per_kelas": {
+            "B1": 0.82,
+            "B2": 0.5642,
+            "B3": 0.8838,
+            "B4": 0.5809
+          },
+          "n": 897
+        }
+      },
+      "menurut_jumlah_tampak": {
+        "1": {
+          "n": 380,
+          "R0": 0.6842,
+          "R0cal": 0.6842,
+          "R4": 0.6842
+        },
+        "2": {
+          "n": 773,
+          "R0": 0.7186,
+          "R0cal": 0.7264,
+          "R4": 0.7633
+        },
+        "3": {
+          "n": 100,
+          "R0": 0.73,
+          "R0cal": 0.7,
+          "R4": 0.78
+        },
+        "4": {
+          "n": 24,
+          "R0": 0.7604,
+          "R0cal": 0.75,
+          "R4": 0.8333
+        }
+      },
+      "dekomposisi": {
+        "rekalibrasi_R0cal_vs_R0": {
+          "delta_pp": 0.23,
+          "ci95_pp": [
+            -1.328,
+            1.827
+          ],
+          "P_delta_gt_0": 0.609,
+          "n_pohon": 124,
+          "n_pool": 1277
+        },
+        "PENGGABUNGAN_R4_vs_R0cal": {
+          "delta_pp": 3.019,
+          "ci95_pp": [
+            1.775,
+            4.282
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 124,
+          "n_pool": 1277
+        },
+        "PENGGABUNGAN_multi_R4_vs_R0cal": {
+          "delta_pp": 4.3,
+          "ci95_pp": [
+            2.626,
+            6.089
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 123,
+          "n_pool": 897
+        },
+        "total_R4_vs_R0": {
+          "delta_pp": 3.249,
+          "ci95_pp": [
+            1.521,
+            5.01
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 124,
+          "n_pool": 1277
+        },
+        "R2_vs_R0_gaya_E016": {
+          "delta_pp": 2.766,
+          "ci95_pp": [
+            1.66,
+            3.942
+          ],
+          "P_delta_gt_0": 1.0,
+          "n_pohon": 124,
+          "n_pool": 1277
+        }
+      },
+      "R4_precision_recall_f1_per_kelas": {
+        "B1": {
+          "precision": 0.7758620689655172,
+          "recall": 0.7758620689655172,
+          "f1": 0.7758620689655172,
+          "support_terdeteksi": 116
+        },
+        "B2": {
+          "precision": 0.61,
+          "recall": 0.5104602510460251,
+          "f1": 0.5558086560364465,
+          "support_terdeteksi": 239
+        },
+        "B3": {
+          "precision": 0.7610146862483311,
+          "recall": 0.8532934131736527,
+          "f1": 0.8045165843330981,
+          "support_terdeteksi": 668
+        },
+        "B4": {
+          "precision": 0.7830188679245284,
+          "recall": 0.6535433070866141,
+          "f1": 0.7124463519313304,
+          "support_terdeteksi": 254
+        }
+      },
+      "recall_fisik_per_kelas": {
+        "B1": {
+          "gt": 119,
+          "terdeteksi": 116,
+          "recall": 0.9747899159663865
+        },
+        "B2": {
+          "gt": 247,
+          "terdeteksi": 239,
+          "recall": 0.9676113360323887
+        },
+        "B3": {
+          "gt": 684,
+          "terdeteksi": 668,
+          "recall": 0.9766081871345029
+        },
+        "B4": {
+          "gt": 266,
+          "terdeteksi": 254,
+          "recall": 0.9548872180451128
+        }
+      },
+      "akurasi_x_recall_fisik": 0.7204
+    }
+  }
+}
