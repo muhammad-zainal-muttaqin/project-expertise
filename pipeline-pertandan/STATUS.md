@@ -1,6 +1,6 @@
 # STATUS — lacakan kerja `pipeline-pertandan`
 
-Diperbarui: 2026-08-17 (semua eksperimen inti selesai). **Berkas ini hidup** — dicentang saat langkah selesai.
+Diperbarui: 2026-08-18 (PT-E-012..018 masuk; lihat bagian baru di bawah). **Berkas ini hidup** — dicentang saat langkah selesai.
 Aturan mainnya di [`CLAUDE.md`](CLAUDE.md), rencananya di
 [`docs/PROPOSAL.md`](docs/PROPOSAL.md), catatan hasilnya di
 [`EKSPERIMEN.md`](EKSPERIMEN.md).
@@ -31,7 +31,7 @@ lalu **membandingkannya dengan pipeline yang sudah ada**. Detektor dasar:
 | ✅ | **PT-E-006** uji penghitung Baseline-SawitMVC di deteksi yang sama | selesai | angka repo tereproduksi persis; 0,375 ternyata angka kotak GT |
 | ✅ | **PT-E-007** penghitung itu sebagai REM penggabungan | **DIPALSUKAN** | porsi tersatukan 29% → 76%, tapi akurasi turun monoton |
 | ❌ | ~~Setel ambang penaut di ruang deteksi~~ | **dibatalkan** | PT-E-007 membuktikan ambang bukan masalahnya |
-| ⏳ | **PT-E-005** classifier multi-tampak (C3) | belum | sah dikerjakan karena G0 lolos |
+| ✅ | **PT-E-012** classifier multi-tampak (C3) | **DIPALSUKAN** | C3 -3,06 pp vs C2; C2 -1,21 pp vs C1 |
 | ✅ | **PT-E-008** fitur **arah putar** pengambilan foto | **G1 & G2 kini LOLOS** | F1 penaut 0,398 → 0,649; end-to-end −2,36 → −1,81 pp |
 | 🔧 | Bug: konstanta arah tidak aktif saat modul di-import | ditutup di akar | di-cache ke berkas + dimuat otomatis + `RuntimeWarning` |
 | ✅ | Setel ambang penaut di ruang deteksi | selesai | 0,45 terpilih; perbaikan marginal (+0,22 pp val, 0 di test) |
@@ -40,7 +40,7 @@ lalu **membandingkannya dengan pipeline yang sudah ada**. Detektor dasar:
 | ✅ | **PT-E-010** konfigurasi terbaik diuji di **SawitMVC-Depth 352** | **SEBAGIAN DIKONFIRMASI** | penaut di ruang deteksi 0,196 → **0,708** dengan detektor lebih bersih |
 | ✅ | **PT-E-011** uji klaim "hambatannya detektor" | **DIPALSUKAN** | presisi 0,584 vs 0,639, recall 953 justru lebih baik |
 | ❌ | ~~Perbaiki detektor~~ | **dibatalkan** | kedua detektor setara; yang beda kepadatan adegan |
-| ⏳ | Prior yang **memangkas ruang kandidat** (mis. depth) | belum | obat untuk masalah kombinatorik, bukan detektor |
+| ✅ | **PT-E-013** prior depth -> rekonstruksi 3D (352) | **DIPALSUKAN** | AUC 0,45/0,51; geometri pengambilan tak terkendali |
 
 ## Angka yang sudah final
 
@@ -164,3 +164,72 @@ Catatan tambahan: R4 kalah dari R2 di test 352 (0,6946 vs 0,7094) padahal menang
 
 - Lokasi algoritma dedup yang sudah ada. Tanpa itu, baseline penaut terpaksa
   dibangun dari nol dan angka gain-nya tidak sebanding dengan milik Anda.
+
+
+---
+
+# Lanjutan 2026-08-18 — implementasi `IDEA.md` sec.4
+
+`IDEA.md` mengusulkan tiga solusi. Dua di antaranya sudah dipalsukan sebelum
+berkas itu ditulis (butir 1 oleh PT-E-012, varian depth butir 3 oleh PT-E-013).
+Ketiganya tetap dijalankan atas permintaan, dengan backbone/loss berbeda untuk
+yang sudah pernah dicoba.
+
+| | Langkah | Status | Hasil |
+|---|---|---|---|
+| ✅ | **PT-E-014** backbone ConvNeXt untuk modul C | **SEBAGIAN** | C3 -5,41 -> -2,14 pp vs C1; tetap tidak mengalahkan C1 |
+| ✅ | **PT-E-015** ordinal loss CORAL | **SEBAGIAN** | +2,35 pp C2 (resnet18); arah konsisten, magnitudo dalam derau seed |
+| ✅ | **PT-E-016** penaut GNN di ruang kotak GT | **TIDAK KONKLUSIF** | AUC +0,0077; F1 +1,06 pp CI [-1,46; +3,83] |
+| ✅ | **PT-E-017** penaut dilatih di RUANG DETEKSI | **DIKONFIRMASI** | **F1 0,1492 -> 0,3788** (domain shift +15,88 pp, GNN +7,08 pp) |
+| ✅ | **PT-E-018** ensemble C1+C2 | **DIKONFIRMASI** | **0,7208 -> 0,7464** (+2,56 pp, CI [+0,52; +4,53]) |
+| ⏳ | **PT-E-019** gabungan end-to-end (penaut baru + ensemble) | belum | bayaran dari kedua di atas |
+
+## Dua koreksi yang mengikat
+
+**1. Penaut selalu dilatih di domain yang salah (PT-E-017).** Sejak PT-E-002,
+penaut dilatih di pasangan kotak GT lalu dipakai di atas deteksi. AUC-nya
+**0,9508 di pasangan kotak GT, 0,5868 di pasangan deteksi** — praktis acak di
+domain tempat ia dipakai. Seluruh angka penautan ruang deteksi (F1 0,1766,
+cakupan 29%, G3 gugur) bersandar pada itu. Melatih di pasangan deteksi menaikkan
+F1 **+15,88 pp** tanpa satu pun ide baru.
+
+Konsekuensi untuk diagnosis di `CLAUDE.md` sec.6: "hambatannya kepadatan adegan,
+dan itu kombinatorik" **tidak lengkap**. Kombinatorik nyata (F1 0,3788 masih jauh
+dari 0,65) tapi bukan satu-satunya, dan bukan yang termurah diperbaiki.
+
+**2. Plafon 73,60% bukan plafon (PT-E-018).** PT-E-001 menetapkannya sebagai
+maksimum "bila tetap mengandalkan skor detektor YOLO". Ensemble C1+C2 mendarat di
+**0,7464** pada protokol yang sama. Setiap anggota C2 KALAH dari C1 (0,682-0,706
+lawan 0,7208) tetapi gabungannya menang — jadi yang PT-E-012 tutup adalah jalur
+*mengganti* C1, bukan jalur *melengkapi* C1.
+
+## Peringatan berkas: `results/harapan_geser.json` ter-commit SALAH
+
+Berkas cache konstanta arah putar yang ter-commit sebelum 2026-08-18 berisi:
+
+    {"4|1": 0.16783, "4|2": 0.20851, "4|3": -0.16404}
+
+Dihitung ulang dengan `hitung_harapan_geser` di split train kanonik (716 pohon):
+
+    {"4|1": 0.23073, "4|2": 0.23125, "4|3": -0.25,
+     "8|1": 0.11979, ... "8|7": -0.15208}
+
+Dua masalah. Nilai 4-sisinya tidak cocok, dan berkas lama **tidak punya satu pun
+entri 8-sisi** padahal split train berisi 34 pohon 8-sisi (682 pohon 4-sisi).
+Karena `penaut_pertandan` memuat berkas ini OTOMATIS saat di-import, skrip yang
+tidak menghitung ulang secara eksplisit memakai konstanta salah, dan untuk pohon
+8-sisi prior arah putarnya **nol sama sekali** (`HARAP.get(...)` jatuh ke 0,0).
+Nilai baru lebih dekat ke angka yang didokumentasikan di docstring
+`hitung_harapan_geser` sendiri (+0,241 / -0,260). Berkasnya sudah diperbarui.
+
+Eksperimen 2026-08-18 tidak terdampak: semuanya memanggil `hitung_harapan_geser`
+eksplisit, dan modul C tidak memakai fitur geometri.
+
+## Bobot BELUM di-backup
+
+`runs/` di-gitignore (~1,5 GB: 8 sel modul C, 3 re-ID, 2 GNN). Sesuai
+`../CLAUDE.md` ATURAN #1 bobot butuh jalur backup terpisah ke bucket HF, dan sync
+otomatis sudah dihentikan permanen sejak 2026-08-12 — **jadi ini harus dijalankan
+manual dan belum dilakukan.** Yang sudah aman di git: seluruh dump probabilitas
+(`pt_e_014_prob_*.npz`, `pt_e_016/017_skor_test.npz`), sehingga angka bisa
+dihitung ulang tanpa bobot.

@@ -1,0 +1,92 @@
+/workspace/project-expertise/pipeline-pertandan/scripts/gnn_penaut.py:137: UserWarning: index_reduce() is in beta and the API may change at any time. (Triggered internally at /pytorch/aten/src/ATen/native/cuda/Indexing.cu:1432.)
+  m = torch.full((len(V),), -1e4, device=s.device).index_reduce_(
+deskriptor penampilan...
+  re-ID: 18540 potongan, 14041 out-of-fold
+  arah putar: 10 entri (n_sisi, offset)
+membangun graf per pohon...
+  train: 710 pohon, 121891 sisi, 8034 positif (6.6%)
+  val: 96 pohon, 16037 sisi, 1065 positif (6.6%)
+  test: 138 pohon, 21270 sisi, 1439 positif (6.8%)
+=== BASELINE HistGradientBoosting (penilai independen) ===
+  val AUC per-pasangan: 0.9508
+  test AUC per-pasangan: 0.9477
+  ambang 0.10: F1 0.6637 ARI 0.6311 cakupan 0.7382
+  ambang 0.15: F1 0.6658 ARI 0.6217 cakupan 0.7237
+  ambang 0.20: F1 0.6651 ARI 0.6199 cakupan 0.7145
+  ambang 0.25: F1 0.6692 ARI 0.6172 cakupan 0.7013
+  ambang 0.30: F1 0.6667 ARI 0.6141 cakupan 0.6829
+  ambang 0.40: F1 0.6479 ARI 0.5765 cakupan 0.6276
+  ambang 0.50: F1 0.6192 ARI 0.5281 cakupan 0.5658
+  TEST baseline: {'presisi': 0.6346, 'recall': 0.6143, 'f1': 0.6243, 'ari': 0.5702, 'bias_jumlah': 0.413, 'mae_jumlah': 1.196, 'cakupan_tandan': 0.6595, 'cakupan_kotak': 0.6498, 'n_tandan_multi_gt': 1022}
+=== GNN (penalaran bersama) ===
+  prevalensi positif 0.0659 -> pos_weight 14.2
+  epoch 1/40 loss 0.9699 AUC val 0.9382
+  epoch 2/40 loss 0.6751 AUC val 0.9458
+  epoch 3/40 loss 0.6247 AUC val 0.9504
+  epoch 4/40 loss 0.6268 AUC val 0.9476
+  epoch 5/40 loss 0.6122 AUC val 0.9521
+  epoch 6/40 loss 0.5717 AUC val 0.9555
+  epoch 7/40 loss 0.5519 AUC val 0.9535
+  epoch 8/40 loss 0.5475 AUC val 0.9558
+  epoch 9/40 loss 0.5288 AUC val 0.9562
+  epoch 10/40 loss 0.5181 AUC val 0.9564
+  epoch 11/40 loss 0.5095 AUC val 0.9555
+  epoch 12/40 loss 0.5178 AUC val 0.9585
+  epoch 13/40 loss 0.5038 AUC val 0.9547
+  epoch 14/40 loss 0.5012 AUC val 0.9570
+  epoch 15/40 loss 0.4827 AUC val 0.9562
+  epoch 16/40 loss 0.4756 AUC val 0.9567
+  epoch 17/40 loss 0.4772 AUC val 0.9557
+  epoch 18/40 loss 0.4688 AUC val 0.9582
+  epoch 19/40 loss 0.4555 AUC val 0.9551
+  epoch 20/40 loss 0.4538 AUC val 0.9559
+  epoch 21/40 loss 0.4442 AUC val 0.9562
+  epoch 22/40 loss 0.4253 AUC val 0.9573
+  epoch 23/40 loss 0.4209 AUC val 0.9564
+  epoch 24/40 loss 0.4131 AUC val 0.9552
+  epoch 25/40 loss 0.3997 AUC val 0.9573
+  epoch 26/40 loss 0.3906 AUC val 0.9549
+  epoch 27/40 loss 0.3763 AUC val 0.9553
+  epoch 28/40 loss 0.3741 AUC val 0.9564
+  epoch 29/40 loss 0.3680 AUC val 0.9527
+  epoch 30/40 loss 0.3546 AUC val 0.9539
+  epoch 31/40 loss 0.3460 AUC val 0.9543
+  epoch 32/40 loss 0.3340 AUC val 0.9548
+  epoch 33/40 loss 0.3247 AUC val 0.9550
+  epoch 34/40 loss 0.3192 AUC val 0.9537
+  epoch 35/40 loss 0.3124 AUC val 0.9541
+  epoch 36/40 loss 0.3075 AUC val 0.9529
+  epoch 37/40 loss 0.3042 AUC val 0.9531
+  epoch 38/40 loss 0.3012 AUC val 0.9533
+  epoch 39/40 loss 0.2993 AUC val 0.9532
+  epoch 40/40 loss 0.2984 AUC val 0.9532
+  ambang 0.10: F1 0.5625 ARI 0.5297 cakupan 0.7171
+  ambang 0.15: F1 0.5648 ARI 0.5312 cakupan 0.7158
+  ambang 0.20: F1 0.5658 ARI 0.5322 cakupan 0.7158
+  ambang 0.25: F1 0.5696 ARI 0.5393 cakupan 0.7158
+  ambang 0.30: F1 0.574 ARI 0.5433 cakupan 0.7158
+  ambang 0.40: F1 0.5801 ARI 0.5485 cakupan 0.7132
+  ambang 0.50: F1 0.5933 ARI 0.5618 cakupan 0.7105
+  TEST GNN: {'presisi': 0.5204, 'recall': 0.6831, 'f1': 0.5907, 'ari': 0.5586, 'bias_jumlah': -1.63, 'mae_jumlah': 1.717, 'cakupan_tandan': 0.6908, 'cakupan_kotak': 0.6919, 'n_tandan_multi_gt': 1022}
+{
+ "G1_ambang": {
+  "f1": 0.65,
+  "ari": 0.55
+ },
+ "baseline_val": {
+  "f1": 0.6692,
+  "ari": 0.6172,
+  "cakupan": 0.7013
+ },
+ "gnn_val": {
+  "f1": 0.5933,
+  "ari": 0.5618,
+  "cakupan": 0.7105
+ },
+ "delta_f1_test_pp": -3.36,
+ "delta_ari_test_pp": -1.16,
+ "delta_cakupan_test_pp": 3.13,
+ "target_IDEA_cakupan": 0.7,
+ "arti": "delta positif = penalaran bersama menolong di tempat penilai independen gagal; target IDEA.md cakupan >70%"
+}
+-> /workspace/project-expertise/pipeline-pertandan/results/pt_e_016_gnn.json  (575.6 s)

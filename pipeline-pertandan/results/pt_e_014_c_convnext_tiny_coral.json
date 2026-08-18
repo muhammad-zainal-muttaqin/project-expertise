@@ -1,0 +1,513 @@
+{
+ "pt_e": "014/015",
+ "backbone": "convnext_tiny",
+ "loss": "coral",
+ "epoch": 25,
+ "lr": 0.0003,
+ "seed": 0,
+ "n_tandan": {
+  "train": 7427,
+  "val": 992,
+  "test": 1404
+ },
+ "riwayat_epoch": [
+  {
+   "model": "C2",
+   "epoch": 1,
+   "loss": 0.387736
+  },
+  {
+   "model": "C2",
+   "epoch": 2,
+   "loss": 0.356649
+  },
+  {
+   "model": "C2",
+   "epoch": 3,
+   "loss": 0.336845
+  },
+  {
+   "model": "C2",
+   "epoch": 4,
+   "loss": 0.312494
+  },
+  {
+   "model": "C2",
+   "epoch": 5,
+   "loss": 0.292822
+  },
+  {
+   "model": "C2",
+   "epoch": 6,
+   "loss": 0.277374
+  },
+  {
+   "model": "C2",
+   "epoch": 7,
+   "loss": 0.263679
+  },
+  {
+   "model": "C2",
+   "epoch": 8,
+   "loss": 0.25213
+  },
+  {
+   "model": "C2",
+   "epoch": 9,
+   "loss": 0.24495
+  },
+  {
+   "model": "C2",
+   "epoch": 10,
+   "loss": 0.236132
+  },
+  {
+   "model": "C2",
+   "epoch": 11,
+   "loss": 0.230749
+  },
+  {
+   "model": "C2",
+   "epoch": 12,
+   "loss": 0.22326
+  },
+  {
+   "model": "C2",
+   "epoch": 13,
+   "loss": 0.217383
+  },
+  {
+   "model": "C2",
+   "epoch": 14,
+   "loss": 0.213538
+  },
+  {
+   "model": "C2",
+   "epoch": 15,
+   "loss": 0.210663
+  },
+  {
+   "model": "C2",
+   "epoch": 16,
+   "loss": 0.207809
+  },
+  {
+   "model": "C2",
+   "epoch": 17,
+   "loss": 0.204995
+  },
+  {
+   "model": "C2",
+   "epoch": 18,
+   "loss": 0.202221
+  },
+  {
+   "model": "C2",
+   "epoch": 19,
+   "loss": 0.200916
+  },
+  {
+   "model": "C2",
+   "epoch": 20,
+   "loss": 0.199876
+  },
+  {
+   "model": "C2",
+   "epoch": 21,
+   "loss": 0.199092
+  },
+  {
+   "model": "C2",
+   "epoch": 22,
+   "loss": 0.198104
+  },
+  {
+   "model": "C2",
+   "epoch": 23,
+   "loss": 0.197988
+  },
+  {
+   "model": "C2",
+   "epoch": 24,
+   "loss": 0.197982
+  },
+  {
+   "model": "C2",
+   "epoch": 25,
+   "loss": 0.197628
+  },
+  {
+   "model": "C3",
+   "epoch": 1,
+   "loss": 0.379412
+  },
+  {
+   "model": "C3",
+   "epoch": 2,
+   "loss": 0.342733
+  },
+  {
+   "model": "C3",
+   "epoch": 3,
+   "loss": 0.317753
+  },
+  {
+   "model": "C3",
+   "epoch": 4,
+   "loss": 0.293975
+  },
+  {
+   "model": "C3",
+   "epoch": 5,
+   "loss": 0.274997
+  },
+  {
+   "model": "C3",
+   "epoch": 6,
+   "loss": 0.252715
+  },
+  {
+   "model": "C3",
+   "epoch": 7,
+   "loss": 0.240348
+  },
+  {
+   "model": "C3",
+   "epoch": 8,
+   "loss": 0.225276
+  },
+  {
+   "model": "C3",
+   "epoch": 9,
+   "loss": 0.208974
+  },
+  {
+   "model": "C3",
+   "epoch": 10,
+   "loss": 0.199425
+  },
+  {
+   "model": "C3",
+   "epoch": 11,
+   "loss": 0.191156
+  },
+  {
+   "model": "C3",
+   "epoch": 12,
+   "loss": 0.182643
+  },
+  {
+   "model": "C3",
+   "epoch": 13,
+   "loss": 0.175179
+  },
+  {
+   "model": "C3",
+   "epoch": 14,
+   "loss": 0.167398
+  },
+  {
+   "model": "C3",
+   "epoch": 15,
+   "loss": 0.163249
+  },
+  {
+   "model": "C3",
+   "epoch": 16,
+   "loss": 0.159577
+  },
+  {
+   "model": "C3",
+   "epoch": 17,
+   "loss": 0.155038
+  },
+  {
+   "model": "C3",
+   "epoch": 18,
+   "loss": 0.151419
+  },
+  {
+   "model": "C3",
+   "epoch": 19,
+   "loss": 0.148791
+  },
+  {
+   "model": "C3",
+   "epoch": 20,
+   "loss": 0.146664
+  },
+  {
+   "model": "C3",
+   "epoch": 21,
+   "loss": 0.145692
+  },
+  {
+   "model": "C3",
+   "epoch": 22,
+   "loss": 0.143834
+  },
+  {
+   "model": "C3",
+   "epoch": 23,
+   "loss": 0.14358
+  },
+  {
+   "model": "C3",
+   "epoch": 24,
+   "loss": 0.143295
+  },
+  {
+   "model": "C3",
+   "epoch": 25,
+   "loss": 0.142953
+  }
+ ],
+ "split": {
+  "val": {
+   "C1": {
+    "R0": {
+     "akurasi": 0.6776,
+     "akurasi_pm1": 0.9879,
+     "mae_ordinal": 0.3085,
+     "macro_f1": 0.6618,
+     "recall_per_kelas": {
+      "B1": 0.8,
+      "B2": 0.303,
+      "B3": 0.8234,
+      "B4": 0.759
+     },
+     "n": 992
+    },
+    "R4": {
+     "akurasi": 0.7339,
+     "akurasi_pm1": 0.994,
+     "mae_ordinal": 0.2722,
+     "macro_f1": 0.7156,
+     "recall_per_kelas": {
+      "B1": 0.7474,
+      "B2": 0.5859,
+      "B3": 0.8274,
+      "B4": 0.6359
+     },
+     "n": 992
+    },
+    "R4_multi": {
+     "akurasi": 0.75,
+     "akurasi_pm1": 0.9947,
+     "mae_ordinal": 0.2553,
+     "macro_f1": 0.7297,
+     "recall_per_kelas": {
+      "B1": 0.7875,
+      "B2": 0.6144,
+      "B3": 0.8409,
+      "B4": 0.6107
+     },
+     "n": 760
+    }
+   },
+   "C2": {
+    "R0": {
+     "akurasi": 0.6293,
+     "akurasi_pm1": 0.9869,
+     "mae_ordinal": 0.4062,
+     "macro_f1": 0.5498,
+     "recall_per_kelas": {
+      "B1": 0.9158,
+      "B2": 0.1313,
+      "B3": 0.6766,
+      "B4": 0.7641
+     },
+     "n": 992
+    },
+    "R4": {
+     "akurasi": 0.6976,
+     "akurasi_pm1": 0.996,
+     "mae_ordinal": 0.3065,
+     "macro_f1": 0.6636,
+     "recall_per_kelas": {
+      "B1": 0.7158,
+      "B2": 0.4444,
+      "B3": 0.8472,
+      "B4": 0.559
+     },
+     "n": 992
+    },
+    "R4_multi": {
+     "akurasi": 0.7145,
+     "akurasi_pm1": 0.9961,
+     "mae_ordinal": 0.2895,
+     "macro_f1": 0.6837,
+     "recall_per_kelas": {
+      "B1": 0.7375,
+      "B2": 0.4967,
+      "B3": 0.8333,
+      "B4": 0.5954
+     },
+     "n": 760
+    }
+   },
+   "C3": {
+    "akurasi": 0.6865,
+    "akurasi_multi": 0.7105,
+    "akurasi_pm1": 0.994,
+    "macro_f1": 0.642,
+    "mae_ordinal": 0.3196,
+    "recall_per_kelas": {
+     "B1": 0.8526,
+     "B2": 0.3131,
+     "B3": 0.8254,
+     "B4": 0.6256
+    },
+    "n": 992,
+    "n_multi": 760
+   }
+  },
+  "test": {
+   "C1": {
+    "R0": {
+     "akurasi": 0.6811,
+     "akurasi_pm1": 0.9786,
+     "mae_ordinal": 0.3148,
+     "macro_f1": 0.6554,
+     "recall_per_kelas": {
+      "B1": 0.775,
+      "B2": 0.3281,
+      "B3": 0.8349,
+      "B4": 0.7173
+     },
+     "n": 1404
+    },
+    "R4": {
+     "akurasi": 0.7208,
+     "akurasi_pm1": 0.9907,
+     "mae_ordinal": 0.2885,
+     "macro_f1": 0.6951,
+     "recall_per_kelas": {
+      "B1": 0.7167,
+      "B2": 0.5898,
+      "B3": 0.8161,
+      "B4": 0.5901
+     },
+     "n": 1404
+    },
+    "R4_multi": {
+     "akurasi": 0.7583,
+     "akurasi_pm1": 0.999,
+     "mae_ordinal": 0.2427,
+     "macro_f1": 0.7261,
+     "recall_per_kelas": {
+      "B1": 0.7619,
+      "B2": 0.6462,
+      "B3": 0.8515,
+      "B4": 0.5706
+     },
+     "n": 1022
+    },
+    "ci_R4_vs_R0": {
+     "delta_pp": 3.972,
+     "ci95_pp": [
+      1.967,
+      5.99
+     ],
+     "P_delta_gt_0": 0.9995,
+     "n_pohon": 138,
+     "n_pool": 1404
+    }
+   },
+   "C2": {
+    "R0": {
+     "akurasi": 0.651,
+     "akurasi_pm1": 0.99,
+     "mae_ordinal": 0.3839,
+     "macro_f1": 0.5754,
+     "recall_per_kelas": {
+      "B1": 0.9333,
+      "B2": 0.1875,
+      "B3": 0.6899,
+      "B4": 0.7314
+     },
+     "n": 1404
+    },
+    "R4": {
+     "akurasi": 0.7037,
+     "akurasi_pm1": 0.9972,
+     "mae_ordinal": 0.2999,
+     "macro_f1": 0.6583,
+     "recall_per_kelas": {
+      "B1": 0.6667,
+      "B2": 0.457,
+      "B3": 0.8564,
+      "B4": 0.5406
+     },
+     "n": 1404
+    },
+    "R4_multi": {
+     "akurasi": 0.7319,
+     "akurasi_pm1": 0.998,
+     "mae_ordinal": 0.2701,
+     "macro_f1": 0.6787,
+     "recall_per_kelas": {
+      "B1": 0.6952,
+      "B2": 0.4974,
+      "B3": 0.8748,
+      "B4": 0.546
+     },
+     "n": 1022
+    },
+    "ci_R4_vs_R0": {
+     "delta_pp": 5.292,
+     "ci95_pp": [
+      3.057,
+      7.522
+     ],
+     "P_delta_gt_0": 1.0,
+     "n_pohon": 138,
+     "n_pool": 1404
+    }
+   },
+   "C3": {
+    "akurasi": 0.713,
+    "akurasi_multi": 0.7407,
+    "akurasi_pm1": 0.9964,
+    "macro_f1": 0.6692,
+    "mae_ordinal": 0.2913,
+    "recall_per_kelas": {
+     "B1": 0.8833,
+     "B2": 0.3672,
+     "B3": 0.8537,
+     "B4": 0.583
+    },
+    "n": 1404,
+    "n_multi": 1022
+   }
+  }
+ },
+ "tau": {
+  "C1": [
+   0.5,
+   1.7,
+   2.6
+  ],
+  "C2": [
+   0.25,
+   1.5,
+   2.65
+  ]
+ },
+ "dump": "pt_e_014_prob_convnext_tiny_coral.npz",
+ "bobot": "runs/c_convnext_tiny_coral/best.pt",
+ "putusan": {
+  "C2_vs_C1_pp": -1.71,
+  "C3_vs_C2_pp": 0.93,
+  "C3_vs_C1_pp": -0.78,
+  "C3_vs_C2_multi_pp": 0.88,
+  "acuan_pt_e_012": {
+   "C2_vs_C1_pp": -1.21,
+   "C3_vs_C2_pp": -3.06,
+   "C3_vs_C1_pp": -4.27,
+   "C3_vs_C2_multi_pp": -3.91
+  },
+  "arti": "positif = mengalahkan. PT-E-012 (resnet18+ce) negatif di semua kolom; kalau tetap negatif di sini, jalur modul C bertahan tertutup"
+ },
+ "detik": 2367.1
+}

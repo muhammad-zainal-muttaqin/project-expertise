@@ -1,0 +1,79 @@
+train: 7427 tandan (5546 multi-tampak)
+val: 992 tandan (760 multi-tampak)
+test: 1404 tandan (1022 multi-tampak)
+backbone=resnet18 loss=ce
+melatih C2 (per-tampak)...
+  C2 epoch 1/25 loss 0.8658
+  C2 epoch 2/25 loss 0.6969
+  C2 epoch 3/25 loss 0.6136
+  C2 epoch 4/25 loss 0.5154
+  C2 epoch 5/25 loss 0.4168
+  C2 epoch 6/25 loss 0.3259
+  C2 epoch 7/25 loss 0.2327
+  C2 epoch 8/25 loss 0.1798
+  C2 epoch 9/25 loss 0.1368
+  C2 epoch 10/25 loss 0.0987
+  C2 epoch 11/25 loss 0.0753
+  C2 epoch 12/25 loss 0.0545
+  C2 epoch 13/25 loss 0.0337
+  C2 epoch 14/25 loss 0.0267
+  C2 epoch 15/25 loss 0.0180
+  C2 epoch 16/25 loss 0.0151
+  C2 epoch 17/25 loss 0.0085
+  C2 epoch 18/25 loss 0.0060
+  C2 epoch 19/25 loss 0.0040
+  C2 epoch 20/25 loss 0.0038
+  C2 epoch 21/25 loss 0.0024
+  C2 epoch 22/25 loss 0.0021
+  C2 epoch 23/25 loss 0.0020
+  C2 epoch 24/25 loss 0.0019
+  C2 epoch 25/25 loss 0.0019
+melatih C3 (multi-tampak)...
+  C3 epoch 1/25 loss 0.8481
+  C3 epoch 2/25 loss 0.7142
+  C3 epoch 3/25 loss 0.6756
+  C3 epoch 4/25 loss 0.6342
+  C3 epoch 5/25 loss 0.5819
+  C3 epoch 6/25 loss 0.5267
+  C3 epoch 7/25 loss 0.4531
+  C3 epoch 8/25 loss 0.3886
+  C3 epoch 9/25 loss 0.3064
+  C3 epoch 10/25 loss 0.2407
+  C3 epoch 11/25 loss 0.1966
+  C3 epoch 12/25 loss 0.1503
+  C3 epoch 13/25 loss 0.1150
+  C3 epoch 14/25 loss 0.0844
+  C3 epoch 15/25 loss 0.0488
+  C3 epoch 16/25 loss 0.0452
+  C3 epoch 17/25 loss 0.0327
+  C3 epoch 18/25 loss 0.0175
+  C3 epoch 19/25 loss 0.0124
+  C3 epoch 20/25 loss 0.0091
+  C3 epoch 21/25 loss 0.0089
+  C3 epoch 22/25 loss 0.0041
+  C3 epoch 23/25 loss 0.0050
+  C3 epoch 24/25 loss 0.0043
+  C3 epoch 25/25 loss 0.0032
+tau val: {'C1': (0.5, 1.7, 2.6), 'C2': (0.3, 1.6, 2.65)}
+--- val ---
+  C1: R0 0.6776  R4 0.7339  R4 multi 0.75
+  C2: R0 0.6473  R4 0.6875  R4 multi 0.7132
+  C3: 0.6663  multi 0.6934  macroF1 0.6343
+--- test ---
+  C1: R0 0.6811  R4 0.7208  R4 multi 0.7583
+  C2: R0 0.6522  R4 0.6823  R4 multi 0.7084
+  C3: 0.6667  multi 0.7104  macroF1 0.638
+{
+ "C2_vs_C1_pp": -3.85,
+ "C3_vs_C2_pp": -1.56,
+ "C3_vs_C1_pp": -5.41,
+ "C3_vs_C2_multi_pp": 0.2,
+ "acuan_pt_e_012": {
+  "C2_vs_C1_pp": -1.21,
+  "C3_vs_C2_pp": -3.06,
+  "C3_vs_C1_pp": -4.27,
+  "C3_vs_C2_multi_pp": -3.91
+ },
+ "arti": "positif = mengalahkan. PT-E-012 (resnet18+ce) negatif di semua kolom; kalau tetap negatif di sini, jalur modul C bertahan tertutup"
+}
+-> /workspace/project-expertise/pipeline-pertandan/results/pt_e_014_c_resnet18_ce.json  (1041.4 s)

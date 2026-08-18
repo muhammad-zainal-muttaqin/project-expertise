@@ -1,0 +1,46 @@
+membangun potongan 128x128 (sekali, lalu di-cache)...
+  potongan: 100/953 pohon
+  potongan: 200/953 pohon
+  potongan: 300/953 pohon
+  potongan: 400/953 pohon
+  potongan: 500/953 pohon
+  potongan: 600/953 pohon
+  potongan: 700/953 pohon
+  potongan: 800/953 pohon
+  potongan: 900/953 pohon
+  18540 potongan
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /home/claudeuser/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+/workspace/project-expertise/pipeline-pertandan/scripts/reid_pertandan.py:202: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:835.)
+  tot += float(L); nb += 1
+  epoch 1/30  loss 4.6279  (11s)
+  epoch 2/30  loss 3.6601  (21s)
+  epoch 3/30  loss 3.1084  (31s)
+  epoch 4/30  loss 2.6364  (41s)
+  epoch 5/30  loss 2.2809  (51s)
+  epoch 6/30  loss 1.9728  (61s)
+  epoch 7/30  loss 1.6806  (70s)
+  epoch 8/30  loss 1.3591  (80s)
+  epoch 9/30  loss 1.2144  (90s)
+  epoch 10/30  loss 0.9323  (99s)
+  epoch 11/30  loss 0.7915  (109s)
+  epoch 12/30  loss 0.6918  (119s)
+  epoch 13/30  loss 0.5862  (129s)
+  epoch 14/30  loss 0.5192  (138s)
+  epoch 15/30  loss 0.4475  (148s)
+  epoch 16/30  loss 0.4300  (158s)
+  epoch 17/30  loss 0.3807  (167s)
+  epoch 18/30  loss 0.3643  (176s)
+  epoch 19/30  loss 0.3558  (185s)
+  epoch 20/30  loss 0.3362  (194s)
+  epoch 21/30  loss 0.3345  (203s)
+  epoch 22/30  loss 0.3315  (213s)
+  epoch 23/30  loss 0.3209  (222s)
+  epoch 24/30  loss 0.3174  (231s)
+  epoch 25/30  loss 0.3162  (241s)
+  epoch 26/30  loss 0.3144  (250s)
+  epoch 27/30  loss 0.3154  (259s)
+  epoch 28/30  loss 0.3087  (269s)
+  epoch 29/30  loss 0.3091  (278s)
+  epoch 30/30  loss 0.3136  (287s)
+-> /workspace/project-expertise/pipeline-pertandan/runs/reid_resnet18/best.pt  &  reid_embedding.npz

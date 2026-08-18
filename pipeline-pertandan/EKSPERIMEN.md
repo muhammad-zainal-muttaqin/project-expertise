@@ -915,3 +915,265 @@ bahwa agregasi multi-tampak tidak berguna — R4 di atas C1 tetap memberi
 
 **Sumber** — `scripts/c3_multitampak.py` · `results/pt_e_012_c3.json`; varian
 backbone beku penuh ada di riwayat percakapan sesi 2026-08-17.
+
+---
+
+## PT-E-014 — Backbone lain untuk modul C (2026-08-18)
+
+**Hipotesis** — PT-E-012 memalsukan modul C memakai SATU backbone (ResNet-18).
+`IDEA.md` sec.4 butir 1 meminta backbone lebih kuat. Kalau ConvNeXt-Tiny membalik
+C2<C1 atau C3<C2, penutupan jalur modul C oleh PT-E-012 terlalu dini.
+
+**Yang memalsukan** — ConvNeXt tidak menaikkan C2/C3 di atas ResNet-18.
+
+**Cara** — protokol identik PT-E-012 baris per baris: potongan GT, tautan oracle,
+himpunan tandan sama (train 7.427 / val 992 / test 1.404, multi-tampak
+5.546/760/1.022), 25 epoch, `tau` dipas di val per jalur. Yang berubah hanya
+backbone. ConvNeXt dibekukan `features.0..3`, analog dengan `conv1..layer2` di
+ResNet-18. Dua seed (0, 1) supaya efeknya bisa dibandingkan dengan derau.
+
+**Reproduksi lebih dulu** — sel kontrol `resnet18+ce` menghasilkan **C1 R4 test
+0,7208** dan **C1 R4_multi 0,7583**, keduanya PERSIS sama dengan PT-E-012. Jalur
+tanpa training tereproduksi penuh, jadi pipa data, pembentukan pool, pemasangan
+`tau`, dan evaluasi tervalidasi. Jalur terlatih TIDAK tereproduksi: C2 0,6823
+lawan 0,7087 di PT-E-012 (-2,64 pp), sebabnya urutan konsumsi RNG saat
+inisialisasi berbeda karena struktur modul sedikit berbeda.
+
+**Hasil (test 953, akurasi R4; C1 = 0,7208 di semua sel):**
+
+| backbone | loss | seed | C2 R4 | C3 | C2-C1 | C3-C1 |
+|---|---|---|---|---|---|---|
+| resnet18 | ce | 0 | 0,6823 | 0,6667 | -3,85 | -5,41 |
+| resnet18 | ce | 1 | 0,6980 | 0,6859 | -2,28 | -3,49 |
+| convnext_tiny | ce | 0 | 0,7009 | 0,6994 | -1,99 | -2,14 |
+| convnext_tiny | ce | 1 | 0,7115 | **0,7187** | -0,93 | **-0,21** |
+
+**Putusan** — **SEBAGIAN DIKONFIRMASI.** ConvNeXt menaikkan C2 (+1,86 pp pada ce,
+seed 0) dan C3 tajam (+3,27 pp pada ce, seed 0), tetapi tidak satu pun sel
+mengalahkan C1. Arah PT-E-012 bertahan; magnitudonya tidak.
+
+**Temuan yang lebih luas: PT-E-012 tidak punya error bar.** Rentang antar-seed
+untuk konfigurasi yang SAMA adalah 1,06-1,99 pp (C2) dan 0,43-1,93 pp (C3).
+Putusan PT-E-012 bersandar pada selisih C2-C1 = -1,21 pp, yang lebih KECIL
+daripada rentang seed di tiga dari empat konfigurasi. Selisih sebesar itu tidak
+bisa dipisahkan dari derau inisialisasi dengan satu seed.
+
+**Sumber** — `scripts/c_backbone_ordinal.py` · `results/pt_e_014_c_*.json` ·
+dump `results/pt_e_014_prob_*.npz` · bobot `runs/c_*/best.pt`
+
+---
+
+## PT-E-015 — Ordinal loss (CORAL) untuk modul C (2026-08-18)
+
+**Hipotesis** — `IDEA.md` sec.4 butir 2. B1<B2<B3<B4 berurutan; cross-entropy
+memperlakukan galat B1-vs-B2 sama mahal dengan B1-vs-B4. Aturan agregasi R4
+sendiri sudah ordinal, jadi loss ordinal menyelaraskan latih dengan hilir.
+
+**Yang memalsukan** — CORAL tidak menaikkan akurasi di atas cross-entropy.
+
+**Cara** — faktor kedua dari skrip yang sama, backbone dipatok. CORAL memodelkan
+K-1 ambang kumulatif `P(y>k)` dengan bobot BERSAMA dan bias dipaksa menurun
+(`b_k = b0 - cumsum(softplus(delta))`). Monotonisitas itu wajib, bukan kosmetik:
+tanpanya selisih kumulatif bisa negatif dan vektor kelasnya tidak sah disuap ke R4.
+
+**Hasil (test, akurasi; selisih coral - ce pada seed 0):**
+
+| backbone | C2 ce | C2 coral | delta | C3 ce | C3 coral | delta |
+|---|---|---|---|---|---|---|
+| resnet18 | 0,6823 | 0,7058 | **+2,35 pp** | 0,6667 | 0,6766 | +0,99 pp |
+| convnext_tiny | 0,7009 | 0,7037 | +0,28 pp | 0,6994 | **0,7130** | +1,36 pp |
+
+**Putusan** — **SEBAGIAN DIKONFIRMASI.** CORAL menaikkan akurasi di keempat
+pasangan (C2 dan C3, dua backbone) pada seed 0, terbesar +2,35 pp. Tetapi
+seed 1 membalik sebagian (resnet18 C2: ce 0,6980 lawan coral 0,6859), dan
+seluruh selisihnya berada di dalam rentang seed yang diukur PT-E-014. **Arahnya
+konsisten, magnitudonya tidak terpisahkan dari derau pada n seed = 2.**
+
+Digabung dengan PT-E-014: sel terbaik `convnext_tiny+coral` seed 0 memberi C3
+0,7130 lawan 0,6781 di PT-E-012, memperkecil jarak C3-C1 dari -4,27 pp menjadi
+**-0,78 pp**. Jalur modul C tidak seburuk yang PT-E-012 simpulkan, tapi tetap
+belum mengalahkan C1 secara tunggal.
+
+**Sumber** — sama dengan PT-E-014.
+
+---
+
+## PT-E-016 — Penaut GNN di ruang kotak GT (2026-08-18)
+
+**Hipotesis** — `IDEA.md` sec.4 butir 3. PT-E-007 menyimpulkan urutan skor penaut
+yang salah, bukan ambangnya. Urutan skor yang salah adalah gejala khas penilaian
+INDEPENDEN: kalau kotak `a` sangat cocok dengan `b`, itu semestinya menurunkan
+skor `a`-dengan-`c`, tapi `HistGradientBoosting` yang menilai satu pasangan
+sekaligus tidak punya jalan untuk tahu. GNN dengan attention per-simpul membawa
+persaingan antar-kandidat ke DALAM skor.
+
+**Yang memalsukan** — GNN tidak mengalahkan penilai independen pada F1/ARI klaster.
+
+**Cara** — fitur pasangan SAMA PERSIS (varian E: geometri + arah putar +
+penampilan + re-ID + prob prediksi) dan perakit klaster SAMA PERSIS (Hungarian
+per pasangan-sisi, lalu union-find serakah, batasan sisi-unik dan ukuran maks
+3/6). Yang berbeda hanya cara skor sisi dihitung.
+
+**Cacat metodologis di run pertama, dicatat karena mengubah putusan.** Grid
+ambang `[0,10 .. 0,50]` diwarisi dari baseline. Baseline memuncak di 0,25
+(optimum interior, sah); GNN naik MONOTON sampai 0,50 lalu grid habis. Delta yang
+tercatat -3,36 pp mengukur GNN yang dilumpuhkan. Skor GNN memang terkalibrasi
+lebih tinggi karena `pos_weight` 14,2. Disapu ulang di grid sampai 0,975,
+optimum GNN ada di **0,90** (interior) dan putusannya berbalik.
+
+**Hasil (test 953, 138 pohon, ambang dikunci dari val):**
+
+| | baseline | GNN |
+|---|---|---|
+| AUC pasangan val | 0,9508 | **0,9585** |
+| F1 | 0,6243 | 0,6349 |
+| ARI | 0,5702 | 0,6047 |
+| presisi | 0,6346 | 0,6718 |
+| cakupan tandan | 0,6595 | 0,6497 |
+
+Bootstrap tingkat pohon (2.000 resample):
+
+| | delta | CI95 | P(delta>0) |
+|---|---|---|---|
+| F1 | +1,06 pp | [-1,46 ; +3,83] | 0,787 |
+| ARI | +3,45 pp | [-0,05 ; +7,38] | 0,971 |
+| cakupan | -0,98 pp | [-3,99 ; +2,14] | 0,257 |
+
+**Putusan** — **TIDAK KONKLUSIF.** Yang bertahan tanpa kaveat hanya AUC pasangan
+(+0,0077), yang bebas ambang dan bebas perakit. F1 tidak terpisahkan dari nol,
+dan val justru memilih baseline (0,6692 lawan 0,6535) sementara test memilih GNN
+— ranking yang berbalik antar-split adalah tanda selisihnya sebanding derau.
+ARI nyaris lolos (batas bawah -0,05 pp) tetapi menyebutnya signifikan berarti
+menggeser ambang setelah melihat angka, yang dilarang CLAUDE.md sec.2.
+
+**Koreksi penyebut yang penting.** `IDEA.md` menargetkan cakupan penaut
+29% -> >70%. Angka 29% itu hidup di ruang DETEKSI. Di ruang kotak GT — tempat
+eksperimen ini berjalan dan tempat gerbang G1 diukur — baseline SUDAH 0,6595.
+Target IDEA.md tidak bisa dijawab di sini. Lihat PT-E-017.
+
+**Sumber** — `scripts/gnn_penaut.py` · `scripts/sapu_ambang_gnn.py` ·
+`scripts/ci_gnn.py` · `results/pt_e_016_gnn.json` ·
+`results/pt_e_016b_sapu_ambang.json` · `results/pt_e_016c_ci.json` ·
+dump `results/pt_e_016_skor_test.npz` · bobot `runs/gnn_penaut/best.pt`
+
+---
+
+## PT-E-017 — Penaut dilatih di RUANG DETEKSI, bukan kotak GT (2026-08-18)
+
+**Hipotesis** — Sejak PT-E-002 sampai PT-E-010, penaut SELALU dilatih di pasangan
+kotak GT (`eval_endtoend.py`: "melatih ulang penaut di pasangan kotak GT split
+train") lalu dipakai di atas deteksi. Kotak GT bersih: tepat satu per tandan
+nyata, nol positif palsu. Deteksi tidak — PT-E-003 mencatat 39,9% pool seluruhnya
+positif palsu. Penaut yang tak pernah melihat positif palsu saat latihan tidak
+punya cara belajar menolaknya. Kalau benar, sebagian dari "cakupan 29%" bukan
+kombinatorik melainkan domain shift.
+
+**Yang memalsukan** — melatih di pasangan deteksi tidak menaikkan F1 penautan
+di ruang deteksi.
+
+**Cara** — tiga lengan, fitur/conf/perakit sama persis, `conf` 0,10 dikunci dari
+PT-E-001:
+
+| lengan | penilai | dilatih di |
+|---|---|---|
+| A | HistGradientBoosting | pasangan KOTAK GT (cara repo sekarang) |
+| B | HistGradientBoosting | pasangan DETEKSI |
+| C | GNN (PT-E-016) | pasangan DETEKSI |
+
+**Hasil (test 953):**
+
+| lengan | AUC val | F1 | presisi | recall | ARI | cakupan* | pool palsu |
+|---|---|---|---|---|---|---|---|
+| A latih kotak GT | **0,5868** | 0,1492 | 0,1793 | 0,1278 | 0,1223 | 0,1425 | 0,128 |
+| B latih deteksi | 0,9015 | 0,3080 | 0,2771 | 0,3466 | 0,2707 | 0,3799 | 0,147 |
+| C GNN di deteksi | **0,9422** | **0,3788** | 0,3915 | 0,3669 | 0,3221 | 0,3839 | **0,040** |
+
+\* `cakupan_atas_terdeteksi`, penyebut = 758 tandan GT multi-sisi yang punya >=2
+deteksi terpetakan. Penyebut kedua dilaporkan juga di JSON
+(`cakupan_atas_semua`, penyebut 1.022 = seluruh tandan multi-sisi termasuk yang
+detektornya lewatkan): A 0,1057 · B 0,2818 · C 0,2847. Dua penyebut ini sengaja
+dipisah — CLAUDE.md sec.8.
+
+**Putusan** — **DIKONFIRMASI, kuat.** Domain shift (B-A) = **+15,88 pp F1**.
+Penalaran bersama di atasnya (C-B) = **+7,08 pp F1**. Total F1 naik 2,5x.
+
+**Angka yang paling telak: AUC lengan A = 0,5868**, nyaris tebak-tebakan. Penaut
+yang sama mencetak AUC 0,9508 di pasangan kotak GT. Artinya seluruh hasil
+penautan ruang deteksi di sub-proyek ini — F1 0,1766 (PT-E-003), cakupan 29%,
+dan gerbang G3 yang gugur — diproduksi oleh penaut yang praktis acak di domain
+tempat ia sebenarnya dipakai.
+
+**Konsekuensi untuk diagnosis yang berlaku (CLAUDE.md sec.6).** Diagnosis
+"hambatannya kepadatan adegan, dan itu kombinatorik" tidak salah tapi **tidak
+lengkap**: 15,88 pp bisa diambil tanpa satu pun ide baru, hanya dengan
+memindahkan data latih ke domain yang benar. Kombinatorik tetap nyata — F1 0,3788
+masih jauh dari 0,65 — tetapi ia bukan satu-satunya penjelasan, dan bukan yang
+termurah diperbaiki.
+
+**Dan GNN baru menunjukkan nilainya di sini.** Di ruang kotak GT ia menambah
++0,0077 AUC (tidak konklusif, PT-E-016); di ruang deteksi +0,0407 AUC dan
++7,08 pp F1. Pool yang seluruhnya positif palsu turun 0,147 -> **0,040**. Masuk
+akal secara mekanis: persaingan antar-kandidat baru berguna kalau ada kandidat
+sampah untuk dikalahkan, dan kotak GT tidak punya satu pun.
+
+**Sumber** — `scripts/gnn_deteksi.py` · `results/pt_e_017_gnn_deteksi.json` ·
+dump `results/pt_e_017_skor_test.npz` · bobot `runs/gnn_deteksi/best.pt`
+
+---
+
+## PT-E-018 — C1/C2/C3 sebagai ANGGOTA ENSEMBLE, bukan pesaing (2026-08-18)
+
+**Hipotesis** — PT-E-012 mengadu C1/C2/C3 satu lawan satu, menyimpulkan tidak ada
+yang mengalahkan C1, lalu menutup "seluruh jalur tingkatkan modul C". Pengukuran
+itu benar; inferensinya melompat. Yang tidak pernah ditanyakan: apakah galat
+mereka TERDEKORELASI. C1 adalah kepala klasifikasi detektor (tugas deteksi penuh,
+3.000 citra, augmentasi mosaic/hsv, supervisi kotak+kelas). C2 adalah classifier
+potongan (7.427 potongan sudah-terpotong, flip+brightness, kelas murni). Dua
+rezim latih yang nyaris tidak beririsan.
+
+**Yang memalsukan** — ensemble tidak mengalahkan C1 sendirian.
+
+**Cara** — nol training baru; hanya kombinasi dump PT-E-014/015. Subset dipilih
+SERAKAH maju di val (`tau` dipatok selama pencarian supaya seleksi tidak memilih
+anggota yang cocok dengan ambang tertentu — jebakan yang sama dengan rekalibrasi
+tersamar sebagai agregasi di PT-E-001), lalu bobot dan `tau` dipas di val. Test
+disentuh sekali.
+
+**Hasil (test 953, akurasi R4, potongan GT + tautan oracle):**
+
+| | test | test multi-tampak |
+|---|---|---|
+| C1 sendiri | 0,7208 | 0,7583 |
+| C2 resnet18+coral | 0,7058 | 0,7397 |
+| C2 convnext+coral | 0,7037 | 0,7319 |
+| C2 convnext+ce | 0,7009 | 0,7299 |
+| C2 resnet18+ce | 0,6823 | 0,7084 |
+| **Ensemble** C1 0,6 + convnext-coral 0,2 + convnext-ce 0,2 | **0,7464** | **0,7789** |
+
+vs C1: **+2,56 pp, CI95 [+0,52 ; +4,53], P(delta>0) = 0,992** (bootstrap 138 pohon).
+val 0,7470 lawan test 0,7464 — stabil, tidak seperti PT-E-016 yang rankingnya
+berbalik antar-split.
+
+**Putusan** — **DIKONFIRMASI.** CI tidak memuat nol.
+
+**Dua konsekuensi yang lebih besar dari angkanya:**
+
+1. **Setiap anggota C2 kalah dari C1, gabungannya menang.** Semua C2 ada di
+   0,682-0,706, C1 di 0,7208. Ini membantah INFERENSI PT-E-012, bukan
+   pengukurannya: yang tertutup adalah jalur MENGGANTI C1, bukan jalur
+   MELENGKAPI C1. Yang terakhir tidak pernah diuji.
+
+2. **Plafon 73,60% bukan plafon.** PT-E-001 menetapkan plafon oracle R4 di atas
+   skor detektor 0,7360, dan `IDEA.md` menutup dengan "potensi maksimal ide ini
+   melalui Oracle R4 adalah 73,60% bila tetap mengandalkan skor detektor YOLO".
+   Ensemble mendarat di **0,7464** pada protokol yang sama, melewatinya +1,04 pp.
+   Klausa "bila tetap mengandalkan skor detektor" ternyata menanggung seluruh
+   beban: 73,60% adalah sifat probabilitas C1, bukan sifat pendekatan agregasi.
+
+**Batas klaim** — diukur pada potongan GT dan tautan oracle, sama seperti
+PT-E-012, jadi ia mengukur plafon modul C, bukan pipeline utuh. Anggota C2
+dilatih di potongan GT; memakainya di potongan DETEKSI adalah domain shift
+tersendiri yang belum diuji (bandingkan PT-E-017, di mana shift serupa merugikan
+0,35 AUC). Itu pekerjaan PT-E-019.
+
+**Sumber** — `scripts/ensemble_c.py` · `results/pt_e_018_ensemble.json`
