@@ -42,13 +42,31 @@ def tree_id_dari_stem(stem: str) -> str:
 
 
 def tautkan(src: Path, dst: Path) -> None:
+    # Dataset YOLO sumber sendiri berupa symlink ke SawitMVC. Ikuti rantai
+    # symlink secara leksikal (readlink/lstat lokal), tanpa ``resolve`` yang
+    # men-stat target gambar besar di storage jaringan.
+    expected = src.absolute()
+    for _ in range(8):
+        if not expected.is_symlink():
+            break
+        target_src = expected.readlink()
+        expected = (target_src if target_src.is_absolute()
+                    else (expected.parent / target_src).absolute())
     if dst.is_symlink():
-        if dst.resolve() != src.resolve():
+        # ``Path.resolve`` mengikuti target dan melakukan ``stat`` ke storage
+        # dataset untuk setiap satu dari ribuan tautan. Di workspace jaringan
+        # itu membuat rerun idempotent memakan beberapa menit. Target yang kita
+        # tulis selalu absolut, jadi perbandingan leksikal cukup dan tidak
+        # menyentuh isi citra sumber.
+        target = dst.readlink()
+        if not target.is_absolute():
+            target = (dst.parent / target).absolute()
+        if target != expected:
             raise RuntimeError(f"Symlink tujuan mengarah ke sumber lain: {dst}")
         return
     if dst.exists():
         raise FileExistsError(f"Tujuan sudah ada dan bukan symlink: {dst}")
-    dst.symlink_to(src.resolve())
+    dst.symlink_to(expected)
 
 
 def main() -> None:

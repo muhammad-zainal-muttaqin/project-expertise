@@ -65,3 +65,10 @@ pipeline-pertandan/results/potongan_reid*.npz
 pipeline-pertandan/results/deskriptor_crop*.npz
 # reid_embedding*.npz  = 39 MB, turunan bobot re-ID
 pipeline-pertandan/results/reid_embedding*.npz
+# Crop resolusi tinggi DAMIMAS: cache uint8 multi-GB, dapat dibuat ulang dari
+# citra/label memakai scripts/bangun_crop_damimas.py. Metadata dan manifest kecil
+# tetap dilacak agar urutan crop serta provenance dapat diaudit.
+pipeline-pertandan/results/crop_damimas_*.npy
+pipeline-pertandan/results/crop_damimas_*.partial.npy
+# Graf deteksi/linker berisi fitur yang dapat diregenerasi dari dump prediksi.
+pipeline-pertandan/results/cache_linker_damimas_*.joblib

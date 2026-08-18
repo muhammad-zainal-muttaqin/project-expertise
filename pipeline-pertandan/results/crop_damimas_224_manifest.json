@@ -1,0 +1,16 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "ukuran": 224,
+  "pad": 0.15,
+  "jumlah_crop": 17445,
+  "gagal_baca": 0,
+  "pohon": {
+    "train": 641,
+    "val": 86,
+    "test": 127
+  },
+  "berkas": {
+    "image": "/workspace/project-expertise/pipeline-pertandan/results/crop_damimas_224.npy",
+    "metadata": "/workspace/project-expertise/pipeline-pertandan/results/crop_damimas_224_meta.npz"
+  }
+}

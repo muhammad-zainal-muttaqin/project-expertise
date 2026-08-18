@@ -30,6 +30,7 @@ Pemakaian:
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import random
 import sys
@@ -42,6 +43,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
+from sklearn.metrics import roc_auc_score
 
 sys.path.insert(0, str(Path(__file__).parent))
 import penaut_pertandan as PP           # noqa: E402
@@ -141,17 +143,35 @@ def main() -> int:
                          "(untuk fitur embedding out-of-fold)")
     ap.add_argument("--nfold", type=int, default=2)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--prefix-varietas", default=None,
+                    help="batasi seluruh split dan inferensi embedding ke prefix "
+                         "pohon, mis. DAMIMAS_; default mempertahankan eksperimen lama")
     ap.add_argument("--pohon-per-batch", type=int, default=16)
     ap.add_argument("--lr", type=float, default=3e-4)
+    ap.add_argument("--weights", type=Path, default=None,
+                    help="opsional: lanjutkan dari checkpoint Re-ID DAMIMAS")
     args = ap.parse_args()
     random.seed(SEED); np.random.seed(SEED); torch.manual_seed(SEED)
 
     man = PP.muat_manifest()
-    ids = {s: [t for t, v in man.items() if v == s] for s in ["train", "val", "test"]}
+    ids = {s: [t for t, v in man.items()
+               if v == s and (args.prefix_varietas is None or
+                              t.startswith(args.prefix_varietas))]
+           for s in ["train", "val", "test"]}
     semua = ids["train"] + ids["val"] + ids["test"]
     print("membangun potongan 128x128 (sekali, lalu di-cache)...")
     img, kunci, tree_of, bunch_of = bangun_potongan(
         semua, SUB / "results" / "potongan_reid.npz")
+    # Cache historis berisi dua varietas. Saat eksperimen dikunci ke DAMIMAS,
+    # subset juga dilakukan sesudah cache dibaca agar bahkan tahap inferensi
+    # embedding tidak diam-diam membawa pohon varietas lain.
+    if args.prefix_varietas is not None:
+        semua_set = set(semua)
+        keep = np.asarray([t in semua_set for t in tree_of], bool)
+        img = img[keep]
+        kunci = list(np.asarray(kunci)[keep])
+        tree_of = list(np.asarray(tree_of)[keep])
+        bunch_of = list(np.asarray(bunch_of)[keep])
     print(f"  {len(img)} potongan")
 
     idx_pohon = {}
@@ -167,8 +187,26 @@ def main() -> int:
         else:
             label[i] = gid.setdefault(k, len(gid))
 
+    # Pasangan validation disiapkan sekali. Checkpoint Re-ID dipilih dari AUC
+    # identitas lintas-sisi DAMIMAS, bukan dari loss train yang terus membaik
+    # meski embedding mulai menghafal pohon.
+    val_i, val_j, val_y = [], [], []
+    sisi_of = np.asarray([int(str(k).split("|")[-2]) for k in kunci])
+    for t in ids["val"]:
+        ii = idx_pohon.get(t, [])
+        for a, b in itertools.combinations(ii, 2):
+            if sisi_of[a] == sisi_of[b]:
+                continue
+            val_i.append(a); val_j.append(b)
+            val_y.append(int(bunch_of[a] >= 0 and bunch_of[a] == bunch_of[b]))
+    val_i, val_j = np.asarray(val_i, int), np.asarray(val_j, int)
+    val_y = np.asarray(val_y, int)
+
     dev = "cuda"
     m = Reid().to(dev)
+    if args.weights is not None:
+        m.load_state_dict(torch.load(args.weights, map_location=dev, weights_only=True))
+        print(f"melanjutkan checkpoint: {args.weights}")
     opt = torch.optim.AdamW(m.parameters(), lr=args.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, args.epoch)
     tr = sorted(ids["train"])
@@ -177,7 +215,24 @@ def main() -> int:
         tr = [t for i, t in enumerate(tr) if i % args.nfold != args.fold]
         print(f"fold {args.fold}/{args.nfold}: melatih di {len(tr)} pohon "
               f"(menahan {len(ids['train']) - len(tr)})")
-    riwayat = []
+
+    val_unique = np.unique(np.r_[val_i, val_j])
+
+    @torch.inference_mode()
+    def nilai_auc_val() -> float:
+        m.eval()
+        zv = np.zeros((len(img), 128), np.float32)
+        for s in range(0, len(val_unique), 256):
+            ii = val_unique[s:s + 256]
+            with torch.autocast("cuda", torch.bfloat16):
+                zv[ii] = m(ke_tensor(img[ii], False, dev)).float().cpu().numpy()
+        return float(roc_auc_score(
+            val_y, np.sum(zv[val_i] * zv[val_j], axis=1)))
+
+    riwayat, auc_val = [], []
+    best_auc, best_epoch = nilai_auc_val(), 0
+    best_sd = {k: v.detach().cpu().clone() for k, v in m.state_dict().items()}
+    print(f"  checkpoint awal AUC-val {best_auc:.5f}", flush=True)
     t0 = time.time()
     for ep in range(args.epoch):
         m.train()
@@ -199,18 +254,31 @@ def main() -> int:
             opt.zero_grad(set_to_none=True)
             L.backward()
             opt.step()
-            tot += float(L); nb += 1
+            tot += float(L.detach()); nb += 1
         sched.step()
-        riwayat.append(round(tot / max(nb, 1), 4))
-        print(f"  epoch {ep+1}/{args.epoch}  loss {riwayat[-1]:.4f}  "
-              f"({time.time()-t0:.0f}s)", flush=True)
+        loss_ep = round(tot / max(nb, 1), 4)
+        av = nilai_auc_val()
+        riwayat.append(loss_ep); auc_val.append(round(av, 6))
+        if av > best_auc:
+            best_auc, best_epoch = av, ep + 1
+            best_sd = {k: v.detach().cpu().clone() for k, v in m.state_dict().items()}
+        print(f"  epoch {ep+1}/{args.epoch}  loss {loss_ep:.4f}  "
+              f"AUC-val {av:.5f} ({time.time()-t0:.0f}s)", flush=True)
 
     run = SUB / "runs" / f"reid_resnet18{args.tag}"
     run.mkdir(parents=True, exist_ok=True)
+    if best_sd is None:
+        raise RuntimeError("Tidak ada checkpoint Re-ID yang valid")
+    m.load_state_dict(best_sd)
     torch.save(m.state_dict(), run / "best.pt")
     (run / "riwayat.json").write_text(json.dumps(
         {"loss_per_epoch": riwayat, "epoch": args.epoch, "lr": args.lr,
-         "pohon_per_batch": args.pohon_per_batch, "seed": SEED}, indent=1))
+         "auc_val_per_epoch": auc_val, "best_auc_val": best_auc,
+         "best_epoch": best_epoch,
+         "pohon_per_batch": args.pohon_per_batch, "seed": SEED,
+         "prefix_varietas": args.prefix_varietas,
+         "weights_awal": str(args.weights) if args.weights is not None else None,
+         "n_pohon": {s: len(v) for s, v in ids.items()}}, indent=1))
 
     m.eval()
     emb = np.zeros((len(img), 128), np.float32)

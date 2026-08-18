@@ -51,22 +51,40 @@ class DataCrop(Dataset):
 
 
 class Hibrida(nn.Module):
-    def __init__(self, dim_aux: int):
+    def __init__(self, dim_aux: int, backbone: str = "convnext_tiny",
+                 mode_c1: str = "residual"):
         super().__init__()
-        b = torchvision.models.convnext_tiny(
-            weights=torchvision.models.ConvNeXt_Tiny_Weights.IMAGENET1K_V1)
-        b.classifier[2] = nn.Identity()
-        # Bekukan hanya stem + stage pertama. Eksperimen lama membekukan sampai
-        # stage kedua; pada domain DAMIMAS itu terlalu membatasi adaptasi warna.
-        for i in (0, 1):
+        if backbone == "convnext_tiny":
+            b = torchvision.models.convnext_tiny(
+                weights=torchvision.models.ConvNeXt_Tiny_Weights.IMAGENET1K_V1)
+            b.classifier[2] = nn.Identity(); d_backbone = 768
+            beku = (0, 1)
+        elif backbone == "efficientnet_v2_s":
+            b = torchvision.models.efficientnet_v2_s(
+                weights=torchvision.models.EfficientNet_V2_S_Weights.IMAGENET1K_V1)
+            b.classifier[1] = nn.Identity(); d_backbone = 1280
+            beku = (0, 1)
+        elif backbone == "swin_t":
+            b = torchvision.models.swin_t(
+                weights=torchvision.models.Swin_T_Weights.IMAGENET1K_V1)
+            b.head = nn.Identity(); d_backbone = 768
+            beku = (0, 1)
+        else:
+            raise ValueError(f"Backbone tidak dikenal: {backbone}")
+        # Bekukan stem + stage pertama; warna domain tetap boleh mengadaptasi
+        # seluruh stage lebih tinggi.
+        for i in beku:
             for p in b.features[i].parameters():
                 p.requires_grad = False
         self.backbone = b
+        self.nama_backbone = backbone
+        self.mode_c1 = mode_c1
+        self.d_fitur = d_backbone + 128
         self.aux = nn.Sequential(nn.LayerNorm(dim_aux), nn.Linear(dim_aux, 128),
                                  nn.GELU(), nn.Dropout(.15))
         self.residual = nn.Sequential(
-            nn.LayerNorm(768 + 128), nn.Dropout(.25),
-            nn.Linear(768 + 128, 256), nn.GELU(), nn.Dropout(.20),
+            nn.LayerNorm(self.d_fitur), nn.Dropout(.25),
+            nn.Linear(self.d_fitur, 256), nn.GELU(), nn.Dropout(.20),
             nn.Linear(256, 4),
         )
         nn.init.zeros_(self.residual[-1].weight)
@@ -77,6 +95,8 @@ class Hibrida(nn.Module):
         return torch.cat([self.backbone(x), self.aux(aux)], 1)
 
     def logit_dari_fitur(self, z, p_c1):
+        if self.mode_c1 == "bebas":
+            return self.residual(z)
         skala = self.log_skala_c1.exp().clamp(.25, 4.)
         return skala * torch.log(p_c1.clamp_min(1e-6)) + self.residual(z)
 
@@ -114,7 +134,7 @@ def olah_img(x: torch.Tensor, latih: bool, ukuran: int) -> torch.Tensor:
 def infer(m, loader, ukuran, ambil_fitur=False):
     m.eval()
     out = np.zeros((len(loader.dataset), 4), np.float32)
-    fitur = (np.zeros((len(loader.dataset), 896), np.float32)
+    fitur = (np.zeros((len(loader.dataset), m.d_fitur), np.float32)
              if ambil_fitur else None)
     for img, aux, pc1, _y, idx in loader:
         x = olah_img(img, False, ukuran)
@@ -161,10 +181,18 @@ def nilai_val(p_h, p_c1, y_view, y_bunch, data_split):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--tag", default="convnext_tiny_s42")
+    ap.add_argument("--backbone", choices=("convnext_tiny", "efficientnet_v2_s", "swin_t"),
+                    default="convnext_tiny")
+    ap.add_argument("--mode-c1", choices=("residual", "bebas"), default="residual",
+                    help="residual mengoreksi log-prob C1; bebas menjadi classifier visual mandiri")
     ap.add_argument("--epochs", type=int, default=40)
     ap.add_argument("--patience", type=int, default=10)
     ap.add_argument("--batch", type=int, default=32)
     ap.add_argument("--ukuran", type=int, default=160)
+    ap.add_argument("--crop-img", type=Path, default=None,
+                    help="cache NPY crop resolusi tinggi; default memakai cache re-ID 128")
+    ap.add_argument("--crop-meta", type=Path, default=None,
+                    help="metadata NPZ pasangan --crop-img; default <stem>_meta.npz")
     ap.add_argument("--lr-backbone", type=float, default=3e-5)
     ap.add_argument("--lr-head", type=float, default=3e-4)
     ap.add_argument("--seed", type=int, default=42)
@@ -176,9 +204,20 @@ def main() -> None:
         SUB / "results" / "damimas_deskriptor_matrix.npz")
     dv = {s: CK.data_view(data[s]) for s in data}
     yb = {s: np.asarray([b["y"] for b in data[s]], int) for s in data}
-    zc = np.load(SUB / "results" / "potongan_reid.npz", allow_pickle=True)
-    img = zc["img"]
-    crop_keys = zc["kunci"].astype(str)
+    if args.crop_img is None:
+        zc = np.load(SUB / "results" / "potongan_reid.npz", allow_pickle=True)
+        img = zc["img"]
+        crop_keys = zc["kunci"].astype(str)
+    else:
+        meta_path = args.crop_meta or args.crop_img.with_name(
+            args.crop_img.stem + "_meta.npz")
+        if not args.crop_img.exists() or not meta_path.exists():
+            raise FileNotFoundError(f"Cache crop tidak lengkap: {args.crop_img} / {meta_path}")
+        img = np.load(args.crop_img, mmap_mode="r")
+        zc = np.load(meta_path, allow_pickle=True)
+        crop_keys = zc["kunci"].astype(str)
+        if len(img) != len(crop_keys):
+            raise RuntimeError("Tensor crop dan metadata berbeda panjang")
     pos = {k: i for i, k in enumerate(crop_keys)}
     crop_idx_lokal = np.asarray([pos[k] for k in keys], int)
 
@@ -207,7 +246,7 @@ def main() -> None:
     train_loader = DataLoader(datasets["train"], batch_size=args.batch,
                               sampler=sampler, num_workers=0, pin_memory=True)
 
-    m = Hibrida(Xa.shape[1]).cuda()
+    m = Hibrida(Xa.shape[1], args.backbone, args.mode_c1).cuda()
     p_backbone = [p for p in m.backbone.parameters() if p.requires_grad]
     p_head = list(m.aux.parameters()) + list(m.residual.parameters()) + [m.log_skala_c1]
     opt = torch.optim.AdamW([
@@ -293,7 +332,10 @@ def main() -> None:
         "dataset": "SawitMVC-YOLO-Damimas",
         "protokol": "train DAMIMAS; pilih checkpoint/blend/tau VAL; TEST sekali",
         "kaveat": "crop GT + tautan GT; metrik modul classifier/oracle",
-        "arsitektur": "ConvNeXt-Tiny residual atas C1 + descriptor warna/geometri",
+        "arsitektur": f"{args.backbone} mode-{args.mode_c1} + descriptor warna/geometri",
+        "sumber_crop": (str(args.crop_img) if args.crop_img is not None
+                         else "results/potongan_reid.npz (128x128)"),
+        "ukuran_input": args.ukuran,
         "best_epoch": best_epoch, "best_objective": best,
         "n": {s: {"view": len(dv[s][1]), "tandan": len(yb[s]),
                     "pohon": len(set(dv[s][2]))} for s in data},
@@ -311,7 +353,6 @@ def main() -> None:
     }
     out = SUB / "results" / f"damimas_classifier_hibrida_{args.tag}.json"
     pred = SUB / "results" / f"damimas_classifier_hibrida_{args.tag}_pred.npz"
-    out.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))
     payload = {}
     for s in ("train", "val", "test"):
         payload[f"{s}_view_hibrida"] = probs_h[s]
@@ -323,7 +364,21 @@ def main() -> None:
         payload[f"{s}_bunch_y"] = yb[s]
         payload[f"{s}_bunch_tree"] = np.asarray([b["tree"] for b in data[s]])
         payload[f"{s}_bunch_nview"] = np.asarray([len(b["idx"]) for b in data[s]])
-    np.savez_compressed(pred, **payload)
+    # Fitur 896/1408-dim berukuran >50 MB dan diperlukan hanya untuk kepala set;
+    # simpan bersama bobot di runs/ (ikut backup artefak model). Results/ tetap
+    # membawa dump probabilitas ringkas yang cukup untuk ensemble dan audit angka.
+    fitur_pred = run / "fitur_dan_prediksi.npz"
+    np.savez_compressed(fitur_pred, **payload)
+    ringkas = {}
+    for s in ("val", "test"):
+        for unit in ("view", "bunch"):
+            for field in ("prob", "y", "tree"):
+                ringkas[f"{s}_{unit}_{field}"] = payload[f"{s}_{unit}_{field}"]
+        ringkas[f"{s}_bunch_nview"] = payload[f"{s}_bunch_nview"]
+    np.savez_compressed(pred, **ringkas)
+    hasil["fitur_prediksi"] = str(fitur_pred.relative_to(SUB))
+    hasil["prediksi_ringkas"] = str(pred.relative_to(SUB))
+    out.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))
     with (SUB / "results" / "riwayat_epoch" /
           f"classifier_hibrida_damimas_{args.tag}.csv").open("w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(history[0])); w.writeheader(); w.writerows(history)
