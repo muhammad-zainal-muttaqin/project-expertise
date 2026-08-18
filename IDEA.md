@@ -85,11 +85,22 @@ telah mempersempit bottleneck secara lebih tepat:
 - classifier strict terbaik pada kotak dan tautan GT masih ConvNeXt residual:
   akurasi per-tandan **0,7378**, macro-F1 **0,7166**, dan akurasi multi-tampak
   **0,7753**. Mixture-of-experts per-tandan tidak mengalahkannya;
-- counting terbaik tetap regresor multi-ambang dengan macro-MAE **1,0039**.
-  MAE jumlah pool linker membaik ke 1,864 tetapi belum layak menggantikannya.
+- counting macro terbaik tetap regresor multi-ambang dengan macro-MAE
+  **1,0039**. Full multi-bank overfit (VAL 0,8110, TEST 1,0374), tetapi kepala
+  compact khusus jumlah total menurunkan total-MAE **1,8583 menjadi 1,7795**.
+  MAE jumlah pool linker 1,864 tetap tidak dipakai sebagai counter akhir.
 
 Konsekuensinya, pipeline final memakai kepala berbeda atas bank kandidat yang
 sama: skor multi-label untuk mAP, proposal unik untuk identitas fisik, agregasi
 ordinal untuk kelas tandan, dan regresi multi-bank untuk counting. RF-DETR-L,
 RT-DETR-L, serta detektor agnostik DAMIMAS sedang/akan ditambahkan sebagai
 anggota bank; konfigurasi tetap dipilih di validation sebelum test dibuka.
+
+Satu pengungkit kelas tambahan kini punya dasar data yang kuat: classifier
+lama belajar dari crop kotak GT, padahal saat deploy ia menerima kotak prediksi.
+Pada proposal nyata TRAIN terdapat 26.403 sampel positif, 16.252 hard false
+positive (IoU <= 0,15), dan cakupan GT 99,61% pada IoU >= 0,4. Karena itu modul
+residual lima kelas `B1--B4 + background` disiapkan untuk dilatih pada proposal
+fusion final. Ia sekaligus dapat memperbaiki label kematangan dan menekan false
+positive tanpa mengubah koordinat proposal; TEST tetap tidak masuk training
+atau pemilihan checkpoint.

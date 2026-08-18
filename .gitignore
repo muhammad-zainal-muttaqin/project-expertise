@@ -70,6 +70,10 @@ pipeline-pertandan/results/reid_embedding*.npz
 # tetap dilacak agar urutan crop serta provenance dapat diaudit.
 pipeline-pertandan/results/crop_damimas_*.npy
 pipeline-pertandan/results/crop_damimas_*.partial.npy
+# Crop proposal nyata untuk classifier B1--B4+background. Metadata/manifest
+# kecil tetap dilacak; tensor uint8 multi-GB dapat diregenerasi dari dump NPZ.
+pipeline-pertandan/results/crop_proposal_*.npy
+pipeline-pertandan/results/crop_proposal_*.partial.npy
 # Graf deteksi/linker berisi fitur yang dapat diregenerasi dari dump prediksi.
 pipeline-pertandan/results/cache_linker_damimas_*.joblib
 # Probabilitas classifier pada proposal fusion; regenerable dari checkpoint.

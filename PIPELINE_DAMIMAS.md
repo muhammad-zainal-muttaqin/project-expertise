@@ -55,15 +55,19 @@ validation; test baru dihitung setelah konfigurasi terkunci.
 | Counting macro MAE | 1,0236 (single model, dipilih di val) | **1,0039** | **−0,0197** |
 | Counting class ±1 | 74,61% (single model, dipilih di val) | **75,79%** | **+1,18 pp** |
 | Counting tree ±1 | **37,80%** (single model) | 32,28% | ensemble belum menang di metrik ini |
+| Counting total MAE | 1,8583 (kepala macro) | **1,7795** | **−0,0787**, kepala total khusus |
 | Linker F1 di ruang deteksi | 0,4704 (PT-E-020, DAMIMAS) | **0,5171** | proposal unik |
 | Cakupan multi-tampak atas tandan terdeteksi | 64,00% (PT-E-020) | **70,62%** | target terdeteksi tercapai |
 | Cakupan multi-tampak atas seluruh tandan | 47,84% (PT-E-020) | **51,55%** | target global belum tercapai |
 | MAE jumlah pool linker | 2,880 (PT-E-020) | **1,864** | tetap bukan counter final |
 
-Pembanding counting di tabel memakai fitur 1.683-dim dan protokol split yang
-sama. Ensemble menang pada macro-MAE dan akurasi sel-kelas, tetapi belum pada
-akurasi gabungan empat kelas per pohon. Karena itu counting belum dianggap
-selesai dan akan menerima fitur dari detektor kedua/ketiga.
+Pembanding counting di tabel memakai protokol split yang sama. Pencarian
+multi-bank 1.683/3.366/3.687-dim memperbaiki VAL tetapi tidak bertransfer ke
+TEST: full search berhenti di macro-MAE 1,0374. Karena itu kepala anchor lama
+tetap champion macro, sedangkan varian compact dipakai hanya sebagai kepala
+total khusus (1,7795 vs 1,8583). Counting belum dianggap selesai dan berikutnya
+akan menerima dump RF-DETR/RT-DETR serta proposal fusion yang representasinya
+identik antara train dan val/test.
 
 Kepala deteksi mempertahankan routing YOLO terdahulu sebagai sumber koordinat,
 lalu memancarkan distribusi kelas dari classifier crop. Setelah proposal fisik
@@ -97,6 +101,15 @@ oracle. Evaluasi deploy terpisah setelah proposal dan linker DAMIMAS dipasang
 mencapai akurasi 0,7322 pada pool terpasang dan macro-F1 fisik 0,5867 ketika
 miss serta pool palsu ikut dihitung.
 
+Domain shift kotak GT ke kotak prediksi sekarang ditangani secara eksplisit
+oleh `classifier_deteksi_damimas.py`: B1--B4 dipelajari bersama kelas kelima
+`background`, langsung dari crop proposal nyata. Audit sebelum training
+menemukan 26.403 proposal positif dan 16.252 hard background pada TRAIN;
+proposal itu mencakup 99,61% kotak GT pada IoU >= 0,4. Modul sudah
+diimplementasikan tetapi belum mempunyai angka champion; ia baru akan dilatih
+setelah proposal fusion final tersedia identik untuk TRAIN dan VAL, agar tidak
+mengulang domain shift representasi yang terjadi pada counting PT-E-026.
+
 ## Urutan Kerja Berikutnya
 
 1. Selesaikan training RF-DETR-L yang sedang berjalan, infer train/val/test,
@@ -105,7 +118,9 @@ miss serta pool palsu ikut dihitung.
 3. Latih detektor satu-kelas pada view
    `/workspace/SawitMVC-YOLO-Damimas-Agnostic` untuk memanfaatkan plafon
    lokalisasi proposal yang pada fusion awal sudah >0,83 AP50.
-4. Masukkan statistik seluruh detektor dan linker proposal-unik sebagai fitur counting,
-   kemudian kunci ensemble dari validation.
-5. Setelah semua konfigurasi tetap, jalankan laporan test final dan bootstrap
+4. Bentuk proposal fusion TRAIN/VAL/TEST yang identik, lalu latih classifier
+   detected-space B1--B4+background dan kunci aturan scoring hanya di VAL.
+5. Masukkan statistik seluruh detektor dan linker proposal-unik sebagai fitur
+   counting, kemudian kunci ensemble dari validation.
+6. Setelah semua konfigurasi tetap, jalankan laporan test final dan bootstrap
    berkelompok pada tingkat pohon.

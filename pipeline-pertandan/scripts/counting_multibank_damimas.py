@@ -143,23 +143,26 @@ def muat_split(split, banks, cache, model_linker, hasil_linker):
     lmap, ldim = linker_map(cache[split], model_linker, hasil_linker)
     L = np.stack([lmap.get(t, np.zeros(ldim, np.float32)) for t in ids])
     names = list(banks)
-    if len(names) != 2:
-        raise RuntimeError("Implementasi saat ini mengharapkan tepat dua bank")
-    views = {names[0]: bagian[names[0]], names[1]: bagian[names[1]],
-             "concat": np.c_[bagian[names[0]], bagian[names[1]]],
-             "concat_linker": np.c_[bagian[names[0]], bagian[names[1]], L]}
+    if not names:
+        raise RuntimeError("Sedikitnya satu bank prediksi diperlukan")
+    gabung = np.concatenate([bagian[n] for n in names], axis=1)
+    # Setiap bank tetap kandidat mandiri. ``concat`` memuat seluruh bank
+    # berurutan dan ``concat_linker`` menambahkan statistik cluster. Dengan
+    # demikian RF-DETR/RT-DETR dapat ditambahkan tanpa membuang baseline anchor.
+    views = {n: bagian[n] for n in names}
+    views.update({"concat": gabung, "concat_linker": np.c_[gabung, L]})
     print(f"{split}: pohon={len(ids)} dim=" +
           ", ".join(f"{k}:{v.shape[1]}" for k, v in views.items()), flush=True)
     return ids, y, views
 
 
-def spesifikasi_kelas():
+def spesifikasi_kelas(views):
     base = CD.kandidat()
     out = {}
     # Pencarian penuh: setiap keluarga baseline dijalankan pada setiap ruang
     # fitur. Ini menjamin anchor lama menjadi kandidat persis, bukan baseline
     # yang diam-diam hilang karena penghematan waktu.
-    for view in ("anchor", "proposal", "concat", "concat_linker"):
+    for view in views:
         for nama in base:
             out[f"{view}__{nama}"] = (view, base[nama])
         for ncomp in (8, 16):
@@ -169,10 +172,10 @@ def spesifikasi_kelas():
     return out
 
 
-def spesifikasi_total():
+def spesifikasi_total(views):
     base = CD.kandidat_total()
     out = {}
-    for view in ("anchor", "proposal", "concat", "concat_linker"):
+    for view in views:
         for nama in base:
             out[f"{view}__{nama}"] = (view, base[nama])
     return out
@@ -199,6 +202,8 @@ def main():
                     "damimas_counting_multibank.json")
     ap.add_argument("--model-out", type=Path, default=SUB / "runs" /
                     "counting_multibank_damimas" / "ensemble.joblib")
+    ap.add_argument("--pred-out", type=Path, default=SUB / "results" /
+                    "damimas_counting_multibank_pred.npz")
     args = ap.parse_args()
     banks = parse_bank(args.bank) if args.bank else {
         "anchor": {s: SUB / "results" / f"pred_skorpenuh_{s}.npz"
@@ -215,7 +220,10 @@ def main():
     for split in ("train", "val"):
         ids[split], y[split], X[split] = muat_split(
             split, banks, caches, args.linker_model, args.linker_config)
-    specs = spesifikasi_kelas(); pred_val = {}; ranking = []
+    views = tuple(X["train"])
+    if tuple(X["val"]) != views:
+        raise RuntimeError("Ruang fitur TRAIN dan VAL tidak identik")
+    specs = spesifikasi_kelas(views); pred_val = {}; ranking = []
     for nama, (view, model) in specs.items():
         m = clone(model).fit(X["train"][view], y["train"])
         pred_val[nama] = m.predict(X["val"][view])
@@ -227,12 +235,14 @@ def main():
     kepala = CD.pilih_per_kelas(y["val"], pred_val)
     pval = prediksi_kepala(kepala, pred_val)
 
-    total_specs = spesifikasi_total(); rank_total = []
+    total_specs = spesifikasi_total(views); rank_total = []
     for nama, (view, model) in total_specs.items():
         m = clone(model).fit(X["train"][view], y["train"].sum(1))
         pv = m.predict(X["val"][view])
         kal = CD.cari_kalibrasi_total(y["val"].sum(1), pv)
         rank_total.append((kal[0], nama, kal[1], kal[2], kal[3]))
+        print(f"{nama:40s} val total MAE={kal[3]['mae']:.4f} "
+              f"+-1={kal[3]['pm1_acc']:.4f}", flush=True)
     rank_total.sort()
     _, nama_total, a_total, b_total, met_total_val = rank_total[0]
     view_total, spec_total = total_specs[nama_total]
@@ -256,6 +266,7 @@ def main():
     fitted, pred_test = {}, {}
     for nama in dipakai:
         view, spec = specs[nama]
+        print(f"refit {nama} pada TRAIN+VAL", flush=True)
         fitted[nama] = clone(spec).fit(
             np.concatenate([X["train"][view], X["val"][view]]),
             np.concatenate([y["train"], y["val"]]))
@@ -277,13 +288,25 @@ def main():
              "ranking_total_val": [{"model": r[1], "skala": r[2],
                                      "bias": r[3], "metrik": r[4]}
                                     for r in rank_total]}
+    args.pred_out.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        args.pred_out,
+        val_id=np.asarray(ids["val"]), val_y=y["val"],
+        val_pred_raw=pval, val_pred_final=pfinal_val, val_total=total_val,
+        test_id=np.asarray(ids["test"]), test_y=y["test"],
+        test_pred_raw=ptest, test_pred_final=pfinal_test,
+        test_total=total_test,
+    )
+    hasil["prediksi_per_pohon"] = str(args.pred_out)
     args.output.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))
     args.model_out.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump({"models": fitted, "kepala": CD.serial_kepala(kepala),
                  "model_total": model_total, "total": (a_total, b_total),
                  "rekonsiliasi": lock["rekonsiliasi"],
                  "feature_views": {n: specs[n][0] for n in dipakai},
-                 "fitur_dim": {n: X["train"][n].shape[1] for n in X["train"]}},
+                 "fitur_dim": {n: X["train"][n].shape[1] for n in X["train"]},
+                 "bank": {n: {s: str(p) for s, p in q.items()}
+                          for n, q in banks.items()}},
                 args.model_out, compress=3)
     print(json.dumps({"val": lock["metrik_val"], "test": hasil["test"]},
                      indent=2, ensure_ascii=False))

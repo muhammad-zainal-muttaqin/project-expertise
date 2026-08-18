@@ -1457,3 +1457,46 @@ disambungkan.
 
 **Sumber** — `scripts/eval_endtoend_global_damimas.py` ·
 `results/damimas_endtoend_global.json`
+
+---
+
+## PT-E-026 — Counting multi-bank anchor + proposal + linker (2026-08-18)
+
+**Hipotesis** — statistik proposal unik dan klaster linker membawa informasi
+counting yang tidak ada pada dump anchor 1.683-dim. Menggabungkan bank anchor,
+proposal, dan 321 fitur linker seharusnya menurunkan macro-MAE terhadap kepala
+anchor 1,0039 tanpa memakai jumlah pool sebagai hitungan langsung.
+
+**Protokol** — fitur TRAIN/VAL dibangun lebih dulu. Seluruh 13 keluarga model
+baseline ditambah PLS dijalankan pada ruang anchor 1.683, proposal 1.683,
+concat 3.366, dan concat+linker 3.687 dimensi. Kepala per kelas, kalibrasi,
+kepala total, dan rekonsiliasi dipilih di 86 pohon VAL. TEST 127 pohon baru
+dibuka setelah lock tercetak. Fitur linker hanya memakai cluster prediksi;
+`bid` dan kelas GT cache tidak pernah menjadi fitur. Run full memakai source
+yang tersimpan pada commit `0de9fa0`; generalisasi multi-bank berikutnya
+dikerjakan sesudah hasil ini ditutup.
+
+| konfigurasi | split | macro-MAE | class ±1 | tree ±1 | total-MAE |
+|---|---|---:|---:|---:|---:|
+| anchor champion lama | VAL | 0,8459 | 0,7849 | 0,4186 | 1,6163 |
+| compact multi-bank | VAL | 0,8256 | 0,7936 | **0,4535** | **1,3488** |
+| full multi-bank | VAL | **0,8110** | **0,8081** | **0,4535** | 1,4767 |
+| anchor champion lama | TEST | **1,0039** | **0,7579** | **0,3228** | 1,8583 |
+| compact multi-bank | TEST | 1,0433 | **0,7579** | 0,3150 | **1,7795** |
+| full multi-bank | TEST | 1,0374 | **0,7579** | 0,3071 | 1,8504 |
+
+Full search mereproduksi kandidat anchor lama sampai empat desimal sebelum
+menguji bank baru, sehingga regresi bukan akibat baseline yang hilang. Meski
+lock full terlihat kuat di VAL, gain macro tidak bertransfer: 0,8110 menjadi
+1,0374 di TEST. B3 tetap bottleneck (MAE 1,5276). Fitur tambahan membantu
+seleksi validation tetapi meningkatkan variance pada hanya 641 pohon train.
+
+**Putusan** — hipotesis gain macro **DIPALSUKAN**; kepala macro tetap ensemble
+anchor 1,0039. Varian compact **DITERIMA HANYA sebagai kepala total khusus**
+karena total-MAE turun 1,8583 → 1,7795, sementara angka macro/tree tidak boleh
+diatribusikan kepadanya. Full dan compact disimpan terpisah agar hasil negatif
+tidak tertimpa.
+
+**Sumber** — `scripts/counting_multibank_damimas.py` ·
+`results/damimas_counting_multibank_{compact,full}.json` ·
+`runs/counting_multibank_damimas/ensemble_{compact,full}.joblib`
