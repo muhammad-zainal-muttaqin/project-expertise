@@ -27,7 +27,7 @@ def main() -> None:
         epochs=args.epochs, batch_size=args.batch,
         grad_accum_steps=args.grad_accum, lr=1e-4,
         seed=args.seed, early_stopping=True, early_stopping_patience=15,
-        checkpoint_interval=5, run_test=False,
+        checkpoint_interval=5, run_test=False, tensorboard=False,
     )
 
 
