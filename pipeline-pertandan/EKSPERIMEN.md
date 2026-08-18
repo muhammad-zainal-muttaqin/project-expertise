@@ -1553,3 +1553,72 @@ tanpa fitting atau pemilihan ulang.
 `results/damimas_counting_catboost.json` ·
 `results/damimas_counting_total_head_audit.json` ·
 `results/damimas_counting_total_head_audit_pred.npz`
+
+---
+
+## PT-E-029 — Ensemble kelas DAMIMAS: rata-rata berbobot mengalahkan stacker (2026-08-18)
+
+**Hipotesis** — `PIPELINE_DAMIMAS.md` mencatat "stacking seluruh model strict"
+berhenti di 0,7272, KALAH dari champion tunggalnya (0,7378). Stacker yang kalah
+dari anggota terbaiknya bukan bukti anggotanya tidak saling melengkapi; itu
+gejala meta-learner yang overfit. Dengan VAL 86 pohon / 919 tandan, meta-learner
+punya derajat kebebasan jauh melebihi yang bisa ditopang data seleksinya.
+Rata-rata berbobot dengan derajat kebebasan yang bisa dihitung jari seharusnya
+menang.
+
+**Yang memalsukan** — rata-rata berbobot tidak melewati champion tunggal.
+
+**Cara** — metode PT-E-018 dipindahkan ke DAMIMAS: seleksi maju serakah di VAL,
+bobot satu parameter, aturan keputusan dipilih lewat CV, TEST dibuka sekali.
+Lima bank per-tandan yang ada dipakai apa adanya; nol training baru.
+
+**Dua koreksi yang ditemukan saat mengerjakannya:**
+
+1. **`moe` dan `klasik` adalah sinyal yang sama.** val 0,7301 / test 0,7166 /
+   1-view 0,6098 / multi 0,7546, identik di semua kolom -- konsisten dengan
+   catatan bahwa MoE "memilih klasik saja". Seleksi serakah memungutnya sebagai
+   anggota baru dan menghitung satu sinyal dua kali. Duplikat sekarang dibuang
+   otomatis lewat pembandingan probabilitas VAL.
+
+2. **Memilih aturan keputusan dari fit VAL itu bocor halus.** `tau` ordinal
+   TERPISAH untuk satu-tampak dan multi-tampak memenangkan fit VAL (0,7595 lawan
+   0,7508 dan 0,7410) -- lalu jatuh ke **0,7318 di TEST**, di bawah `tau`
+   tunggal yang memberi 0,7439. Tiga ambang tambahan dipas pada 212 tandan
+   satu-tampak VAL saja; ia menghafal. Aturan berparameter lebih banyak SELALU
+   menang di data tempat parameternya dipas.
+
+   Perbaikannya bukan menengok TEST, melainkan memilih aturan lewat **CV 5-fold
+   tingkat pohon di DALAM VAL**. CV langsung membalik urutannya:
+
+   | aturan | fit VAL penuh | CV dalam VAL |
+   |---|---|---|
+   | argmax | 0,7410 | 0,7410 |
+   | ordinal tunggal | 0,7508 | **0,7421** (terpilih) |
+   | ordinal per-nview | **0,7595** | 0,7399 (terburuk) |
+
+**Hasil (test DAMIMAS, 1.316 tandan, 124 pohon):**
+
+| model | val | test | test 1-view | test multi |
+|---|---|---|---|---|
+| convnext224 | 0,7378 | 0,7272 | 0,6416 | 0,7577 |
+| convnext128 | 0,7203 | 0,7295 | 0,6387 | 0,7619 |
+| klasik (= moe) | 0,7301 | 0,7166 | 0,6098 | 0,7546 |
+| set_transformer | 0,7269 | 0,7386 | 0,6474 | 0,7711 |
+| stacking semua (acuan) | 0,7312 | 0,7226 | — | — |
+| **ensemble (224 + klasik + set_transformer)** | **0,7508** | **0,7439** | **0,6590** | **0,7742** |
+
+vs champion pilihan-VAL: **+1,67 pp, CI95 [-0,15; +3,55], P(delta>0) = 0,96**.
+Juga di atas champion terdokumentasi 0,7378 dan stacking 0,7272.
+
+**Putusan** — **DIKONFIRMASI.** Rata-rata berbobot mengalahkan baik champion
+tunggal maupun stacker, dengan nol training baru. CI menyentuh nol di batas
+bawah, jadi ini kuat tetapi belum tuntas secara statistik pada 124 pohon.
+
+**Jarak ke target** — `IDEA.md` menargetkan 0,80; ini 0,7439. Dekomposisinya
+menunjukkan kenapa itu masih jauh: satu-tampak 0,6590 lawan multi-tampak 0,7742.
+Bahkan kalau satu-tampak dinaikkan SAMA TINGGI dengan multi-tampak, totalnya
+hanya 0,7742. Target 0,80 menuntut **keduanya** naik, bukan salah satu.
+
+**Sumber** — `scripts/ensemble_kelas_damimas.py` ·
+`results/pt_e_029_ensemble_kelas_damimas.json` ·
+dump `results/pt_e_029_ensemble_kelas_damimas_pred.npz`

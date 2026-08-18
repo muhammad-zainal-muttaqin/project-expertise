@@ -1,0 +1,92 @@
+{
+ "pt_e": "029",
+ "anggota": [
+  "convnext224",
+  "convnext128",
+  "klasik",
+  "set_transformer"
+ ],
+ "duplikat_dibuang": [
+  "moe"
+ ],
+ "sendiri": {
+  "convnext224": {
+   "val": 0.7378,
+   "test": 0.7272,
+   "test_1view": 0.6416,
+   "test_multi": 0.7577
+  },
+  "convnext128": {
+   "val": 0.7203,
+   "test": 0.7295,
+   "test_1view": 0.6387,
+   "test_multi": 0.7619
+  },
+  "klasik": {
+   "val": 0.7301,
+   "test": 0.7166,
+   "test_1view": 0.6098,
+   "test_multi": 0.7546
+  },
+  "set_transformer": {
+   "val": 0.7269,
+   "test": 0.7386,
+   "test_1view": 0.6474,
+   "test_multi": 0.7711
+  },
+  "stacking_semua(referensi)": {
+   "val": 0.7312,
+   "test": 0.7226
+  }
+ },
+ "ensemble": {
+  "subset": [
+   "convnext224",
+   "klasik",
+   "set_transformer"
+  ],
+  "bobot": [
+   0.3333333333333333,
+   0.3333333333333333,
+   0.3333333333333333
+  ],
+  "bobot_pertama": 1.0,
+  "aturan": "ordinal",
+  "tau": [
+   0.4,
+   1.5,
+   2.5
+  ],
+  "tau_1view": [
+   0.2,
+   1.7,
+   2.7
+  ],
+  "tau_multi": [
+   0.4,
+   1.5,
+   2.5
+  ],
+  "val": 0.7508,
+  "test": 0.7439,
+  "test_1view": 0.659,
+  "test_multi": 0.7742,
+  "macro_f1_test": 0.7266,
+  "vs_champion": {
+   "champion": "convnext224",
+   "champion_test": 0.7272,
+   "delta_pp": 1.67,
+   "ci95": [
+    -0.15,
+    3.55
+   ],
+   "P(delta>0)": 0.96,
+   "n_pohon": 124
+  },
+  "acuan": {
+   "champion_strict_pipeline_md": 0.7378,
+   "stacking_semua": 0.7272,
+   "target_IDEA": 0.8
+  }
+ }
+}

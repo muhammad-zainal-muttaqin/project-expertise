@@ -1,0 +1,62 @@
+{
+ "pt_e": "030",
+ "seed": 42,
+ "epoch": 12,
+ "lr": 0.0002,
+ "backbone": "convnext_tiny",
+ "loss": "coral",
+ "ukuran": 224,
+ "riwayat_epoch": [
+  {
+   "epoch": 1,
+   "loss": 0.389345
+  },
+  {
+   "epoch": 2,
+   "loss": 0.354912
+  },
+  {
+   "epoch": 3,
+   "loss": 0.334663
+  },
+  {
+   "epoch": 4,
+   "loss": 0.311798
+  },
+  {
+   "epoch": 5,
+   "loss": 0.291034
+  },
+  {
+   "epoch": 6,
+   "loss": 0.271549
+  },
+  {
+   "epoch": 7,
+   "loss": 0.262375
+  },
+  {
+   "epoch": 8,
+   "loss": 0.253792
+  },
+  {
+   "epoch": 9,
+   "loss": 0.248002
+  },
+  {
+   "epoch": 10,
+   "loss": 0.243334
+  },
+  {
+   "epoch": 11,
+   "loss": 0.241368
+  },
+  {
+   "epoch": 12,
+   "loss": 0.240431
+  }
+ ],
+ "val_akurasi": 0.3373231773667029,
+ "test_akurasi": 0.3305471124620061,
+ "detik": 674.5
+}
