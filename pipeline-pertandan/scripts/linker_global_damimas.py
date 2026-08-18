@@ -176,11 +176,16 @@ def fitur_rich(det, nv, prior):
 
 
 def bangun_graf(split, ids, pred_path, conf, prior, reid_fn, cache):
+    pred_path = Path(pred_path).resolve()
+    st = pred_path.stat()
+    signature = {"path": str(pred_path), "size": st.st_size,
+                 "mtime_ns": st.st_mtime_ns, "conf": float(conf)}
     if cache.exists():
         obj = joblib.load(cache)
-        if obj.get("split") != split or obj.get("ids") != ids:
-            raise RuntimeError(f"Cache linker tidak sesuai scope: {cache}")
-        return obj["graf"]
+        if (obj.get("split") == split and obj.get("ids") == ids and
+                obj.get("signature_prediksi") == signature):
+            return obj["graf"]
+        print(f"  abaikan cache stale: {cache}", flush=True)
     z = np.load(pred_path, allow_pickle=True)
     graphs = []
     for n, tree in enumerate(ids, 1):
@@ -193,7 +198,9 @@ def bangun_graf(split, ids, pred_path, conf, prior, reid_fn, cache):
                                "V": V, "pairs": pairs, "E": E, "y": y, "P": P})
         if n % 100 == 0:
             print(f"  cache {split}: {n}/{len(ids)}", flush=True)
-    joblib.dump({"split": split, "ids": ids, "graf": graphs}, cache, compress=3)
+    joblib.dump({"split": split, "ids": ids,
+                 "signature_prediksi": signature,
+                 "graf": graphs}, cache, compress=3)
     return graphs
 
 
@@ -510,7 +517,9 @@ def main() -> None:
     cache_tag = args.reid.parent.name.replace("reid_resnet18_", "")
     graphs = {}
     for split, pred in (("train", args.pred_train), ("val", args.pred_val)):
-        cache = SUB / "results" / f"cache_linker_damimas_{cache_tag}_{split}.joblib"
+        pred_tag = pred.stem.replace("pred_", "")
+        cache = SUB / "results" / (
+            f"cache_linker_damimas_{cache_tag}_{pred_tag}_{split}.joblib")
         graphs[split] = bangun_graf(split, ids[split], pred, args.conf,
                                     prior, reid_fn, cache)
         print(f"{split}: {len(graphs[split])} graf", flush=True)
@@ -570,7 +579,9 @@ def main() -> None:
     # TEST baru dibangun dan diberi skor setelah konfigurasi final terkunci.
     graphs["test"] = bangun_graf(
         "test", ids["test"], args.pred_test, args.conf, prior, reid_fn,
-        SUB / "results" / f"cache_linker_damimas_{cache_tag}_test.joblib")
+        SUB / "results" / (
+            f"cache_linker_damimas_{cache_tag}_"
+            f"{args.pred_test.stem.replace('pred_', '')}_test.joblib"))
     need = terbaik["bobot_skor"]
     st = {n: score_model(models[n], graphs["test"]) for n in need}
     score_test = gabung_score(need, st)

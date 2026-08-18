@@ -1,0 +1,177 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "fusi+threshold dipilih VAL; TEST sekali",
+  "anggota": {
+    "base": {
+      "train": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_train.npz",
+      "val": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_val.npz",
+      "test": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_test.npz"
+    }
+  },
+  "agnostik": [],
+  "terpilih_di_val": {
+    "config": {
+      "anggota": [
+        "base"
+      ],
+      "bobot": [
+        1.0
+      ],
+      "iou_intra": 0.6,
+      "box_intra": "wavg",
+      "iou_inter": 0.65,
+      "box_inter": "max",
+      "skor": "max"
+    },
+    "metrik": {
+      "AP50": 0.8137443930068523,
+      "AP50_95": 0.3609514718284264
+    },
+    "objective": 0.6552668705944033
+  },
+  "operasi_val": {
+    "threshold": 0.1689789742231369,
+    "precision": 0.8186215235792019,
+    "recall": 0.7706317586795675,
+    "f1": 0.793902081501026,
+    "n_gt": 1757
+  },
+  "test": {
+    "AP50": 0.8235402512198502,
+    "AP50_95": 0.3558037226148884
+  },
+  "operasi_test": {
+    "threshold": 0.1689789742231369,
+    "precision": 0.8161634103019538,
+    "recall": 0.7468508736286062,
+    "f1": 0.77997029492892,
+    "n_gt": 2461
+  },
+  "ranking_val": [
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8137443930068523,
+        "AP50_95": 0.3609514718284264
+      },
+      "objective": 0.6552668705944033
+    },
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8134745916783324,
+        "AP50_95": 0.35928696943597205
+      },
+      "objective": 0.6545089238935062
+    },
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8027499976900481,
+        "AP50_95": 0.36271560421004756
+      },
+      "objective": 0.6487379599720479
+    },
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8019367239853309,
+        "AP50_95": 0.3630717895590827
+      },
+      "objective": 0.648333996936144
+    },
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.7979878762059224,
+        "AP50_95": 0.3627623262266518
+      },
+      "objective": 0.6456589337131776
+    },
+    {
+      "config": {
+        "anggota": [
+          "base"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.7968547765081577,
+        "AP50_95": 0.3629318988014431
+      },
+      "objective": 0.6449817693108076
+    }
+  ],
+  "prediksi_fisik": {
+    "train": "/workspace/project-expertise/results/pred_damimas_proposal_base_train.npz",
+    "val": "/workspace/project-expertise/results/pred_damimas_proposal_base_val.npz",
+    "test": "/workspace/project-expertise/results/pred_damimas_proposal_base_test.npz"
+  }
+}

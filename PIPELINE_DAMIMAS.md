@@ -50,6 +50,9 @@ validation; test baru dihitung setelah konfigurasi terkunci.
 | Counting macro MAE | 1,0236 (single model, dipilih di val) | **1,0039** | **−0,0197** |
 | Counting class ±1 | 74,61% (single model, dipilih di val) | **75,79%** | **+1,18 pp** |
 | Counting tree ±1 | **37,80%** (single model) | 32,28% | ensemble belum menang di metrik ini |
+| Linker F1 di ruang deteksi | 0,3788 (acuan lama, dua varietas) | **0,4704** | scope acuan tidak identik |
+| Cakupan multi-tampak atas tandan terdeteksi | 38,39% (acuan lama) | **64,00%** | kepala coverage VAL-locked |
+| Cakupan multi-tampak atas seluruh tandan | 28,47% (acuan lama) | **47,84%** | target 70% belum tercapai |
 
 Pembanding counting di tabel memakai fitur 1.683-dim dan protokol split yang
 sama. Ensemble menang pada macro-MAE dan akurasi sel-kelas, tetapi belum pada
@@ -82,10 +85,11 @@ oracle. Evaluasi deploy baru sah setelah detektor dan linker DAMIMAS dipasang.
 
 ## Urutan Kerja Berikutnya
 
-1. Tuntaskan linker DAMIMAS dan ganti union-find
-   serakah dengan pemilihan hipotesis klaster global.
-2. Latih RT-DETR-L dan RF-DETR-L khusus DAMIMAS; perluas fusion per kelas.
-3. Relabel crop deteksi dengan classifier dan pilih campuran di validation.
+1. Tuntaskan relabel probabilistik crop deteksi dan pilih campuran di validation.
+2. Latih RF-DETR-L lalu RT-DETR-L khusus DAMIMAS; perluas fusion per kelas.
+3. Latih detektor satu-kelas pada view
+   `/workspace/SawitMVC-YOLO-Damimas-Agnostic` untuk memanfaatkan plafon
+   lokalisasi proposal yang pada fusion awal sudah >0,83 AP50.
 4. Masukkan statistik seluruh detektor dan linker sebagai fitur counting,
    kemudian kunci ensemble dari validation.
 5. Setelah semua konfigurasi tetap, jalankan laporan test final dan bootstrap

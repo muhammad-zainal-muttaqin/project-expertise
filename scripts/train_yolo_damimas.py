@@ -21,8 +21,8 @@ def main() -> None:
         ROOT / "models" / "yolo26l_e60_i1280_v2repro" / "best.pt"))
     ap.add_argument("--data", default="/workspace/SawitMVC-YOLO-Damimas/data.yaml")
     ap.add_argument("--name", default="yolo26l_damimas_ft_s42")
-    ap.add_argument("--epochs", type=int, default=45)
-    ap.add_argument("--patience", type=int, default=15)
+    ap.add_argument("--epochs", type=int, default=60)
+    ap.add_argument("--patience", type=int, default=45)
     ap.add_argument("--imgsz", type=int, default=1280)
     ap.add_argument("--batch", type=int, default=4)
     ap.add_argument("--seed", type=int, default=42)
@@ -32,8 +32,10 @@ def main() -> None:
     args = ap.parse_args()
 
     data = Path(args.data)
-    if data.resolve() != Path("/workspace/SawitMVC-YOLO-Damimas/data.yaml").resolve():
-        raise RuntimeError("Run DAMIMAS dikunci ke data.yaml dataset DAMIMAS-only")
+    diizinkan = {Path("/workspace/SawitMVC-YOLO-Damimas/data.yaml").resolve(),
+                 Path("/workspace/SawitMVC-YOLO-Damimas-Agnostic/data.yaml").resolve()}
+    if data.resolve() not in diizinkan:
+        raise RuntimeError("Run dikunci ke dataset DAMIMAS class-aware/agnostic")
     model = YOLO(args.weights)
     model.train(
         data=str(data), project=str(ROOT / "runs"), name=args.name,

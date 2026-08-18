@@ -1,0 +1,1239 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "prior/model TRAIN; model+assembler+ambang VAL; TEST sekali",
+  "detektor_linker": {
+    "train": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_train.npz",
+    "val": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_val.npz",
+    "test": "/workspace/project-expertise/pipeline-pertandan/results/pred_skorpenuh_test.npz",
+    "conf": 0.1
+  },
+  "reid": "/workspace/project-expertise/pipeline-pertandan/runs/reid_resnet18_damimas/best.pt",
+  "n": {
+    "train": {
+      "pohon": 641,
+      "graf": 638
+    },
+    "val": {
+      "pohon": 86,
+      "graf": 86
+    },
+    "test": {
+      "pohon": 127,
+      "graf": 125
+    }
+  },
+  "prior": {
+    "4|1": [
+      0.236433,
+      -0.0035159999999999636,
+      0.10042094579999998,
+      0.056755410600000014,
+      4094
+    ],
+    "4|2": [
+      0.23229099999999997,
+      -0.0046880000000000255,
+      0.2949766134000001,
+      0.059072714400000066,
+      475
+    ],
+    "4|3": [
+      -0.25208299999999995,
+      0.005858999999999948,
+      0.09497980380000014,
+      0.06486374999999993,
+      1275
+    ],
+    "8|1": [
+      0.11979200000000001,
+      0.002734000000000014,
+      0.07181269619999993,
+      0.0472000536,
+      788
+    ],
+    "8|2": [
+      0.255208,
+      -0.0017574999999999952,
+      0.09266324129999998,
+      0.0628370358,
+      432
+    ],
+    "8|3": [
+      0.34713550000000004,
+      -0.005664000000000002,
+      0.10385909519999992,
+      0.05878360739999994,
+      186
+    ],
+    "8|4": [
+      0.30781250000000004,
+      0.0007810000000000039,
+      0.24401149709999986,
+      0.06949687499999997,
+      80
+    ],
+    "8|5": [
+      -0.3546875,
+      0.021680000000000005,
+      0.1027011846,
+      0.05386063410000002,
+      86
+    ],
+    "8|6": [
+      -0.261459,
+      0.006640000000000035,
+      0.09111763080000002,
+      0.06718253639999995,
+      101
+    ],
+    "8|7": [
+      -0.152084,
+      0.0003909999999999747,
+      0.11582960759999995,
+      0.07644730379999995,
+      89
+    ]
+  },
+  "pasangan_train": {
+    "n": 225918,
+    "positif": 6242,
+    "dim_fitur": 52
+  },
+  "auc_val": {
+    "hist_l15": 0.9406555078322497,
+    "hist_l31": 0.9435158993438665,
+    "hist_l63": 0.9426088711551617,
+    "extra_l3": 0.9309407035876138,
+    "extra_l8": 0.9355281901712662
+  },
+  "terpilih_di_val": {
+    "sumber": "mean_top3",
+    "bobot_skor": {
+      "hist_l31": 0.3333333333333333,
+      "hist_l63": 0.3333333333333333,
+      "hist_l15": 0.3333333333333333
+    },
+    "assembler": "aglom",
+    "metode": "mean",
+    "max_mode": "observasi",
+    "ambang": 0.7,
+    "metrik": {
+      "presisi": 0.47897196261682246,
+      "recall": 0.5408970976253298,
+      "f1": 0.5080545229244113,
+      "ari": 0.46523132363221825,
+      "cakupan_atas_terdeteksi": 0.5804066543438078,
+      "cakupan_atas_semua": 0.44413012729844414,
+      "frac_pool_palsu": 0.06612903225806452,
+      "mae_jumlah_pool": 9.476744186046512,
+      "n_bisa": 541,
+      "n_semua": 707,
+      "utility": 0.5514925378362359
+    }
+  },
+  "test": {
+    "presisi": 0.4359430604982206,
+    "recall": 0.4939516129032258,
+    "f1": 0.46313799621928164,
+    "ari": 0.42277388910287905,
+    "cakupan_atas_terdeteksi": 0.5627586206896552,
+    "cakupan_atas_semua": 0.42061855670103093,
+    "frac_pool_palsu": 0.07719298245614035,
+    "mae_jumlah_pool": 9.584,
+    "n_bisa": 725,
+    "n_semua": 970,
+    "utility": 0.5162185028946074
+  },
+  "ranking_val": [
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.47897196261682246,
+        "recall": 0.5408970976253298,
+        "f1": 0.5080545229244113,
+        "ari": 0.46523132363221825,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.06612903225806452,
+        "mae_jumlah_pool": 9.476744186046512,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5514925378362359
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.47897196261682246,
+        "recall": 0.5408970976253298,
+        "f1": 0.5080545229244113,
+        "ari": 0.46523132363221825,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.06612903225806452,
+        "mae_jumlah_pool": 9.476744186046512,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5514925378362359
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5044929396662388,
+        "recall": 0.5184696569920845,
+        "f1": 0.5113858165256994,
+        "ari": 0.46611383023180286,
+        "cakupan_atas_terdeteksi": 0.5452865064695009,
+        "cakupan_atas_semua": 0.41725601131541723,
+        "frac_pool_palsu": 0.04638218923933209,
+        "mae_jumlah_pool": 10.5,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5503818696785363
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5149456521739131,
+        "recall": 0.5,
+        "f1": 0.5073627844712182,
+        "ari": 0.46556757570110274,
+        "cakupan_atas_terdeteksi": 0.5452865064695009,
+        "cakupan_atas_semua": 0.41725601131541723,
+        "frac_pool_palsu": 0.04604051565377532,
+        "mae_jumlah_pool": 10.593023255813954,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.549916683436116
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5149456521739131,
+        "recall": 0.5,
+        "f1": 0.5073627844712182,
+        "ari": 0.46556757570110274,
+        "cakupan_atas_terdeteksi": 0.5452865064695009,
+        "cakupan_atas_semua": 0.41725601131541723,
+        "frac_pool_palsu": 0.04604051565377532,
+        "mae_jumlah_pool": 10.593023255813954,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.549916683436116
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5006337135614702,
+        "recall": 0.521108179419525,
+        "f1": 0.5106658047834517,
+        "ari": 0.4661866280334535,
+        "cakupan_atas_terdeteksi": 0.5452865064695009,
+        "cakupan_atas_semua": 0.41725601131541723,
+        "frac_pool_palsu": 0.046468401486988845,
+        "mae_jumlah_pool": 10.488372093023257,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5497535211839198
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.4841075794621027,
+        "recall": 0.5224274406332454,
+        "f1": 0.5025380710659899,
+        "ari": 0.4668824812456905,
+        "cakupan_atas_terdeteksi": 0.5767097966728281,
+        "cakupan_atas_semua": 0.44130127298444133,
+        "frac_pool_palsu": 0.0673076923076923,
+        "mae_jumlah_pool": 9.627906976744185,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5496308932345257
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.4841075794621027,
+        "recall": 0.5224274406332454,
+        "f1": 0.5025380710659899,
+        "ari": 0.4668824812456905,
+        "cakupan_atas_terdeteksi": 0.5767097966728281,
+        "cakupan_atas_semua": 0.44130127298444133,
+        "frac_pool_palsu": 0.0673076923076923,
+        "mae_jumlah_pool": 9.627906976744185,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5496308932345257
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5156037991858887,
+        "recall": 0.5013192612137203,
+        "f1": 0.5083612040133779,
+        "ari": 0.4642148506787021,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.04604051565377532,
+        "mae_jumlah_pool": 10.593023255813954,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5496240779543714
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5156037991858887,
+        "recall": 0.5013192612137203,
+        "f1": 0.5083612040133779,
+        "ari": 0.4642148506787021,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.04604051565377532,
+        "mae_jumlah_pool": 10.593023255813954,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5496240779543714
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5038363171355499,
+        "recall": 0.5197889182058048,
+        "f1": 0.5116883116883116,
+        "ari": 0.4642766147402935,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.04638218923933209,
+        "mae_jumlah_pool": 10.476744186046512,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5495930910924065
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5038363171355499,
+        "recall": 0.5197889182058048,
+        "f1": 0.5116883116883116,
+        "ari": 0.4642766147402935,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.04638218923933209,
+        "mae_jumlah_pool": 10.476744186046512,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5495930910924065
+      }
+    },
+    {
+      "sumber": "hist_l63",
+      "bobot_skor": {
+        "hist_l63": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5208333333333334,
+        "recall": 0.4947229551451187,
+        "f1": 0.5074424898511503,
+        "ari": 0.4635877257534776,
+        "cakupan_atas_terdeteksi": 0.5378927911275416,
+        "cakupan_atas_semua": 0.4115983026874116,
+        "frac_pool_palsu": 0.04477611940298507,
+        "mae_jumlah_pool": 10.720930232558139,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5486860825048151
+      }
+    },
+    {
+      "sumber": "hist_l63",
+      "bobot_skor": {
+        "hist_l63": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5208333333333334,
+        "recall": 0.4947229551451187,
+        "f1": 0.5074424898511503,
+        "ari": 0.4635877257534776,
+        "cakupan_atas_terdeteksi": 0.5378927911275416,
+        "cakupan_atas_semua": 0.4115983026874116,
+        "frac_pool_palsu": 0.04477611940298507,
+        "mae_jumlah_pool": 10.720930232558139,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5486860825048151
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.47479484173505276,
+        "recall": 0.5343007915567283,
+        "f1": 0.5027932960893855,
+        "ari": 0.46404645738181466,
+        "cakupan_atas_terdeteksi": 0.5767097966728281,
+        "cakupan_atas_semua": 0.44130127298444133,
+        "frac_pool_palsu": 0.06504065040650407,
+        "mae_jumlah_pool": 9.534883720930232,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.548306646444159
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.47479484173505276,
+        "recall": 0.5343007915567283,
+        "f1": 0.5027932960893855,
+        "ari": 0.46404645738181466,
+        "cakupan_atas_terdeteksi": 0.5767097966728281,
+        "cakupan_atas_semua": 0.44130127298444133,
+        "frac_pool_palsu": 0.06504065040650407,
+        "mae_jumlah_pool": 9.534883720930232,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.548306646444159
+      }
+    },
+    {
+      "sumber": "hist_l63",
+      "bobot_skor": {
+        "hist_l63": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.48602673147023084,
+        "recall": 0.5277044854881267,
+        "f1": 0.5060088551549653,
+        "ari": 0.4641810747268409,
+        "cakupan_atas_terdeteksi": 0.5656192236598891,
+        "cakupan_atas_semua": 0.4328147100424328,
+        "frac_pool_palsu": 0.06788079470198675,
+        "mae_jumlah_pool": 9.744186046511627,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5480868063947504
+      }
+    },
+    {
+      "sumber": "hist_l63",
+      "bobot_skor": {
+        "hist_l63": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.48602673147023084,
+        "recall": 0.5277044854881267,
+        "f1": 0.5060088551549653,
+        "ari": 0.4641810747268409,
+        "cakupan_atas_terdeteksi": 0.5656192236598891,
+        "cakupan_atas_semua": 0.4328147100424328,
+        "frac_pool_palsu": 0.06788079470198675,
+        "mae_jumlah_pool": 9.744186046511627,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5480868063947504
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.463768115942029,
+        "recall": 0.5488126649076517,
+        "f1": 0.5027190332326283,
+        "ari": 0.46393753494540824,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.06351791530944625,
+        "mae_jumlah_pool": 9.406976744186046,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5480423962997918
+      }
+    },
+    {
+      "sumber": "hist_l31",
+      "bobot_skor": {
+        "hist_l31": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.506578947368421,
+        "recall": 0.5079155672823219,
+        "f1": 0.5072463768115941,
+        "ari": 0.46207163883419944,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.05008944543828265,
+        "mae_jumlah_pool": 10.372093023255815,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5473907073124239
+      }
+    },
+    {
+      "sumber": "hist_l31",
+      "bobot_skor": {
+        "hist_l31": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.506578947368421,
+        "recall": 0.5079155672823219,
+        "f1": 0.5072463768115941,
+        "ari": 0.46207163883419944,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.05008944543828265,
+        "mae_jumlah_pool": 10.372093023255815,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5473907073124239
+      }
+    },
+    {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.46170921198668147,
+        "recall": 0.5488126649076517,
+        "f1": 0.5015069318866787,
+        "ari": 0.462796181735189,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.0636215334420881,
+        "mae_jumlah_pool": 9.395348837209303,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5471165703173557
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.48271604938271606,
+        "recall": 0.5158311345646438,
+        "f1": 0.4987244897959184,
+        "ari": 0.46481272345322117,
+        "cakupan_atas_terdeteksi": 0.5711645101663586,
+        "cakupan_atas_semua": 0.43705799151343705,
+        "frac_pool_palsu": 0.06913183279742766,
+        "mae_jumlah_pool": 9.686046511627907,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5463480759836773
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.48271604938271606,
+        "recall": 0.5158311345646438,
+        "f1": 0.4987244897959184,
+        "ari": 0.46481272345322117,
+        "cakupan_atas_terdeteksi": 0.5711645101663586,
+        "cakupan_atas_semua": 0.43705799151343705,
+        "frac_pool_palsu": 0.06913183279742766,
+        "mae_jumlah_pool": 9.686046511627907,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5463480759836773
+      }
+    },
+    {
+      "sumber": "hist_l31+hist_l63",
+      "bobot_skor": {
+        "hist_l31": 0.5,
+        "hist_l63": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5115332428765265,
+        "recall": 0.4973614775725594,
+        "f1": 0.5043478260869565,
+        "ari": 0.46096509216203513,
+        "cakupan_atas_terdeteksi": 0.5378927911275416,
+        "cakupan_atas_semua": 0.4115983026874116,
+        "frac_pool_palsu": 0.04251386321626617,
+        "mae_jumlah_pool": 10.604651162790697,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5462435083624779
+      }
+    },
+    {
+      "sumber": "hist_l31+hist_l63",
+      "bobot_skor": {
+        "hist_l31": 0.5,
+        "hist_l63": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5115332428765265,
+        "recall": 0.4973614775725594,
+        "f1": 0.5043478260869565,
+        "ari": 0.46096509216203513,
+        "cakupan_atas_terdeteksi": 0.5378927911275416,
+        "cakupan_atas_semua": 0.4115983026874116,
+        "frac_pool_palsu": 0.04251386321626617,
+        "mae_jumlah_pool": 10.604651162790697,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5462435083624779
+      }
+    },
+    {
+      "sumber": "hist_l31",
+      "bobot_skor": {
+        "hist_l31": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.4650112866817156,
+        "recall": 0.5435356200527705,
+        "f1": 0.5012165450121655,
+        "ari": 0.4599858886748664,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.06782334384858044,
+        "mae_jumlah_pool": 9.244186046511627,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5462223880750496
+      }
+    },
+    {
+      "sumber": "hist_l31",
+      "bobot_skor": {
+        "hist_l31": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.4650112866817156,
+        "recall": 0.5435356200527705,
+        "f1": 0.5012165450121655,
+        "ari": 0.4599858886748664,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.06782334384858044,
+        "mae_jumlah_pool": 9.244186046511627,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5462223880750496
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5184659090909091,
+        "recall": 0.4815303430079156,
+        "f1": 0.49931600547195626,
+        "ari": 0.4617776837628954,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.047619047619047616,
+        "mae_jumlah_pool": 10.732558139534884,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5459773245298969
+      }
+    },
+    {
+      "sumber": "hist_l63+hist_l15",
+      "bobot_skor": {
+        "hist_l63": 0.5,
+        "hist_l15": 0.5
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "penuh",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5184659090909091,
+        "recall": 0.4815303430079156,
+        "f1": 0.49931600547195626,
+        "ari": 0.4617776837628954,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.047619047619047616,
+        "mae_jumlah_pool": 10.732558139534884,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5459773245298969
+      }
+    }
+  ],
+  "terbaik_per_metrik_val": {
+    "f1": {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "top2",
+      "max_mode": "observasi",
+      "ambang": 0.8,
+      "metrik": {
+        "presisi": 0.5038363171355499,
+        "recall": 0.5197889182058048,
+        "f1": 0.5116883116883116,
+        "ari": 0.4642766147402935,
+        "cakupan_atas_terdeteksi": 0.5434380776340111,
+        "cakupan_atas_semua": 0.4158415841584158,
+        "frac_pool_palsu": 0.04638218923933209,
+        "mae_jumlah_pool": 10.476744186046512,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5495930910924065
+      }
+    },
+    "ari": {
+      "sumber": "mean_top3",
+      "bobot_skor": {
+        "hist_l31": 0.3333333333333333,
+        "hist_l63": 0.3333333333333333,
+        "hist_l15": 0.3333333333333333
+      },
+      "assembler": "aglom",
+      "metode": "min",
+      "max_mode": "observasi",
+      "ambang": 0.7,
+      "metrik": {
+        "presisi": 0.4841075794621027,
+        "recall": 0.5224274406332454,
+        "f1": 0.5025380710659899,
+        "ari": 0.4668824812456905,
+        "cakupan_atas_terdeteksi": 0.5767097966728281,
+        "cakupan_atas_semua": 0.44130127298444133,
+        "frac_pool_palsu": 0.0673076923076923,
+        "mae_jumlah_pool": 9.627906976744185,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.5496308932345257
+      }
+    },
+    "cakupan_atas_terdeteksi": {
+      "sumber": "hist_l31",
+      "bobot_skor": {
+        "hist_l31": 1.0
+      },
+      "assembler": "aglom",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.1,
+      "metrik": {
+        "presisi": 0.2872467222884386,
+        "recall": 0.6358839050131926,
+        "f1": 0.3957307060755337,
+        "ari": 0.35419645250076304,
+        "cakupan_atas_terdeteksi": 0.6635859519408502,
+        "cakupan_atas_semua": 0.5077793493635078,
+        "frac_pool_palsu": 0.13801169590643275,
+        "mae_jumlah_pool": 3.8255813953488373,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.4746955532779982
+      }
+    },
+    "frac_pool_palsu": {
+      "sumber": "hist_l31+hist_l63",
+      "bobot_skor": {
+        "hist_l31": 0.5,
+        "hist_l63": 0.5
+      },
+      "assembler": "hungarian",
+      "metode": "mean",
+      "max_mode": "observasi",
+      "ambang": 0.9,
+      "metrik": {
+        "presisi": 0.4966216216216216,
+        "recall": 0.38786279683377306,
+        "f1": 0.43555555555555553,
+        "ari": 0.3534273798986822,
+        "cakupan_atas_terdeteksi": 0.3844731977818854,
+        "cakupan_atas_semua": 0.2942008486562942,
+        "frac_pool_palsu": 0.03206997084548105,
+        "mae_jumlah_pool": 12.627906976744185,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.4641510940531062
+      }
+    },
+    "mae_jumlah_pool": {
+      "sumber": "hist_l31+hist_l63",
+      "bobot_skor": {
+        "hist_l31": 0.5,
+        "hist_l63": 0.5
+      },
+      "assembler": "hungarian",
+      "metode": "mean",
+      "max_mode": "penuh",
+      "ambang": 0.05,
+      "metrik": {
+        "presisi": 0.18771331058020477,
+        "recall": 0.5804749340369393,
+        "f1": 0.2836879432624113,
+        "ari": 0.25027622174537506,
+        "cakupan_atas_terdeteksi": 0.5804066543438078,
+        "cakupan_atas_semua": 0.44413012729844414,
+        "frac_pool_palsu": 0.13272010512483573,
+        "mae_jumlah_pool": 2.453488372093023,
+        "n_bisa": 541,
+        "n_semua": 707,
+        "utility": 0.3834404869924862
+      }
+    }
+  },
+  "detik": 595.1114101409912,
+  "kepala_terkunci_per_objektif": {
+    "utility": {
+      "aturan_seleksi": "terbaik utility di VAL",
+      "config": {
+        "sumber": "mean_top3",
+        "bobot_skor": {
+          "hist_l31": 0.3333333333333333,
+          "hist_l63": 0.3333333333333333,
+          "hist_l15": 0.3333333333333333
+        },
+        "assembler": "aglom",
+        "metode": "mean",
+        "max_mode": "observasi",
+        "ambang": 0.7,
+        "metrik": {
+          "presisi": 0.47897196261682246,
+          "recall": 0.5408970976253298,
+          "f1": 0.5080545229244113,
+          "ari": 0.46523132363221825,
+          "cakupan_atas_terdeteksi": 0.5804066543438078,
+          "cakupan_atas_semua": 0.44413012729844414,
+          "frac_pool_palsu": 0.06612903225806452,
+          "mae_jumlah_pool": 9.476744186046512,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.5514925378362359
+        }
+      },
+      "test": {
+        "presisi": 0.4359430604982206,
+        "recall": 0.4939516129032258,
+        "f1": 0.46313799621928164,
+        "ari": 0.42277388910287905,
+        "cakupan_atas_terdeteksi": 0.5627586206896552,
+        "cakupan_atas_semua": 0.42061855670103093,
+        "frac_pool_palsu": 0.07719298245614035,
+        "mae_jumlah_pool": 9.584,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.5162185028946074
+      }
+    },
+    "f1": {
+      "aturan_seleksi": "terbaik f1 di VAL",
+      "config": {
+        "sumber": "mean_top3",
+        "bobot_skor": {
+          "hist_l31": 0.3333333333333333,
+          "hist_l63": 0.3333333333333333,
+          "hist_l15": 0.3333333333333333
+        },
+        "assembler": "aglom",
+        "metode": "top2",
+        "max_mode": "observasi",
+        "ambang": 0.8,
+        "metrik": {
+          "presisi": 0.5038363171355499,
+          "recall": 0.5197889182058048,
+          "f1": 0.5116883116883116,
+          "ari": 0.4642766147402935,
+          "cakupan_atas_terdeteksi": 0.5434380776340111,
+          "cakupan_atas_semua": 0.4158415841584158,
+          "frac_pool_palsu": 0.04638218923933209,
+          "mae_jumlah_pool": 10.476744186046512,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.5495930910924065
+        }
+      },
+      "test": {
+        "presisi": 0.4720812182741117,
+        "recall": 0.46875,
+        "f1": 0.4704097116843703,
+        "ari": 0.42930235223454866,
+        "cakupan_atas_terdeteksi": 0.5241379310344828,
+        "cakupan_atas_semua": 0.3917525773195876,
+        "frac_pool_palsu": 0.06639566395663957,
+        "mae_jumlah_pool": 10.656,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.5173651287868106
+      }
+    },
+    "ari": {
+      "aturan_seleksi": "terbaik ari di VAL",
+      "config": {
+        "sumber": "mean_top3",
+        "bobot_skor": {
+          "hist_l31": 0.3333333333333333,
+          "hist_l63": 0.3333333333333333,
+          "hist_l15": 0.3333333333333333
+        },
+        "assembler": "aglom",
+        "metode": "min",
+        "max_mode": "observasi",
+        "ambang": 0.7,
+        "metrik": {
+          "presisi": 0.4841075794621027,
+          "recall": 0.5224274406332454,
+          "f1": 0.5025380710659899,
+          "ari": 0.4668824812456905,
+          "cakupan_atas_terdeteksi": 0.5767097966728281,
+          "cakupan_atas_semua": 0.44130127298444133,
+          "frac_pool_palsu": 0.0673076923076923,
+          "mae_jumlah_pool": 9.627906976744185,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.5496308932345257
+        }
+      },
+      "test": {
+        "presisi": 0.44804575786463297,
+        "recall": 0.4737903225806452,
+        "f1": 0.4605585497305243,
+        "ari": 0.422421224302962,
+        "cakupan_atas_terdeteksi": 0.5544827586206896,
+        "cakupan_atas_semua": 0.4144329896907217,
+        "frac_pool_palsu": 0.08073817762399077,
+        "mae_jumlah_pool": 9.784,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.5144281082296261
+      }
+    },
+    "cakupan_atas_terdeteksi": {
+      "aturan_seleksi": "terbaik cakupan_atas_terdeteksi di VAL",
+      "config": {
+        "sumber": "hist_l31",
+        "bobot_skor": {
+          "hist_l31": 1.0
+        },
+        "assembler": "aglom",
+        "metode": "mean",
+        "max_mode": "observasi",
+        "ambang": 0.1,
+        "metrik": {
+          "presisi": 0.2872467222884386,
+          "recall": 0.6358839050131926,
+          "f1": 0.3957307060755337,
+          "ari": 0.35419645250076304,
+          "cakupan_atas_terdeteksi": 0.6635859519408502,
+          "cakupan_atas_semua": 0.5077793493635078,
+          "frac_pool_palsu": 0.13801169590643275,
+          "mae_jumlah_pool": 3.8255813953488373,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.4746955532779982
+        }
+      },
+      "test": {
+        "presisi": 0.2567989300044583,
+        "recall": 0.5806451612903226,
+        "f1": 0.3561051004636785,
+        "ari": 0.33206388360689304,
+        "cakupan_atas_terdeteksi": 0.64,
+        "cakupan_atas_semua": 0.47835051546391755,
+        "frac_pool_palsu": 0.15203252032520326,
+        "mae_jumlah_pool": 4.16,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.4461293970319362
+      }
+    },
+    "frac_pool_palsu": {
+      "aturan_seleksi": "terbaik frac_pool_palsu di VAL",
+      "config": {
+        "sumber": "hist_l31+hist_l63",
+        "bobot_skor": {
+          "hist_l31": 0.5,
+          "hist_l63": 0.5
+        },
+        "assembler": "hungarian",
+        "metode": "mean",
+        "max_mode": "observasi",
+        "ambang": 0.9,
+        "metrik": {
+          "presisi": 0.4966216216216216,
+          "recall": 0.38786279683377306,
+          "f1": 0.43555555555555553,
+          "ari": 0.3534273798986822,
+          "cakupan_atas_terdeteksi": 0.3844731977818854,
+          "cakupan_atas_semua": 0.2942008486562942,
+          "frac_pool_palsu": 0.03206997084548105,
+          "mae_jumlah_pool": 12.627906976744185,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.4641510940531062
+        }
+      },
+      "test": {
+        "presisi": 0.4619883040935672,
+        "recall": 0.3185483870967742,
+        "f1": 0.37708830548926014,
+        "ari": 0.325144790622116,
+        "cakupan_atas_terdeteksi": 0.3296551724137931,
+        "cakupan_atas_semua": 0.2463917525773196,
+        "frac_pool_palsu": 0.03926096997690531,
+        "mae_jumlah_pool": 13.104,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.42147087247119486
+      }
+    },
+    "mae_jumlah_pool": {
+      "aturan_seleksi": "terbaik mae_jumlah_pool di VAL",
+      "config": {
+        "sumber": "hist_l31+hist_l63",
+        "bobot_skor": {
+          "hist_l31": 0.5,
+          "hist_l63": 0.5
+        },
+        "assembler": "hungarian",
+        "metode": "mean",
+        "max_mode": "penuh",
+        "ambang": 0.05,
+        "metrik": {
+          "presisi": 0.18771331058020477,
+          "recall": 0.5804749340369393,
+          "f1": 0.2836879432624113,
+          "ari": 0.25027622174537506,
+          "cakupan_atas_terdeteksi": 0.5804066543438078,
+          "cakupan_atas_semua": 0.44413012729844414,
+          "frac_pool_palsu": 0.13272010512483573,
+          "mae_jumlah_pool": 2.453488372093023,
+          "n_bisa": 541,
+          "n_semua": 707,
+          "utility": 0.3834404869924862
+        }
+      },
+      "test": {
+        "presisi": 0.1721097322011757,
+        "recall": 0.53125,
+        "f1": 0.259990133201776,
+        "ari": 0.22982530106357996,
+        "cakupan_atas_terdeteksi": 0.5613793103448276,
+        "cakupan_atas_semua": 0.4195876288659794,
+        "frac_pool_palsu": 0.11875,
+        "mae_jumlah_pool": 2.88,
+        "n_bisa": 725,
+        "n_semua": 970,
+        "utility": 0.36606470717559964
+      }
+    }
+  }
+}

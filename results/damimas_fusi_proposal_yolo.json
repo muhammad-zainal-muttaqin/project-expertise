@@ -1,0 +1,175 @@
+{
+  "dataset": "SawitMVC-YOLO-Damimas",
+  "protokol": "fusi+threshold dipilih VAL; TEST sekali",
+  "anggota": {
+    "fused": {
+      "val": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_awal_val.npz",
+      "test": "/workspace/project-expertise/results/pred_damimas_fusi_yolo_awal_test.npz"
+    }
+  },
+  "agnostik": [],
+  "terpilih_di_val": {
+    "config": {
+      "anggota": [
+        "fused"
+      ],
+      "bobot": [
+        1.0
+      ],
+      "iou_intra": 0.6,
+      "box_intra": "max",
+      "iou_inter": 0.65,
+      "box_inter": "max",
+      "skor": "max"
+    },
+    "metrik": {
+      "AP50": 0.8333778965839482,
+      "AP50_95": 0.3690308512456329
+    },
+    "objective": 0.6708564307155378
+  },
+  "operasi_val": {
+    "threshold": 0.1363375037908554,
+    "precision": 0.8040770101925255,
+    "recall": 0.8081957882754696,
+    "f1": 0.8061311382344593,
+    "n_gt": 1757
+  },
+  "test": {
+    "AP50": 0.8381104424028742,
+    "AP50_95": 0.36616811687489575
+  },
+  "operasi_test": {
+    "threshold": 0.1363375037908554,
+    "precision": 0.8017206063088897,
+    "recall": 0.7952052011377488,
+    "f1": 0.7984496124031008,
+    "n_gt": 2461
+  },
+  "ranking_val": [
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8333778965839482,
+        "AP50_95": 0.3690308512456329
+      },
+      "objective": 0.6708564307155378
+    },
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.832518442976976,
+        "AP50_95": 0.3689377050399804
+      },
+      "objective": 0.6702651846990275
+    },
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.6,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8315753613437329,
+        "AP50_95": 0.3691999934890291
+      },
+      "objective": 0.6697439825945866
+    },
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "max",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.831119970988073,
+        "AP50_95": 0.36992158159142646
+      },
+      "objective": 0.6697005346992467
+    },
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.7,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8304652456957422,
+        "AP50_95": 0.36982756283086077
+      },
+      "objective": 0.6692420566930337
+    },
+    {
+      "config": {
+        "anggota": [
+          "fused"
+        ],
+        "bobot": [
+          1.0
+        ],
+        "iou_intra": 0.8,
+        "box_intra": "wavg",
+        "iou_inter": 0.65,
+        "box_inter": "max",
+        "skor": "max"
+      },
+      "metrik": {
+        "AP50": 0.8298904815478055,
+        "AP50_95": 0.3705156258888771
+      },
+      "objective": 0.6691092820671806
+    }
+  ],
+  "prediksi_fisik": {
+    "val": "/workspace/project-expertise/results/pred_damimas_proposal_yolo_val.npz",
+    "test": "/workspace/project-expertise/results/pred_damimas_proposal_yolo_test.npz"
+  }
+}

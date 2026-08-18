@@ -1250,3 +1250,47 @@ menuntut aturan agregasi yang lebih baik daripada R4, bukan probabilitas per
 tampak yang lebih baik.
 
 **Sumber** — `scripts/endtoend_gabungan.py` · `results/pt_e_019_gabungan.json`
+
+---
+
+## PT-E-020 — Penaut global khusus DAMIMAS dengan konteks kompetisi (2026-08-18)
+
+**Tujuan engineering** — menaikkan mutu association di adegan padat tanpa
+mengubah detektor: model sisi dilatih langsung pada pasangan DETEKSI DAMIMAS,
+fiturnya membawa residual gerak bertanda, rank kandidat per sisi, margin
+kompetitor, distribusi kelas lunak, dan embedding re-ID. Skor kemudian dirakit
+dengan Hungarian, average/min/top-2 linkage, atau correlation-clustering ILP.
+
+**Protokol** — prior gerak dan lima model sisi dipasang di 641 pohon TRAIN;
+model/ensemble/perakit/batas ukuran/ambang dipilih di 86 pohon VAL; 127 pohon
+TEST baru dibuat graf dan dinilai setelah konfigurasi terkunci. Checkpoint
+re-ID juga DAMIMAS-only. Detektor tetap dump C1 yang sama pada `conf=0,10`.
+
+**Sinyal model sisi.** Ada 225.918 pasangan train, 6.242 positif (2,763%), 52
+fitur. AUC val lima kandidat = 0,9309--0,9435. Konfigurasi utility memilih
+rerata tiga HistGradientBoosting, average-link, batas klaster observasi, ambang
+0,70.
+
+| kepala (semua dikunci dari VAL) | F1 test | presisi | recall | cakupan terdeteksi | cakupan semua | MAE pool |
+|---|---:|---:|---:|---:|---:|---:|
+| utility | 0,4631 | 0,4359 | 0,4940 | 0,5628 | 0,4206 | 9,584 |
+| **F1** | **0,4704** | **0,4721** | 0,4688 | 0,5241 | 0,3918 | 10,656 |
+| **cakupan** | 0,3561 | 0,2568 | **0,5806** | **0,6400** | **0,4784** | 4,160 |
+| hitung-pool | 0,2600 | 0,1721 | 0,5312 | 0,5614 | 0,4196 | **2,880** |
+
+**Putusan** — association membaik material dan kepala tugas memang harus
+dipisahkan. Sebagai acuan historis, PT-E-017 pada seluruh varietas mencatat F1
+0,3788, cakupan-terdeteksi 0,3839, dan cakupan-semua 0,2847; angka itu bukan
+pembanding kausal yang persis karena scope sekarang hanya DAMIMAS. Walau
+demikian, kenaikan absolut pada korpus yang tetap sangat padat cukup besar untuk
+dipakai sebagai komponen pipeline berikutnya.
+
+**Batas yang tetap keras.** Target cakupan semua >70% belum tercapai. Lebih
+penting, jumlah pool bukan estimator counting yang baik: bahkan kepala khusus
+MAE-pool masih 2,880, jauh di atas regresor counting sekitar 1,00. Karena itu
+linker dipakai untuk identitas/agregasi dan sebagai fitur counting, bukan
+dipaksa menjadi hasil counting akhir.
+
+**Sumber** — `scripts/linker_global_damimas.py` ·
+`scripts/laporkan_kepala_linker_damimas.py` ·
+`results/damimas_linker_global.json`

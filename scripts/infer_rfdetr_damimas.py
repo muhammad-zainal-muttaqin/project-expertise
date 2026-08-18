@@ -25,7 +25,10 @@ def main() -> None:
     # Import ini memang lambat pada filesystem jaringan; ditunda sampai argumen
     # tervalidasi agar kesalahan CLI tidak membuang waktu satu menit.
     from rfdetr import RFDETRLarge
-    model = RFDETRLarge(pretrain_weights=args.weights, resolution=args.resolution)
+    # ``from_checkpoint`` membaca jumlah kelas dan konfigurasi yang benar dari
+    # checkpoint fine-tune. Konstruktor ``pretrain_weights=...`` dapat memakai
+    # kepala COCO 90-kelas dan tidak aman untuk checkpoint custom 4-kelas.
+    model = RFDETRLarge.from_checkpoint(args.weights, resolution=args.resolution)
 
     for split in args.split:
         paths = sorted((DS / "images" / split).glob("*.jpg"))

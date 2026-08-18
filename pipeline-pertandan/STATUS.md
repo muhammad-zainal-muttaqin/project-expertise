@@ -183,6 +183,12 @@ yang sudah pernah dicoba.
 | ✅ | **PT-E-017** penaut dilatih di RUANG DETEKSI | **DIKONFIRMASI** | **F1 0,1492 -> 0,3788** (domain shift +15,88 pp, GNN +7,08 pp) |
 | ✅ | **PT-E-018** ensemble C1+C2 | **DIKONFIRMASI** | **0,7208 -> 0,7464** (+2,56 pp, CI [+0,52; +4,53]) |
 | ✅ | **PT-E-019** gabungan end-to-end | **DIPALSUKAN (klaim berlipat)** | +0,87 pp lawan jumlah 1,74 pp; cakupan 29,3% -> 51,2% |
+| ✅ | **PT-E-020** linker global strict DAMIMAS | **NAIK** | F1 test 0,4704; cakupan terdeteksi 64,0%; cakupan semua 47,84% |
+
+PT-E-020 menyimpan kepala terpisah yang seluruhnya dipilih di VAL. Kepala
+association terbaik tidak sama dengan kepala coverage atau hitung-pool; MAE
+pool terbaik 2,880 tetap kalah dari regresor counting sekitar 1,00, sehingga
+jumlah klaster hanya dijadikan fitur hilir.
 
 ## PT-E-019: kedua perbaikan saling menggantikan, bukan menambah
 
