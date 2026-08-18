@@ -277,3 +277,72 @@ otomatis sudah dihentikan permanen sejak 2026-08-12 — **jadi ini harus dijalan
 manual dan belum dilakukan.** Yang sudah aman di git: seluruh dump probabilitas
 (`pt_e_014_prob_*.npz`, `pt_e_016/017_skor_test.npz`), sehingga angka bisa
 dihitung ulang tanpa bobot.
+
+---
+
+# Sesi 2026-08-18 (lanjutan) — DAMIMAS, mengejar target 0,80
+
+Goal sesi: mengambil alih training RF-DETR yang sedang berjalan dan melanjutkan
+ke target `IDEA.md` 0,80. **Target TIDAK tercapai.** Dihentikan atas keputusan
+pemilik repo pada 0,7439.
+
+| | Langkah | Status | Hasil |
+|---|---|---|---|
+| ✅ | **PT-E-029** ensemble kelas DAMIMAS | **DIKONFIRMASI** | 0,7378 -> **0,7439** (+1,67 pp vs champion pilihan-VAL, CI95 [-0,15; +3,55]) |
+| ✅ | **PT-E-030** CORAL vs CORN | **CORAL DIPALSUKAN** | CORAL 0,3305 lawan CORN **0,6983**, resep identik |
+| ✅ | **PT-E-032** RF-DETR 60 epoch | **selesai** | puncak val ema_mAP50 **epoch 5 = 0,5830**; epoch 59 = 0,4885 (-9,46 pp) |
+| ❌ | ~~PT-E-031 spesialis batas~~ | **tidak dijalankan** | task 3 CORN sudah dilatih tepat di {B3,B4}; skrip disimpan, belum dieksekusi |
+| ⏳ | Bagged ensemble selection (Caruana 2004) | **belum** | obat terdokumentasi untuk overfit himpunan seleksi; nol GPU |
+
+## Angka akhir klasifikasi per-tandan DAMIMAS
+
+    champion terdokumentasi   0,7378
+    ensemble terkunci         0,7439   (1-view 0,6590 · multi 0,7742)
+    target IDEA.md            0,8000   -> selisih -5,6 pp
+
+## Hambatan yang teridentifikasi: VAL 86 pohon terlalu kecil untuk seleksi
+
+Empat kali dalam satu sesi VAL menyesatkan, dan polanya sama setiap kali --
+naik di VAL, tidak bertransfer ke TEST:
+
+| keputusan | VAL | TEST |
+|---|---|---|
+| `tau` ordinal per-nview | 0,7595 (terbaik) | 0,7318 (turun) |
+| menambah `corn224` ke ensemble | +1,31 pp | -0,30 pp |
+| stacking seluruh model (sesi sebelumnya) | 0,7312 | 0,7226 |
+| RF-DETR 60 epoch | butuh 60 epoch untuk membuktikan puncaknya di epoch 5 | -9,46 pp |
+
+Konsekuensinya mengikat: **setiap kenaikan di bawah ~2 pp tidak bisa dibedakan
+dari derau seleksi pada split ini.** Menambah varian lagi akan menaikkan angka
+VAL tanpa satu pun bertransfer.
+
+Dua jalan yang tersisa, keduanya menyerang varians seleksi dan bukan menambah
+model:
+
+1. **Bagged ensemble selection** (Caruana et al., ICML 2004) -- seleksi maju
+   dengan pengembalian, di banyak bootstrap himpunan hillclimb, bobot dijumlahkan.
+   Nol GPU. Ini yang paling murah dan belum dijalankan.
+2. **Prediksi out-of-fold di gabungan 641 train + 86 val** (K-fold, tiap anggota
+   dilatih ulang per fold) -- ~8x lebih banyak titik seleksi. Mahal, tetapi satu-
+   satunya yang membuat perbaikan berikutnya benar-benar bertahan ke TEST.
+
+## Kaveat protokol yang wajib dibaca sebelum mengutip 0,7439
+
+Seleksi ensemble dijalankan **beberapa kali dengan kumpulan anggota berbeda, dan
+TEST dilihat setiap kali**. Meski tiap run mengunci konfigurasi dari VAL, urutan
+keputusannya sudah terinformasi TEST. **Angka yang bersih adalah konfigurasi
+terkunci PERTAMA, 0,7439** (`convnext224 + klasik + set_transformer`, aturan
+ordinal). Varian dengan `corn224` (test 0,7409) bersifat eksploratif dan tidak
+boleh diklaim sebagai "hasil terbaik".
+
+## Catatan operasional
+
+- Jadwal RF-DETR 60 epoch **terlalu panjang** untuk 641 pohon train. Pakai ~15
+  epoch + patience, dan JANGAN memilih checkpoint terakhir (PT-E-032).
+- `runs/rfdetr_l_damimas_s42/` berukuran **9 GB** (12 checkpoint 566 MB + turunan
+  inferensi). Yang perlu dipertahankan: `checkpoint_best_ema.pth`,
+  `checkpoint_best_regular.pth`, `checkpoint_best_total.pth`.
+- Loop sync otomatis 60 menit aktif sejak sesi ini (`~/.config/pe-sync/sync.sh`),
+  commit+push GitHub dan unggah bobot ke `mz-muttaqin/project-expertise-bobot`.
+  Ia memakai `git add -A`, jadi ia juga ikut men-commit pekerjaan sesi lain yang
+  sedang berjalan.

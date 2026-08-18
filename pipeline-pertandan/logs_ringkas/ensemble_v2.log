@@ -1,0 +1,71 @@
+selaras: val 919 tandan, test 1316 tandan
+  satu-tampak val 212 / test 346
+duplikat: moe == klasik -> dibuang
+model                      val    test  test 1-view  test multi
+convnext224             0.7378  0.7272       0.6416      0.7577
+convnext128             0.7203  0.7295       0.6387      0.7619
+klasik                  0.7301  0.7166       0.6098      0.7546
+set_transformer         0.7269  0.7386       0.6474      0.7711
+corn224                 0.7095  0.6983       0.6243      0.7247
+stacking_semua(referensi)  0.7312  0.7226
+seleksi maju serakah di VAL...
+  + convnext224          val 0.7378  (1 anggota)
+  + klasik               val 0.7399  (2 anggota)
+  + corn224              val 0.7497  (3 anggota)
+  CV-dalam-VAL (5 fold, tingkat pohon):
+    argmax               0.7497
+    ordinal              0.7519   <- terpilih
+    ordinal_per_nview    0.7432
+  fit VAL penuh: argmax 0.7497 | ordinal 0.7639 | per-nview 0.7671
+  -> aturan dikunci: ordinal
+=== TEST (dibuka sekali) ===
+{
+ "subset": [
+  "convnext224",
+  "klasik",
+  "corn224"
+ ],
+ "bobot": [
+  0.3333333333333333,
+  0.3333333333333333,
+  0.3333333333333333
+ ],
+ "bobot_pertama": 1.0,
+ "aturan": "ordinal",
+ "tau": [
+  0.3,
+  1.4,
+  2.5
+ ],
+ "tau_1view": [
+  0.2,
+  1.7,
+  2.5
+ ],
+ "tau_multi": [
+  0.3,
+  1.5,
+  2.5
+ ],
+ "val": 0.7639,
+ "test": 0.7409,
+ "test_1view": 0.6676,
+ "test_multi": 0.767,
+ "macro_f1_test": 0.7048,
+ "vs_champion": {
+  "champion": "convnext224",
+  "champion_test": 0.7272,
+  "delta_pp": 1.37,
+  "ci95": [
+   -0.52,
+   3.33
+  ],
+  "P(delta>0)": 0.902,
+  "n_pohon": 124
+ },
+ "acuan": {
+  "champion_strict_pipeline_md": 0.7378,
+  "stacking_semua": 0.7272,
+  "target_IDEA": 0.8
+ }
+}

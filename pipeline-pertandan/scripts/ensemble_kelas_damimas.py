@@ -59,7 +59,9 @@ ANGGOTA = {
     "set_transformer": ("damimas_set_transformer_convnext_tiny_s42_pred.npz", "prob"),
     # PT-E-030: satu-satunya anggota berloss ORDINAL, dan satu-satunya yang
     # TIDAK berjangkar pada C1 -- dua alasan galatnya bisa terdekorelasi.
-    "coral224":        ("damimas_classifier_coral_s42_pred.npz", "bunch_prob"),
+    # CORAL DIBUANG (test 0,3305): weight-sharing-nya mengurung kelas tengah,
+    # maks P(B2)=0,291. CORN dengan resep identik memberi 0,6983.
+    "corn224":         ("damimas_classifier_corn_s42_pred.npz", "bunch_prob"),
 }
 PEMBANDING = {
     "stacking_semua(referensi)": ("damimas_ensemble_classifier_all_pred.npz", "bunch_prob"),

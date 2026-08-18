@@ -1,0 +1,18 @@
+potongan (17445, 224, 224, 3), split {'test': np.int64(2461), 'train': np.int64(13227), 'val': np.int64(1757)}
+  epoch 1/12 loss 0.3131 (118s)
+  epoch 2/12 loss 0.2559 (174s)
+  epoch 3/12 loss 0.2147 (231s)
+  epoch 4/12 loss 0.1567 (288s)
+  epoch 5/12 loss 0.0998 (345s)
+  epoch 6/12 loss 0.0586 (402s)
+  epoch 7/12 loss 0.0343 (459s)
+  epoch 8/12 loss 0.0219 (516s)
+  epoch 9/12 loss 0.0123 (574s)
+  epoch 10/12 loss 0.0093 (632s)
+  epoch 11/12 loss 0.0073 (682s)
+  epoch 12/12 loss 0.0059 (729s)
+  val: 919 tandan | selaras dengan bank lain: True
+  val akurasi per-tandan (argmax): 0.7095
+  test: 1316 tandan | selaras dengan bank lain: True
+  test akurasi per-tandan (argmax): 0.6983
+-> /workspace/project-expertise/pipeline-pertandan/results/damimas_classifier_corn_s42_pred.npz  (753s)

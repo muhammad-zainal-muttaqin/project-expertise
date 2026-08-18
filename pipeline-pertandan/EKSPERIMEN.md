@@ -1622,3 +1622,109 @@ hanya 0,7742. Target 0,80 menuntut **keduanya** naik, bukan salah satu.
 **Sumber** — `scripts/ensemble_kelas_damimas.py` ·
 `results/pt_e_029_ensemble_kelas_damimas.json` ·
 dump `results/pt_e_029_ensemble_kelas_damimas_pred.npz`
+
+---
+
+## PT-E-030 — CORAL runtuh, CORN tidak: +36,8 pp dari mengganti loss ordinal (2026-08-18)
+
+**Hipotesis** — Tidak satu pun anggota classifier DAMIMAS memakai loss ordinal,
+padahal B1<B2<B3<B4 berurutan dan PT-E-015 (korpus 953) mengukur CORAL memberi
++2,35 pp. Anggota ordinal juga yang paling mungkin TERDEKORELASI: seluruh anggota
+DAMIMAS berjangkar C1 (`mode_c1="residual"`), model ini tidak.
+
+**Yang memalsukan** — loss ordinal tidak menghasilkan anggota yang berguna.
+
+**Cara** — dua sel, resep IDENTIK (convnext_tiny, potongan 224 px, 12 epoch,
+lr 2e-4, batch 48, seed 42, `features.0..3` beku). Satu-satunya yang berbeda:
+kepala loss.
+
+**Hasil (test DAMIMAS, 1.316 tandan):**
+
+| loss | val | test |
+|---|---|---|
+| CORAL (Cao et al. 2020, arXiv:1901.07884) | 0,3373 | **0,3305** |
+| CORN (Shi et al. 2023, arXiv:2111.08851) | 0,7095 | **0,6983** |
+
+**+36,8 pp hanya dari mengganti loss.** Tebak acak 0,25; kelas mayoritas B3
+sendirian 0,52 -- jadi CORAL bukan "lebih buruk", ia RUSAK.
+
+**Kenapa CORAL runtuh, dan ini bukan bug melainkan sifatnya.** Diagnosis dari
+dump prediksi: model memilih B4 untuk 966 dari 1.316 tandan, dan kelas tengah
+terkurung -- **maks P(B2) = 0,291, maks P(B3) = 0,301**. Sebabnya struktural.
+CORAL memakai SATU vektor bobot bersama, jadi seluruh citra dipetakan ke satu
+skor skalar `s` dan tiga ambang hanya menggeser bias:
+
+    P(y = tengah) = sigma(s + b0) - sigma(s + b1)
+
+Nilai maksimumnya dibatasi jarak antar-bias. Saat bias menyempit selama training,
+kelas tengah tidak bisa menang berapa pun citranya. Ini persis kelemahan yang
+dilaporkan penulis CORN sendiri: "CORAL performs noticeably worse than OR-NN on
+the balanced MORPH-2 and AFAD datasets... likely due to its weight-sharing
+constraint limiting expressiveness". Di DAMIMAS ia muncul dalam bentuk ekstrem.
+
+CORN menghapus kekangan itu: tiap task punya bobot sendiri, dan konsistensi rank
+datang dari aturan rantai `P(y>r_k) = prod_{j<=k} f_j` yang otomatis monoton
+karena tiap faktor di [0,1]. Subset latihnya bersarang: `S_1` = semua,
+`S_k = {y > r_{k-1}}`.
+
+**Catatan yang layak dicatat untuk arah berikutnya.** Task 3 CORN dilatih HANYA
+di `{B3, B4}` -- yaitu batas yang menyumbang 45% galat ensemble (analisis
+PT-E-029). Jadi struktur bersyarat CORN sudah menjawab sebagian rancangan
+"spesialis batas" yang sempat disiapkan di `scripts/spesialis_batas_damimas.py`,
+tetapi dengan dasar teori dan tanpa parameter campuran tambahan. Spesialis
+terpisah karena itu TIDAK dijalankan; ia baru masuk akal kalau CORN terbukti
+belum menyerap batas B2|B3.
+
+**Putusan** — **DIKONFIRMASI untuk CORN, DIPALSUKAN untuk CORAL di korpus ini.**
+CORN 0,6983 masih di bawah anggota terbaik (set_transformer 0,7386), jadi ia
+bukan champion tunggal; nilainya ada di keragaman ensemble.
+
+**Kaveat magnitudo, jangan dibesarkan.** Paper CORN melaporkan gain atas CORAL
+yang MODEST di dataset seimbang (MORPH-2 MAE 2,99 -> 2,98) dan jelas di lainnya
+(AFAD 2,99 -> 2,81). Selisih +36,8 pp di sini bukan "CORN 36 pp lebih baik dari
+CORAL" secara umum -- ia besar karena CORAL kebetulan runtuh total pada
+konfigurasi ini (backbone sebagian beku, 12 epoch, 4 kelas dengan dua kelas
+tengah). Yang bisa diklaim: pada resep ini, weight-sharing CORAL fatal.
+
+**Sumber** — `scripts/classifier_coral_damimas.py` (mendukung `--loss
+coral|corn`) · `results/damimas_classifier_{coral,corn}_s42.json` ·
+dump `results/damimas_classifier_{coral,corn}_s42_pred.npz` ·
+bobot `runs/classifier_{coral,corn}_damimas_s42/best.pt`
+
+---
+
+## PT-E-032 — RF-DETR DAMIMAS memuncak di epoch 5, lalu memburuk 55 epoch (2026-08-18)
+
+**Konteks** — Training RF-DETR-L DAMIMAS (`scripts/train_rfdetr_damimas.py`,
+default `--epochs 60`, seed 42) diambil alih sesi ini saat berjalan di epoch 27
+dan dibiarkan tuntas sampai epoch 60.
+
+**Hasil (val DAMIMAS, 86 pohon):**
+
+| epoch | 0 | 4 | **5** | 12 | 24 | 36 | 48 | 59 |
+|---|---|---|---|---|---|---|---|---|
+| val ema_mAP50 | 0,3757 | 0,5825 | **0,5830** | 0,5736 | 0,5395 | 0,5115 | 0,4887 | 0,4885 |
+
+Puncak `ema_mAP_50` di **epoch 5 = 0,5830**; puncak `mAP_50` non-EMA di epoch 13
+= 0,5780. Epoch terakhir **-9,46 pp di bawah puncak**, dan penurunannya monoton
+setelah epoch ~5 -- bukan fluktuasi.
+
+**Putusan** — jadwal 60 epoch **terlalu panjang** untuk korpus ini. 641 pohon
+train / 2.700 citra tidak menopang jadwal sepanjang itu. Checkpoint yang benar
+menurut seleksi VAL adalah `checkpoint_best_ema.pth`, tertulis pukul 12:33,
+yaitu **sekitar 6,5 dari 7 jam GPU berikutnya tidak menghasilkan apa pun yang
+dipakai**.
+
+**Konsekuensi praktis** — untuk run RF-DETR DAMIMAS berikutnya: pakai maksimal
+~15 epoch dengan patience, atau pertahankan 60 epoch HANYA kalau tujuannya
+mempelajari kurva. Jangan memilih checkpoint terakhir. Ini sejalan dengan
+`../docs/RENCANA.md` Fase 5 yang sudah mensyaratkan screening 15 epoch/patience 3
+untuk kandidat baru.
+
+**Batas klaim** — angka di atas VAL, bukan TEST; ia dipakai untuk MEMILIH
+checkpoint, jadi memang seharusnya VAL. Perbandingan terhadap baseline deteksi
+DAMIMAS (test mAP50 0,5503) belum dihitung karena butuh inferensi TEST dengan
+checkpoint terpilih.
+
+**Sumber** — `runs/rfdetr_l_damimas_s42/metrics.csv` (60 baris, ikut ter-commit
+ke `results/riwayat_epoch/`)
