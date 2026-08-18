@@ -22,6 +22,13 @@ tandan yang sama, keluar satu label `B1/B2/B3`.
 | Diagnosis yang berlaku | **kepadatan adegan (kombinatorik)**, bukan mutu detektor — [CLAUDE.md §6](CLAUDE.md) |
 | Berikutnya | modul **C3** classifier multi-tampak, lalu prior depth — [CLAUDE.md §7](CLAUDE.md) |
 
+## Sesi 2026-08-18
+
+Target `IDEA.md` 0,80 **tidak tercapai**; angka akhir 0,7439. Jaraknya sudah
+terkuantifikasi dan jalurnya menyempit -- baca
+[`docs/RINGKASAN-SESI-2026-08-18.md`](docs/RINGKASAN-SESI-2026-08-18.md) sebelum
+melanjutkan, khususnya bagian 2 (kenapa berhenti) dan 4 (pelajaran metodologis).
+
 ## Mulai dari mana
 
 1. Baca [`docs/PROPOSAL.md`](docs/PROPOSAL.md) — argumen lengkap, gerbang

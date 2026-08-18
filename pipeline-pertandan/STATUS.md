@@ -384,3 +384,5 @@ anggota paling yakin (0,5711) bahkan kalah dari merata-ratakan (0,6121) dan cuma
 **Syarat 0,80:** gerbang yang DIPELAJARI dari fitur di luar keyakinan, dilatih
 pada prediksi out-of-fold (tiap anggota dilatih ulang K kali). Itu biaya GPU dan
 belum dijalankan.
+
+**Seluruh temuan sesi ini, termasuk yang tidak punya entri `PT-E-*` sendiri, dirangkum di [`docs/RINGKASAN-SESI-2026-08-18.md`](docs/RINGKASAN-SESI-2026-08-18.md).**

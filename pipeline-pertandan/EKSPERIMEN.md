@@ -1896,3 +1896,42 @@ tersebut dijalankan.
 
 **Sumber** — `scripts/des_damimas.py` · `results/pt_e_035_des.json` ·
 dump `results/pt_e_035_des_pred.npz`
+
+---
+
+## PT-E-036 — Gerbang atas pola perselisihan juga buta (2026-08-18)
+
+**Hipotesis** — PT-E-035 mengukur keyakinan hampir buta soal siapa yang benar.
+Sisa kemungkinan tanpa GPU: sinyalnya ada di POLA, yaitu identitas siapa-bilang-apa.
+Kalau `corn224` bilang B2 sementara `convnext224` bilang B3, mungkin ada bias
+sistematis yang bisa dipelajari terlepas dari keyakinan.
+
+**Yang memalsukan** — gerbang pola tidak mengalahkan rata-rata biasa di CV.
+
+**Cara** — HistGradientBoosting kecil (200 iter, 15 daun) atas fitur yang
+seluruhnya berasal dari keluaran anggota, nol inferensi baru: kelas prediksi tiap
+anggota (one-hot, M*K), keyakinan tiap anggota (M), probabilitas rata-rata (K),
+jumlah tampak, dan ukuran mayoritas. Dievaluasi HANYA lewat CV 5-fold tingkat
+pohon di dalam VAL.
+
+**Hasil (CV di dalam VAL):**
+
+| | akurasi |
+|---|---|
+| rata-rata probabilitas | **0,7421** |
+| gerbang pola | 0,7062 (**-3,59 pp**) |
+
+**Putusan** — **DIPALSUKAN.** Karena CV tidak menunjukkan keunggulan, **TEST
+TIDAK DIBUKA** -- membukanya hanya akan menambah satu kesempatan peeking tanpa
+dasar. Ini sekaligus memperbaiki kebiasaan sesi ini yang sempat melihat TEST
+berulang kali saat menyeleksi ensemble (dicatat sebagai kaveat di PT-E-029).
+
+**Arti gabungan dengan PT-E-034/035.** Tiga cara membaca "siapa yang benar" sudah
+diuji dan ketiganya gagal: bobot global (PT-E-034, plafon curang 0,7523),
+keyakinan (PT-E-035, korelasi +0,1185), dan pola perselisihan (di sini, -3,59 pp).
+Sinyalnya ADA -- oracle 0,9741 di wilayah berselisih -- tetapi **tidak dapat
+dibaca dari keluaran anggota saja**. Gerbang yang bisa membacanya harus melihat
+CITRA, bukan hanya prediksi, dan harus dilatih pada prediksi out-of-fold. Itu
+biaya GPU.
+
+**Sumber** — `scripts/gate_pola_damimas.py` · `results/pt_e_036_gate.json`
