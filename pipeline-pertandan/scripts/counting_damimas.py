@@ -503,7 +503,11 @@ def main() -> int:
     args.keluaran.parent.mkdir(parents=True, exist_ok=True)
     args.keluaran.write_text(json.dumps(hasil, indent=2, ensure_ascii=False))
     args.model_out.parent.mkdir(parents=True, exist_ok=True)
-    joblib.dump({"models": fitted, "kepala": kepala, "model_total": model_total,
+    # Simpan kepala sebagai dict primitif. Menyimpan dataclass saat skrip
+    # dieksekusi langsung akan merekam tipe ``__main__.KepalaKelas`` dan model
+    # tidak bisa dimuat dari proses inferensi lain.
+    joblib.dump({"models": fitted, "kepala": serial_kepala(kepala),
+                 "model_total": model_total,
                  "total_kalibrasi": (skala_total, bias_total),
                  "rekonsiliasi": {"mode": rek[1], "beta": rek[2],
                                    "alokasi": rek[3], "proyeksi": rek[4]},

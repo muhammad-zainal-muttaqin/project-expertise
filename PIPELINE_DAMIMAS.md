@@ -41,10 +41,10 @@ DAMIMAS dan kepala baru yang sudah dipilih tanpa test.
 | Deteksi test mAP50 | 0,5503 | training khusus DAMIMAS berjalan | — |
 | Deteksi test mAP50-95 | 0,2604 | training khusus DAMIMAS berjalan | — |
 | Recall fisik oracle-link @ conf 0,01 | 0,9704 | 0,9704 | baseline plafon |
-| Klasifikasi per-tandan | 0,7242 | **0,7462** | **+2,20 pp** |
-| Macro-F1 per-tandan | 0,7014 | **0,7270** | **+2,56 pp** |
-| Akurasi tandan multi-tampak | — | **0,7825** | bottleneck mendekati 80% |
-| Akurasi tandan satu-tampak | — | 0,6445 | bottleneck utama kelas |
+| Klasifikasi per-tandan (kotak GT, link oracle) | 0,7242 | **0,7462** | **+2,20 pp** |
+| Macro-F1 per-tandan (kotak GT, link oracle) | 0,7014 | **0,7270** | **+2,56 pp** |
+| Akurasi tandan multi-tampak (link oracle) | — | **0,7825** | bottleneck mendekati 80% |
+| Akurasi tandan satu-tampak (link oracle) | — | 0,6445 | bottleneck utama kelas |
 | Counting macro MAE | Ridge historis 1,0542 (semua varietas) | **1,0039** | konteks, bukan selisih berpasangan |
 | Counting class ±1 | Ridge historis 60,64% (semua varietas) | **75,79%** | konteks, bukan selisih berpasangan |
 
@@ -64,6 +64,9 @@ Campuran saat ini:
 
 Di test, recall B1/B2/B3/B4 menjadi **75,63 / 61,13 / 82,46 / 66,54%**.
 Semua kelas naik terhadap kepala C1 lama; gain tidak dibeli dengan merusak B2.
+Angka modul ini belum boleh disebut end-to-end: potongannya berasal dari kotak
+GT dan pengelompokan view memakai identitas oracle. Evaluasi deploy baru sah
+setelah detektor dan linker DAMIMAS baru dipasang.
 
 ## Urutan Kerja Berikutnya
 
