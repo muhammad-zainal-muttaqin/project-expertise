@@ -45,12 +45,14 @@ DAMIMAS dan kepala baru yang sudah dipilih tanpa test.
 | Macro-F1 per-tandan (kotak GT, link oracle) | 0,7014 | **0,7270** | **+2,56 pp** |
 | Akurasi tandan multi-tampak (link oracle) | — | **0,7825** | bottleneck mendekati 80% |
 | Akurasi tandan satu-tampak (link oracle) | — | 0,6445 | bottleneck utama kelas |
-| Counting macro MAE | Ridge historis 1,0542 (semua varietas) | **1,0039** | konteks, bukan selisih berpasangan |
-| Counting class ±1 | Ridge historis 60,64% (semua varietas) | **75,79%** | konteks, bukan selisih berpasangan |
+| Counting macro MAE | 1,0236 (single model, dipilih di val) | **1,0039** | **−0,0197** |
+| Counting class ±1 | 74,61% (single model, dipilih di val) | **75,79%** | **+1,18 pp** |
+| Counting tree ±1 | **37,80%** (single model) | 32,28% | ensemble belum menang di metrik ini |
 
-Catatan: angka counting historis memakai semua varietas sehingga tidak boleh
-dipakai sebagai klaim efek berpasangan. Ia hanya memberi skala. Pembanding
-DAMIMAS yang identik akan dihitung dari fitur yang sama.
+Pembanding counting di tabel memakai fitur 1.683-dim dan protokol split yang
+sama. Ensemble menang pada macro-MAE dan akurasi sel-kelas, tetapi belum pada
+akurasi gabungan empat kelas per pohon. Karena itu counting belum dianggap
+selesai dan akan menerima fitur dari detektor kedua/ketiga.
 
 ## Konfigurasi Klasifikasi yang Sedang Dikunci
 
