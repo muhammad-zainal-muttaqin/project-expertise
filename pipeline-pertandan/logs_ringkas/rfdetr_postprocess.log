@@ -1,0 +1,39 @@
+$ /workspace/project-expertise/.venv/bin/python /workspace/project-expertise/scripts/convert_rfdetr_checkpoints.py --run pipeline-pertandan/runs/rfdetr_l_damimas_s42 --template pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_best_ema.pth --overwrite
+checkpoint_14.ckpt -> checkpoint_14_infer.pth
+checkpoint_19.ckpt -> checkpoint_19_infer.pth
+checkpoint_24.ckpt -> checkpoint_24_infer.pth
+checkpoint_29.ckpt -> checkpoint_29_infer.pth
+checkpoint_34.ckpt -> checkpoint_34_infer.pth
+checkpoint_39.ckpt -> checkpoint_39_infer.pth
+checkpoint_4.ckpt -> checkpoint_4_infer.pth
+checkpoint_44.ckpt -> checkpoint_44_infer.pth
+checkpoint_49.ckpt -> checkpoint_49_infer.pth
+checkpoint_54.ckpt -> checkpoint_54_infer.pth
+checkpoint_59.ckpt -> checkpoint_59_infer.pth
+checkpoint_9.ckpt -> checkpoint_9_infer.pth
+last.ckpt -> last_infer.pth
+$ /workspace/project-expertise/.venv/bin/python /workspace/project-expertise/scripts/seleksi_rfdetr_damimas.py --tag rfdetr_l_damimas_selected --output /workspace/project-expertise/pipeline-pertandan/results/rfdetr_l_damimas_selected.json --checkpoint best_ema=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_best_ema.pth --checkpoint best_regular=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_best_regular.pth --checkpoint checkpoint_14=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_14_infer.pth --checkpoint checkpoint_19=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_19_infer.pth --checkpoint checkpoint_24=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_24_infer.pth --checkpoint checkpoint_29=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_29_infer.pth --checkpoint checkpoint_34=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_34_infer.pth --checkpoint checkpoint_39=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_39_infer.pth --checkpoint checkpoint_44=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_44_infer.pth --checkpoint checkpoint_49=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_49_infer.pth --checkpoint checkpoint_4=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_4_infer.pth --checkpoint checkpoint_54=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_54_infer.pth --checkpoint checkpoint_59=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_59_infer.pth --checkpoint checkpoint_9=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_9_infer.pth --checkpoint last=pipeline-pertandan/runs/rfdetr_l_damimas_s42/last_infer.pth --checkpoint best_total=pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_best_total.pth
+creating index...
+index created!
+VAL checkpoint best_ema: /workspace/project-expertise/pipeline-pertandan/runs/rfdetr_l_damimas_s42/checkpoint_best_ema.pth
+/workspace/project-expertise/.venv/lib/python3.12/site-packages/rfdetr/models/weights.py:258: FutureWarning: target=True is deprecated since `v0.8`; use `TargetMode.ARGS_REMAP` instead. Will be removed in `v1.0`.
+  @deprecated(target=True, args_mapping={"train_config": None}, deprecated_in="1.7.0", remove_in="1.9.0", num_warns=-1)
+/workspace/project-expertise/.venv/lib/python3.12/site-packages/rfdetr/detr.py:377: FutureWarning: The `RFDETRBase` was deprecated since v1.7.0. It will be removed in v2.0.0.
+  getattr(variant_obj, "__name__", symbol): variant_obj
+/workspace/project-expertise/.venv/lib/python3.12/site-packages/rfdetr/detr.py:377: FutureWarning: The `RFDETRLargeDeprecated` was deprecated since v1.7.0. It will be removed in v2.0.0.
+  getattr(variant_obj, "__name__", symbol): variant_obj
+/workspace/project-expertise/.venv/lib/python3.12/site-packages/rfdetr/detr.py:377: FutureWarning: The `RFDETRSegPreview` was deprecated since v1.7.0. It will be removed in v2.0.0.
+  getattr(variant_obj, "__name__", symbol): variant_obj
+[2026-08-18 19:22:19] [WARNING] rf-detr - Using a different number of positional encodings than DINOv2, which means we're not loading DINOv2 backbone weights. This is not a problem if finetuning a pretrained RF-DETR model.
+[2026-08-18 19:22:19] [WARNING] rf-detr - Using patch size 16 instead of 14, which means we're not loading DINOv2 backbone weights. This is not a problem if finetuning a pretrained RF-DETR model.
+[2026-08-18 19:22:20] [WARNING] rf-detr - load_pretrain_weights: args.num_queries absent; inferred ckpt_num_queries=300 from tensor rows 3900 ÷ ckpt_group_detr=13.
+[2026-08-18 19:22:31] [WARNING] rf-detr - Model is not optimized for inference. Latency may be higher than expected. For full GPU throughput (e.g. ~8x on T4 via FP16 Tensor Cores), call model.optimize_for_inference(dtype=torch.float16).
+Traceback (most recent call last):
+  File "/workspace/project-expertise/scripts/seleksi_rfdetr_damimas.py", line 136, in <module>
+    main()
+  File "/workspace/project-expertise/scripts/seleksi_rfdetr_damimas.py", line 72, in main
+    pred = IR.infer_split(model, args.dataset, "val", args.batch,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/scripts/infer_rfdetr_damimas.py", line 63, in infer_split
+    raise RuntimeError(
+RuntimeError: class_id di luar 0..3 pada /workspace/SawitMVC-YOLO-Damimas/images/val/DAMIMAS_A21B_0002_1.jpg: [0 1 2 3 4]
