@@ -360,3 +360,27 @@ boleh diklaim sebagai "hasil terbaik".
   commit+push GitHub dan unggah bobot ke `mz-muttaqin/project-expertise-bobot`.
   Ia memakai `git add -A`, jadi ia juga ikut men-commit pekerjaan sesi lain yang
   sedang berjalan.
+
+
+## Penutup sesi 2026-08-18: target 0,80 TIDAK tercapai, jaraknya terkuantifikasi
+
+Angka akhir **0,7439**. Seluruh metode praktis yang dicoba mendarat di pita
+**0,734-0,744** (serakah, serakah+corn, bagged 200x, DES conf-weighted).
+
+Yang membuat kegagalan ini berguna: jaraknya sekarang terukur, bukan misterius.
+
+| | |
+|---|---|
+| wilayah anggota SEPAKAT (64,7%) | 0,8192 |
+| wilayah anggota BERSELISIH (35,3%) | 0,6121 |
+| oracle di wilayah berselisih | 0,9741 |
+| korelasi keyakinan vs benar | **+0,1185** |
+
+Untuk 0,80 total, wilayah berselisih harus naik ke **0,765** (+15,3 pp). Sinyalnya
+ADA (oracle 0,9741) tetapi **tidak terbaca dari keyakinan anggota** -- memilih
+anggota paling yakin (0,5711) bahkan kalah dari merata-ratakan (0,6121) dan cuma
++2,8 pp di atas menebak acak.
+
+**Syarat 0,80:** gerbang yang DIPELAJARI dari fitur di luar keyakinan, dilatih
+pada prediksi out-of-fold (tiap anggota dilatih ulang K kali). Itu biaya GPU dan
+belum dijalankan.

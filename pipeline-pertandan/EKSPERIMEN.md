@@ -1838,3 +1838,61 @@ antar-anggota, ketidaksepakatan antar-anggota) yang parameternya sedikit.
 
 **Sumber** — dihitung langsung dari dump bank di `results/damimas_*_pred.npz`;
 angka tereproduksi dengan potongan skrip di entri ini dan `PT-E-033`.
+
+---
+
+## PT-E-035 — DES berbasis keyakinan gagal, dan sebabnya terukur (2026-08-18)
+
+**Hipotesis** — PT-E-034 menunjukkan sisa 12,2 pp hanya bisa diambil penggabung
+BERGANTUNG-MASUKAN. Varian termurah dari keluarga itu memakai keyakinan sebagai
+sinyal gerbang: per tandan, percayai anggota yang paling yakin.
+
+**Yang memalsukan** — DES berbasis keyakinan tidak mengalahkan rata-rata biasa.
+
+**Cara** — empat varian berparameter 0-1, dipilih lewat CV 5-fold tingkat pohon
+di dalam VAL (bukan fit VAL). Rancangan sengaja dibuat sekaku mungkin karena
+`moe_classifier` DAMIMAS sudah pernah merosot jadi "pilih klasik saja".
+
+**Hasil (test):** varian B (bobot ~ conf^T, T=4 dipilih CV) memberi **0,7340**,
+yaitu **-0,68 pp** terhadap PT-E-029 (CI95 [-2,05; +0,68], P=0,153).
+
+**Putusan** — **DIPALSUKAN.**
+
+**Sebabnya terukur, dan ini temuan utamanya.** Populasi test terbelah:
+
+| wilayah | porsi | akurasi |
+|---|---|---|
+| seluruh anggota SEPAKAT | 64,7% | 0,8192 |
+| anggota BERSELISIH | 35,3% | 0,6121 |
+
+Di wilayah berselisih -- tempat seluruh 12,2 pp itu berada:
+
+| strategi | akurasi |
+|---|---|
+| oracle (ada anggota yang benar) | **0,9741** |
+| rata-rata probabilitas (sekarang) | 0,6121 |
+| pilih anggota paling YAKIN | 0,5711 |
+| pilih anggota ACAK | 0,5435 |
+
+**Keyakinan hampir tidak membawa informasi tentang siapa yang benar**: hanya
++2,8 pp di atas menebak acak, korelasi confidence-vs-benar **+0,1185**, rata-rata
+keyakinan saat BENAR 0,6905 lawan saat SALAH 0,6502. Memilih yang paling yakin
+bahkan LEBIH BURUK daripada merata-ratakan.
+
+**Aritmetika jarak ke 0,80.** Dengan wilayah sepakat terkunci di 0,8192:
+
+    0,647 x 0,8192 + 0,353 x X = 0,80   ->   X = 0,765
+
+Wilayah berselisih harus naik dari 0,6121 ke 0,765, yaitu **+15,3 pp**, dan
+gerbangnya harus menebak anggota yang benar dengan ~76% ketepatan padahal
+keyakinan hanya mencapai 57%. Oracle 0,9741 memastikan sinyalnya ADA; yang tidak
+ada adalah cara membacanya dari keluaran anggota saja.
+
+**Syarat yang tersisa untuk 0,80, dan biayanya.** Gerbang harus DIPELAJARI dari
+fitur di luar keyakinan, dan supaya tidak mengulang kegagalan `moe_classifier` ia
+butuh prediksi OUT-OF-FOLD -- artinya tiap anggota dilatih ulang K kali. Itu
+biaya GPU, dan sesi ini dihentikan atas keputusan pemilik repo sebelum langkah
+tersebut dijalankan.
+
+**Sumber** — `scripts/des_damimas.py` · `results/pt_e_035_des.json` ·
+dump `results/pt_e_035_des_pred.npz`
