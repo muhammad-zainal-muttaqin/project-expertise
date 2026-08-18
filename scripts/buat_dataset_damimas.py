@@ -106,7 +106,8 @@ def main() -> None:
         }
 
     args.keluaran.mkdir(parents=True, exist_ok=True)
-    with (args.keluaran / "split_manifest.csv").open("w", encoding="utf-8", newline="") as f:
+    manifest_keluar = args.keluaran / "split_manifest.csv"
+    with manifest_keluar.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
@@ -131,6 +132,7 @@ def main() -> None:
         "sumber": str(args.sumber.resolve()),
         "manifest_sumber": str(args.manifest.resolve()),
         "sha256_manifest_sumber": hashlib.sha256(args.manifest.read_bytes()).hexdigest(),
+        "sha256_manifest_keluaran": hashlib.sha256(manifest_keluar.read_bytes()).hexdigest(),
         "split": statistik,
         "catatan": ("split pohon dipertahankan dari new_split kanonik; citra dan "
                      "label adalah symlink read-only secara semantik ke dataset sumber"),

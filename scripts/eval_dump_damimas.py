@@ -140,12 +140,14 @@ def nilai_coco(coco: COCO, paths: list[Path], pred: dict[str, np.ndarray]):
     ev = COCOeval(coco, coco.loadRes(det), "bbox")
     ev.evaluate(); ev.accumulate(); ev.summarize()
     precision = ev.eval["precision"]
-    ap50 = {}
+    ap50, ap5095 = {}, {}
     for k, nama in enumerate(NAMA):
-        x = precision[0, :, k, 0, 2]
-        ap50[nama] = float(x[x > -1].mean()) if (x > -1).any() else 0.0
+        x50 = precision[0, :, k, 0, 2]
+        x = precision[:, :, k, 0, 2]
+        ap50[nama] = float(x50[x50 > -1].mean()) if (x50 > -1).any() else 0.0
+        ap5095[nama] = float(x[x > -1].mean()) if (x > -1).any() else 0.0
     return {"mAP50_95": float(ev.stats[0]), "mAP50": float(ev.stats[1]),
-            "AP50_per_kelas": ap50}
+            "AP50_per_kelas": ap50, "AP50_95_per_kelas": ap5095}
 
 
 def main() -> None:

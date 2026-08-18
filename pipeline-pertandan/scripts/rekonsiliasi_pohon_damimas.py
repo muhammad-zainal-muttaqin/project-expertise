@@ -37,6 +37,7 @@ SUB = Path(__file__).resolve().parents[1]
 KELAS = ("B1", "B2", "B3", "B4")
 sys.path.insert(0, str(Path(__file__).parent))
 import counting_damimas as CD  # noqa: E402
+import stacker_damimas as SD  # noqa: E402
 
 
 def metrik(y: np.ndarray, yh: np.ndarray) -> dict:
@@ -120,8 +121,9 @@ def tugas_kuota(prob: np.ndarray, kuota: np.ndarray) -> np.ndarray:
 
 
 def prediksi_global(prob: np.ndarray, trees: np.ndarray,
-                    count_by_tree: dict[str, np.ndarray], cfg: dict) -> np.ndarray:
-    out = prob.argmax(1)
+                    count_by_tree: dict[str, np.ndarray], cfg: dict,
+                    aturan_dasar: str, tau_dasar) -> np.ndarray:
+    out = SD.prediksi_prob(prob, aturan_dasar, tau_dasar)
     if cfg["mode"] == "identity":
         return out
     for tree in np.unique(trees):
@@ -136,7 +138,10 @@ def prediksi_global(prob: np.ndarray, trees: np.ndarray,
         elif cfg["mode"] == "prior_lunak":
             rasio = (target + cfg["alpha"]) / (dasar + cfg["alpha"])
             skor = np.log(p) + cfg["gamma"] * np.log(np.clip(rasio, 1e-6, 1e6))
-            out[idx] = skor.argmax(1)
+            skor -= skor.max(1, keepdims=True)
+            q = np.exp(skor)
+            q /= np.maximum(q.sum(1, keepdims=True), 1e-9)
+            out[idx] = SD.prediksi_prob(q, aturan_dasar, tau_dasar)
         else:
             raise ValueError(cfg["mode"])
     return out
@@ -167,6 +172,10 @@ def main() -> None:
     args = ap.parse_args()
 
     z = np.load(args.classifier, allow_pickle=True)
+    info_stacker = json.loads(
+        (SUB / "results" / "damimas_stacker_pertandan.json").read_text())
+    aturan_dasar = info_stacker["stacker"]["aturan"]
+    tau_dasar = info_stacker["stacker"]["tau"]
     data = {
         s: {"prob": z[f"{s}_prob"].astype(float),
             "y": z[f"{s}_y"].astype(int),
@@ -184,22 +193,24 @@ def main() -> None:
     ranking = []
     for cfg in kandidat_cfg():
         yh = prediksi_global(data["val"]["prob"], data["val"]["tree"],
-                             count_map["val"], cfg)
+                             count_map["val"], cfg, aturan_dasar, tau_dasar)
         m = metrik(data["val"]["y"], yh)
         ranking.append((objektif(m), m["akurasi"], m["macro_f1"], cfg, m))
     ranking.sort(key=lambda x: (x[0], x[1], x[2]), reverse=True)
     _, _, _, cfg, mv = ranking[0]
 
     yh_test = prediksi_global(data["test"]["prob"], data["test"]["tree"],
-                              count_map["test"], cfg)
+                              count_map["test"], cfg, aturan_dasar, tau_dasar)
     mt = metrik(data["test"]["y"], yh_test)
-    base = {s: metrik(data[s]["y"], data[s]["prob"].argmax(1))
+    base = {s: metrik(data[s]["y"], SD.prediksi_prob(
+        data[s]["prob"], aturan_dasar, tau_dasar))
             for s in data}
     hasil = {
         "dataset": "SawitMVC-YOLO-Damimas",
         "protokol": ("classifier VAL OOF + counting VAL fit TRAIN; pilih aturan di VAL; "
                      "TEST memakai classifier terkunci dan counting refit TRAIN+VAL"),
         "objective": "0.55 accuracy + 0.40 macro-F1 + 0.05 worst-class F1",
+        "aturan_stacker_dasar": {"aturan": aturan_dasar, "tau": tau_dasar},
         "baseline_argmax": base,
         "terpilih_di_val": {"config": cfg, "metrik": mv},
         "test": mt,
@@ -210,7 +221,8 @@ def main() -> None:
     np.savez_compressed(
         args.pred_out,
         val_y=data["val"]["y"], val_yhat=prediksi_global(
-            data["val"]["prob"], data["val"]["tree"], count_map["val"], cfg),
+            data["val"]["prob"], data["val"]["tree"], count_map["val"], cfg,
+            aturan_dasar, tau_dasar),
         val_tree=data["val"]["tree"], test_y=data["test"]["y"],
         test_yhat=yh_test, test_tree=data["test"]["tree"],
     )
