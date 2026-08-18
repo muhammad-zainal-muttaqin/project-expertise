@@ -1,0 +1,5 @@
+sel,tau,val_R4,test_R4,test_R4_multi,n_tandan,n_multi
+penaut_lama__kelas_C1,"[0.25, 1.7, 2.65]",0.7247,0.72,0.7124,1268,372
+penaut_lama__kelas_ensemble,"[0.35, 1.45, 2.4]",0.7213,0.7311,0.6989,1268,372
+penaut_baru__kelas_C1,"[0.5, 1.65, 2.6]",0.7315,0.7263,0.7319,1268,649
+penaut_baru__kelas_ensemble,"[0.4, 1.45, 2.4]",0.7303,0.7287,0.7242,1268,649

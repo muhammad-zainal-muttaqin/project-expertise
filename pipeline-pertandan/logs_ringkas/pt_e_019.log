@@ -1,0 +1,31 @@
+conf 0.1 | ambang penaut dikunci dari PT-E-017: lama 0.05 baru 0.9
+anggota ensemble dimuat: ['convnext_tiny_coral', 'convnext_tiny_ce'] + C1
+membangun graf deteksi + probabilitas ensemble...
+  val: 50/96
+  val: 96 pohon
+  test: 50/141
+  test: 100/141
+  test: 139 pohon
+/workspace/project-expertise/pipeline-pertandan/scripts/gnn_penaut.py:137: UserWarning: index_reduce() is in beta and the API may change at any time. (Triggered internally at /pytorch/aten/src/ATen/native/cuda/Indexing.cu:1432.)
+  m = torch.full((len(V),), -1e4, device=s.device).index_reduce_(
+penaut LAMA (HistGB dilatih di pasangan kotak GT)...
+penaut BARU (GNN dilatih di pasangan deteksi, PT-E-017 lengan C)...
+sel                            val R4  test R4  test multi  n multi
+penaut_lama__kelas_C1          0.7247     0.72      0.7124      372
+penaut_lama__kelas_ensemble    0.7213   0.7311      0.6989      372
+penaut_baru__kelas_C1          0.7315   0.7263      0.7319      649
+penaut_baru__kelas_ensemble    0.7303   0.7287      0.7242      649
+{
+ "dasar": "penaut_lama__kelas_C1",
+ "puncak": "penaut_baru__kelas_ensemble",
+ "delta_pp": 0.87,
+ "ci95": [
+  -1.23,
+  2.93
+ ],
+ "P(delta>0)": 0.778,
+ "n_pohon": 137,
+ "kontribusi_penaut_pp": 0.63,
+ "kontribusi_kelas_pp": 1.11
+}
+-> /workspace/project-expertise/pipeline-pertandan/results/pt_e_019_gabungan.json  (344.2 s)

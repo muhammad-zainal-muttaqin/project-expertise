@@ -1177,3 +1177,76 @@ tersendiri yang belum diuji (bandingkan PT-E-017, di mana shift serupa merugikan
 0,35 AUC). Itu pekerjaan PT-E-019.
 
 **Sumber** — `scripts/ensemble_c.py` · `results/pt_e_018_ensemble.json`
+
+---
+
+## PT-E-019 — Pipeline utuh: penaut PT-E-017 + ensemble PT-E-018 (2026-08-18)
+
+**Hipotesis** — PT-E-017 (penaut ruang deteksi, F1 0,1492 -> 0,3788) dan PT-E-018
+(ensemble kelas, +2,56 pp) menyentuh pipeline lewat jalur berbeda: penaut
+menentukan BERAPA BANYAK tandan tersentuh agregasi, ensemble menentukan akurasi
+TIAP tandan yang tersentuh. Kalau keduanya nyata, efeknya berlipat.
+
+**Yang memalsukan** — gabungan tidak melebihi jumlah kontribusi masing-masing.
+
+**Cara** — faktorial 2x2 (penaut lama/baru x kelas C1/ensemble), test 953,
+139 pohon, 1.268 tandan. Ambang penaut DIKUNCI dari PT-E-017 (lama 0,05; baru
+0,90) supaya tidak disetel terhadap metrik hilir. `tau` dipas di val per sel.
+
+**Hasil (test):**
+
+| sel | val R4 | test R4 | test multi | n multi |
+|---|---|---|---|---|
+| penaut lama x C1 (kontrol) | 0,7247 | 0,7200 | 0,7124 | 372 |
+| penaut lama x ensemble | 0,7213 | **0,7311** | 0,6989 | 372 |
+| penaut baru x C1 | 0,7315 | 0,7263 | 0,7319 | **649** |
+| penaut baru x ensemble | 0,7303 | 0,7287 | 0,7242 | **649** |
+
+Acuan: PT-E-003 pipeline utuh 0,7124 · pipeline lama per-citra 0,7203 ·
+plafon oracle C1 0,7360.
+
+**Putusan** — **DIPALSUKAN pada klaim berlipat.** Kontribusi penaut +0,63 pp,
+kontribusi kelas +1,11 pp, jumlah seharusnya +1,74 pp; gabungan hanya **+0,87 pp**
+(CI95 [-1,23; +2,93], P=0,778). Sel terbaik BUKAN gabungannya melainkan
+`penaut lama x ensemble` = 0,7311.
+
+**Kenapa mereka saling menggantikan, bukan menambah.** Kolom `test multi`
+membacakan mekanismenya: ensemble MENURUNKAN akurasi pada tandan multi-tampak
+(0,7124 -> 0,6989 dengan penaut lama) tetapi menaikkan akurasi total. Jadi
+ensemble menolong terutama pada tandan SATU-tampak, tempat tidak ada agregasi
+yang bisa memperbaiki galat dan mutu probabilitas per-tampak menentukan
+segalanya. Penaut baru memindahkan tandan dari satu-tampak ke multi-tampak --
+yaitu ke wilayah tempat R4 sudah bekerja dan keunggulan ensemble encer. Keduanya
+menyembuhkan penyakit yang sama lewat pintu berbeda.
+
+**Cakupan: target IDEA.md bergerak, separuh jalan.** `n_multi` naik 372 -> 649
+dari 1.268 tandan, yaitu **29,3% -> 51,2%**. Angka 29,3% mereproduksi "29%"
+PT-E-003 tepat, jadi penyebutnya kali ini sebanding. Target IDEA.md >70% belum
+tercapai.
+
+**Kaveat yang membatasi seluruh entri ini:**
+
+1. **Sel kontrol meleset +0,76 pp** dari PT-E-003 (0,7200 lawan 0,7124). Penyebab
+   paling mungkin `results/harapan_geser.json` yang diperbaiki di sesi ini:
+   penaut lama di sini memakai prior arah putar yang benar, termasuk untuk 34
+   pohon 8-sisi yang sebelumnya mendapat nol. Artinya sebagian kenaikan sudah ada
+   di baseline yang diperbaiki, bukan dari intervensi. Ini BUKAN reproduksi persis.
+2. **Tidak ada sel yang signifikan** terhadap kontrol pada n=137 pohon.
+3. Ensemble memakai C2 yang dilatih di potongan KOTAK GT dan dipakai di potongan
+   DETEKSI. Shift itu ternyata TIDAK merusak seperti pada penaut (+1,11 pp masih
+   positif), jadi risiko yang dikhawatirkan di PT-E-018 tidak terwujud -- tapi
+   juga tidak diuji terpisah.
+
+**Yang bertahan** — tiga sel non-kontrol melewati 0,7124 (PT-E-003), dan tiga
+dari empat melewati 0,7203 (pipeline lama per-citra). Sel terbaik 0,7311 tinggal
+0,49 pp dari plafon oracle 0,7360 **dengan tautan nyata, bukan oracle**.
+
+**Arah berikutnya yang ditunjukkan hasil ini** — karena ensemble menolong di
+tandan satu-tampak dan penaut menolong dengan memindahkan tandan keluar dari
+sana, keduanya bersaing memperebutkan populasi yang sama. Pengungkit yang belum
+tersentuh adalah menaikkan plafon pada tandan MULTI-tampak: di sana R4 di atas
+C1 sudah 0,7319 sementara oracle C1 0,7360, jadi ruangnya tipis. Menembusnya
+menuntut aturan agregasi yang lebih baik daripada R4, bukan probabilitas per
+tampak yang lebih baik.
+
+**Sumber** — `scripts/endtoend_gabungan.py` · `results/pt_e_019_gabungan.json`

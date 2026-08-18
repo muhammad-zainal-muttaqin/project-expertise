@@ -182,7 +182,30 @@ yang sudah pernah dicoba.
 | ✅ | **PT-E-016** penaut GNN di ruang kotak GT | **TIDAK KONKLUSIF** | AUC +0,0077; F1 +1,06 pp CI [-1,46; +3,83] |
 | ✅ | **PT-E-017** penaut dilatih di RUANG DETEKSI | **DIKONFIRMASI** | **F1 0,1492 -> 0,3788** (domain shift +15,88 pp, GNN +7,08 pp) |
 | ✅ | **PT-E-018** ensemble C1+C2 | **DIKONFIRMASI** | **0,7208 -> 0,7464** (+2,56 pp, CI [+0,52; +4,53]) |
-| ⏳ | **PT-E-019** gabungan end-to-end (penaut baru + ensemble) | belum | bayaran dari kedua di atas |
+| ✅ | **PT-E-019** gabungan end-to-end | **DIPALSUKAN (klaim berlipat)** | +0,87 pp lawan jumlah 1,74 pp; cakupan 29,3% -> 51,2% |
+
+## PT-E-019: kedua perbaikan saling menggantikan, bukan menambah
+
+Faktorial 2x2 (test 953, 139 pohon, 1.268 tandan):
+
+| sel | test R4 | test multi | n multi |
+|---|---|---|---|
+| penaut lama x C1 (kontrol) | 0,7200 | 0,7124 | 372 |
+| penaut lama x ensemble | **0,7311** | 0,6989 | 372 |
+| penaut baru x C1 | 0,7263 | 0,7319 | **649** |
+| penaut baru x ensemble | 0,7287 | 0,7242 | **649** |
+
+Sel terbaik BUKAN gabungannya. Ensemble menolong di tandan SATU-tampak (di sana
+tidak ada agregasi yang bisa memperbaiki galat); penaut baru memindahkan tandan
+ke multi-tampak, tempat R4 sudah bekerja. Keduanya memperebutkan populasi yang
+sama.
+
+Cakupan 29,3% -> **51,2%** (target `IDEA.md` >70% belum tercapai).
+Tidak ada sel yang signifikan terhadap kontrol pada n=137 pohon.
+
+**Kaveat mengikat:** sel kontrol meleset +0,76 pp dari PT-E-003 (0,7200 lawan
+0,7124), kemungkinan besar karena `harapan_geser.json` yang diperbaiki. Sebagian
+kenaikan sudah ada di baseline, bukan dari intervensi.
 
 ## Dua koreksi yang mengikat
 
