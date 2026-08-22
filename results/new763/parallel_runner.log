@@ -1,0 +1,2 @@
+ADOPT rfdetr_l_rgb_s42_i1280 pid=60766; training process will not be interrupted
+START yolo26l_rgb_s1337_i1280 active=2/2 vram=10582/24564 MiB

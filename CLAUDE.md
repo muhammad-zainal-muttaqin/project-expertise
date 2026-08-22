@@ -244,6 +244,51 @@ mengutipnya berdampingan dengan angka end-to-end.
   atau pindai `/proc/<pid>/cmdline` dan pastikan `argv[0]` benar-benar
   interpreter yang menjalankan skrip itu.
 
+### RF-DETR CPU-bound, YOLO/RT-DETR tidak — jangan asal upgrade GPU
+
+Didiagnosis 2026-08-22 di RTX 4090 (`rfdetr_l_rgb_s42_i1280`, batch 4,
+grad-accum 4, 1280px): **GPU-nya nganggur nunggu CPU, bukan CPU nunggu GPU.**
+Buktinya, disampel langsung saat training aktif:
+
+| | RF-DETR-L | YOLO26-L (dataset lebih besar, batch sama) |
+|---|---|---|
+| GPU util | 0-1%, sesekali nyembul ke 24-68% | 19-100%, rata-rata ~55% |
+| Power draw | 60-100 W dari 450 W | 120-171 W |
+| CPU proses utama | **1613%** (16 core) | **57%** (<1 core) |
+| CPU per dataloader worker (×8) | ~1-8% | ~9-10%, rata |
+| Kecepatan iterasi | ~0,5 it/s | ~1,7-1,9 it/s |
+
+**Sebabnya:** augmentasi dan target-matching (Hungarian matching, khas
+arsitektur DETR) RF-DETR jalan **single-threaded di proses utama** (GIL
+Python), bukan tersebar ke dataloader worker seperti Ultralytics
+(YOLO26-L/RT-DETR-L punya pipeline augmentasi C/numpy yang jauh lebih
+paralel). Ini juga menjelaskan kenapa training RF-DETR di RTX 4090 dan di
+RTX 2000 Ada (GPU jauh lebih lemah) sama-sama ~17-19 menit/epoch: kompute
+ekstra 4090 tidak pernah terpakai karena GPU-nya memang menunggu CPU, bukan
+sebaliknya. **Jangan simpulkan "GPU kurang kuat" dari epoch time RF-DETR
+yang lambat — cek `nvidia-smi` dulu sebelum ganti GPU.**
+
+Container ini juga dibatasi **~27,2 core CPU** (`cat /sys/fs/cgroup/cpu.max`),
+meski `nproc` melaporkan 256 (angka host, bukan alokasi kontainer). Proses
+utama RF-DETR sendirian sudah memakai >16 core dari kuota itu.
+
+**Konsekuensi praktis untuk paralelisasi:**
+- **YOLO26-L dan RT-DETR-L aman dipasangkan dengan RF-DETR** di GPU yang sama
+  — RF-DETR menyisakan VRAM (~10,7 GB dari 24,6 GB di resep batch 4) dan tidak
+  memperebutkan GPU compute (util-nya nyaris nol), jadi kompetisi nyata cuma
+  di VRAM dan sebagian CPU. Sudah teruji langsung: RF-DETR + YOLO26-L
+  berbarengan mencapai peak 23,5/24,6 GB, stabil, tanpa OOM.
+- **YOLO26-L + RT-DETR-L tetap tidak boleh dipasangkan** (aturan lama di
+  `run_new763_parallel.py`/`run_combined1716_matrix.py` masih berlaku) — dua
+  model yang sama-sama GPU-bound memperebutkan compute yang sama, beda kasus
+  dari RF-DETR yang justru idle.
+- Kalau butuh RF-DETR lebih cepat (bukan sekadar iterasi paralel): coba
+  turunkan `--workers` (worker ekstra tidak menolong kalau bottleneck-nya
+  proses utama, bukan I/O) atau naikkan `--batch`/turunkan `--grad-accum`
+  (batch lebih besar per step mengurangi rasio overhead-Python-per-gambar).
+  **Belum diuji** — kalau dicoba, catat epoch time sebelum/sesudah di sini,
+  bukan diasumsikan membantu.
+
 ## Status sesi & handoff (2026-08-08) — BACA INI DULU kalau melanjutkan sesi
 
 Sesi sebelumnya dihentikan sengaja karena user pindah ke GPU yang lebih kuat

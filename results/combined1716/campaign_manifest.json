@@ -1,0 +1,41 @@
+{
+  "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+  "protocol": "combined_1716_group_safe",
+  "jobs": {
+    "combined1716_yolo26l_rgb_s42_i1280": {
+      "arch": "yolo26l",
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "imgsz": 1280,
+      "seed": 42,
+      "name": "combined1716_yolo26l_rgb_s42_i1280",
+      "status": "training",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_yolo26l_rgb_s42_i1280.log"
+    },
+    "combined1716_rtdetr_l_rgb_s42_i1280": {
+      "arch": "rtdetr_l",
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "imgsz": 1280,
+      "seed": 42,
+      "name": "combined1716_rtdetr_l_rgb_s42_i1280",
+      "status": "pending"
+    },
+    "combined1716_rfdetr_l_rgb_s42_i1280": {
+      "arch": "rfdetr_l",
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "imgsz": 1280,
+      "seed": 42,
+      "name": "combined1716_rfdetr_l_rgb_s42_i1280",
+      "status": "training",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rfdetr_l_rgb_s42_i1280.log"
+    }
+  }
+}

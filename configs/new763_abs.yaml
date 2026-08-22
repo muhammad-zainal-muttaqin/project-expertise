@@ -1,0 +1,13 @@
+# Konfigurasi Ultralytics dengan path absolut.
+# Dataset sumber sengaja tidak disentuh; resolver Ultralytics versi ini
+# menafsirkan `path: .` relatif terhadap cwd, bukan relatif terhadap YAML.
+path: /workspace/SawitMVC-Depth-YOLO
+train: train/images
+val: valid/images
+test: test/images
+nc: 4
+names:
+  0: B1
+  1: B2
+  2: B3
+  3: B4

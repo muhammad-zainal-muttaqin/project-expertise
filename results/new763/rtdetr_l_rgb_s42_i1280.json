@@ -1,0 +1,32 @@
+{
+  "run_name": "rtdetr_l_rgb_s42_i1280",
+  "kind": "rtdetr",
+  "weights": "/workspace/project-expertise/runs_new763/rtdetr_l_rgb_s42_i1280/weights/best.pt",
+  "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "val": {
+      "mAP50": 0.577766,
+      "mAP50_95": 0.211041,
+      "per_kelas_AP50": {
+        "B1": 0.724444,
+        "B2": 0.583357,
+        "B3": 0.668535,
+        "B4": 0.334729
+      },
+      "predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__val.npz"
+    },
+    "test": {
+      "mAP50": 0.55795,
+      "mAP50_95": 0.205523,
+      "per_kelas_AP50": {
+        "B1": 0.737724,
+        "B2": 0.588875,
+        "B3": 0.660661,
+        "B4": 0.244539
+      },
+      "predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__test.npz"
+    }
+  }
+}

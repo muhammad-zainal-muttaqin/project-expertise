@@ -1,0 +1,10 @@
+
+===== TRAIN yolo26l_rgb_s42_i1280 =====
+===== EVAL yolo26l_rgb_s42_i1280 =====
+SELESAI yolo26l_rgb_s42_i1280
+
+===== TRAIN rtdetr_l_rgb_s42_i1280 =====
+===== EVAL rtdetr_l_rgb_s42_i1280 =====
+SELESAI rtdetr_l_rgb_s42_i1280
+
+===== TRAIN rfdetr_l_rgb_s42_i1280 =====

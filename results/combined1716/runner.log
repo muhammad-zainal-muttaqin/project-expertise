@@ -1,0 +1,7 @@
+WAIT pid=60766 for current RF-DETR seed 42
+WAIT pid=60766 for current RF-DETR seed 42
+ADOPT combined1716_yolo26l_rgb_s42_i1280 pid=101322
+WAIT pid=60766 for current RF-DETR seed 42
+GPU released: 13108 MiB
+previous RF-DETR evaluation exit=0
+START combined1716_rfdetr_l_rgb_s42_i1280 active=2/2 vram=5710/24564

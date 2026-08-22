@@ -1,0 +1,14 @@
+{
+  "arch": "rtdetr_l",
+  "data": "/workspace/SawitMVC-Depth-YOLO-RGB",
+  "project": "/workspace/project-expertise/runs_new763",
+  "name": "rtdetr_l_rgb_s42_i1280",
+  "weights": "",
+  "epochs": 60,
+  "patience": 15,
+  "imgsz": 1280,
+  "batch": 4,
+  "grad_accum": 4,
+  "workers": 8,
+  "seed": 42
+}

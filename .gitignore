@@ -43,6 +43,20 @@ temp/
 # Hasil training Fase 6 (bobot besar; ikut backup HF bucket, ringkasan angka ada di results/)
 runs_fase6/
 
+# Hasil training new763 & combined1716 (2026-08-22, bobot besar GB-an; ikut
+# backup HF bucket manual, ringkasan angka + riwayat epoch ada di results/)
+runs_new763/
+runs_combined1716/
+runs/detect/runs_new763/
+runs/detect/runs_combined1716/
+runs/detect/runs_combined1716_quicktest/
+
+# Checkpoint autosave Jupyter
+.ipynb_checkpoints/
+
+# Cache label Ultralytics — binary, regenerable otomatis saat run berikutnya
+*.cache
+
 # runtime pipeline matriks mono-depth (2026-08-15)
 .matriks.lock
 .pantau.lock

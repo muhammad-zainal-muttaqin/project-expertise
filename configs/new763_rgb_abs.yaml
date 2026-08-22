@@ -1,0 +1,11 @@
+# Salinan training RGB yang terpisah dari clone kanonik.
+path: /workspace/SawitMVC-Depth-YOLO-RGB
+train: train/images
+val: valid/images
+test: test/images
+nc: 4
+names:
+  0: B1
+  1: B2
+  2: B3
+  3: B4

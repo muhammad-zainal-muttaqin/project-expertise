@@ -1,0 +1,121 @@
+{
+  "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+  "protocol": "top3_rgb_baseline",
+  "jobs": {
+    "yolo26l_rgb_s42_i1280": {
+      "arch": "yolo26l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "yolo26l_rgb_s42_i1280",
+      "status": "done",
+      "weights": "/workspace/project-expertise/runs_new763/yolo26l_rgb_s42_i1280/weights/best.pt",
+      "log": "/workspace/project-expertise/results/new763/logs/yolo26l_rgb_s42_i1280.log",
+      "result": "/workspace/project-expertise/results/new763/yolo26l_rgb_s42_i1280.json"
+    },
+    "rtdetr_l_rgb_s42_i1280": {
+      "arch": "rtdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rtdetr_l_rgb_s42_i1280",
+      "status": "done",
+      "weights": "/workspace/project-expertise/runs_new763/rtdetr_l_rgb_s42_i1280/weights/best.pt",
+      "log": "/workspace/project-expertise/results/new763/logs/rtdetr_l_rgb_s42_i1280.log",
+      "result": "/workspace/project-expertise/results/new763/rtdetr_l_rgb_s42_i1280.json"
+    },
+    "rfdetr_l_rgb_s42_i1280": {
+      "arch": "rfdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 20,
+      "patience": 5,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rfdetr_l_rgb_s42_i1280",
+      "status": "done",
+      "log": "/workspace/project-expertise/results/new763/logs/rfdetr_l_rgb_s42_i1280.log",
+      "weights": "/workspace/project-expertise/runs_new763/rfdetr_l_rgb_s42_i1280/checkpoint_best_ema.pth",
+      "result": "/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json"
+    },
+    "yolo26l_rgb_s1337_i1280": {
+      "arch": "yolo26l",
+      "seed": 1337,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "yolo26l_rgb_s1337_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    },
+    "rtdetr_l_rgb_s1337_i1280": {
+      "arch": "rtdetr_l",
+      "seed": 1337,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rtdetr_l_rgb_s1337_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    },
+    "rfdetr_l_rgb_s1337_i1280": {
+      "arch": "rfdetr_l",
+      "seed": 1337,
+      "imgsz": 1280,
+      "epochs": 20,
+      "patience": 5,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rfdetr_l_rgb_s1337_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    },
+    "yolo26l_rgb_s2026_i1280": {
+      "arch": "yolo26l",
+      "seed": 2026,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "yolo26l_rgb_s2026_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    },
+    "rtdetr_l_rgb_s2026_i1280": {
+      "arch": "rtdetr_l",
+      "seed": 2026,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rtdetr_l_rgb_s2026_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    },
+    "rfdetr_l_rgb_s2026_i1280": {
+      "arch": "rfdetr_l",
+      "seed": 2026,
+      "imgsz": 1280,
+      "epochs": 20,
+      "patience": 5,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rfdetr_l_rgb_s2026_i1280",
+      "status": "failed",
+      "error": "cancelled by user: only seed 42 requested"
+    }
+  },
+  "started": "2026-08-21T19:07:56Z"
+}

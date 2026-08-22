@@ -1,0 +1,4 @@
+run_name,arch,seed,val_mAP50,val_mAP50_95,test_mAP50,test_mAP50_95,result
+rfdetr_l_rgb_s42_i1280,rfdetr_l,42,0.608233,0.227471,0.612859,0.233474,/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json
+rtdetr_l_rgb_s42_i1280,rtdetr_l,42,0.577766,0.211041,0.55795,0.205523,/workspace/project-expertise/results/new763/rtdetr_l_rgb_s42_i1280.json
+yolo26l_rgb_s42_i1280,yolo26l,42,0.529357,0.197855,0.516256,0.190611,/workspace/project-expertise/results/new763/yolo26l_rgb_s42_i1280.json

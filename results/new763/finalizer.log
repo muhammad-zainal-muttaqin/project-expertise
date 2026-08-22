@@ -1,0 +1,242 @@
+[2026-08-21T20:00:25Z] finalizer started runner_pid=17135
+[2026-08-22T02:20:07Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:22:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:24:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:26:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:28:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:30:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:32:08Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:34:09Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:36:09Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:38:09Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:40:09Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:42:09Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:44:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:46:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:48:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:50:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:52:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:54:10Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:56:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T02:58:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:00:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:02:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:04:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:06:11Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:08:12Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:10:12Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:12:12Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:14:12Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:16:12Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:18:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:20:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:22:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:24:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:26:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:28:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:30:13Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:32:14Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:34:14Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:36:14Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:38:14Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:40:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:42:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:44:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:46:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:48:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:50:15Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:52:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:54:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:56:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T03:58:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:00:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:02:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:04:16Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:06:17Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:08:17Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:10:17Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:12:17Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:14:17Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:16:18Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:18:18Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:20:18Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:22:18Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:24:18Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:26:19Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:28:19Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:30:19Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:32:19Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:34:19Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:36:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:38:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:40:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:42:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:44:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:46:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:48:20Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:50:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:52:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:54:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:56:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T04:58:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:00:21Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:02:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:04:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:06:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:08:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:10:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:12:22Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:14:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:16:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:18:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:20:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:22:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:24:23Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:26:24Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:28:24Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:30:24Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:32:24Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:34:24Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:36:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:38:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:40:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:42:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:44:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:46:25Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:48:26Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:50:26Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:52:26Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:54:26Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:56:26Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T05:58:27Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:00:27Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:02:27Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:04:27Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:06:27Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:08:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:10:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:12:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:14:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:16:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:18:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:20:28Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:22:29Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:24:29Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:26:29Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:28:29Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:30:29Z] runner exited before terminal manifest; waiting 120s
+[2026-08-22T06:32:29Z] running summary
+completed=3
+json=/workspace/project-expertise/results/new763_summary.json
+csv=/workspace/project-expertise/results/new763_summary.csv
+[2026-08-22T06:32:29Z] running campaign evaluation
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.57s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.04s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.77s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.91s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.05s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.74s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.63s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.04s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.73s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.61s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.04s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.71s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.02s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.01s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.10s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.02s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.01s)
+creating index...
+index created!
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.02s)
+creating index...
+index created!
+-> /workspace/project-expertise/results/new763_campaigns.json
+[2026-08-22T06:33:22Z] finalizer complete

@@ -1,0 +1,44 @@
+{
+  "dataset": "/workspace/SawitMVC-Depth-YOLO",
+  "protocol": "top3_rgb_baseline",
+  "jobs": {
+    "yolo26l_rgb_s42_i1280": {
+      "arch": "yolo26l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "yolo26l_rgb_s42_i1280",
+      "status": "training",
+      "log": "/workspace/project-expertise/results/new763/logs/yolo26l_rgb_s42_i1280.log"
+    },
+    "rtdetr_l_rgb_s42_i1280": {
+      "arch": "rtdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 60,
+      "patience": 15,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rtdetr_l_rgb_s42_i1280",
+      "status": "failed",
+      "error": "command gagal (1); lihat /workspace/project-expertise/results/new763/logs/rtdetr_l_rgb_s42_i1280.log",
+      "log": "/workspace/project-expertise/results/new763/logs/rtdetr_l_rgb_s42_i1280.log"
+    },
+    "rfdetr_l_rgb_s42_i1280": {
+      "arch": "rfdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "epochs": 20,
+      "patience": 5,
+      "batch": 4,
+      "grad_accum": 4,
+      "name": "rfdetr_l_rgb_s42_i1280",
+      "status": "training",
+      "log": "/workspace/project-expertise/results/new763/logs/rfdetr_l_rgb_s42_i1280.log"
+    }
+  },
+  "started": "2026-08-21T19:04:08Z"
+}

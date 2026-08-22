@@ -1,0 +1,157 @@
+{
+  "n_completed": 3,
+  "runs": [
+    {
+      "run_name": "rfdetr_l_rgb_s42_i1280",
+      "kind": "rfdetr",
+      "arch": "rfdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "result": "/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json",
+      "val_mAP50": 0.608233,
+      "val_mAP50_95": 0.227471,
+      "test_mAP50": 0.612859,
+      "test_mAP50_95": 0.233474
+    },
+    {
+      "run_name": "rtdetr_l_rgb_s42_i1280",
+      "kind": "rtdetr",
+      "arch": "rtdetr_l",
+      "seed": 42,
+      "imgsz": 1280,
+      "result": "/workspace/project-expertise/results/new763/rtdetr_l_rgb_s42_i1280.json",
+      "val_mAP50": 0.577766,
+      "val_mAP50_95": 0.211041,
+      "test_mAP50": 0.55795,
+      "test_mAP50_95": 0.205523
+    },
+    {
+      "run_name": "yolo26l_rgb_s42_i1280",
+      "kind": "yolo",
+      "arch": "yolo26l",
+      "seed": 42,
+      "imgsz": 1280,
+      "result": "/workspace/project-expertise/results/new763/yolo26l_rgb_s42_i1280.json",
+      "val_mAP50": 0.529357,
+      "val_mAP50_95": 0.197855,
+      "test_mAP50": 0.516256,
+      "test_mAP50_95": 0.190611
+    }
+  ],
+  "by_architecture": {
+    "rfdetr_l": {
+      "val_mAP50": {
+        "n": 1,
+        "mean": 0.608233,
+        "std": 0.0,
+        "min": 0.608233,
+        "max": 0.608233
+      },
+      "val_mAP50_95": {
+        "n": 1,
+        "mean": 0.227471,
+        "std": 0.0,
+        "min": 0.227471,
+        "max": 0.227471
+      },
+      "test_mAP50": {
+        "n": 1,
+        "mean": 0.612859,
+        "std": 0.0,
+        "min": 0.612859,
+        "max": 0.612859
+      },
+      "test_mAP50_95": {
+        "n": 1,
+        "mean": 0.233474,
+        "std": 0.0,
+        "min": 0.233474,
+        "max": 0.233474
+      }
+    },
+    "rtdetr_l": {
+      "val_mAP50": {
+        "n": 1,
+        "mean": 0.577766,
+        "std": 0.0,
+        "min": 0.577766,
+        "max": 0.577766
+      },
+      "val_mAP50_95": {
+        "n": 1,
+        "mean": 0.211041,
+        "std": 0.0,
+        "min": 0.211041,
+        "max": 0.211041
+      },
+      "test_mAP50": {
+        "n": 1,
+        "mean": 0.55795,
+        "std": 0.0,
+        "min": 0.55795,
+        "max": 0.55795
+      },
+      "test_mAP50_95": {
+        "n": 1,
+        "mean": 0.205523,
+        "std": 0.0,
+        "min": 0.205523,
+        "max": 0.205523
+      }
+    },
+    "yolo26l": {
+      "val_mAP50": {
+        "n": 1,
+        "mean": 0.529357,
+        "std": 0.0,
+        "min": 0.529357,
+        "max": 0.529357
+      },
+      "val_mAP50_95": {
+        "n": 1,
+        "mean": 0.197855,
+        "std": 0.0,
+        "min": 0.197855,
+        "max": 0.197855
+      },
+      "test_mAP50": {
+        "n": 1,
+        "mean": 0.516256,
+        "std": 0.0,
+        "min": 0.516256,
+        "max": 0.516256
+      },
+      "test_mAP50_95": {
+        "n": 1,
+        "mean": 0.190611,
+        "std": 0.0,
+        "min": 0.190611,
+        "max": 0.190611
+      }
+    }
+  },
+  "best_by_validation_mAP50": {
+    "run_name": "rfdetr_l_rgb_s42_i1280",
+    "kind": "rfdetr",
+    "arch": "rfdetr_l",
+    "seed": 42,
+    "imgsz": 1280,
+    "result": "/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json",
+    "val_mAP50": 0.608233,
+    "val_mAP50_95": 0.227471,
+    "test_mAP50": 0.612859,
+    "test_mAP50_95": 0.233474
+  },
+  "best_by_test_mAP50": {
+    "run_name": "rfdetr_l_rgb_s42_i1280",
+    "kind": "rfdetr",
+    "arch": "rfdetr_l",
+    "seed": 42,
+    "imgsz": 1280,
+    "result": "/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json",
+    "val_mAP50": 0.608233,
+    "val_mAP50_95": 0.227471,
+    "test_mAP50": 0.612859,
+    "test_mAP50_95": 0.233474
+  }
+}

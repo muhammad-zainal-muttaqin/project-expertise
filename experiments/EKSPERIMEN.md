@@ -1764,3 +1764,74 @@ subset 11 pohon yang bersih (yang lagi-lagi terlalu kecil untuk CI).
 **Verdict:** tidak ada angka lama yang ditarik, tapi dua pembatas kutipan
 ditambahkan: (a) hasil agnostik hanya sah dari `test_bersih`; (b) transfer
 953→352 tidak punya split test yang bersih.
+
+---
+
+## V2-E-034 — Baseline seed-42 pada rilis SawitMVC-Depth-YOLO v2.0.0 (763 pohon): urutan RF-DETR-L > RT-DETR-L > YOLO26l bertahan, tapi budget training tidak setara
+
+**Tanggal:** 2026-08-22
+**Konteks.** Rilis dataset baru `SawitMVC-Depth-YOLO` v2.0.0 menggabungkan tiga
+kampanye akuisisi (DAMIMAS, MARIHAT, TOPAZ) jadi 763 pohon dengan split bawaan
+536/117/110 pohon (lihat `docs/NEW763_BASELINE.md` untuk resep lengkap). Ini
+baseline pertama pada rilis ini, seed 42 saja — seed 1337 dan 2026 dibatalkan
+atas keputusan pengguna untuk memprioritaskan campaign lain
+(`combined1716`, lihat V2-E-035 kalau sudah ditulis).
+
+**Resep.** RGB, COCO-pretrained, resolusi 1280, batch 4, deterministic,
+`cos_lr`. YOLO26l dan RT-DETR-L: maksimum 60 epoch/patience 15. RF-DETR-L:
+maksimum 20 epoch/patience 5 (sengaja lebih pendek, berdasar temuan lama
+bahwa RF-DETR overfit dini di korpus kecil — lihat `docs/NEW763_BASELINE.md`).
+Evaluator `pycocotools.COCOeval`, prediksi val+test didump ke `.npz` saat
+evaluasi, riwayat per-epoch disalin ke `results/riwayat_epoch_new763/`.
+
+**Hasil keseluruhan (test):**
+
+| Model | Epoch aktual (dari budget) | Test mAP50 | Test mAP50-95 |
+|---|---|---|---|
+| RF-DETR-L | 14/20 (early-stop) | **0,6129** | **0,2335** |
+| RT-DETR-L | 50/60 (early-stop) | 0,5580 | 0,2055 |
+| YOLO26l | 55/60 (early-stop) | 0,5163 | 0,1906 |
+
+Urutan sama dengan angka lama E-021 di `CLAUDE.md` (RF-DETR-L > RT-DETR-L >
+YOLO26l), dan RF-DETR-L kembali jadi detektor terbaik.
+
+**Stratifikasi kampanye (test mAP50), wajib per catatan README dataset:**
+
+| Model | DAMIMAS (n=52 pohon) | MARIHAT (n=11 pohon) | TOPAZ (n=47 pohon) |
+|---|---|---|---|
+| RF-DETR-L | 0,4460 | 0,5182 | 0,6369 |
+| RT-DETR-L | 0,4366 | 0,5380 | 0,5494 |
+| YOLO26l | 0,4019 | 0,4179 | 0,5044 |
+
+Ketiga model konsisten terlemah di DAMIMAS dan terkuat di TOPAZ. RF-DETR-L
+menang di DAMIMAS dan TOPAZ tapi RT-DETR-L sedikit lebih baik di MARIHAT
+(0,5380 vs 0,5182) — MARIHAT cuma 11 pohon/44 citra test, jadi selisih ini
+kemungkinan besar di dalam noise, belum dihitung CI-nya.
+
+**Kaveat penting — budget training TIDAK setara.** Ketiganya early-stop,
+tapi RF-DETR-L berhenti di 70% dari budget-nya (14/20) sementara YOLO26l dan
+RT-DETR-L masing-masing di 92% (55/60) dan 83% (50/60) dari budget mereka.
+Lebih penting lagi: jadwal `cos_lr` RF-DETR-L didesain untuk 20 epoch, jadi
+LR-nya sudah habis meluruh di epoch 14 — sementara jadwal YOLO/RT-DETR
+didesain untuk 60 epoch dan baru berhenti di 50-55. Ini bukan perbandingan
+"tiga model dilatih sama lama lalu dibandingkan"; ini "tiga model dilatih
+sampai konvergen menurut jadwal masing-masing yang sengaja beda". Urutan
+akhirnya kemungkinan tetap valid (konsisten dengan E-021 lama yang memakai
+resep berbeda pula), tapi keunggulan RF-DETR-L di atas tidak boleh dibaca
+sebagai "menang meski dilatih lebih singkat" tanpa catatan ini.
+
+**Diagnosis performa infrastruktur (tidak mengubah angka, tapi menjelaskan
+kenapa training RF-DETR terasa lambat):** RF-DETR-L CPU-bound, bukan
+GPU-bound — lihat `CLAUDE.md` bagian "RF-DETR CPU-bound, YOLO/RT-DETR tidak"
+untuk bukti (GPU util 0-1% vs YOLO 19-100%, CPU proses utama 1613% vs 57%).
+Diukur langsung di RTX 4090 saat run RF-DETR-L seed 42 di atas sedang jalan.
+
+**Yang belum dikerjakan:** replikasi seed 1337/2026 (dibatalkan, lihat di
+atas), CI berpasangan antar-arsitektur, dan counting end-to-end untuk ketiga
+detektor pada rilis v2.0.0 ini (angka counting yang ada di `CLAUDE.md` masih
+dari YOLO26m rilis lama).
+
+**Sumber:** `results/new763/{rfdetr,rtdetr,yolo26l}_l?_rgb_s42_i1280.json`
+(pycocotools), `results/new763_campaigns.json` (stratifikasi kampanye),
+`results/new763_summary.json` (agregat), `results/riwayat_epoch_new763/`
+(riwayat per-epoch), manifest `results/new763/matrix_manifest.json`.

@@ -1,0 +1,182 @@
+{
+  "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+  "source_dataset": "/workspace/SawitMVC-Depth-YOLO",
+  "campaigns": [
+    "DAMIMAS",
+    "MARIHAT",
+    "TOPAZ"
+  ],
+  "runs": {
+    "rfdetr_l_rgb_s42_i1280": {
+      "kind": "rfdetr",
+      "splits": {
+        "val": {
+          "DAMIMAS": {
+            "mAP50": 0.492668,
+            "mAP50_95": 0.183848,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 356,
+            "n_detections": 63600
+          },
+          "MARIHAT": {
+            "mAP50": 0.473761,
+            "mAP50_95": 0.191338,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 133,
+            "n_detections": 13200
+          },
+          "TOPAZ": {
+            "mAP50": 0.579314,
+            "mAP50_95": 0.217439,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 405,
+            "n_detections": 63600
+          }
+        },
+        "test": {
+          "DAMIMAS": {
+            "mAP50": 0.445994,
+            "mAP50_95": 0.174034,
+            "n_images": 208,
+            "n_trees": 52,
+            "n_annotations": 370,
+            "n_detections": 62400
+          },
+          "MARIHAT": {
+            "mAP50": 0.51825,
+            "mAP50_95": 0.217048,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 129,
+            "n_detections": 13200
+          },
+          "TOPAZ": {
+            "mAP50": 0.636894,
+            "mAP50_95": 0.241778,
+            "n_images": 188,
+            "n_trees": 47,
+            "n_annotations": 392,
+            "n_detections": 56400
+          }
+        }
+      }
+    },
+    "rtdetr_l_rgb_s42_i1280": {
+      "kind": "rtdetr",
+      "splits": {
+        "val": {
+          "DAMIMAS": {
+            "mAP50": 0.473601,
+            "mAP50_95": 0.180428,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 356,
+            "n_detections": 63600
+          },
+          "MARIHAT": {
+            "mAP50": 0.550673,
+            "mAP50_95": 0.211053,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 133,
+            "n_detections": 13200
+          },
+          "TOPAZ": {
+            "mAP50": 0.556242,
+            "mAP50_95": 0.196855,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 405,
+            "n_detections": 63600
+          }
+        },
+        "test": {
+          "DAMIMAS": {
+            "mAP50": 0.436633,
+            "mAP50_95": 0.16094,
+            "n_images": 208,
+            "n_trees": 52,
+            "n_annotations": 370,
+            "n_detections": 62400
+          },
+          "MARIHAT": {
+            "mAP50": 0.537989,
+            "mAP50_95": 0.226082,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 129,
+            "n_detections": 13200
+          },
+          "TOPAZ": {
+            "mAP50": 0.549432,
+            "mAP50_95": 0.204448,
+            "n_images": 188,
+            "n_trees": 47,
+            "n_annotations": 392,
+            "n_detections": 56400
+          }
+        }
+      }
+    },
+    "yolo26l_rgb_s42_i1280": {
+      "kind": "yolo",
+      "splits": {
+        "val": {
+          "DAMIMAS": {
+            "mAP50": 0.432569,
+            "mAP50_95": 0.16044,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 356,
+            "n_detections": 5841
+          },
+          "MARIHAT": {
+            "mAP50": 0.343802,
+            "mAP50_95": 0.128659,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 133,
+            "n_detections": 2102
+          },
+          "TOPAZ": {
+            "mAP50": 0.488935,
+            "mAP50_95": 0.193829,
+            "n_images": 212,
+            "n_trees": 53,
+            "n_annotations": 405,
+            "n_detections": 7313
+          }
+        },
+        "test": {
+          "DAMIMAS": {
+            "mAP50": 0.401854,
+            "mAP50_95": 0.153869,
+            "n_images": 208,
+            "n_trees": 52,
+            "n_annotations": 370,
+            "n_detections": 6381
+          },
+          "MARIHAT": {
+            "mAP50": 0.417905,
+            "mAP50_95": 0.155994,
+            "n_images": 44,
+            "n_trees": 11,
+            "n_annotations": 129,
+            "n_detections": 2107
+          },
+          "TOPAZ": {
+            "mAP50": 0.504386,
+            "mAP50_95": 0.185372,
+            "n_images": 188,
+            "n_trees": 47,
+            "n_annotations": 392,
+            "n_detections": 6184
+          }
+        }
+      }
+    }
+  }
+}
