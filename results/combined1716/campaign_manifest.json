@@ -11,8 +11,11 @@
       "imgsz": 1280,
       "seed": 42,
       "name": "combined1716_yolo26l_rgb_s42_i1280",
-      "status": "training",
-      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_yolo26l_rgb_s42_i1280.log"
+      "status": "done",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_yolo26l_rgb_s42_i1280.log",
+      "checkpoint": "/workspace/project-expertise/runs_combined1716/combined1716_yolo26l_rgb_s42_i1280/weights/best.pt",
+      "result": "/workspace/project-expertise/results/combined1716/combined1716_yolo26l_rgb_s42_i1280.json",
+      "note": "training epoch 51/60 early-stop, project path relatif bikin Ultralytics nest ke runs/detect/ - sudah dipindah manual ke lokasi benar, eval dijalankan manual"
     },
     "combined1716_rtdetr_l_rgb_s42_i1280": {
       "arch": "rtdetr_l",
@@ -23,7 +26,8 @@
       "imgsz": 1280,
       "seed": 42,
       "name": "combined1716_rtdetr_l_rgb_s42_i1280",
-      "status": "pending"
+      "status": "training",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rtdetr_l_rgb_s42_i1280.log"
     },
     "combined1716_rfdetr_l_rgb_s42_i1280": {
       "arch": "rfdetr_l",
@@ -34,8 +38,11 @@
       "imgsz": 1280,
       "seed": 42,
       "name": "combined1716_rfdetr_l_rgb_s42_i1280",
-      "status": "training",
-      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rfdetr_l_rgb_s42_i1280.log"
+      "status": "done",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rfdetr_l_rgb_s42_i1280.log",
+      "checkpoint": "/workspace/project-expertise/runs_combined1716/combined1716_rfdetr_l_rgb_s42_i1280/checkpoint_best_ema.pth",
+      "result": "/workspace/project-expertise/results/combined1716/combined1716_rfdetr_l_rgb_s42_i1280.json",
+      "note": "early-stop epoch 24/60, best score EMA 0.252 (epoch 9), patience 15 habis"
     }
   }
 }

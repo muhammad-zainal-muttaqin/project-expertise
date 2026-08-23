@@ -5,3 +5,13 @@ WAIT pid=60766 for current RF-DETR seed 42
 GPU released: 13108 MiB
 previous RF-DETR evaluation exit=0
 START combined1716_rfdetr_l_rgb_s42_i1280 active=2/2 vram=5710/24564
+Traceback (most recent call last):
+  File "/workspace/project-expertise/scripts/run_combined1716_matrix.py", line 290, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/project-expertise/scripts/run_combined1716_matrix.py", line 235, in main
+    manifest["jobs"][name]["checkpoint"] = str(weight_path(job).resolve())
+                                               ^^^^^^^^^^^^^^^^
+  File "/workspace/project-expertise/scripts/run_combined1716_matrix.py", line 104, in weight_path
+    raise FileNotFoundError(f"no checkpoint for {job['name']}")
+FileNotFoundError: no checkpoint for combined1716_yolo26l_rgb_s42_i1280

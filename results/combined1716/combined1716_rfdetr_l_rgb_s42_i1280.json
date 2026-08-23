@@ -1,0 +1,32 @@
+{
+  "run_name": "combined1716_rfdetr_l_rgb_s42_i1280",
+  "kind": "rfdetr",
+  "weights": "/workspace/project-expertise/runs_combined1716/combined1716_rfdetr_l_rgb_s42_i1280/checkpoint_best_ema.pth",
+  "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "val": {
+      "mAP50": 0.597657,
+      "mAP50_95": 0.25305,
+      "per_kelas_AP50": {
+        "B1": 0.767761,
+        "B2": 0.544398,
+        "B3": 0.644577,
+        "B4": 0.433891
+      },
+      "predictions": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__val.npz"
+    },
+    "test": {
+      "mAP50": 0.596022,
+      "mAP50_95": 0.25215,
+      "per_kelas_AP50": {
+        "B1": 0.765379,
+        "B2": 0.539401,
+        "B3": 0.665169,
+        "B4": 0.414138
+      },
+      "predictions": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    }
+  }
+}

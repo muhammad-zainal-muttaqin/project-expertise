@@ -1835,3 +1835,58 @@ dari YOLO26m rilis lama).
 (pycocotools), `results/new763_campaigns.json` (stratifikasi kampanye),
 `results/new763_summary.json` (agregat), `results/riwayat_epoch_new763/`
 (riwayat per-epoch), manifest `results/new763/matrix_manifest.json`.
+
+---
+
+## V2-E-035 — Baseline seed-42 pada korpus gabungan SawitMVC-Combined-1716-RGB: RF-DETR-L tetap terbaik, RT-DETR-L masih berjalan
+
+**Tanggal:** 2026-08-23 (dicatat sebagian, RT-DETR-L masih training saat entry ini ditulis)
+**Konteks.** Korpus baru menggabungkan dataset lama 953 pohon (`SawitMVC-YOLO`)
+dan dataset Depth 763 pohon (`SawitMVC-Depth-YOLO`) jadi satu: **1.716 tree
+record / 7.044 gambar**, dengan **352 tree-ID yang sama di kedua sumber**
+sehingga group pohon unik cuma **1.364**. Nama file diberi prefix `SAWIT_`
+dan `DEPTH_` untuk mencegah tabrakan; dataset asli tidak disentuh. Split
+group-safe: **train 5.184 / val 808 / test 1.052 citra**, tidak ada group
+pohon yang menyeberang split (mencegah kebocoran seperti yang didokumentasikan
+di V2-E-033).
+
+**Resep.** Sama seperti V2-E-034: RGB, COCO-pretrained, resolusi 1280,
+batch 4, deterministic, `cos_lr`. Ketiga model kali ini **budget training
+disamakan**: 60 epoch/patience 15 untuk semua tiga arsitektur (RF-DETR-L
+sebelumnya dibatasi 20/5 di V2-E-034 — diperbaiki di sini atas permintaan
+pengguna supaya perbandingan lebih adil).
+
+**Hasil (test), sejauh yang sudah selesai:**
+
+| Model | Status | Epoch aktual | Test mAP50 | Test mAP50-95 |
+|---|---|---|---|---|
+| RF-DETR-L | selesai | 24/60 (early-stop) | **0,5960** | **0,2522** |
+| RT-DETR-L | **masih training** | 38/60 saat ditulis | — | — |
+| YOLO26l | selesai | 51/60 (early-stop) | 0,5389 | 0,2395 |
+
+Urutan sementara (RF-DETR-L > YOLO26l) konsisten dengan V2-E-034 dan E-021
+lama. RT-DETR-L akan ditambahkan begitu selesai — jangan kutip urutan tiga
+arsitektur di korpus ini sebagai final sebelum itu.
+
+**Catatan operasional yang berpengaruh ke validitas run, bukan ke angka:**
+1. **Bug path relatif Ultralytics.** `--project` yang diberikan sebagai path
+   relatif menyebabkan Ultralytics diam-diam menaruh output di
+   `runs/detect/<project>/...`, bukan di `<project>/...` yang diharapkan
+   skrip orkestrasi (`run_combined1716_matrix.py`). Ini membuat proses
+   finalisasi YOLO26l crash (exception tak tertangani saat menulis
+   `baseline_args.json`) dan menyeret mati seluruh proses runner sebelum
+   sempat menjadwalkan RT-DETR-L. **Training YOLO26l sendiri sukses penuh**
+   (val mAP50 0,548 di epoch 51) — hanya langkah finalisasi yang gagal.
+   Diperbaiki dengan memindah direktori run secara manual dan menjalankan
+   eval langsung; RT-DETR-L kemudian di-start manual dengan path absolut.
+   **Pelajaran:** selalu pakai path absolut untuk `--project` saat
+   menjalankan `train_baseline_new763.py` di luar skrip matrix bawaannya.
+2. **Runner otomatis (`run_combined1716_matrix.py`) tidak dipakai lagi**
+   setelah crash di atas — sesuai aturan repo (runner yang gagal sekali
+   tidak diperbaiki lagi untuk langkah itu), sisa orkestrasi (start RT-DETR,
+   eval RF-DETR setelah early-stop) dijalankan manual.
+
+**Sumber:** `results/combined1716/{combined1716_yolo26l,combined1716_rfdetr_l}_rgb_s42_i1280.json`
+(pycocotools), `results/combined1716/campaign_manifest.json`,
+`results/combined1716/predictions/` (dump `.npz` val+test), log training di
+`results/combined1716/logs/`.
