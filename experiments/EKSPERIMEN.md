@@ -2100,3 +2100,70 @@ Daya statistik dan besaran efek sama-sama mendukung signifikansi di sini.
 
 **Sumber:** `scripts/bootstrap_map_from_npz.py`,
 `results/bootstrap_map_sesi2026-08.json`.
+
+---
+
+## V2-E-039 — Precision/Recall/F1 standar + sweep threshold + WBF ensemble: rekor AP50 agnostik baru (0,8106), tapi WBF menurunkan mAP50 class-aware
+
+**Tanggal:** 2026-08-23
+**Konteks.** Melengkapi V2-E-034/035/037 dengan metrik standar yang belum
+dihitung: Precision/Recall/F1 per kelas pada satu ambang confidence (bukan
+recall bersyarat V2-E-037), titik operasi optimal per model, dan replikasi
+WBF ensemble V2-E-019 (yang dulu cuma diuji pada detektor agnostik) ke
+skenario class-aware 4-kelas.
+
+**Metode.** `scripts/eval_extra_metrics_from_npz.py`, tiga bagian, semua dari
+dump `.npz` test V2-E-034/035, **tanpa re-infer**:
+1. P/R/F1 per kelas pada conf=0,25 (sama seperti ambang V2-E-013), pencocokan
+   IoU≥0,5 **di dalam kelas yang sama** (beda dari V2-E-037 yang class-agnostic).
+2. Sweep conf 0,05–0,95 (step 0,05) untuk cari titik macro-F1 terbaik.
+3. WBF ensemble 3 detektor per korpus (fungsi `wbf` dari `eval_twostage.py`):
+   fusi per-kelas untuk mAP50 class-aware, fusi lintas-kelas untuk AP50 agnostik.
+
+**Hasil 1 — P/R/F1 @ conf=0,25 (macro) vs titik optimal dari sweep:**
+
+| Model | Korpus | F1@0,25 | Conf optimal | F1 optimal |
+|---|---|---|---|---|
+| YOLO26l | new763 | 0,4967 | 0,20 | 0,5121 |
+| RT-DETR-L | new763 | 0,4943 | 0,45 | 0,5676 |
+| RF-DETR-L | new763 | 0,5790 | 0,35 | 0,6042 |
+| YOLO26l | combined1716 | 0,5163 | 0,20 | 0,5407 |
+| RT-DETR-L | combined1716 | 0,4745 | 0,45 | 0,5888 |
+| RF-DETR-L | combined1716 | 0,5536 | 0,35 | 0,6028 |
+
+**Conf=0,25 BUKAN terlalu tinggi untuk RT-DETR/RF-DETR — titik optimalnya
+malah lebih tinggi (0,35-0,45).** Kurva sweep menunjukkan di conf rendah
+(0,05) recall tinggi (0,87-0,91) tapi precision hancur (0,10-0,13),
+menjatuhkan F1 ke 0,19-0,22 — jauh dari optimal. Hanya YOLO26l yang
+optimalnya sedikit di bawah 0,25 (0,20), selisih tipis.
+
+**Hasil 2 — WBF ensemble (3 detektor digabung per korpus):**
+
+| Korpus | mAP50 class-aware (ensemble) | AP50 agnostik (ensemble) | AP50 agnostik terbaik tunggal |
+|---|---|---|---|
+| new763 | 0,5631 | 0,8039 | 0,7951 (RF-DETR) |
+| combined1716 | 0,5538 | **0,8106** | 0,7850 (RF-DETR) |
+
+**0,8106 adalah rekor AP50 tertinggi baru di seluruh project** — melampaui
+V2-E-036 (0,7951, RF-DETR tunggal) dan seluruh angka lama yang sah (0,7702
+V2-E-025, 0,7374 V2-E-017). Diukur di split test kanonik penuh (1.052 citra
+combined1716, 440 citra new763), bukan subset kecil, bukan tercemar.
+
+**Temuan yang tidak terduga dan harus dicatat jujur: WBF MENURUNKAN mAP50
+class-aware dibanding detektor tunggal terbaik.** 0,5631/0,5538 (ensemble)
+lebih rendah dari RF-DETR sendirian (0,6129/0,5960). Ini **berlawanan** arah
+dengan V2-E-019 (ensemble AGNOSTIK menang atas semua anggota tunggal) karena
+skenarionya beda: V2-E-019 menggabung box tanpa peduli kelas; di sini fusi
+dilakukan **per-kelas**, jadi tiga detektor yang menebak kelas berbeda untuk
+objek fisik yang sama akan terpecah ke tiga kelompok kelas terpisah alih-alih
+saling menguatkan — WBF class-aware naif memecah suara, bukan memperkuatnya.
+Detektor terbaik (RF-DETR) tetap pilihan lebih baik daripada ensemble kalau
+tugasnya klasifikasi kematangan, bukan cuma lokalisasi.
+
+**Verdict: CONFIRMED untuk plafon lokalisasi (rekor baru), FALSIFIED untuk
+manfaat WBF class-aware naif** — ensembling per-kelas butuh strategi lebih
+cermat (mis. voting kelas terpisah dari fusi lokasi) kalau mau dipakai untuk
+tugas 4-kelas, bukan sekadar WBF per-kelas independen.
+
+**Sumber:** `scripts/eval_extra_metrics_from_npz.py`,
+`results/extra_metrics_sesi2026-08.json`.

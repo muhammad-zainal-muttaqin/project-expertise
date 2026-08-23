@@ -1,0 +1,1224 @@
+{
+  "generated_at": "2026-08-23T05:40:06.855382+00:00",
+  "note": "P/R/F1 standar + sweep threshold + WBF ensemble, dari dump .npz test (V2-E-034/035), tanpa re-infer.",
+  "prf_at_025": {
+    "new763_yolo26l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 105,
+          "fp": 53,
+          "fn": 68,
+          "precision": 0.6646,
+          "recall": 0.6069,
+          "f1": 0.6344
+        },
+        "B2": {
+          "tp": 173,
+          "fp": 92,
+          "fn": 148,
+          "precision": 0.6528,
+          "recall": 0.5389,
+          "f1": 0.5904
+        },
+        "B3": {
+          "tp": 190,
+          "fp": 127,
+          "fn": 144,
+          "precision": 0.5994,
+          "recall": 0.5689,
+          "f1": 0.5837
+        },
+        "B4": {
+          "tp": 9,
+          "fp": 29,
+          "fn": 54,
+          "precision": 0.2368,
+          "recall": 0.1429,
+          "f1": 0.1782
+        }
+      },
+      "macro_precision": 0.5384,
+      "macro_recall": 0.4644,
+      "macro_f1": 0.4967
+    },
+    "new763_rtdetr_l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 142,
+          "fp": 205,
+          "fn": 31,
+          "precision": 0.4092,
+          "recall": 0.8208,
+          "f1": 0.5462
+        },
+        "B2": {
+          "tp": 259,
+          "fp": 329,
+          "fn": 62,
+          "precision": 0.4405,
+          "recall": 0.8069,
+          "f1": 0.5699
+        },
+        "B3": {
+          "tp": 252,
+          "fp": 272,
+          "fn": 82,
+          "precision": 0.4809,
+          "recall": 0.7545,
+          "f1": 0.5874
+        },
+        "B4": {
+          "tp": 32,
+          "fp": 139,
+          "fn": 31,
+          "precision": 0.1871,
+          "recall": 0.5079,
+          "f1": 0.2735
+        }
+      },
+      "macro_precision": 0.3794,
+      "macro_recall": 0.7225,
+      "macro_f1": 0.4943
+    },
+    "new763_rfdetr_l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 139,
+          "fp": 110,
+          "fn": 34,
+          "precision": 0.5582,
+          "recall": 0.8035,
+          "f1": 0.6588
+        },
+        "B2": {
+          "tp": 255,
+          "fp": 278,
+          "fn": 66,
+          "precision": 0.4784,
+          "recall": 0.7944,
+          "f1": 0.5972
+        },
+        "B3": {
+          "tp": 249,
+          "fp": 188,
+          "fn": 85,
+          "precision": 0.5698,
+          "recall": 0.7455,
+          "f1": 0.6459
+        },
+        "B4": {
+          "tp": 29,
+          "fp": 48,
+          "fn": 34,
+          "precision": 0.3766,
+          "recall": 0.4603,
+          "f1": 0.4143
+        }
+      },
+      "macro_precision": 0.4957,
+      "macro_recall": 0.7009,
+      "macro_f1": 0.579
+    },
+    "combined1716_yolo26l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 296,
+          "fp": 111,
+          "fn": 147,
+          "precision": 0.7273,
+          "recall": 0.6682,
+          "f1": 0.6965
+        },
+        "B2": {
+          "tp": 344,
+          "fp": 278,
+          "fn": 464,
+          "precision": 0.5531,
+          "recall": 0.4257,
+          "f1": 0.4811
+        },
+        "B3": {
+          "tp": 979,
+          "fp": 541,
+          "fn": 770,
+          "precision": 0.6441,
+          "recall": 0.5597,
+          "f1": 0.599
+        },
+        "B4": {
+          "tp": 101,
+          "fp": 86,
+          "fn": 412,
+          "precision": 0.5401,
+          "recall": 0.1969,
+          "f1": 0.2886
+        }
+      },
+      "macro_precision": 0.6161,
+      "macro_recall": 0.4626,
+      "macro_f1": 0.5163
+    },
+    "combined1716_rtdetr_l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 382,
+          "fp": 534,
+          "fn": 61,
+          "precision": 0.417,
+          "recall": 0.8623,
+          "f1": 0.5622
+        },
+        "B2": {
+          "tp": 662,
+          "fp": 1530,
+          "fn": 146,
+          "precision": 0.302,
+          "recall": 0.8193,
+          "f1": 0.4413
+        },
+        "B3": {
+          "tp": 1472,
+          "fp": 2255,
+          "fn": 277,
+          "precision": 0.395,
+          "recall": 0.8416,
+          "f1": 0.5376
+        },
+        "B4": {
+          "tp": 379,
+          "fp": 1231,
+          "fn": 134,
+          "precision": 0.2354,
+          "recall": 0.7388,
+          "f1": 0.357
+        }
+      },
+      "macro_precision": 0.3373,
+      "macro_recall": 0.8155,
+      "macro_f1": 0.4745
+    },
+    "combined1716_rfdetr_l": {
+      "conf_threshold": 0.25,
+      "per_class": {
+        "B1": {
+          "tp": 367,
+          "fp": 305,
+          "fn": 76,
+          "precision": 0.5461,
+          "recall": 0.8284,
+          "f1": 0.6583
+        },
+        "B2": {
+          "tp": 600,
+          "fp": 898,
+          "fn": 208,
+          "precision": 0.4005,
+          "recall": 0.7426,
+          "f1": 0.5204
+        },
+        "B3": {
+          "tp": 1441,
+          "fp": 1579,
+          "fn": 308,
+          "precision": 0.4772,
+          "recall": 0.8239,
+          "f1": 0.6043
+        },
+        "B4": {
+          "tp": 327,
+          "fp": 676,
+          "fn": 186,
+          "precision": 0.326,
+          "recall": 0.6374,
+          "f1": 0.4314
+        }
+      },
+      "macro_precision": 0.4375,
+      "macro_recall": 0.7581,
+      "macro_f1": 0.5536
+    }
+  },
+  "sweep_best_f1": {
+    "new763_yolo26l": {
+      "best": {
+        "conf_threshold": 0.2,
+        "per_class": {
+          "B1": {
+            "tp": 111,
+            "fp": 71,
+            "fn": 62,
+            "precision": 0.6099,
+            "recall": 0.6416,
+            "f1": 0.6254
+          },
+          "B2": {
+            "tp": 194,
+            "fp": 122,
+            "fn": 127,
+            "precision": 0.6139,
+            "recall": 0.6044,
+            "f1": 0.6091
+          },
+          "B3": {
+            "tp": 205,
+            "fp": 180,
+            "fn": 129,
+            "precision": 0.5325,
+            "recall": 0.6138,
+            "f1": 0.5702
+          },
+          "B4": {
+            "tp": 14,
+            "fp": 38,
+            "fn": 49,
+            "precision": 0.2692,
+            "recall": 0.2222,
+            "f1": 0.2435
+          }
+        },
+        "macro_precision": 0.5064,
+        "macro_recall": 0.5205,
+        "macro_f1": 0.5121,
+        "conf": 0.2
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.4218,
+          "macro_precision": 0.3025,
+          "macro_recall": 0.7254
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.4856,
+          "macro_precision": 0.3884,
+          "macro_recall": 0.6548
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.511,
+          "macro_precision": 0.4529,
+          "macro_recall": 0.5877
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.5121,
+          "macro_precision": 0.5064,
+          "macro_recall": 0.5205
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.4967,
+          "macro_precision": 0.5384,
+          "macro_recall": 0.4644
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.5027,
+          "macro_precision": 0.6013,
+          "macro_recall": 0.4363
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.4801,
+          "macro_precision": 0.6391,
+          "macro_recall": 0.3903
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.4563,
+          "macro_precision": 0.6897,
+          "macro_recall": 0.3481
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.396,
+          "macro_precision": 0.7098,
+          "macro_recall": 0.2841
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.3445,
+          "macro_precision": 0.7292,
+          "macro_recall": 0.2386
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.2926,
+          "macro_precision": 0.7687,
+          "macro_recall": 0.1961
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.2463,
+          "macro_precision": 0.7545,
+          "macro_recall": 0.1622
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.1901,
+          "macro_precision": 0.7332,
+          "macro_recall": 0.1224
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.1506,
+          "macro_precision": 0.5759,
+          "macro_recall": 0.0949
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.0918,
+          "macro_precision": 0.4626,
+          "macro_recall": 0.0537
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.053,
+          "macro_precision": 0.5,
+          "macro_recall": 0.029
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    },
+    "new763_rtdetr_l": {
+      "best": {
+        "conf_threshold": 0.45,
+        "per_class": {
+          "B1": {
+            "tp": 127,
+            "fp": 89,
+            "fn": 46,
+            "precision": 0.588,
+            "recall": 0.7341,
+            "f1": 0.653
+          },
+          "B2": {
+            "tp": 226,
+            "fp": 183,
+            "fn": 95,
+            "precision": 0.5526,
+            "recall": 0.704,
+            "f1": 0.6192
+          },
+          "B3": {
+            "tp": 202,
+            "fp": 98,
+            "fn": 132,
+            "precision": 0.6733,
+            "recall": 0.6048,
+            "f1": 0.6372
+          },
+          "B4": {
+            "tp": 24,
+            "fp": 46,
+            "fn": 39,
+            "precision": 0.3429,
+            "recall": 0.381,
+            "f1": 0.3609
+          }
+        },
+        "macro_precision": 0.5392,
+        "macro_recall": 0.606,
+        "macro_f1": 0.5676,
+        "conf": 0.45
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.2249,
+          "macro_precision": 0.1313,
+          "macro_recall": 0.8704
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.3437,
+          "macro_precision": 0.2206,
+          "macro_recall": 0.8262
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.4172,
+          "macro_precision": 0.2876,
+          "macro_recall": 0.7924
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.4615,
+          "macro_precision": 0.3351,
+          "macro_recall": 0.7644
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.4943,
+          "macro_precision": 0.3794,
+          "macro_recall": 0.7225
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.5197,
+          "macro_precision": 0.4172,
+          "macro_recall": 0.6972
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.5402,
+          "macro_precision": 0.4581,
+          "macro_recall": 0.6655
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.5552,
+          "macro_precision": 0.499,
+          "macro_recall": 0.6335
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.5676,
+          "macro_precision": 0.5392,
+          "macro_recall": 0.606
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.5663,
+          "macro_precision": 0.5702,
+          "macro_recall": 0.5691
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.549,
+          "macro_precision": 0.5921,
+          "macro_recall": 0.5169
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.5543,
+          "macro_precision": 0.6505,
+          "macro_recall": 0.4874
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.5142,
+          "macro_precision": 0.6865,
+          "macro_recall": 0.418
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.446,
+          "macro_precision": 0.7433,
+          "macro_recall": 0.3276
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.275,
+          "macro_precision": 0.7904,
+          "macro_recall": 0.1804
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.042,
+          "macro_precision": 0.75,
+          "macro_recall": 0.0225
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    },
+    "new763_rfdetr_l": {
+      "best": {
+        "conf_threshold": 0.35,
+        "per_class": {
+          "B1": {
+            "tp": 121,
+            "fp": 44,
+            "fn": 52,
+            "precision": 0.7333,
+            "recall": 0.6994,
+            "f1": 0.716
+          },
+          "B2": {
+            "tp": 237,
+            "fp": 165,
+            "fn": 84,
+            "precision": 0.5896,
+            "recall": 0.7383,
+            "f1": 0.6556
+          },
+          "B3": {
+            "tp": 217,
+            "fp": 99,
+            "fn": 117,
+            "precision": 0.6867,
+            "recall": 0.6497,
+            "f1": 0.6677
+          },
+          "B4": {
+            "tp": 20,
+            "fp": 23,
+            "fn": 43,
+            "precision": 0.4651,
+            "recall": 0.3175,
+            "f1": 0.3774
+          }
+        },
+        "macro_precision": 0.6187,
+        "macro_recall": 0.6012,
+        "macro_f1": 0.6042,
+        "conf": 0.35
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.1866,
+          "macro_precision": 0.1053,
+          "macro_recall": 0.9064
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.3262,
+          "macro_precision": 0.204,
+          "macro_recall": 0.8519
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.4387,
+          "macro_precision": 0.302,
+          "macro_recall": 0.8106
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.5275,
+          "macro_precision": 0.4062,
+          "macro_recall": 0.7537
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.579,
+          "macro_precision": 0.4957,
+          "macro_recall": 0.7009
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.5959,
+          "macro_precision": 0.5664,
+          "macro_recall": 0.6379
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.6042,
+          "macro_precision": 0.6187,
+          "macro_recall": 0.6012
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.6038,
+          "macro_precision": 0.6737,
+          "macro_recall": 0.5612
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.5626,
+          "macro_precision": 0.6804,
+          "macro_recall": 0.4927
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.537,
+          "macro_precision": 0.7137,
+          "macro_recall": 0.441
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.5024,
+          "macro_precision": 0.7912,
+          "macro_recall": 0.3836
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.4546,
+          "macro_precision": 0.8761,
+          "macro_recall": 0.3252
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.3595,
+          "macro_precision": 0.8625,
+          "macro_recall": 0.2444
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.2364,
+          "macro_precision": 0.7856,
+          "macro_recall": 0.1537
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.1339,
+          "macro_precision": 0.8447,
+          "macro_recall": 0.0818
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.0168,
+          "macro_precision": 0.25,
+          "macro_recall": 0.0087
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    },
+    "combined1716_yolo26l": {
+      "best": {
+        "conf_threshold": 0.2,
+        "per_class": {
+          "B1": {
+            "tp": 315,
+            "fp": 148,
+            "fn": 128,
+            "precision": 0.6803,
+            "recall": 0.7111,
+            "f1": 0.6954
+          },
+          "B2": {
+            "tp": 409,
+            "fp": 417,
+            "fn": 399,
+            "precision": 0.4952,
+            "recall": 0.5062,
+            "f1": 0.5006
+          },
+          "B3": {
+            "tp": 1120,
+            "fp": 822,
+            "fn": 629,
+            "precision": 0.5767,
+            "recall": 0.6404,
+            "f1": 0.6069
+          },
+          "B4": {
+            "tp": 146,
+            "fp": 152,
+            "fn": 367,
+            "precision": 0.4899,
+            "recall": 0.2846,
+            "f1": 0.36
+          }
+        },
+        "macro_precision": 0.5605,
+        "macro_recall": 0.5356,
+        "macro_f1": 0.5407,
+        "conf": 0.2
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.4143,
+          "macro_precision": 0.2835,
+          "macro_recall": 0.7879
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.4969,
+          "macro_precision": 0.391,
+          "macro_recall": 0.686
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.5308,
+          "macro_precision": 0.4796,
+          "macro_recall": 0.6033
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.5407,
+          "macro_precision": 0.5605,
+          "macro_recall": 0.5356
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.5163,
+          "macro_precision": 0.6161,
+          "macro_recall": 0.4626
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.4944,
+          "macro_precision": 0.6697,
+          "macro_recall": 0.4108
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.4518,
+          "macro_precision": 0.7003,
+          "macro_recall": 0.3524
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.404,
+          "macro_precision": 0.7277,
+          "macro_recall": 0.2991
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.3627,
+          "macro_precision": 0.7752,
+          "macro_recall": 0.2585
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.3196,
+          "macro_precision": 0.7937,
+          "macro_recall": 0.2208
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.2727,
+          "macro_precision": 0.8184,
+          "macro_recall": 0.1831
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.2193,
+          "macro_precision": 0.8997,
+          "macro_recall": 0.1427
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.162,
+          "macro_precision": 0.6566,
+          "macro_recall": 0.1032
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.0977,
+          "macro_precision": 0.4613,
+          "macro_recall": 0.0568
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.032,
+          "macro_precision": 0.4908,
+          "macro_recall": 0.0167
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.0003,
+          "macro_precision": 0.25,
+          "macro_recall": 0.0001
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    },
+    "combined1716_rtdetr_l": {
+      "best": {
+        "conf_threshold": 0.45,
+        "per_class": {
+          "B1": {
+            "tp": 309,
+            "fp": 132,
+            "fn": 134,
+            "precision": 0.7007,
+            "recall": 0.6975,
+            "f1": 0.6991
+          },
+          "B2": {
+            "tp": 507,
+            "fp": 586,
+            "fn": 301,
+            "precision": 0.4639,
+            "recall": 0.6275,
+            "f1": 0.5334
+          },
+          "B3": {
+            "tp": 1302,
+            "fp": 920,
+            "fn": 447,
+            "precision": 0.586,
+            "recall": 0.7444,
+            "f1": 0.6558
+          },
+          "B4": {
+            "tp": 241,
+            "fp": 278,
+            "fn": 272,
+            "precision": 0.4644,
+            "recall": 0.4698,
+            "f1": 0.4671
+          }
+        },
+        "macro_precision": 0.5537,
+        "macro_recall": 0.6348,
+        "macro_f1": 0.5888,
+        "conf": 0.45
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.1502,
+          "macro_precision": 0.0825,
+          "macro_recall": 0.9162
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.27,
+          "macro_precision": 0.1615,
+          "macro_recall": 0.8907
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.3538,
+          "macro_precision": 0.2259,
+          "macro_recall": 0.8603
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.4191,
+          "macro_precision": 0.2825,
+          "macro_recall": 0.8386
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.4745,
+          "macro_precision": 0.3373,
+          "macro_recall": 0.8155
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.5171,
+          "macro_precision": 0.3905,
+          "macro_recall": 0.7747
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.5566,
+          "macro_precision": 0.4524,
+          "macro_recall": 0.7333
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.5769,
+          "macro_precision": 0.5027,
+          "macro_recall": 0.6847
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.5888,
+          "macro_precision": 0.5537,
+          "macro_recall": 0.6348
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.5836,
+          "macro_precision": 0.5985,
+          "macro_recall": 0.5763
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.5594,
+          "macro_precision": 0.6406,
+          "macro_recall": 0.5057
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.5134,
+          "macro_precision": 0.6837,
+          "macro_recall": 0.4267
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.4389,
+          "macro_precision": 0.7404,
+          "macro_recall": 0.3312
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.3168,
+          "macro_precision": 0.8094,
+          "macro_recall": 0.2189
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.1733,
+          "macro_precision": 0.6628,
+          "macro_recall": 0.1104
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.0587,
+          "macro_precision": 0.5913,
+          "macro_recall": 0.0329
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0045,
+          "macro_precision": 0.25,
+          "macro_recall": 0.0022
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    },
+    "combined1716_rfdetr_l": {
+      "best": {
+        "conf_threshold": 0.35,
+        "per_class": {
+          "B1": {
+            "tp": 338,
+            "fp": 163,
+            "fn": 105,
+            "precision": 0.6747,
+            "recall": 0.763,
+            "f1": 0.7161
+          },
+          "B2": {
+            "tp": 486,
+            "fp": 423,
+            "fn": 322,
+            "precision": 0.5347,
+            "recall": 0.6015,
+            "f1": 0.5661
+          },
+          "B3": {
+            "tp": 1269,
+            "fp": 845,
+            "fn": 480,
+            "precision": 0.6003,
+            "recall": 0.7256,
+            "f1": 0.657
+          },
+          "B4": {
+            "tp": 239,
+            "fp": 261,
+            "fn": 274,
+            "precision": 0.478,
+            "recall": 0.4659,
+            "f1": 0.4719
+          }
+        },
+        "macro_precision": 0.5719,
+        "macro_recall": 0.639,
+        "macro_f1": 0.6028,
+        "conf": 0.35
+      },
+      "curve": [
+        {
+          "conf": 0.05,
+          "macro_f1": 0.1818,
+          "macro_precision": 0.1017,
+          "macro_recall": 0.9334
+        },
+        {
+          "conf": 0.1,
+          "macro_f1": 0.3169,
+          "macro_precision": 0.1952,
+          "macro_recall": 0.8963
+        },
+        {
+          "conf": 0.15,
+          "macro_f1": 0.4187,
+          "macro_precision": 0.2801,
+          "macro_recall": 0.8554
+        },
+        {
+          "conf": 0.2,
+          "macro_f1": 0.4975,
+          "macro_precision": 0.3611,
+          "macro_recall": 0.8116
+        },
+        {
+          "conf": 0.25,
+          "macro_f1": 0.5536,
+          "macro_precision": 0.4375,
+          "macro_recall": 0.7581
+        },
+        {
+          "conf": 0.3,
+          "macro_f1": 0.5853,
+          "macro_precision": 0.5051,
+          "macro_recall": 0.6966
+        },
+        {
+          "conf": 0.35,
+          "macro_f1": 0.6028,
+          "macro_precision": 0.5719,
+          "macro_recall": 0.639
+        },
+        {
+          "conf": 0.4,
+          "macro_f1": 0.5868,
+          "macro_precision": 0.62,
+          "macro_recall": 0.5634
+        },
+        {
+          "conf": 0.45,
+          "macro_f1": 0.5563,
+          "macro_precision": 0.6709,
+          "macro_recall": 0.4896
+        },
+        {
+          "conf": 0.5,
+          "macro_f1": 0.506,
+          "macro_precision": 0.7112,
+          "macro_recall": 0.4131
+        },
+        {
+          "conf": 0.55,
+          "macro_f1": 0.4398,
+          "macro_precision": 0.758,
+          "macro_recall": 0.3365
+        },
+        {
+          "conf": 0.6,
+          "macro_f1": 0.3623,
+          "macro_precision": 0.8086,
+          "macro_recall": 0.2604
+        },
+        {
+          "conf": 0.65,
+          "macro_f1": 0.2707,
+          "macro_precision": 0.8173,
+          "macro_recall": 0.1854
+        },
+        {
+          "conf": 0.7,
+          "macro_f1": 0.1935,
+          "macro_precision": 0.9169,
+          "macro_recall": 0.1303
+        },
+        {
+          "conf": 0.75,
+          "macro_f1": 0.1235,
+          "macro_precision": 0.5771,
+          "macro_recall": 0.0799
+        },
+        {
+          "conf": 0.8,
+          "macro_f1": 0.0635,
+          "macro_precision": 0.4924,
+          "macro_recall": 0.0364
+        },
+        {
+          "conf": 0.85,
+          "macro_f1": 0.0111,
+          "macro_precision": 0.25,
+          "macro_recall": 0.0056
+        },
+        {
+          "conf": 0.9,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        },
+        {
+          "conf": 0.95,
+          "macro_f1": 0.0,
+          "macro_precision": 0.0,
+          "macro_recall": 0.0
+        }
+      ]
+    }
+  },
+  "wbf_ensemble": {
+    "new763": {
+      "mAP50_classaware": 0.5631,
+      "AP50_agnostic": 0.8039,
+      "per_class_AP50": {
+        "B1": 0.7066,
+        "B2": 0.6,
+        "B3": 0.6459,
+        "B4": 0.3
+      }
+    },
+    "combined1716": {
+      "mAP50_classaware": 0.5538,
+      "AP50_agnostic": 0.8106,
+      "per_class_AP50": {
+        "B1": 0.7286,
+        "B2": 0.4732,
+        "B3": 0.6372,
+        "B4": 0.376
+      }
+    }
+  }
+}
