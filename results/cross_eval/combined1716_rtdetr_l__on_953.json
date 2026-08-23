@@ -1,0 +1,21 @@
+{
+  "run_name": "combined1716_rtdetr_l__on_953",
+  "kind": "rtdetr",
+  "weights": "/workspace/project-expertise/runs_combined1716/combined1716_rtdetr_l_rgb_s42_i1280/weights/best.pt",
+  "dataset": "/workspace/SawitMVC-YOLO-eval",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.572329,
+      "mAP50_95": 0.265782,
+      "per_kelas_AP50": {
+        "B1": 0.769024,
+        "B2": 0.460495,
+        "B3": 0.636679,
+        "B4": 0.423117
+      },
+      "predictions": "results/cross_eval/predictions/combined1716_rtdetr_l__on_953__test.npz"
+    }
+  }
+}

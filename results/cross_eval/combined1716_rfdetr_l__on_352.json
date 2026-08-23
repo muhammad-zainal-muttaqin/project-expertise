@@ -1,0 +1,21 @@
+{
+  "run_name": "combined1716_rfdetr_l__on_352",
+  "kind": "rfdetr",
+  "weights": "/workspace/project-expertise/runs_combined1716/combined1716_rfdetr_l_rgb_s42_i1280/checkpoint_best_ema.pth",
+  "dataset": "/workspace/SawitMVC-Depth-352",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.662058,
+      "mAP50_95": 0.278626,
+      "per_kelas_AP50": {
+        "B1": 0.884007,
+        "B2": 0.715176,
+        "B3": 0.488388,
+        "B4": 0.56066
+      },
+      "predictions": "results/cross_eval/predictions/combined1716_rfdetr_l__on_352__test.npz"
+    }
+  }
+}

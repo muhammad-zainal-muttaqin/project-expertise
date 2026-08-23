@@ -1,0 +1,21 @@
+{
+  "run_name": "new763_rtdetr_l__on_352",
+  "kind": "rtdetr",
+  "weights": "/workspace/project-expertise/runs_new763/rtdetr_l_rgb_s42_i1280/weights/best.pt",
+  "dataset": "/workspace/SawitMVC-Depth-352",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.637787,
+      "mAP50_95": 0.278535,
+      "per_kelas_AP50": {
+        "B1": 0.868305,
+        "B2": 0.727592,
+        "B3": 0.477974,
+        "B4": 0.477277
+      },
+      "predictions": "results/cross_eval/predictions/new763_rtdetr_l__on_352__test.npz"
+    }
+  }
+}

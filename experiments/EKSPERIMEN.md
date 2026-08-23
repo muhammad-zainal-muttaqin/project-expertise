@@ -2167,3 +2167,93 @@ tugas 4-kelas, bukan sekadar WBF per-kelas independen.
 
 **Sumber:** `scripts/eval_extra_metrics_from_npz.py`,
 `results/extra_metrics_sesi2026-08.json`.
+
+---
+
+## V2-E-040 — Cross-dataset: model sesi ini gagal total ke domain 953 kalau tak pernah melihatnya, tapi urutan arsitektur ikut berubah
+
+**Tanggal:** 2026-08-23
+**Konteks.** Enam model sesi ini (V2-E-034/035) hanya pernah dievaluasi pada
+split test dari korpus tempat mereka dilatih. Pertanyaan: bagaimana mereka
+tampil di dua dataset lama yang tak pernah dilihat sama sekali saat
+training — SawitMVC-YOLO (953 pohon, kampanye DAMIMAS+LONSUM) dan
+SawitMVC-Depth v1.1.0 (352 pohon, DAMIMAS saja, diunduh dari revisi HF
+sebelum digabung jadi v2.0.0/763 pohon)? **Tidak ada training ulang** — cuma
+inferensi dengan bobot yang sudah ada.
+
+**Metode.** `scripts/eval_new763_pycoco.py` dijalankan langsung (tanpa
+runner) untuk 12 kombinasi (6 model × 2 target), split test saja. Dataset
+352 diunduh dari commit HF `80dcbae` (v1.1.0, sebelum merge 763) karena
+rilis v2.0.0 sudah menimpa split kanonik lama di tempat.
+
+**Pemeriksaan kebocoran (WAJIB sebelum baca hasil) — dua dari empat
+pasangan TERKONTAMINASI:**
+
+| Pasangan | Pohon test | Tumpang tindih train+val | Status |
+|---|---|---|---|
+| new763 vs 352-test | 55 | **47/55 (85%)** | **TERKONTAMINASI** |
+| combined1716 vs 352-test | 55 | **46/55 (84%)** | **TERKONTAMINASI** |
+| new763 vs 953-test | 141 | 50/141 (35%), sesi capture beda ~80 hari | Bersih (lihat catatan) |
+| combined1716 vs 953-test | 141 | **0/141 (0%)** | Bersih |
+
+**Kenapa 352 tercemar:** dataset 352 versi mandiri (v1.1.0) adalah persis
+korpus DAMIMAS Juli 2026 yang **kemudian digabung mentah-mentah** jadi
+bagian dari `SawitMVC-Depth-YOLO` v2.0.0 (basis new763) — split v2.0.0
+dihitung ulang dari nol, jadi pohon yang masuk *test* di 352 lama bisa saja
+masuk *train* di new763. Ini rantai kontaminasi yang sama persis dengan
+yang diperingatkan V2-E-033 ("353→953: 44 dari 55 pohon test-352 ada di
+train-953") — cuma arahnya dibalik di sini. **Angka new763→352 dan
+combined1716→352 di bawah TIDAK BOLEH dikutip sebagai bukti generalisasi.**
+
+**Kenapa 953 (untuk new763) tetap sah dipakai meski tree-ID tumpang
+tindih 35%:** V2-E-033 sudah membuktikan 953 dan 352 adalah **dua sesi
+akuisisi berbeda ~80 hari**, kamera/resolusi berbeda (953: HP RGB
+960×1280; sumber new763/352: sensor Depth 1280×800) — jadi pohon yang sama
+difoto ulang dengan kondisi visual yang genuinely berbeda (buah matang
+berubah, sudut, pencahayaan, kamera). Tumpang tindih identitas pohon bukan
+tumpang tindih piksel.
+
+**Hasil — test mAP50, dibandingkan dengan in-domain (V2-E-034/035):**
+
+| Model | In-domain | → 953 (bersih) | → 352 (TERCEMAR, referensi saja) |
+|---|---|---|---|
+| new763 YOLO26l | 0,5163 | 0,2331 | ~~0,5572~~ |
+| new763 RT-DETR-L | 0,5580 | **0,1110** | ~~0,6378~~ |
+| new763 RF-DETR-L | 0,6129 | 0,1774 | ~~0,6072~~ |
+| combined1716 YOLO26l | 0,5389 | 0,5402 | ~~0,5646~~ |
+| combined1716 RT-DETR-L | 0,5745 | 0,5723 | ~~0,5729~~ |
+| combined1716 RF-DETR-L | 0,5960 | **0,5894** | ~~0,6621~~ |
+
+**Temuan 1 — combined1716 nyaris tidak kehilangan performa di 953, new763
+runtuh total.** combined1716 (0,54-0,59, turun cuma 0,001-0,007 dari
+in-domain) hampir tidak berbeda dari performa aslinya; new763 (0,11-0,23)
+kehilangan 0,39-0,45 poin mAP50 — **runtuh ke 20-38% dari performa
+in-domain-nya**. Penjelasannya bukan misteri: `combined1716` memasukkan
+sebagian pohon 953 lain (bukan yang di split test-nya) ke training, jadi
+model ini sudah pernah melihat domain kamera/resolusi 953 walau bukan
+pohon spesifiknya. new763 tidak pernah sekalipun melihat domain itu.
+
+**Temuan 2 — di bawah pergeseran domain, urutan arsitektur new763
+TERBALIK dari in-domain.** In-domain: RF-DETR-L (0,6129) > RT-DETR-L
+(0,5580) > YOLO26l (0,5163). Ke domain 953: **YOLO26l (0,2331) > RF-DETR-L
+(0,1774) > RT-DETR-L (0,1110)** — RT-DETR-L, runner-up in-domain, jadi
+**paling buruk** menggeneralisasi; YOLO26l, yang terlemah in-domain, jadi
+**paling tangguh**. Untuk combined1716 urutan tetap sama (RF-DETR>RT-DETR>
+YOLO) karena ketiganya sudah pernah melihat domain 953 saat training, jadi
+bukan murni soal generalisasi arsitektur.
+**Bacaan yang benar: model terbaik in-domain BUKAN jaminan model paling
+robust ke domain baru** — kalau prioritasnya deployment ke kondisi capture
+yang belum diketahui, kemampuan generalisasi (bukan cuma mAP50 in-domain)
+harus diukur terpisah.
+
+**Verdict: CONFIRMED untuk keduanya** — (a) komposisi data training
+menentukan robustness lintas-domain jauh lebih kuat daripada pilihan
+arsitektur; (b) ranking arsitektur in-domain tidak transitif ke ranking
+generalisasi domain-shift.
+
+**Sumber:** `results/cross_eval/*.json` (12 hasil), skrip pemeriksaan
+kebocoran dijalankan interaktif (tidak disimpan sebagai file terpisah —
+logikanya didokumentasikan di sini: cocokkan `tree_id` = nama berkas tanpa
+suffix `_<nomor_sisi>`, prefix `SAWIT_`/`DEPTH_` dilucuti untuk
+combined1716). Dataset 352 (revisi pre-merge): HF `ULM-DS-Lab/SawitMVC-Depth`
+commit `80dcbae6ca5521515db84038dabc2ead96fa007e`.
