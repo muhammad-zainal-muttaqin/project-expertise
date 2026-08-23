@@ -2039,3 +2039,64 @@ ordinal (nyaris nol lompat dua tingkat) di semua model yang diperiksa.
 **Sumber:** `scripts/eval_confusion_from_npz.py`,
 `results/confusion_analysis_sesi2026-08.json` (confusion matrix lengkap
 keenam model), angka pembanding dari V2-E-013/034/035/036.
+
+---
+
+## V2-E-038 — Bootstrap CI mAP50: urutan RF-DETR-L > RT-DETR-L > YOLO26l SIGNIFIKAN di kedua korpus
+
+**Tanggal:** 2026-08-23
+**Konteks.** V2-E-023 (2026-08-12) menunjukkan lebar CI bootstrap bisa jauh
+lebih besar dari selisih titik estimasi antar-konfigurasi, membuat urutan
+Fase 6 tidak terbedakan secara statistik. Pertanyaan: apakah urutan
+RF-DETR-L > RT-DETR-L > YOLO26l di V2-E-034/035 juga sekadar derau, atau
+memang signifikan?
+
+**Metode.** `scripts/bootstrap_map_from_npz.py` — replikasi metodologi
+V2-E-023: resampling **citra** (bukan kotak) dengan pengembalian, 500
+replikasi, seed 42, **berpasangan** (sampel citra yang sama dipakai untuk
+ketiga arsitektur dalam satu korpus, supaya korelasi antar-model tidak
+menggelembungkan selang selisihnya). mAP50 dihitung ulang dari nol tiap
+replikasi (rata-rata makro 4 kelas, AP50 gaya COCO interpolasi 101 titik).
+**Tidak re-infer** — dari dump `.npz` test V2-E-034/035. Titik estimasi dari
+implementasi sendiri sedikit berbeda dari pycocotools (mis. 0,5163 vs 0,5163
+new763-yolo, 0,558 vs 0,5580 new763-rtdetr) — selisih <0,0004, sama seperti
+yang sudah divalidasi di V2-E-013, bukan bug.
+
+**Hasil — CI95 per model:**
+
+| Korpus | Model | mAP50 | CI95 | Lebar CI |
+|---|---|---|---|---|
+| new763 (440 citra, 891 kotak) | YOLO26l | 0,5163 | [0,4853; 0,5572] | 0,0719 |
+| new763 | RT-DETR-L | 0,5580 | [0,5261; 0,6067] | 0,0806 |
+| new763 | RF-DETR-L | 0,6129 | [0,5788; 0,6614] | 0,0826 |
+| combined1716 (1.052 citra, 3.513 kotak) | YOLO26l | 0,5389 | [0,5204; 0,5611] | 0,0407 |
+| combined1716 | RT-DETR-L | 0,5746 | [0,5558; 0,5984] | 0,0426 |
+| combined1716 | RF-DETR-L | 0,5960 | [0,5780; 0,6208] | 0,0428 |
+
+**Hasil — selisih berpasangan, keduanya korpus:**
+
+| Perbandingan | Δ titik | CI95 Δ | P(Δ>0) | Signifikan |
+|---|---|---|---|---|
+| new763: YOLO − RT-DETR | −0,0417 | [−0,0747; −0,0144] | 0,002 | **YA** |
+| new763: YOLO − RF-DETR | −0,0966 | [−0,1269; −0,0662] | 0,000 | **YA** |
+| new763: RT-DETR − RF-DETR | −0,0549 | [−0,0826; −0,0261] | 0,000 | **YA** |
+| combined1716: YOLO − RT-DETR | −0,0357 | [−0,0517; −0,0219] | 0,000 | **YA** |
+| combined1716: YOLO − RF-DETR | −0,0571 | [−0,0721; −0,0420] | 0,000 | **YA** |
+| combined1716: RT-DETR − RF-DETR | −0,0214 | [−0,0377; −0,0064] | 0,004 | **YA** |
+
+**Verdict: CONFIRMED — SEMUA ENAM perbandingan berpasangan signifikan pada
+α=0,05, di kedua korpus.** Berbeda dari V2-E-023 (Fase 6, semua konfigurasi
+TIDAK terbedakan): urutan tiga arsitektur di sini nyata, bukan derau. Lebar
+CI di combined1716 (~0,04) jauh lebih sempit dari new763 (~0,08) — konsisten
+dengan jumlah kotak GT yang 3,9x lebih banyak (3.513 vs 891), memberi daya
+statistik lebih tinggi.
+
+**Kaitan dengan V2-E-023.** Perbedaan hasil ini BUKAN kontradiksi metodologi:
+V2-E-023 menguji konfigurasi *dalam satu arsitektur* (variasi resep 4-6
+kanal) dengan selisih titik kecil (~0,004-0,01) pada split kecil (410 kotak);
+di sini yang dibandingkan adalah *arsitektur berbeda* dengan selisih jauh
+lebih besar (0,02-0,10) pada split yang jauh lebih besar (891-3.513 kotak).
+Daya statistik dan besaran efek sama-sama mendukung signifikansi di sini.
+
+**Sumber:** `scripts/bootstrap_map_from_npz.py`,
+`results/bootstrap_map_sesi2026-08.json`.

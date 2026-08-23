@@ -1,0 +1,128 @@
+{
+  "generated_at": "2026-08-23T05:27:10.105262+00:00",
+  "note": "Bootstrap CI mAP50 (500 replikasi, seed 42, resampling citra berpasangan), replikasi metodologi V2-E-023, dari dump .npz test yang sudah ada (V2-E-034/035). Tidak re-infer.",
+  "corpora": {
+    "new763": {
+      "n_citra": 440,
+      "n_boxes": 891,
+      "n_boot": 500,
+      "seed": 42,
+      "per_model": {
+        "yolo26l": {
+          "mAP50": 0.5163,
+          "CI95_mAP50": [
+            0.4853,
+            0.5572
+          ],
+          "lebar_CI": 0.0719
+        },
+        "rtdetr_l": {
+          "mAP50": 0.558,
+          "CI95_mAP50": [
+            0.5261,
+            0.6067
+          ],
+          "lebar_CI": 0.0806
+        },
+        "rfdetr_l": {
+          "mAP50": 0.6129,
+          "CI95_mAP50": [
+            0.5788,
+            0.6614
+          ],
+          "lebar_CI": 0.0826
+        }
+      },
+      "selisih_berpasangan": {
+        "yolo26l - rtdetr_l": {
+          "delta_titik": -0.0417,
+          "CI95_delta": [
+            -0.0747,
+            -0.0144
+          ],
+          "P(delta>0)": 0.002,
+          "signifikan_95": true
+        },
+        "yolo26l - rfdetr_l": {
+          "delta_titik": -0.0966,
+          "CI95_delta": [
+            -0.1269,
+            -0.0662
+          ],
+          "P(delta>0)": 0.0,
+          "signifikan_95": true
+        },
+        "rtdetr_l - rfdetr_l": {
+          "delta_titik": -0.0549,
+          "CI95_delta": [
+            -0.0826,
+            -0.0261
+          ],
+          "P(delta>0)": 0.0,
+          "signifikan_95": true
+        }
+      }
+    },
+    "combined1716": {
+      "n_citra": 1052,
+      "n_boxes": 3513,
+      "n_boot": 500,
+      "seed": 42,
+      "per_model": {
+        "yolo26l": {
+          "mAP50": 0.5389,
+          "CI95_mAP50": [
+            0.5204,
+            0.5611
+          ],
+          "lebar_CI": 0.0407
+        },
+        "rtdetr_l": {
+          "mAP50": 0.5746,
+          "CI95_mAP50": [
+            0.5558,
+            0.5984
+          ],
+          "lebar_CI": 0.0426
+        },
+        "rfdetr_l": {
+          "mAP50": 0.596,
+          "CI95_mAP50": [
+            0.578,
+            0.6208
+          ],
+          "lebar_CI": 0.0428
+        }
+      },
+      "selisih_berpasangan": {
+        "yolo26l - rtdetr_l": {
+          "delta_titik": -0.0357,
+          "CI95_delta": [
+            -0.0517,
+            -0.0219
+          ],
+          "P(delta>0)": 0.0,
+          "signifikan_95": true
+        },
+        "yolo26l - rfdetr_l": {
+          "delta_titik": -0.0571,
+          "CI95_delta": [
+            -0.0721,
+            -0.042
+          ],
+          "P(delta>0)": 0.0,
+          "signifikan_95": true
+        },
+        "rtdetr_l - rfdetr_l": {
+          "delta_titik": -0.0214,
+          "CI95_delta": [
+            -0.0377,
+            -0.0064
+          ],
+          "P(delta>0)": 0.004,
+          "signifikan_95": true
+        }
+      }
+    }
+  }
+}
