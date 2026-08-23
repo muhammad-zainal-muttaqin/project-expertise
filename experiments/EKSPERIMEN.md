@@ -1959,3 +1959,83 @@ plafon lokalisasi yang terpisah per korpus.
 **Sumber:** `scripts/eval_agnostic_from_npz.py`,
 `results/agnostic_ap50_sesi2026-08.json`, enam `.npz` prediksi test yang
 sudah ter-commit di V2-E-034/035.
+
+---
+
+## V2-E-037 — Confusion analysis pada 6 model sesi ini: kehilangan ke salah-kelas jauh lebih kecil dari V2-E-013 (44,5%)
+
+**Tanggal:** 2026-08-23
+**Konteks.** V2-E-013 (2026-08-11, model lama RGB-352) menunjukkan 44,5% dari
+kegagalan mAP50 class-aware berasal dari salah kelas pada kotak yang sudah
+benar lokasinya, bukan gagal deteksi. Pertanyaan: apakah proporsi ini
+bertahan pada enam model baru sesi ini?
+
+**Metode.** `scripts/eval_confusion_from_npz.py` — replikasi persis
+metodologi V2-E-013. Untuk tiap kotak GT, dicari prediksi dengan skor >=0,25
+yang IoU-nya >=0,5 terhadap kotak itu (pencocokan class-agnostic, greedy per
+skor tertinggi, satu prediksi dan satu GT hanya dipakai sekali). Kelas GT vs
+kelas prediksi ditabulasi jadi confusion matrix. **Tidak re-infer** — pakai
+dump `.npz` test yang sama dengan V2-E-034/035/036. Angka "hilang karena
+salah kelas" dihitung terpisah, murni aritmetika dari angka yang sudah
+tercatat (AP50 agnostik V2-E-036 dikurangi mAP50 class-aware V2-E-034/035),
+tanpa komputasi baru.
+
+**Hasil 1 — hilang karena salah kelas (aritmetika dari V2-E-034/035/036):**
+
+| Model | Korpus | mAP50 class-aware | AP50 agnostik | Hilang | % dari plafon |
+|---|---|---|---|---|---|
+| YOLO26l | new763 | 0,5163 | 0,7161 | 0,1998 | 27,9% |
+| RT-DETR-L | new763 | 0,5580 | 0,7712 | 0,2132 | 27,7% |
+| **RF-DETR-L** | new763 | 0,6129 | 0,7951 | 0,1822 | **22,9%** |
+| YOLO26l | combined1716 | 0,5389 | 0,7250 | 0,1861 | 25,7% |
+| RT-DETR-L | combined1716 | 0,5745 | 0,7577 | 0,1832 | 24,2% |
+| RF-DETR-L | combined1716 | 0,5960 | 0,7850 | 0,1890 | 24,1% |
+
+**Semua enam model kehilangan 23-28% ke salah-kelas — jauh lebih rendah
+dari 44,5% di V2-E-013.** Bukan perbandingan apel-ke-apel (dataset, model,
+protokol training berbeda), jadi ini bukan bukti "klasifikasi membaik 2x
+lipat" — kemungkinan besar dataset baru (new763/combined1716, campuran tiga
+kampanye) punya distribusi kematangan yang lebih mudah dipisahkan daripada
+RGB-352 tunggal yang dipakai V2-E-013. Perlu perbandingan langsung dengan
+protokol sama untuk klaim yang lebih kuat.
+
+**Hasil 2 — confusion matrix representatif (RF-DETR-L, new763, model
+terbaik, IoU>=0,5, conf>=0,25):**
+
+| GT\\Pred | →B1 | →B2 | →B3 | →B4 |
+|---|---|---|---|---|
+| B1 | 113 | 45 | 1 | 0 |
+| B2 | 10 | 238 | 16 | 4 |
+| B3 | 3 | 50 | 214 | 8 |
+| B4 | 0 | 6 | 22 | 15 |
+
+Akurasi klasifikasi bersyarat (di antara 745 box yang terdeteksi dari 891
+GT): **77,85%**. Akurasi atas seluruh GT (termasuk gagal deteksi): **65,10%**.
+Pola ordinal dari V2-E-013 bertahan: nyaris nol kesalahan B1↔B4 (lompat dua
+tingkat), mayoritas kesalahan ke kelas bertetangga.
+
+**Recall per kelas (bersyarat pada terdeteksi), keenam model:**
+
+| Model | Korpus | B1 | B2 | B3 | B4 |
+|---|---|---|---|---|---|
+| YOLO26l | new763 | 77,8% | 81,3% | 85,3% | 34,6% |
+| RT-DETR-L | new763 | 74,2% | 76,2% | 75,1% | 56,8% |
+| RF-DETR-L | new763 | 71,1% | 88,8% | 77,8% | 34,9% |
+| YOLO26l | combined1716 | 79,6% | 56,9% | 89,8% | 53,1% |
+| RT-DETR-L | combined1716 | 68,8% | 58,6% | 87,5% | 57,8% |
+| RF-DETR-L | combined1716 | 79,7% | 58,0% | 85,8% | 59,4% |
+
+**B4 konsisten paling lemah di new763** (34,6-56,8%) untuk semua tiga
+arsitektur — pola sistematis, bukan kebetulan satu model. Di combined1716
+B4 justru lebih baik (53-59%) tapi B2 yang melemah (56,9-58,6%) — arah
+kelemahan berbeda antar korpus, kemungkinan terkait komposisi kampanye yang
+berbeda (lihat stratifikasi kampanye di V2-E-034/035).
+
+**Verdict: CONFIRMED (pola V2-E-013 bertahan), tapi besaran gap berbeda.**
+Urutan konsisten: lokalisasi >> klasifikasi kematangan sebagai sumber
+kegagalan utama, di kedua korpus baru dan keenam model. Kesalahan tetap
+ordinal (nyaris nol lompat dua tingkat) di semua model yang diperiksa.
+
+**Sumber:** `scripts/eval_confusion_from_npz.py`,
+`results/confusion_analysis_sesi2026-08.json` (confusion matrix lengkap
+keenam model), angka pembanding dari V2-E-013/034/035/036.

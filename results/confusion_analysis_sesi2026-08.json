@@ -1,0 +1,348 @@
+{
+  "generated_at": "2026-08-23T04:39:31.304710+00:00",
+  "note": "Confusion analysis dari dump .npz test (V2-E-034/035), replikasi metodologi V2-E-013. Match GT<->prediksi class-agnostic IoU>=0.5, conf>=0.25, greedy per skor tertinggi.",
+  "runs": {
+    "new763_yolo26l": {
+      "n_gt_total": 891,
+      "n_matched_iou50": 582,
+      "confusion_matrix": [
+        [
+          105,
+          26,
+          4,
+          0
+        ],
+        [
+          15,
+          165,
+          22,
+          1
+        ],
+        [
+          3,
+          21,
+          186,
+          8
+        ],
+        [
+          0,
+          2,
+          15,
+          9
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 135,
+          "recall_conditional": 0.7778
+        },
+        "B2": {
+          "n_detected": 203,
+          "recall_conditional": 0.8128
+        },
+        "B3": {
+          "n_detected": 218,
+          "recall_conditional": 0.8532
+        },
+        "B4": {
+          "n_detected": 26,
+          "recall_conditional": 0.3462
+        }
+      },
+      "accuracy_conditional": 0.799,
+      "accuracy_over_all_gt": 0.5219,
+      "conf_threshold": 0.25
+    },
+    "new763_rtdetr_l": {
+      "n_gt_total": 891,
+      "n_matched_iou50": 745,
+      "confusion_matrix": [
+        [
+          115,
+          40,
+          0,
+          0
+        ],
+        [
+          44,
+          205,
+          18,
+          2
+        ],
+        [
+          4,
+          60,
+          208,
+          5
+        ],
+        [
+          0,
+          3,
+          16,
+          25
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 155,
+          "recall_conditional": 0.7419
+        },
+        "B2": {
+          "n_detected": 269,
+          "recall_conditional": 0.7621
+        },
+        "B3": {
+          "n_detected": 277,
+          "recall_conditional": 0.7509
+        },
+        "B4": {
+          "n_detected": 44,
+          "recall_conditional": 0.5682
+        }
+      },
+      "accuracy_conditional": 0.7423,
+      "accuracy_over_all_gt": 0.6207,
+      "conf_threshold": 0.25
+    },
+    "new763_rfdetr_l": {
+      "n_gt_total": 891,
+      "n_matched_iou50": 745,
+      "confusion_matrix": [
+        [
+          113,
+          45,
+          1,
+          0
+        ],
+        [
+          10,
+          238,
+          16,
+          4
+        ],
+        [
+          3,
+          50,
+          214,
+          8
+        ],
+        [
+          0,
+          6,
+          22,
+          15
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 159,
+          "recall_conditional": 0.7107
+        },
+        "B2": {
+          "n_detected": 268,
+          "recall_conditional": 0.8881
+        },
+        "B3": {
+          "n_detected": 275,
+          "recall_conditional": 0.7782
+        },
+        "B4": {
+          "n_detected": 43,
+          "recall_conditional": 0.3488
+        }
+      },
+      "accuracy_conditional": 0.7785,
+      "accuracy_over_all_gt": 0.651,
+      "conf_threshold": 0.25
+    },
+    "combined1716_yolo26l": {
+      "n_gt_total": 3513,
+      "n_matched_iou50": 2108,
+      "confusion_matrix": [
+        [
+          284,
+          64,
+          9,
+          0
+        ],
+        [
+          42,
+          288,
+          176,
+          0
+        ],
+        [
+          1,
+          61,
+          957,
+          47
+        ],
+        [
+          0,
+          2,
+          82,
+          95
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 357,
+          "recall_conditional": 0.7955
+        },
+        "B2": {
+          "n_detected": 506,
+          "recall_conditional": 0.5692
+        },
+        "B3": {
+          "n_detected": 1066,
+          "recall_conditional": 0.8977
+        },
+        "B4": {
+          "n_detected": 179,
+          "recall_conditional": 0.5307
+        }
+      },
+      "accuracy_conditional": 0.7704,
+      "accuracy_over_all_gt": 0.4623,
+      "conf_threshold": 0.25
+    },
+    "combined1716_rtdetr_l": {
+      "n_gt_total": 3513,
+      "n_matched_iou50": 3002,
+      "confusion_matrix": [
+        [
+          275,
+          115,
+          10,
+          0
+        ],
+        [
+          55,
+          408,
+          228,
+          5
+        ],
+        [
+          3,
+          98,
+          1305,
+          85
+        ],
+        [
+          0,
+          7,
+          168,
+          240
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 400,
+          "recall_conditional": 0.6875
+        },
+        "B2": {
+          "n_detected": 696,
+          "recall_conditional": 0.5862
+        },
+        "B3": {
+          "n_detected": 1491,
+          "recall_conditional": 0.8753
+        },
+        "B4": {
+          "n_detected": 415,
+          "recall_conditional": 0.5783
+        }
+      },
+      "accuracy_conditional": 0.7422,
+      "accuracy_over_all_gt": 0.6342,
+      "conf_threshold": 0.25
+    },
+    "combined1716_rfdetr_l": {
+      "n_gt_total": 3513,
+      "n_matched_iou50": 2985,
+      "confusion_matrix": [
+        [
+          322,
+          75,
+          7,
+          0
+        ],
+        [
+          72,
+          409,
+          221,
+          3
+        ],
+        [
+          4,
+          110,
+          1285,
+          98
+        ],
+        [
+          0,
+          5,
+          149,
+          225
+        ]
+      ],
+      "class_names": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "per_class_recall_conditional": {
+        "B1": {
+          "n_detected": 404,
+          "recall_conditional": 0.797
+        },
+        "B2": {
+          "n_detected": 705,
+          "recall_conditional": 0.5801
+        },
+        "B3": {
+          "n_detected": 1497,
+          "recall_conditional": 0.8584
+        },
+        "B4": {
+          "n_detected": 379,
+          "recall_conditional": 0.5937
+        }
+      },
+      "accuracy_conditional": 0.7508,
+      "accuracy_over_all_gt": 0.6379,
+      "conf_threshold": 0.25
+    }
+  }
+}
