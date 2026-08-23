@@ -1,0 +1,56 @@
+{
+  "generated_at": "2026-08-23T04:33:28.771695+00:00",
+  "note": "AP50 class-agnostic dihitung ulang dari dump .npz prediksi test yang sudah ada (eval_new763_pycoco.py), tanpa inferensi ulang. GT dan prediksi dilipat jadi 1 kelas.",
+  "runs": {
+    "new763_yolo26l": {
+      "AP50_agnostic": 0.716126,
+      "AP50_95_agnostic": 0.258042,
+      "n_images": 440,
+      "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+      "predictions": "/workspace/project-expertise/results/new763/predictions/yolo26l_rgb_s42_i1280__test.npz"
+    },
+    "new763_rtdetr_l": {
+      "AP50_agnostic": 0.771189,
+      "AP50_95_agnostic": 0.280093,
+      "n_images": 440,
+      "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+      "predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    "new763_rfdetr_l": {
+      "AP50_agnostic": 0.795059,
+      "AP50_95_agnostic": 0.300253,
+      "n_images": 440,
+      "dataset": "/workspace/SawitMVC-Depth-YOLO-RGB",
+      "predictions": "/workspace/project-expertise/results/new763/predictions/rfdetr_l_rgb_s42_i1280__test.npz"
+    },
+    "combined1716_yolo26l": {
+      "AP50_agnostic": 0.725049,
+      "AP50_95_agnostic": 0.315551,
+      "n_images": 1052,
+      "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+      "predictions": "/workspace/project-expertise/results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz"
+    },
+    "combined1716_rtdetr_l": {
+      "AP50_agnostic": 0.757722,
+      "AP50_95_agnostic": 0.316828,
+      "n_images": 1052,
+      "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+      "predictions": "/workspace/project-expertise/results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    "combined1716_rfdetr_l": {
+      "AP50_agnostic": 0.78496,
+      "AP50_95_agnostic": 0.324464,
+      "n_images": 1052,
+      "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+      "predictions": "/workspace/project-expertise/results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    }
+  },
+  "ranking": [
+    "new763_rfdetr_l",
+    "combined1716_rfdetr_l",
+    "new763_rtdetr_l",
+    "combined1716_rtdetr_l",
+    "combined1716_yolo26l",
+    "new763_yolo26l"
+  ]
+}

@@ -1899,3 +1899,63 @@ penghentian observasi lebih awal dari titik konvergensinya.
 (pycocotools), `results/combined1716/campaign_manifest.json`,
 `results/combined1716/predictions/` (dump `.npz` val+test), log training di
 `results/combined1716/logs/`.
+
+---
+
+## V2-E-036 — Rekor AP50 class-agnostic baru (0,7951) dari model sesi ini, dihitung tanpa re-inferensi
+
+**Tanggal:** 2026-08-23
+**Konteks.** V2-E-013/017/025 menunjukkan mAP50 tertinggi di project ini
+selalu datang dari deteksi **class-agnostic** (kelas dilipat jadi 1
+"tandan", murni lokalisasi), jauh di atas mAP50 4-kelas B1-B4. Pertanyaan:
+apakah pola itu bertahan pada enam model baru sesi ini (V2-E-034/035,
+new763 dan combined1716)?
+
+**Metode.** `scripts/eval_agnostic_from_npz.py`. **Tidak ada inferensi ulang
+dan tidak butuh GPU** — script memuat dump `.npz` prediksi test yang sudah
+disimpan saat eval V2-E-034/035, melipat kategori GT dan prediksi jadi satu
+kelas, lalu menghitung ulang AP50 lewat `pycocotools.COCOeval` dari nol.
+Reproduksi: `python3 scripts/eval_agnostic_from_npz.py` (hasil lengkap +
+metadata tersimpan di `results/agnostic_ap50_sesi2026-08.json`).
+
+**Hasil (test, class-agnostic):**
+
+| # | Model | Korpus | AP50 agnostik | AP50-95 agnostik | n_images |
+|---|---|---|---|---|---|
+| 1 | RF-DETR-L | new763 | **0,7951** | 0,3003 | 440 |
+| 2 | RF-DETR-L | combined1716 | 0,7850 | 0,3245 | 1.052 |
+| 3 | RT-DETR-L | new763 | 0,7712 | 0,2801 | 440 |
+| 4 | RT-DETR-L | combined1716 | 0,7577 | 0,3168 | 1.052 |
+| 5 | YOLO26l | combined1716 | 0,7250 | 0,3156 | 1.052 |
+| 6 | YOLO26l | new763 | 0,7161 | 0,2580 | 440 |
+
+**Verdict: CONFIRMED, dan ini rekor AP50 tertinggi baru di seluruh project.**
+0,7951 (RF-DETR-L, new763) mengalahkan seluruh angka agnostik lama yang sah:
+- 0,7702 — V2-E-025, test bersih 953, tapi cuma N=19 pohon/316 kotak (CI
+  sangat lebar, "indikasi bukan pengukuran presisi").
+- 0,7374 — V2-E-017, plafon lama di split kanonik 953 (test lengkap 141
+  pohon), model v2repro lama.
+- (0,8101 val / 0,8090 test-penuh dari V2-E-025 **BUKAN pembanding yang
+  sah** — sudah ditarik karena kebocoran pretraining, lihat V2-E-025/033.
+  Jangan disandingkan dengan angka di entry ini.)
+
+Angka baru ini dievaluasi di split test kanonik **440 citra new763**
+(bukan subset kecil, bukan tercemar) — jadi lebih dipercaya daripada
+0,7702 sekaligus lebih tinggi.
+
+**Pola yang bertahan (konsisten dengan V2-E-013).** Urutan arsitektur di
+agnostik **identik** dengan class-aware (RF-DETR-L > RT-DETR-L > YOLO26l) di
+kedua korpus, tapi jarak mengecil drastis: gap class-aware new763
+(0,6129 vs 0,5163 = 0,0966) menyusut jadi 0,079 di agnostik (0,7951 vs
+0,7161). Konsisten dengan temuan lama: sebagian besar kekalahan mAP50
+4-kelas berasal dari **salah kelas pada kotak yang sudah benar**, bukan
+gagal mendeteksi.
+
+**Kaveat.** new763 (440 citra test) dan combined1716 (1.052 citra test)
+punya ukuran dan komposisi kampanye berbeda (lihat V2-E-034/035) — tabel di
+atas bukan perbandingan langsung satu populasi, melainkan dua pengukuran
+plafon lokalisasi yang terpisah per korpus.
+
+**Sumber:** `scripts/eval_agnostic_from_npz.py`,
+`results/agnostic_ap50_sesi2026-08.json`, enam `.npz` prediksi test yang
+sudah ter-commit di V2-E-034/035.
