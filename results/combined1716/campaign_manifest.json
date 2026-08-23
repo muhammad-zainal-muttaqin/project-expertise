@@ -26,8 +26,11 @@
       "imgsz": 1280,
       "seed": 42,
       "name": "combined1716_rtdetr_l_rgb_s42_i1280",
-      "status": "training",
-      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rtdetr_l_rgb_s42_i1280.log"
+      "status": "done",
+      "log": "/workspace/project-expertise/results/combined1716/logs/combined1716_rtdetr_l_rgb_s42_i1280.log",
+      "checkpoint": "/workspace/project-expertise/runs_combined1716/combined1716_rtdetr_l_rgb_s42_i1280/weights/best.pt",
+      "result": "/workspace/project-expertise/results/combined1716/combined1716_rtdetr_l_rgb_s42_i1280.json",
+      "note": "dihentikan manual di epoch 43/60 atas keputusan pengguna (plateau, 14 epoch tanpa perbaikan sejak best epoch 29); best.pt sudah menunjuk ke checkpoint epoch 29 (mAP50-95 0.2447 val) sesuai perilaku Ultralytics"
     },
     "combined1716_rfdetr_l_rgb_s42_i1280": {
       "arch": "rfdetr_l",

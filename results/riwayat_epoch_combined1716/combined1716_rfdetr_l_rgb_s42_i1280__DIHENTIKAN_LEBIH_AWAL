@@ -1,0 +1,4 @@
+Early-stop otomatis: epoch 24/60 (patience 15).
+Alasan: "Monitored metric __rfdetr_effective_map__ did not improve in the last 15 records."
+Best score (EMA mAP50-95 val): 0.2526, dicapai epoch 9.
+Sumber: results/combined1716/logs/combined1716_rfdetr_l_rgb_s42_i1280.log

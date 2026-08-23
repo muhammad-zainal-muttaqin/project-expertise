@@ -1,0 +1,32 @@
+{
+  "run_name": "combined1716_rtdetr_l_rgb_s42_i1280",
+  "kind": "rtdetr",
+  "weights": "/workspace/project-expertise/runs_combined1716/combined1716_rtdetr_l_rgb_s42_i1280/weights/best.pt",
+  "dataset": "/workspace/SawitMVC-Combined-1716-RGB",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "val": {
+      "mAP50": 0.573442,
+      "mAP50_95": 0.246202,
+      "per_kelas_AP50": {
+        "B1": 0.746906,
+        "B2": 0.518244,
+        "B3": 0.614095,
+        "B4": 0.414524
+      },
+      "predictions": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__val.npz"
+    },
+    "test": {
+      "mAP50": 0.574539,
+      "mAP50_95": 0.245785,
+      "per_kelas_AP50": {
+        "B1": 0.730765,
+        "B2": 0.51204,
+        "B3": 0.646486,
+        "B4": 0.408864
+      },
+      "predictions": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    }
+  }
+}

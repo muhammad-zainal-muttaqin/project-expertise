@@ -1838,9 +1838,9 @@ dari YOLO26m rilis lama).
 
 ---
 
-## V2-E-035 — Baseline seed-42 pada korpus gabungan SawitMVC-Combined-1716-RGB: RF-DETR-L tetap terbaik, RT-DETR-L masih berjalan
+## V2-E-035 — Baseline seed-42 pada korpus gabungan SawitMVC-Combined-1716-RGB: RF-DETR-L tetap terbaik
 
-**Tanggal:** 2026-08-23 (dicatat sebagian, RT-DETR-L masih training saat entry ini ditulis)
+**Tanggal:** 2026-08-23
 **Konteks.** Korpus baru menggabungkan dataset lama 953 pohon (`SawitMVC-YOLO`)
 dan dataset Depth 763 pohon (`SawitMVC-Depth-YOLO`) jadi satu: **1.716 tree
 record / 7.044 gambar**, dengan **352 tree-ID yang sama di kedua sumber**
@@ -1856,17 +1856,26 @@ disamakan**: 60 epoch/patience 15 untuk semua tiga arsitektur (RF-DETR-L
 sebelumnya dibatasi 20/5 di V2-E-034 — diperbaiki di sini atas permintaan
 pengguna supaya perbandingan lebih adil).
 
-**Hasil (test), sejauh yang sudah selesai:**
+**Hasil (test), ketiganya selesai:**
 
-| Model | Status | Epoch aktual | Test mAP50 | Test mAP50-95 |
-|---|---|---|---|---|
-| RF-DETR-L | selesai | 24/60 (early-stop) | **0,5960** | **0,2522** |
-| RT-DETR-L | **masih training** | 38/60 saat ditulis | — | — |
-| YOLO26l | selesai | 51/60 (early-stop) | 0,5389 | 0,2395 |
+| Model | Epoch aktual | Test mAP50 | Test mAP50-95 |
+|---|---|---|---|
+| **RF-DETR-L** | 24/60 (early-stop otomatis) | **0,5960** | **0,2522** |
+| RT-DETR-L | 43/60 (dihentikan manual) | 0,5745 | 0,2458 |
+| YOLO26l | 51/60 (early-stop otomatis) | 0,5389 | 0,2395 |
 
-Urutan sementara (RF-DETR-L > YOLO26l) konsisten dengan V2-E-034 dan E-021
-lama. RT-DETR-L akan ditambahkan begitu selesai — jangan kutip urutan tiga
-arsitektur di korpus ini sebagai final sebelum itu.
+Urutan **RF-DETR-L > RT-DETR-L > YOLO26l** — identik dengan V2-E-034 (new763)
+dan E-021 lama. Konsisten di dua korpus berbeda dengan protokol training yang
+kini setara (60 epoch/patience 15 untuk ketiganya).
+
+**Catatan penghentian RT-DETR-L.** Bukan early-stop otomatis Ultralytics —
+dihentikan manual atas keputusan pengguna di epoch 43/60 setelah plateau
+14 epoch tanpa perbaikan sejak best di epoch 29 (patience terkonfigurasi 15,
+nyaris habis). `best.pt` Ultralytics sudah otomatis menunjuk ke checkpoint
+epoch 29 (val mAP50-95 0,2447) — checkpoint yang dievaluasi di sini identik
+dengan yang akan tersimpan seandainya early-stop resmi terjadi di epoch ~44.
+Jadi angka di atas bukan hasil training yang dipotong prematur, hanya
+penghentian observasi lebih awal dari titik konvergensinya.
 
 **Catatan operasional yang berpengaruh ke validitas run, bukan ke angka:**
 1. **Bug path relatif Ultralytics.** `--project` yang diberikan sebagai path

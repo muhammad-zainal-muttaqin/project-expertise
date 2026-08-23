@@ -1,0 +1,8 @@
+Dihentikan MANUAL oleh pengguna di epoch 43/60 (bukan early-stop otomatis
+Ultralytics) - training sudah menunjukkan plateau 14 epoch tanpa perbaikan
+sejak best di epoch 29 (patience terkonfigurasi 15, hampir habis).
+best.pt Ultralytics sudah menunjuk ke checkpoint epoch 29 secara otomatis
+(mAP50-95 val 0.2447), identik dengan yang akan tersimpan kalau early-stop
+resmi terjadi di epoch ~44.
+Sumber: results/riwayat_epoch_combined1716/combined1716_rtdetr_l_rgb_s42_i1280__results.csv,
+keputusan pengguna dalam sesi 2026-08-23.
