@@ -2257,3 +2257,90 @@ logikanya didokumentasikan di sini: cocokkan `tree_id` = nama berkas tanpa
 suffix `_<nomor_sisi>`, prefix `SAWIT_`/`DEPTH_` dilucuti untuk
 combined1716). Dataset 352 (revisi pre-merge): HF `ULM-DS-Lab/SawitMVC-Depth`
 commit `80dcbae6ca5521515db84038dabc2ead96fa007e`.
+
+---
+
+## V2-E-041 — Replikasi independen (toolchain HUB) menguatkan V2-E-040: RT-DETR-L paling rapuh terhadap domain shift, LONSUM di-exclude
+
+**Tanggal:** 2026-08-24
+**Konteks.** Pengguna melatih 6 model sendiri lewat **Ultralytics HUB**
+(`platform.ultralytics.com`, proyek "Sawit ULM"), bukan lewat
+`train_baseline_new763.py` proyek ini — toolchain, batch size, dan
+kemungkinan seed berbeda dari resep resmi V2-E-034/035. Ketiganya
+(YOLO26l, YOLO26x, RT-DETR-L) dilatih 60 epoch di `new763`
+(`SawitMVC-Depth-YOLO` v2.0.0, 763 pohon, split train 2.144 gambar),
+masing-masing dalam dua varian: **agnostik** (HUB "single class override")
+dan **4-kelas**. **Bukan bagian angka kanonik proyek** — baseline eksplorasi
+terpisah, dicatat karena hasilnya menguatkan temuan V2-E-040 lewat jalur
+training yang sepenuhnya independen.
+
+**Catatan operasional saat training (dari log HUB, bukan dari sesi ini):**
+tiga varian agnostik (`_bs64_p15`/`_bs64`) minta `batch=64` tapi kena
+`CUDA out of memory`, auto-reduce ke `batch=32` (GPU training HUB: RTX PRO
+6000 Blackwell 97 GB — OOM ini terjadi meski VRAM sangat besar, konsisten
+dengan temuan lama proyek bahwa deteksi resolusi tinggi boros VRAM per-gambar).
+Tiga varian 4-kelas (`_b16_4class`) diminta `batch=16` eksplisit, tidak OOM.
+
+**Metode.** Evaluasi lokal (CPU-only, tanpa GPU) memakai `pycocotools.COCOeval`
+(imgsz 1280, conf 0,001, NMS IoU 0,7, max_det 300 — metodologi sama dengan
+`eval_new763_pycoco.py`), pada **test split `SawitMVC-Combined-1716-RGB`
+(996 dari 1.052 gambar, 56 gambar LONSUM di-exclude atas keputusan pengguna** —
+lihat `docs/EDA-COMBINED1716.md` §7, distribusi kelas LONSUM sangat timpang
+[B3 69,5%, B1 1,6%] dan dianggap kurang representatif). Prediksi didump ke
+`.npz` per model (`results/local_eval_combined1716_no_lonsum/predictions/`).
+Test set ini campuran dua domain: **532 gambar dari sumber `sawitmvc`**
+(953 pohon, kamera/resolusi 960×1280 — **domain yang TIDAK PERNAH dilihat
+model saat training**) dan **464 gambar dari sumber `depth_rgb`** (domain
+latihan asli, 1280×800).
+
+**Hasil agnostik (mAP50 / mAP50-95), keseluruhan lalu per sumber:**
+
+| Model | Keseluruhan (996) | In-domain `depth_rgb` (464) | Luar-domain `sawitmvc` (532) | Penurunan |
+|---|---|---|---|---|
+| YOLO26l | 0,6124 / 0,2164 | 0,7676 / 0,2873 | 0,5512 / 0,1896 | −28% |
+| **YOLO26x** | **0,6416 / 0,2328** | 0,7856 / 0,3046 | 0,5877 / 0,2074 | −25% |
+| RT-DETR-L | 0,4956 / 0,1450 | **0,7911 / 0,2901** (terbaik in-domain) | 0,3764 / 0,0910 | **−52%** |
+
+**Hasil 4-kelas (mAP50 / mAP50-95 / per-kelas B1-B4), keseluruhan lalu per sumber:**
+
+| Model | Keseluruhan | In-domain `depth_rgb` | Luar-domain `sawitmvc` | Penurunan |
+|---|---|---|---|---|
+| YOLO26l | 0,2619/0,0975 (B1 0,4771 B2 0,1649 B3 0,2940 B4 0,1117) | 0,5246/0,1967 | 0,1992/0,0755 | −62% |
+| **YOLO26x** | **0,2742/0,1049** (B1 0,5082 B2 0,2002 B3 0,3051 B4 0,0832) | 0,5129/0,2015 | 0,2114/0,0801 | −59% |
+| RT-DETR-L | 0,2696/0,0904 (B1 0,5071 B2 0,2326 B3 0,2854 B4 0,0533) | **0,6070/0,2441** (terbaik in-domain) | 0,1463/0,0360 | **−71%** |
+
+**Verifikasi silang dengan skor val HUB asli (in-domain, sanity check
+metodologi):** breakdown `depth_rgb` di atas mereplikasi hampir persis skor
+val yang dilaporkan HUB saat training (agnostik: YOLO26l 0,750→0,7676,
+YOLO26x 0,778→0,7856, RT-DETR-L 0,789→0,7911; 4-kelas: YOLO26l 0,528→0,5246,
+YOLO26x 0,510→0,5129, RT-DETR-L 0,575→0,6070). Konfirmasi bahwa angka
+gabungan yang jauh lebih rendah murni efek pooling 53% test set dari domain
+asing, bukan bug metodologi evaluasi.
+
+**Verdict: CONFIRMED, replikasi independen V2-E-040 Temuan 2.** Toolchain
+sama sekali berbeda (HUB vs `train_baseline_new763.py`), dataset training
+sama (`new763`), target evaluasi berbeda (test split `combined1716` campuran
+domain vs test kanonik 953 murni di V2-E-040) — tapi polanya identik:
+**RT-DETR-L, model terbaik in-domain, paling rapuh menggeneralisasi ke
+domain kamera/resolusi baru** (−52% agnostik, −71% 4-kelas — bahkan lebih
+parah dari −80% yang dicatat V2-E-040 untuk mAP50 0,5580→0,1110 karena basis
+pembandingnya beda kelas metrik). YOLO26x paling tangguh lintas domain di
+sesi ini (YOLO26l di V2-E-040), tapi keduanya varian YOLO sama-sama jauh
+lebih stabil dari RT-DETR-L. **Model terbaik in-domain bukan jaminan model
+paling robust ke domain baru** — bacaan yang sama persis dengan V2-E-040,
+sekarang terverifikasi lewat training independen.
+
+**Konteks tambahan — perbandingan dengan V2-E-035 (train langsung di
+combined1716):** pengguna sempat bertanya apakah melatih langsung di
+`combined1716` (bukan cuma `new763`) akan jauh lebih baik. Jawabannya:
+**tidak dramatis**. V2-E-035 (test mAP50, evaluasi in-domain di split test
+combined1716 sendiri): YOLO26l 0,5163→0,5389 (+0,0226), RT-DETR-L
+0,5580→0,5745 (+0,0165), RF-DETR-L 0,6129→0,5960 (**−0,0169**, justru turun).
+Data lebih banyak tidak otomatis berarti model jauh lebih baik — RF-DETR-L
+(model terbaik) malah sedikit menurun.
+
+**Sumber:** `results/local_eval_combined1716_no_lonsum/summary.json` (seluruh
+angka di atas + provenans lengkap), `results/local_eval_combined1716_no_lonsum/predictions/*.npz`
+(dump prediksi test per model), `results/local_eval_combined1716_no_lonsum/logs_ringkas/*.txt`
+(log training asli dari Ultralytics HUB), `docs/EDA-COMBINED1716.md` (EDA
+dataset combined1716 lengkap, termasuk subset LONSUM).

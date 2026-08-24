@@ -1,0 +1,85 @@
+{
+  "deskripsi": "Evaluasi 6 bobot HUB (Ultralytics HUB, proyek 'Sawit ULM') pada test split SawitMVC-Combined-1716-RGB, LONSUM di-exclude. Dijalankan lokal (CPU-only) 2026-08-24.",
+  "provenans_model": {
+    "platform": "platform.ultralytics.com (Ultralytics HUB)",
+    "dataset_training": "sawitmvc-depth-yolo-c18d8ac7 = SawitMVC-Depth-YOLO v2.0.0 (new763, 763 pohon, train 2144 gambar)",
+    "catatan": "Model dilatih HANYA di new763 (single-domain), BUKAN di combined1716. Bukan bagian resep resmi train_baseline_new763.py (V2-E-034/035) -- toolchain, batch size, dan kemungkinan seed berbeda. Dianggap baseline eksplorasi terpisah, bukan angka kanonik proyek.",
+    "epochs": 60,
+    "varian_agnostik": "HUB 'single class override'; batch diminta 64, auto-reduce ke 32 karena CUDA OOM di GPU training RTX PRO 6000 Blackwell 97GB (3 dari 6 model: y26l, y26x, rtdetr_l)",
+    "varian_4kelas": "batch 16 eksplisit, tidak ada OOM"
+  },
+  "metodologi_evaluasi": {
+    "evaluator": "pycocotools.COCOeval",
+    "imgsz": 1280,
+    "conf": 0.001,
+    "iou_nms": 0.7,
+    "max_det": 300,
+    "hardware": "CPU-only lokal (tanpa GPU), torch 2.12.0+cpu",
+    "test_set": "combined1716 test split (1052 gambar) dikurangi 56 gambar LONSUM = 996 gambar",
+    "komposisi_test": {"sawitmvc": 532, "depth_rgb": 464},
+    "catatan_domain": "sawitmvc = domain TIDAK PERNAH dilihat model saat training (kamera/resolusi beda, 960x1280 vs 1280x800 depth_rgb). depth_rgb = domain latihan asli (new763)."
+  },
+  "hasil_agnostik_keseluruhan": {
+    "YOLO26l": {"mAP50": 0.6124, "mAP50_95": 0.2164},
+    "YOLO26x": {"mAP50": 0.6416, "mAP50_95": 0.2328},
+    "RT-DETR-L": {"mAP50": 0.4956, "mAP50_95": 0.1450, "AR100": 0.289}
+  },
+  "hasil_agnostik_per_sumber": {
+    "YOLO26l": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.5512, "mAP50_95": 0.1896},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.7676, "mAP50_95": 0.2873}
+    },
+    "YOLO26x": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.5877, "mAP50_95": 0.2074},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.7856, "mAP50_95": 0.3046}
+    },
+    "RT-DETR-L": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.3764, "mAP50_95": 0.0910},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.7911, "mAP50_95": 0.2901}
+    }
+  },
+  "hasil_4kelas_keseluruhan": {
+    "YOLO26l": {"mAP50": 0.2619, "mAP50_95": 0.0975, "AR100": 0.451,
+      "per_kelas_AP50": {"B1": 0.4771, "B2": 0.1649, "B3": 0.2940, "B4": 0.1117}},
+    "YOLO26x": {"mAP50": 0.274173, "mAP50_95": 0.104885, "AR100": 0.449969,
+      "per_kelas_AP50": {"B1": 0.508244, "B2": 0.200154, "B3": 0.305106, "B4": 0.083187}},
+    "RT-DETR-L": {"mAP50": 0.269606, "mAP50_95": 0.090391, "AR100": 0.26374,
+      "per_kelas_AP50": {"B1": 0.507101, "B2": 0.232617, "B3": 0.285448, "B4": 0.053258}}
+  },
+  "hasil_4kelas_per_sumber": {
+    "YOLO26l": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.1992, "mAP50_95": 0.0755},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.5246, "mAP50_95": 0.1967}
+    },
+    "YOLO26x": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.2114, "mAP50_95": 0.0801},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.5129, "mAP50_95": 0.2015}
+    },
+    "RT-DETR-L": {
+      "sawitmvc_luar_domain": {"n": 532, "mAP50": 0.1463, "mAP50_95": 0.0360},
+      "depth_rgb_in_domain": {"n": 464, "mAP50": 0.6070, "mAP50_95": 0.2441}
+    }
+  },
+  "pembanding_val_hub_asli": {
+    "catatan": "Skor validasi yang dilaporkan Ultralytics HUB saat training (split val new763, in-domain) -- dicatat untuk verifikasi bahwa breakdown depth_rgb (in-domain) di atas mereplikasi angka ini.",
+    "agnostik": {"YOLO26l": 0.750, "YOLO26x": 0.778, "RT-DETR-L": 0.789},
+    "4kelas": {"YOLO26l": 0.528, "YOLO26x": 0.510, "RT-DETR-L": 0.575}
+  },
+  "pembanding_V2E035_train_di_combined1716": {
+    "catatan": "V2-E-035 (EKSPERIMEN.md): model dilatih LANGSUNG di combined1716 (bukan cross-domain), test mAP50/mAP50-95 di split test combined1716 sendiri.",
+    "RF-DETR-L": {"mAP50": 0.5960, "mAP50_95": 0.2522},
+    "RT-DETR-L": {"mAP50": 0.5745, "mAP50_95": 0.2458},
+    "YOLO26l": {"mAP50": 0.5389, "mAP50_95": 0.2395}
+  },
+  "temuan_utama": [
+    "RT-DETR-L paling rapuh terhadap domain shift: terbaik in-domain (agnostik 0,7911; 4-kelas 0,6070) tapi jatuh paling dalam ke luar-domain (agnostik 0,3764, -52%; 4-kelas 0,1463, -71%). YOLO26l/YOLO26x jauh lebih stabil lintas domain.",
+    "Breakdown in-domain (depth_rgb) mereplikasi hampir persis skor validasi HUB asli -- mengonfirmasi metodologi evaluasi lokal ini benar, angka gabungan yang rendah murni efek pooling 53% test set dari domain asing.",
+    "Melatih LANGSUNG di combined1716 (V2-E-035) tidak memberi lompatan besar dibanding new763 saja (V2-E-034): YOLO26l +0,0226, RT-DETR-L +0,0165, RF-DETR-L malah -0,0169. Data lebih banyak tidak otomatis berarti model jauh lebih baik.",
+    "99 pohon LONSUM (396 gambar, 56 di antaranya test) sengaja di-exclude dari evaluasi ini atas permintaan user -- distribusi kelasnya sangat timpang (B3 69,5%, B1 1,6%) dan dianggap kurang representatif."
+  ],
+  "sumber": {
+    "skrip_eval": "dijalankan dari luar repo (D:/Work/Assisten-Dosen/SawitMVC-Depth/combined1716/_eval_test_no_lonsum.py, tidak disertakan -- rekap manual di entri EKSPERIMEN.md)",
+    "prediksi_npz": "results/local_eval_combined1716_no_lonsum/predictions/",
+    "log_training_asli": "results/local_eval_combined1716_no_lonsum/logs_ringkas/ (log training dari Ultralytics HUB, diunduh manual oleh user)"
+  }
+}
