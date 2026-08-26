@@ -70,7 +70,8 @@ Detailnya di [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) dan
 
 | Dokumen | Isi |
 |---|---|
-| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Mulai dari sini** — seluruh hasil, ancaman validitas, dan rekomendasi lanjutan |
+| [docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md) | **Alur Kerja Kronologis & Lembar Bukti** — Rekonstruksi runut waktu seluruh eksperimen, metrik, gambar, dan tautan log tersemat sesuai standar EYD V / PUEBI |
+| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Laporan Akhir** — seluruh hasil, ancaman validitas, dan rekomendasi lanjutan |
 | [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang; §9 memuat koreksi sebab-akibat |
 | [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Fase 6** — urutan perintah persis untuk membangun ulang seluruh hasil, plus 9 jebakan yang wajib dihindari |
 | [docs/REGENERASI.md](docs/REGENERASI.md) | Cara membangun ulang data turunan yang dihapus 2026-08-12 (dataset 4-kanal, crop, rak symlink) — perintah, urutan, verifikasi |
