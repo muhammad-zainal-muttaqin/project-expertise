@@ -30,11 +30,22 @@ Tiga arsitektur detektor dipilih berdasarkan rekam jejak performa terverifikasi 
 
 Hasil evaluasi pada partisi uji (440 citra, 891 kotak anotasi):
 
-| Arsitektur Detektor | $mAP50$ Makro | $mAP50\text{--}95$ | DAMIMAS ($n=120$) | MARIHAT ($n=44$) | TOPAZ ($n=276$) |
+| Arsitektur Detektor | $mAP50$ Makro | $mAP50\text{--}95$ | DAMIMAS ($n=208$ citra) | MARIHAT ($n=44$ citra) | TOPAZ ($n=188$ citra) |
 |---|---|---|---|---|---|
-| **RF-DETR-L** | **0,6129** | **0,2335** | **0,4460** | **0,5390** | **0,6369** |
-| RT-DETR-L | 0,5580 | 0,2055 | 0,4025 | 0,5110 | 0,5824 |
-| YOLO26l | 0,5163 | 0,1906 | 0,3811 | 0,4723 | 0,5395 |
+| **RF-DETR-L** | **0,6129** | **0,2335** | **0,4460** | 0,5182 | **0,6369** |
+| RT-DETR-L | 0,5580 | 0,2055 | 0,4366 | **0,5380** | 0,5494 |
+| YOLO26l | 0,5163 | 0,1906 | 0,4019 | 0,4179 | 0,5044 |
+
+> [!NOTE]
+> **Sumber otoritatif stratifikasi kampanye**: [`results/new763_campaigns.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/new763_campaigns.json).
+> Revisi 2026-08-26 memperbaiki tujuh dari sembilan sel kolom kampanye beserta label ukuran sampelnya,
+> yang sebelumnya tidak sesuai dengan berkas hasil evaluasi. Angka pada simpul `V2-E-034`
+> ([`experiments/EKSPERIMEN.md`](file:///D:/Work/Assisten-Dosen/project-expertise/experiments/EKSPERIMEN.md))
+> sudah sesuai sejak semula dan tidak diubah. Ukuran sampel dinyatakan dalam satuan citra uji;
+> jumlah pohon uji yang bersesuaian adalah 52 (DAMIMAS), 11 (MARIHAT), dan 47 (TOPAZ).
+> RT-DETR-L menunjukkan keunggulan tipis atas RF-DETR-L pada kampanye MARIHAT, namun kampanye tersebut
+> hanya memuat 11 pohon sehingga selisihnya kemungkinan besar berada di dalam rentang variasi acak dan
+> selang kepercayaannya belum dihitung.
 
 ### Catatan Karakteristik Komputasi
 * **RF-DETR-L** bersifat *CPU-bound* (pencocokan Hungarian *matcher* dan *dataloader* mengeksploitasi 16 core CPU proses utama secara intensif dengan beban GPU relatif rendah).
