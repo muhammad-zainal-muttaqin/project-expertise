@@ -24,9 +24,15 @@ desktop.ini
 datasets/
 SawitMVC-YOLO/
 SawitMVC-Depth/
+
+# Bobot model dan log training lokal (backup di luar Git)
 *.pt
 *.pth
-!models/**/*.pt
+models/*.txt
+models/**/*.txt
+
+# Artefak analisis/unggahan lokal
+Manus/
 
 # Hasil training besar
 runs/
