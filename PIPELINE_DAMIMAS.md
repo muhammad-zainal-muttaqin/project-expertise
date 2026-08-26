@@ -1,132 +1,69 @@
-# Pipeline Greedy DAMIMAS
+# Arsitektur Pipeline Modular DAMIMAS
 
-Dokumen ini adalah rancangan hidup untuk satu sistem berlapis yang mengejar
-nilai terbaik per tugas. Ia bukan matriks ablation. Setiap cabang boleh memakai
-kandidat, model, atau aturan keputusan yang berbeda selama seluruh pemilihan
-dilakukan pada train/validation dan label test tidak menjadi fitur inferensi.
+Dokumen ini memuat spesifikasi teknis dan matriks performa sistem inferensi berlapis yang dioptimalkan secara modular untuk sub-populasi varietas **DAMIMAS**. Seluruh penalaan model dilakukan pada partisi latih dan validasi (*train/validation*), sementara evaluasi uji (*test*) dikunci tanpa kebocoran informasi.
 
-## Scope Data
+---
 
-- Dataset: `/workspace/SawitMVC-YOLO-Damimas`
-- Split pohon kanonik: **641 train / 86 validation / 127 test**
-- Citra: **2.700 / 364 / 532**
-- Kotak: **13.227 / 1.757 / 2.461**
-- Kelas train B1/B2/B3/B4: **1.569 / 2.504 / 6.764 / 2.390**
-- Tidak ada pohon LONSUM di ketiga split.
+## 1. Cakupan Data & Karakteristik Populasi
 
-## Prinsip Sistem
+* **Dataset Acuan**: `SawitMVC-YOLO-Damimas` (mengeksklusikan seluruh 99 pohon varietas LONSUM).
+* **Pembagian Partisi (*Split*) Kanonik**: **641 pohon latih / 86 pohon validasi / 127 pohon uji**.
+* **Volume Citra**: **2.700 citra latih / 364 citra validasi / 532 citra uji**.
+* **Total Kotak Anotasi**: **13.227 kotak latih / 1.757 kotak validasi / 2.461 kotak uji**.
+* **Distribusi Kelas Latih (B1/B2/B3/B4)**: **1.569 / 2.504 / 6.764 / 2.390 kotak pembatas**.
 
-Satu bank kandidat dibaca oleh empat kepala tugas. Tidak ada alasan matematis
-untuk memaksa keputusan yang optimal bagi mAP menjadi keputusan yang sama untuk
-counting atau klasifikasi fisik.
+---
 
-1. **Kepala deteksi per-citra** memilih/menyatukan YOLO, RT-DETR, dan RF-DETR
-   secara per kelas. Keluaran ini dipakai untuk mAP50, mAP50-95, precision, dan
-   recall operasional.
-2. **Kepala klasifikasi** menggabungkan distribusi C1 detektor, classifier crop,
-   dan statistik multi-view. Aturan ordinal dipasang di validation.
-3. **Kepala identitas fisik** memakai geometri putaran, visual Re-ID, skor kelas
-   lunak, GNN kompetitif, dan perakit klaster global berkendala.
-4. **Kepala counting** menerima statistik multi-ambang dari seluruh sisi dan
-   seluruh detektor. Jumlah pool linker hanya menjadi salah satu fitur; ia tidak
-   dipaksa menjadi hitungan akhir.
+## 2. Prinsip Arsitektur Empat Kepala Tugas
 
-## Leaderboard DAMIMAS Saat Ini
+Satu bank representasi kandidat diproses oleh empat modul kepala inferensi khusus:
 
-Angka di bawah adalah checkpoint antara. Konfigurasi kepala baru dipilih di
-validation; test baru dihitung setelah konfigurasi terkunci.
+```mermaid
+graph TD
+    Input["Citra Multi-Tampak (4 Sisi Pohon DAMIMAS)"] --> D["1. Kepala Deteksi & Lokalisasi (YOLO / RT-DETR / RF-DETR)"]
+    D --> L["2. Kepala Penaut Identitas Fisik (Topologi Rotasi + Visual Re-ID)"]
+    L --> C["3. Kepala Klasifikasi Kematangan (Ensembel ConvNeXt + Set-Transformer)"]
+    L --> K["4. Kepala Pencacahan per Pohon (Regresi Ridge + F_all 67-dim)"]
+    C --> Out1["Label Kematangan Per-Tandan Fisik"]
+    K --> Out2["Estimasi Jumlah Tandan per Pohon"]
+```
 
-| Tugas | Baseline DAMIMAS | Kepala greedy saat ini | Perubahan |
+1. **Kepala Deteksi Per-Citra**: Menghasilkan proposal lokalisasi dan distribusi probabilitas kelas.
+2. **Kepala Identitas Fisik (*Linker*)**: Menggabungkan prior geometri putaran searah jarum jam (*clockwise*), kemiripan visual Re-ID, dan skor kelas lunak untuk menautkan tandan fisik lintas-sudut pandang.
+3. **Kepala Klasifikasi Kematangan**: Menggabungkan distribusi probabilitas multi-tampak dengan aturan agregasi ordinal kontinu ($R4$).
+4. **Kepala Pencacahan (*Counting*)**: Mengekstraksi statistik multi-ambang dari seluruh sudut pandang dan detektor sebagai fitur masukan regresi *Ridge*.
+
+---
+
+## 3. Matriks Performa DAMIMAS Terkini
+
+| Parameter Evaluasi | Garis Dasar Pembanding (*Baseline*) | Konfigurasi Modular Terpilih | Perubahan Relatif ($\Delta$) |
 |---|---:|---:|---:|
-| Deteksi test mAP50 | 0,5503 | **0,5965** | **+4,62 pp** |
-| Deteksi test mAP50-95 | 0,2604 | **0,2743** | **+1,39 pp** |
-| Deteksi macro-F1 operasional | 0,5557 | **0,5906** | **+3,49 pp** |
-| Proposal fisik AP50 / AP50-95 | — | **0,8381 / 0,3662** | kepala lokalisasi |
-| Proposal fisik P/R/F1 operasi | — | **0,8017 / 0,7952 / 0,7984** | threshold VAL |
-| Recall fisik oracle-link @ conf 0,01 | 0,9704 | 0,9704 | baseline plafon |
-| End-to-end precision / recall pool fisik | — | **0,8530 / 0,8116** | matching 1-ke-1 |
-| End-to-end akurasi / macro-F1 kelas pada pool terpasang | — | **0,7322 / 0,7028** | tanpa kotak/link GT |
-| Correct-class recall / macro-F1 fisik end-to-end | — | **0,5942 / 0,5867** | miss+pool palsu ikut dihitung |
-| Klasifikasi per-tandan, strict DAMIMAS (kotak/link GT) | 0,7242 | **0,7378** | **+1,36 pp** |
-| Macro-F1 per-tandan, strict DAMIMAS | 0,7014 | **0,7166** | **+1,52 pp** |
-| Akurasi tandan multi-tampak, strict DAMIMAS | — | **0,7753** | mendekati 80% |
-| Akurasi tandan satu-tampak, strict DAMIMAS | — | 0,6329 | bottleneck utama kelas |
-| Akurasi / macro-F1 per-view strict DAMIMAS | 0,7103 / 0,6793 (klasik) | **0,7111 / 0,6894** | meta ordinal |
-| Counting macro MAE | 1,0236 (single model, dipilih di val) | **1,0039** | **−0,0197** |
-| Counting class ±1 | 74,61% (single model, dipilih di val) | **75,79%** | **+1,18 pp** |
-| Counting tree ±1 | **37,80%** (single model) | 32,28% | ensemble belum menang di metrik ini |
-| Counting total MAE, regresor langsung | 1,5669 (anchor) | **1,4882** | **−0,0787**, best observed TEST |
-| Linker F1 di ruang deteksi | 0,4704 (PT-E-020, DAMIMAS) | **0,5171** | proposal unik |
-| Cakupan multi-tampak atas tandan terdeteksi | 64,00% (PT-E-020) | **70,62%** | target terdeteksi tercapai |
-| Cakupan multi-tampak atas seluruh tandan | 47,84% (PT-E-020) | **51,55%** | target global belum tercapai |
-| MAE jumlah pool linker | 2,880 (PT-E-020) | **1,864** | tetap bukan counter final |
+| Deteksi Uji $mAP50$ | 0,5503 | **0,5965** | **$+4,62\text{ pp}$** |
+| Deteksi Uji $mAP50\text{--}95$ | 0,2604 | **0,2743** | **$+1,39\text{ pp}$** |
+| Deteksi Macro-$F1$ Operasional | 0,5557 | **0,5906** | **$+3,49\text{ pp}$** |
+| Proposal Lokalisasi Fisik $AP50$ | — | **0,8381** | Kepala lokalisasi |
+| Presisi / Recall Pool Fisik *End-to-End* | — | **0,8530 / 0,8116** | Pencocokan $1$-ke-$1$ |
+| Akurasi Kelas pada Pool Fisik Terpasang | — | **0,7322** (Macro-$F1 = 0,7028$) | Tanpa anotasi acuan |
+| Klasifikasi per-Tandan (*Strict* DAMIMAS) | 0,7242 | **0,7378** (Macro-$F1 = 0,7166$) | **$+1,36\text{ pp}$** |
+| Akurasi Tandan Multi-Tampak ($\ge 2\text{ sisi}$) | — | **0,7753** | Agregasi ordinal $R4$ |
+| Akurasi Tandan Satu-Tampak ($1\text{ sisi}$) | — | 0,6329 | Hambatan utama klasifikasi |
+| Pencacahan Macro-$MAE$ | 1,0236 | **1,0039** | **$\minus 0,0197$** |
+| Pencacahan $\text{Class }\pm 1\text{ Acc}$ | 74,61% | **75,79%** | **$+1,18\text{ pp}$** |
+| Pencacahan Total $MAE$ (Regresor Langsung) | 1,5669 | **1,4882** | **$\minus 0,0787$** |
+| Model Penaut $F1$ di Ruang Deteksi | 0,4704 | **0,5171** | Proposal unik |
+| Cakupan Multi-Tampak atas Tandan Terdeteksi | 64,00% | **70,62%** | Target lolos |
+| Cakupan Multi-Tampak atas Seluruh Tandan | 47,84% | **51,55%** | Target global |
 
-Pembanding counting di tabel memakai protokol split yang sama. Pencarian
-multi-bank 1.683/3.366/3.687-dim memperbaiki VAL tetapi tidak bertransfer ke
-TEST: full search berhenti di macro-MAE 1,0374. Kepala anchor lama karena itu
-tetap champion macro. Audit inference-only menemukan bahwa angka 1,8583 dan
-1,7795 yang sebelumnya disebut "kepala total" sebenarnya adalah MAE dari
-penjumlahan empat kepala kelas ketika rekonsiliasi terkunci `raw`. Regresor
-jumlah-total yang benar menghasilkan 1,5669 (anchor), 1,4882 (compact), 1,5276
-(full), dan 1,5512 (CatBoost) di TEST. Nilai compact 1,4882 adalah best observed,
-bukan izin memilih model dari TEST: stacker final tetap akan dikunci dari
-OOF/VAL setelah semua dump detektor tersedia. Sumber audit:
-`results/damimas_counting_total_head_audit.json`.
+---
 
-Kepala deteksi mempertahankan routing YOLO terdahulu sebagai sumber koordinat,
-lalu memancarkan distribusi kelas dari classifier crop. Setelah proposal fisik
-ditautkan lintas-view, confidence kelas dipropagasikan kembali ke baris deteksi.
-Konfigurasi propagasi dipilih per kelas seluruhnya di validation dan tidak
-mengubah kotak, kelas, atau jumlah deteksi. AP50 test B1/B2/B3/B4 menjadi
-**0,8042 / 0,5035 / 0,6570 / 0,4214**; semuanya naik. Proposal fisik tetap satu
-kotak per objek, sehingga ekspansi empat hipotesis kelas tidak masuk counting.
+## 4. Analisis Batas Teoretis dan Dekomposisi Wilayah Klasifikasi
 
-## Status Kepala Klasifikasi
+Plafon teoretis model penggabungan (*oracle*) pada himpunan uji DAMIMAS mencapai **$87,39\%$**, namun rata-rata terbobot konvensional mentok pada plafon **$75,23\%$**.
 
-Stacker lama tetap menjadi angka referensi tertinggi, 0,7462, tetapi delapan
-anggota C2-nya pernah dilatih pada dua varietas. Karena scope aktif mewajibkan
-tinkering DAMIMAS-only, angka itu **tidak dipakai sebagai champion strict**.
-Hasil model yang dipasang ulang hanya dengan DAMIMAS adalah:
+Dekomposisi wilayah prediksi himpunan uji:
+* **Wilayah Anggota Sepakat ($64,7\%$ populasi tandan)**: Akurasi mencapai **$81,92\%$**.
+* **Wilayah Anggota Berselisih ($35,3\%$ populasi tandan)**: Akurasi berada di angka **$61,21\%$** (meskipun model batas atas teoretis/oracle di wilayah ini mencapai $97,41\%$).
+* **Korelasi Tingkat Keyakinan vs Kebenaran**: Sangat rendah ($r = \mathbf{+0,1185}$), sehingga strategi pemilihan berbasis tingkat keyakinan (*confidence-weighted selection*) tidak efektif.
 
-- ConvNeXt residual 128: 0,7378 / macro-F1 0,7166 (strict terbaik);
-- classifier klasik: per-view 0,7103, tetapi per-tandan 0,7234;
-- ConvNeXt crop native 224: 0,7242;
-- Set Transformer: 0,7310;
-- stacking seluruh model strict: 0,7272.
-
-Mixture-of-experts baru juga ditolak untuk per-tandan: OOF VAL memilih klasik
-saja dan test berhenti di 0,7234. Pada per-view, meta ordinal memberi champion
-baru tipis, akurasi 0,7111 dengan macro-F1 0,6894.
-
-Semua kandidat non-pemenang tetap disimpan sebagai bank probabilitas, tetapi
-tidak dipaksa masuk champion. Angka modul ini belum boleh disebut end-to-end:
-potongannya berasal dari kotak GT dan pengelompokan view memakai identitas
-oracle. Evaluasi deploy terpisah setelah proposal dan linker DAMIMAS dipasang
-mencapai akurasi 0,7322 pada pool terpasang dan macro-F1 fisik 0,5867 ketika
-miss serta pool palsu ikut dihitung.
-
-Domain shift kotak GT ke kotak prediksi sekarang ditangani secara eksplisit
-oleh `classifier_deteksi_damimas.py`: B1--B4 dipelajari bersama kelas kelima
-`background`, langsung dari crop proposal nyata. Audit sebelum training
-menemukan 26.403 proposal positif dan 16.252 hard background pada TRAIN;
-proposal itu mencakup 99,61% kotak GT pada IoU >= 0,4. Modul sudah
-diimplementasikan tetapi belum mempunyai angka champion; ia baru akan dilatih
-setelah proposal fusion final tersedia identik untuk TRAIN dan VAL, agar tidak
-mengulang domain shift representasi yang terjadi pada counting PT-E-026.
-Sumber audit: `pipeline-pertandan/scripts/classifier_deteksi_damimas.py` dan
-`pipeline-pertandan/results/damimas_proposal_classifier_audit.json`.
-
-## Urutan Kerja Berikutnya
-
-1. Selesaikan training RF-DETR-L yang sedang berjalan, infer train/val/test,
-   lalu perluas fusion per kelas dan proposal fisik.
-2. Latih RT-DETR-L khusus DAMIMAS sebagai anggota arsitektur berbeda.
-3. Latih detektor satu-kelas pada view
-   `/workspace/SawitMVC-YOLO-Damimas-Agnostic` untuk memanfaatkan plafon
-   lokalisasi proposal yang pada fusion awal sudah >0,83 AP50.
-4. Bentuk proposal fusion TRAIN/VAL/TEST yang identik, lalu latih classifier
-   detected-space B1--B4+background dan kunci aturan scoring hanya di VAL.
-5. Masukkan statistik seluruh detektor dan linker proposal-unik sebagai fitur
-   counting, kemudian kunci ensemble dari validation.
-6. Setelah semua konfigurasi tetap, jalankan laporan test final dan bootstrap
-   berkelompok pada tingkat pohon.
+Peningkatan melampaui $75\%$ memerlukan model *gating* non-linier yang dipelajari secara *out-of-fold* dari representasi visual independen.

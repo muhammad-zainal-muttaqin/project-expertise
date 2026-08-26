@@ -28,13 +28,17 @@ training dan evaluasi mengikuti `docs/REPRODUKSI-FASE6.md`. Jalankan evaluasi
 atau pekerjaan singkat langsung di foreground; runner hanya untuk training
 panjang. Periksa kapasitas GPU dengan `nvidia-smi` sebelum training.
 
-## Gaya Kode dan Penamaan
-
+## Gaya Kode, Penamaan, dan Standar Bahasa
+ 
 Gunakan Python 4 spasi per indentasi, fungsi kecil dengan nama deskriptif, dan
 `snake_case` untuk modul, fungsi, serta variabel. Pertahankan istilah teknis
 dan komentar berbahasa Indonesia. Eksperimen memakai ID `V2-E-###` atau
-`PT-E-###`; jangan mengubah entri eksperimen lama. Tidak ada formatter atau
-lint konfigurasi khusus, jadi jaga kompatibilitas dengan gaya skrip yang ada.
+`PT-E-###`; jangan mengubah entri eksperimen lama.
+
+Seluruh dokumentasi narasi wajib mematuhi **EYD Edisi V / PUEBI**, prinsip **anti-*calque***
+(misal: "penurunan performa yang signifikan", "selang kepercayaan 95% mencakup nilai nol"),
+notasi matematika desimal koma (0,6012), simbol minus tipografis asli `−`, dan format
+selang kepercayaan `[min; max]`. Rujukan lengkap: `.agents/skills/perbaikan-bahasa-penyampaian/SKILL.md`.
 
 ## Panduan Pengujian
 

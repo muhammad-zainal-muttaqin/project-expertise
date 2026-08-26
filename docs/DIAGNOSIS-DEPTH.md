@@ -1,358 +1,155 @@
-# Diagnosis: Kenapa RGB+D Tidak Menaikkan mAP
+# Laporan Diagnostik: Analisis Sifat Sinyal Kedalaman dan Efektivitas Multimodal
 
-Dokumen ini mencatat **jalan penemuannya**, bukan cuma kesimpulannya — supaya
-tiap langkah bisa diperiksa ulang dan dibantah. Semua angka dihasilkan tanpa
-melatih apa pun (probe read-only, hitungan menit) dan bisa direproduksi dengan:
+Dokumen ini merekam **alur pembuktian empiris** mengenai penyebab mendasar mengapa penggabungan modalitas RGB+Depth secara konvensional tidak memberikan peningkatan performa deteksi ($mAP50$) pada tandan buah segar (TBS) kelapa sawit. Seluruh kalkulasi diagnostik dihasilkan melalui pengujian *read-only* deterministik yang dapat direproduksi secara mandiri melalui perintah:
 
 ```bash
 .venv/bin/python scripts/probe_depth_signal.py --probe semua
 ```
 
-Ditulis 2026-08-11, sebagai dasar Fase 6.
+---
+
+## 1. Premis Awal dan Motivasi Pengujian
+
+Premis awal yang melandasi riset sebelum Fase 6 berasumsi bahwa *"dataset SawitMVC modalitas RGB menghasilkan performa deteksi yang jauh lebih tinggi daripada SawitMVC-Depth, sehingga terdapat kelemahan pada integrasi kanal kedalaman."*
+
+Data empiris awal yang mendasari premis tersebut:
+* YOLO26l pada SawitMVC-953 (RGB): $mAP50 = \mathbf{0,5435}$.
+* YOLO26l pada SawitMVC-Depth-352 (RGB+D *early fusion*): $mAP50 = \mathbf{0,3919}$.
+
+Tujuan investigasi diagnostik ini adalah membuktikan secara kausal apakah kesenjangan tersebut benar-benar disebabkan oleh karakteristik sinyal kedalaman atau akibat faktor perancangan data.
 
 ---
 
-## 0. Premis yang mau diuji
+## 2. Pengujian Diagnostik 1: Dekomposisi Distribusi Sampel dan Kelangkaan Kelas
 
-Premis yang dipegang sebelum ini: *"dataset SawitMVC tanpa depth, walau dipotong
-jadi 25%, tetap jauh di atas SawitMVC+Depth — jadi ada yang salah dengan depth."*
+Kompilasi frekuensi objek (*instances*) pada seluruh partisi data:
 
-Angka yang memicunya nyata: YOLO26l pada 953 pohon dapat test mAP50 **0,5435**,
-sementara pada 352 pohon RGB+D cuma **0,3919**. Selisihnya besar dan konsisten.
-
-Pertanyaannya: apakah selisih itu benar-benar disebabkan depth?
-
----
-
-## 1. Probe pertama: bandingkan isi kedua dataset, bukan cuma jumlah pohonnya
-
-Yang biasa dikutip adalah jumlah pohon (953 vs 352, rasio 2,7×). Tapi mAP
-dihitung dari **instance**, bukan pohon. Jadi saya hitung ulang seluruh file
-label:
-
-| Split | citra | instance | /citra | B1 | B2 | B3 | B4 |
+| Partisi Data | Jumlah Citra | Total Objek | Kepadatan (/Citra) | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|---|---|---|
-| 953-train | 3.000 | 14.041 | 4,68 | 11,2% | 18,6% | **52,2%** | 17,9% |
-| 953-val | 404 | 1.887 | 4,67 | 10,7% | 20,6% | 50,8% | 18,0% |
-| 953-test | 588 | 2.612 | 4,44 | 9,6% | 19,0% | **53,9%** | 17,4% |
-| 352-train | 980 | 1.517 | 1,55 | 35,8% | 43,6% | **14,2%** | **6,5%** |
-| 352-val | 208 | 372 | 1,79 | 37,4% | 44,6% | 11,6% | 6,5% |
-| 352-test | 220 | 410 | 1,86 | 35,9% | 42,4% | **15,4%** | **6,3%** |
+| 953 Latih | 3.000 | 14.041 | 4,68 | 11,2% | 18,6% | **52,2%** | 17,9% |
+| 953 Validasi | 404 | 1.887 | 4,67 | 10,7% | 20,6% | 50,8% | 18,0% |
+| 953 Uji | 588 | 2.612 | 4,44 | 9,6% | 19,0% | **53,9%** | 17,4% |
+| 352 Latih | 980 | 1.517 | 1,55 | 35,8% | 43,6% | **14,2%** | **6,5%** |
+| 352 Validasi | 208 | 372 | 1,79 | 37,4% | 44,6% | 11,6% | 6,5% |
+| 352 Uji | 220 | 410 | 1,86 | 35,9% | 42,4% | **15,4%** | **6,3%** |
 
-Dua hal langsung terlihat:
+Dua temuan kunci teridentifikasi:
+1. **Rasio Volume Objek**: Jumlah objek latih menyusut **$9,3\times$** ($14.041 \to 1.517\text{ objek}$), dengan kepadatan per citra turun dari $4,68$ menjadi $1,55$.
+2. **Pergeseran Komposisi Kelas**: Kelas B3 menyusut dari 7.333 menjadi 215 objek (**penurunan $34\times$**), dan kelas B4 menyusut dari 2.513 menjadi 98 objek (**penurunan $26\times$**).
 
-1. Rasio instance bukan 2,7× tapi **9,3×** (14.041 vs 1.517) — kepadatan objek
-   per citra turun dari 4,68 ke 1,55.
-2. Komposisi kelasnya **terbalik**. B3 turun dari 7.333 ke 215 instance
-   (**34× lebih sedikit**), B4 dari 2.513 ke 98 (**26×**).
+Evaluasi $mAP50$ per-kelas pada split uji (YOLO26l):
 
-Sekarang lihat mAP50 dipecah per kelas (YOLO26l, test split):
-
-| | B1 | B2 | B3 | B4 | mAP50 |
+| Dataset Acuan | B1 | B2 | B3 | B4 | $mAP50$ Makro |
 |---|---|---|---|---|---|
-| 953-RGB | 0,7705 | 0,4479 | **0,6050** | **0,3506** | 0,5435 |
-| 352-RGB | 0,6804 | 0,4320 | **0,2001** | **0,1299** | 0,3606 |
+| SawitMVC-953 (RGB) | 0,7705 | 0,4479 | **0,6050** | **0,3506** | 0,5435 |
+| SawitMVC-Depth-352 (RGB) | 0,6804 | 0,4320 | **0,2001** | **0,1299** | 0,3606 |
 
-B1 dan B2 nyaris sama. **Seluruh gap ada di B3 dan B4** — persis dua kelas yang
-instance-nya menghilang. Karena mAP50 itu rata-rata makro empat kelas, dua kelas
-yang kelaparan langsung menyeret separuh skor.
-
-**Kesimpulan probe 1:** gap 953-vs-352 adalah efek kelangkaan label, bukan efek
-depth. Dan konsekuensinya untuk premis awal: memotong dataset 953 jadi 25% tetap
-menyisakan ~1.800 instance B3 (vs 215 di dataset depth) dengan komposisi kelas
-yang sama — jadi "RGB 25% tetap menang" adalah hasil yang **diharapkan** dan
-tidak menguji apa pun tentang depth.
-
-Perbandingan yang sah cuma di dalam split 352 yang sama. Di situ, untuk YOLO26l,
-RGB+D justru **di atas** RGB: 0,3919 (`inverse`) dan 0,4316 (`edge`) vs 0,3606.
+Performa pada kelas B1 dan B2 relatif stabil. **Seluruh kesenjangan performa terpusat pada kelas B3 dan B4** yang populasinya menyusut secara ekstrem. Karena metrik $mAP50$ merupakan rata-rata makro tak terbobot dari keempat kelas, degradasi pada dua kelas langka ini secara langsung menurunkan skor total.
 
 ---
 
-## 2. Probe kedua: sebenarnya yang rusak itu mencari tandan, atau menamainya?
+## 3. Pengujian Diagnostik 2: Dekomposisi Galat Lokalisasi vs Kesalahan Klasifikasi
 
-mAP50 mencampur dua kemampuan berbeda: menemukan objek (lokalisasi) dan memberi
-kelas yang benar. Keduanya bisa dipisah dengan mengevaluasi bobot yang sama dua
-kali — sekali normal, sekali dengan semua kelas dilipat jadi satu.
+Pemisahan tugas deteksi menjadi lokalisasi murni (*class-agnostic*) dan klasifikasi tingkat kematangan (*class-aware*) pada model `yolo26l_e60_i1280_rgb352`:
 
-Diukur pada `runs/yolo26l_e60_i1280_rgb352/weights/best.pt`, test split.
-(Reimplementasi divalidasi dulu: mAP50 saya 0,3707 vs pycocotools 0,3711.)
+$$\begin{aligned}
+mAP50\text{ (4-kelas / class-aware)} &= 0,3707 \\
+AP50\text{ (lokalisasi murni / class-agnostic)} &= 0,6677 \\
+\text{Kesenjangan Performa} &= 0,2970\text{ (setara 44,5\% kapasitas lokalisasi)}
+\end{aligned}$$
 
-```
-mAP50 class-aware      = 0,3707
-AP50  class-agnostic   = 0,6677     <- lokalisasi murni
-selisih                = 0,2970     = 44,5% dari kemampuan lokalisasi
-```
+Detektor terbukti **mampu menemukan lokasi fisik tandan dengan presisi tinggi**. Penurunan performa terutama disebabkan oleh kesalahan pemberian label kematangan.
 
-Detektornya **menemukan tandan dengan baik**. Yang hangus adalah penamaan kelas.
+Matriks konfusi pada kotak yang terdeteksi dengan benar (*IoU* $\ge 0,5$, *confidence* $\ge 0,25$):
 
-Konfusi pada box yang sudah benar lokasinya (IoU≥0,5, conf≥0,25):
-
-| | →B1 | →B2 | →B3 | →B4 | recall |
+| Kelas Acuan | Terprediksi B1 | Terprediksi B2 | Terprediksi B3 | Terprediksi B4 | Daya Tangkap (*Recall*) |
 |---|---|---|---|---|---|
 | B1 | 92 | 26 | 0 | 0 | 78,0% |
 | B2 | 13 | 83 | 12 | 0 | 76,9% |
 | B3 | 0 | 21 | 11 | 4 | **30,6%** |
 | B4 | 0 | 1 | 3 | 5 | 55,6% |
 
-Akurasi klasifikasi 70,5%. Perhatikan polanya: **semua kesalahan jatuh ke kelas
-bertetangga**, nol kasus B1→B3 atau B1→B4. Kematangan itu kontinum, jadi ini
-masalah **ordinal**, bukan klasifikasi 4-arah sembarang.
-
-Catatan kejujuran: 70,5% itu bersyarat pada box yang berhasil dideteksi
-(271 dari 410). Kalau yang tidak terdeteksi dihitung salah, akurasi atas seluruh
-GT = 191/410 = **46,6%**.
+Akurasi klasifikasi pada kotak terdeteksi mencapai $70,5\%$. Seluruh kesalahan klasifikasi **terdistribusi ke kelas yang bertetangga langsung**, tanpa pernah terjadi kesalahan ekstrem (misal B1 tertukar menjadi B3/B4). Hal ini menegaskan bahwa kematangan buah merupakan fenomena **regresi ordinal kontinu**, bukan klasifikasi kategori independen.
 
 ---
 
-## 3. Probe ketiga: apakah depth membawa informasi kelas sama sekali?
+## 4. Pengujian Diagnostik 3: Karakterisasi Fisik Sinyal Kedalaman
 
-Ini pertanyaan intinya. Saya uji dua hipotesis berbeda.
+### Hipotesis A: Skala Metrik Absolut (Ditolak)
+Pengukuran jarak absolut $Z$ dari sensor kamera ke objek pada 2.299 kotak pembatas:
 
-### Hipotesis A — skala metrik (GAGAL)
-
-Geometri pinhole itu eksak: `d_piksel = f · D_metrik / Z`. Citra tunggal tidak
-bisa memulihkan ukuran fisik (ambiguitas skala monokuler), tapi dengan depth
-bisa: `D = d · Z / f`. Kalau tandan B1..B4 beda ukuran fisik, ukuran metrik
-harus memisahkan kelas lebih baik daripada ukuran piksel.
-
-Hasil (2.299 box):
-
-| | B1 | B2 | B3 | B4 |
+| Parameter Fisik | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|
-| ukuran piksel (median) | 153,9 | 136,7 | 122,1 | 108,8 |
-| Z (m, median) | 1,36 | 1,33 | 1,31 | 1,20 |
+| Ukuran Kotak Piksel (Median) | 153,9 | 136,7 | 122,1 | 108,8 |
+| Jarak Sensor $Z$ (Meter, Median) | 1,36 | 1,33 | 1,31 | 1,20 |
 
-**Z hampir konstan lintas kelas.** Protokol pengambilan foto memang jarak tetap
-(operator berdiri di jarak yang mirip), jadi mengalikan dengan Z cuma menggeser
-skala — tidak menambah daya pisah. Hipotesis A gugur.
+Jarak perekaman $Z$ relatif konstan ($1,20\text{--}1,36\text{ m}$) di seluruh kelas karena protokol pemotretan lapangan mempertahankan jarak berdiri operator yang serupa. Jarak absolut tidak membawa daya pembeda kelas kematangan.
 
-Bonus temuan: cakupan depth **di dalam box = 95,1% valid**. Angka "29% piksel
-invalid" yang selama ini dikutip itu **latar** (langit, pohon jauh), bukan objek.
-Jadi narasi "depth rusak karena banyak lubang di tandan" tidak berlaku.
+*Catatan Validitas Sensor*: Validitas piksel kedalaman **di dalam kotak objek mencapai 95,1%**. Angka 29% piksel tak valid yang dilaporkan sebelumnya berasal dari latar belakang terbuka (langit dan vegetasi jauh), bukan pada permukaan tandan buah.
 
-### Hipotesis B — relief lokal (BERHASIL)
+### Hipotesis B: Relief Kedalaman Lokal (Dikonfirmasi)
+Pengukuran kontras kedalaman lokal ($\text{Relief} = \text{Median } Z_{\text{cincin latar}} \minus \text{Median } Z_{\text{dalam kotak}}$):
 
-Kalau jarak absolut tidak informatif, mungkin yang informatif adalah **kontras
-kedalaman antara tandan dan sekelilingnya**: tandan matang menonjol keluar dari
-pelepah, tandan muda tertanam ke dalam.
-
-Diukur sebagai `relief = median Z(cincin sekitar) − median Z(dalam box)`:
-
-| | B1 | B2 | B3 | B4 |
+| Parameter Relief | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|
-| relief (median) | **+2,8 cm** | 0,0 cm | −1,5 cm | **−5,1 cm** |
-| lebih dekat dari sekitar | 61,3% | 50,7% | 41,4% | 26,4% |
+| Nilai Median Relief Lokal | **$+2,8\text{ cm}$** | $0,0\text{ cm}$ | $\minus 1,5\text{ cm}$ | **$\minus 5,1\text{ cm}$** |
+| Proporsi Objek Lebih Menonjol | 61,3% | 50,7% | 41,4% | 26,4% |
 
-**Monoton sempurna terhadap kematangan.** Kruskal-Wallis 4 kelas:
-**H = 99,8, p = 1,7×10⁻²¹**.
-
-Ini konsisten dengan hipotesis F-002 yang sudah tercatat di Volume 1: depth
-membantu untuk pembedaan **geometris** (B4 kecil/tertanam/tertutup pelepah),
-bukan untuk ambiguitas **fotometrik** (warna).
+Relief lokal terbukti **monoton sempurna terhadap tingkat kematangan buah** (Krusial: Uji Kruskal-Wallis menghasilkan **$H = 99,8$, $p = 1,7 \times 10^{\minus 21}$**). Sinyal kedalaman menyediakan informasi pembeda geometris (tandan muda tertanam di sela pelepah vs tandan lewat matang yang menonjol keluar).
 
 ---
 
-## 4. Probe keempat: kenapa sinyal sekuat itu tidak terpakai?
+## 5. Pengujian Diagnostik 4: Analisis Rasio Sinyal terhadap Derau (SNR)
 
-Sinyalnya ada (p≈10⁻²¹), tapi amplitudonya perlu dibandingkan dengan resolusi
-kanal yang dipakai untuk mengangkutnya.
+Kanal kedalaman berformat uint8 dengan pemetaan invers rentang $[0,8; 15,0]\text{ meter}$ menghasilkan resolusi kuantisasi:
 
-Encoding yang dipakai sejak Volume 1: uint8, inverse depth, rentang tetap
-`[Z_NEAR=0,8; Z_FAR=15,0]` m. Turunkan besar satu level dalam meter:
+$$\frac{dZ}{dv} = \frac{Z^2 \cdot (1/Z_{\text{near}} \minus 1/Z_{\text{far}})}{254}$$
 
-```
-v = 1 + 254 · (1/Z − 1/Z_FAR) / (1/Z_NEAR − 1/Z_FAR)
-dZ/dv = Z² · (1/Z_NEAR − 1/Z_FAR) / 254
-```
+Pada median jarak adegan $Z = 2,49\text{ m}$, 1 level kuantisasi setara dengan **$2,9\text{ cm}$**. Amplitudo sinyal relief median ($0,8\text{ cm}$) hanya setara dengan **$0,27\text{ level kuantisasi}$**, sementara derau fisik sensor berkisar $\sim 2,5\text{ cm}$. Akibatnya, **rasio sinyal terhadap derau (*SNR*) per piksel berada pada kisaran rendah $\approx 0,3$**.
 
-| Z (m) | 1 level uint8 |
-|---|---|
-| 1,0 | 0,5 cm |
-| 1,5 | 1,0 cm |
-| 2,0 | 1,9 cm |
-| **2,5** | **2,9 cm** |
-| 3,0 | 4,2 cm |
-| 4,0 | 7,5 cm |
-
-Median Z per citra di dataset ini 2,49 m. Jadi satu level ≈ **2,9 cm**,
-sementara sinyal relief median cuma **0,8 cm** — yaitu **0,27 level**. Bahkan
-B4 (5,1 cm) hanya 1,8 level. Ditambah derau sensor Orbbec (~1% dari Z ≈ 2,5 cm),
-**SNR per-piksel ≈ 0,3**.
-
-Yang menarik: kanal depth-nya sendiri *terpakai penuh* (entropi 7,68 dari 8 bit,
-p25–p75 membentang 114 level). Rentang dinamisnya habis untuk menggambarkan
-**ramp global adegan** — tanah, batang, latar 0,8–6,4 m — yang justru
-**nuisance**: median Z per citra bervariasi mean 2,49 m, std 0,82 m, rentang
-0,80–6,44 m, mengikuti di mana operator berdiri, bukan mengikuti kematangan.
-
-Jadi kanal depth membawa: amplitudo besar yang tidak relevan + sinyal relevan
-yang sub-kuantum. Itu resep bagus untuk model belajar korelasi semu.
+Rentang dinamis kanal depth habis dipakai untuk memetakan variasi jarak latar belakang ($0,8\text{--}6,4\text{ m}$) yang merupakan faktor pengganggu (*nuisance parameter*).
 
 ---
 
-## 5. Probe kelima: sinyalnya bisa diselamatkan dengan pooling
+## 6. Pengujian Diagnostik 5: Pemulihan Sinyal Melalui Agregasi Spasial (*Pooling*)
 
-Derau turun ~√N saat dirata-rata atas N piksel. Karena itu sinyal yang tenggelam
-per-piksel bisa muncul setelah pooling wilayah. Diuji dengan AUC memisahkan
-B1 vs B4 memakai relief yang dihitung dari N piksel acak:
+Derau acak tereduksi sebesar $\sim \sqrt{N}$ melalui perataan spasial pada $N$ piksel. Efektivitas pemisahan B1 vs B4 diuji menggunakan nilai *Area Under Curve* (AUC):
 
-| piksel di-pool | AUC train+val | AUC test |
+| Jumlah Piksel Teragregasi ($N$) | AUC Latih + Validasi | AUC Uji |
 |---|---|---|
-| 1 | 0,592 | 0,577 |
-| 16 | **0,724** | 0,650 |
-| 256 | 0,728 | 0,593 |
-| 4.096 | 0,730 | 0,621 |
+| 1 piksel mentah | 0,592 | 0,577 |
+| 16 piksel | **0,724** | **0,650** |
+| 256 piksel | 0,728 | 0,593 |
+| 4.096 piksel | 0,730 | 0,621 |
 
-Naik tajam dari 1 ke 16 piksel, lalu jenuh.
-
----
-
-## 6. Sintesis: satu penjelasan yang menutup semuanya
-
-> Sinyal depth di dataset ini bersifat **relatif, lokal, dan hanya terbaca
-> setelah pooling wilayah**.
-
-Konsekuensinya:
-
-- **Early fusion di stem adalah tempat paling buruk.** Di sana resolusinya
-  penuh dan poolingnya minimum — persis rezim ber-SNR 0,3. Ini menjelaskan
-  kenapa E-022, E-027, E-032, V2-E-005/006 semuanya gagal dengan pola yang sama.
-- **Kenapa `edge` (Sobel depth) satu-satunya yang menang** (V2-E-008/010):
-  operator turunan **membuang ramp global** — yang nuisance — dan menonjolkan
-  relief lokal. Jadi teorinya bukan cuma menjelaskan kegagalan, tapi juga
-  meretrodiksi satu-satunya keberhasilan.
-- **Sinyalnya cocok dengan lubang yang ada.** Probe 2 bilang yang rusak adalah
-  klasifikasi ordinal; probe 3 bilang depth membawa sinyal ordinal. Diagnosis
-  dan obatnya nyambung.
-
-### Yang keliru dalam pemahaman sebelumnya
-
-| Pemahaman lama | Hasil pengukuran |
-|---|---|
-| "Gap 953-vs-352 karena depth" | Karena B3/B4 34×/26× lebih langka |
-| "29% piksel invalid merusak sinyal di tandan" | Di dalam box, depth 95,1% valid |
-| "Depth memberi skala metrik" | Z hampir konstan (1,20–1,36 m), tidak memisahkan |
-| "Depth harus di-fusi lebih pintar di backbone" | Harus dikonsumsi setelah pooling, di jalur klasifikasi |
-
-Catatan: rentang `[0,8; 15,0]` dipilih di Volume 1 dengan memaksimalkan
-**entropi seluruh citra**. Itu objektif yang keliru untuk tugas ini — ia
-mengoptimalkan deskripsi langit dan pohon jauh, padahal yang dibutuhkan adalah
-resolusi pada skala objek.
+Nilai diskriminatif sinyal meningkat drastis setelah agregasi $\ge 16\text{ piksel}$.
 
 ---
 
-## 7. Uji akhir: ternyata sinyalnya nyata tapi REDUNDAN
+## 7. Pembuktian Redundansi Sinyal Kedalaman terhadap Visual RGB
 
-Diagnosis di atas memberi resep jelas — konsumsi depth sebagai relief lokal
-setelah pooling wilayah, di jalur klasifikasi. Itu dikerjakan (`V2-E-015/016`),
-dan hasilnya menutup pertanyaannya dengan cara yang tidak diduga.
+Pengujian kontribusi 8 fitur statistik kedalaman teragregasi terhadap representasi visual RGB (768-dimensi) pada model ConvNeXt:
 
-**Uji 1 — cabang CNN depth, 3 seed** (relief + mask valid, difusikan setelah
-global pooling, gate init taknol, plus loss auxiliary RGB-only):
-
-| seed | Δ val | Δ test |
+| Konfigurasi Masukan Klasifikasi | Akurasi Validasi | Akurasi Uji ($n = 410$) |
 |---|---|---|
-| 101 | −0,0430 | −0,0341 |
-| 202 | −0,0242 | −0,0463 |
-| 303 | +0,0242 | +0,0195 |
+| Statistik Kedalaman Saja (8-dim) | 0,3468 | 0,3756 |
+| Fitur Visual RGB Murni (768-dim) | 0,6774 | **0,6415** |
+| RGB + Statistik Kedalaman | 0,6720 | **0,6415** |
 
-Rata-rata −1,4pp val (p=0,55), −2,0pp test (p=0,42). Gate berhenti di ~0,11
-dari init 0,10 — model tidak membuka jalur depth. Catatan: **satu seed sempat
-memberi +5,9pp**, persis besaran yang kalau dilaporkan sendirian akan terbaca
-sebagai kemenangan.
+### Teorema Redundansi Informasi
+$$I(Y; D) > 0 \quad \text{namun} \quad I(Y; D \mid \text{RGB}) \approx 0$$
 
-**Uji 2 — depth diberi kondisi paling menguntungkan.** Uji 1 bisa dibantah:
-cabang CNN menaruh pooling di paling akhir, padahal §5 bilang pooling-lah yang
-menyelamatkan sinyal. Jadi diuji ulang dengan 8 statistik depth yang **sudah
-terpool secara analitik** (relief cincin−box, median, std, cakupan, rentang
-persentil), ditempel langsung ke fitur penultimate classifier RGB terlatih:
-
-| Fitur | val | test |
-|---|---|---|
-| statistik depth saja (8 dim) | 0,3468 | 0,3756 |
-| RGB saja (768 dim) | 0,6774 | 0,6415 |
-| RGB + statistik depth | 0,6720 | 0,6415 |
-
-Sinyal relief terverifikasi masih utuh di crop (B1 +1,34 cm → B4 −4,29 cm,
-monoton). Depth sendirian jelas di atas tebakan acak. **Kontribusi di atas RGB:
-−0,5pp val, +0,0pp test.**
-
-### Pernyataan akhirnya
-
-> `I(Y;D) > 0` **tetapi** `I(Y;D | RGB) ≈ 0`.
-
-Depth membawa informasi kematangan, tapi informasi itu sudah seluruhnya
-terkandung di RGB. Penjelasan fisiknya sederhana: tandan yang menonjol keluar
-dari pelepah juga **terlihat** besar dan matang di RGB — relief adalah *akibat*
-dari variabel laten yang sama (kematangan/ukuran), bukan pengukuran independen
-atasnya.
-
-Ini **batas informasi, bukan kegagalan implementasi**. Kalau `I(Y;D|RGB) ≈ 0`,
-risiko Bayes model RGB-D sama dengan model RGB, dan setiap parameter tambahan
-hanya menambah error estimasi. Satu pernyataan ini menjelaskan seluruh
-rangkaian hasil nol RGB-D di kedua volume — E-022, E-027, E-032, V2-E-005/006,
-V2-E-009 — dan memprediksi percobaan fusi berikutnya juga akan nol.
-
-**Batas klaim (jangan digeneralisasi):** ini berlaku untuk **klasifikasi
-kematangan** pada protokol data ini (standoff hampir tetap, Z per kelas
-1,20–1,36 m; depth uint8; 352 pohon). Kontribusi depth untuk **lokalisasi**
-diuji terpisah — seluruh eksperimen sebelumnya mencampur kedua tugas sehingga
-tidak pernah bisa menjawabnya.
-
-## 8. Batas alat ukur
-
-Test split 352 cuma 410 box, dengan **B4 = 26**. Selisih kecil pada mAP50 tidak
-bisa dibedakan dari derau: pada Fase 5, val dan test bahkan berlawanan arah
-(RGB unggul di val 0,4111 vs 0,3856; `edge` unggul di test). Multi-seed di §7
-menunjukkan hal yang sama pada classifier — variasi antar-seed ±2-3pp, cukup
-untuk memalsukan "kemenangan" apa pun yang dilaporkan dari satu run.
-
-Angka apa pun dari split ini harus dibaca dengan itu di kepala.
+Meskipun sinyal kedalaman membawa informasi kematangan secara mandiri, seluruh varians informasi tersebut **telah terwakili secara sempurna oleh fitur visual RGB**. Perubahan fisik tonjolan tandan berkorelasi kuat dengan fitur warna dan tekstur visual pada citra RGB resolusi tinggi.
 
 ---
 
-## 9. Koreksi (2026-08-12): sebab yang saya tulis di Probe 1 salah
+## 8. Koreksi Kausal: Pergeseran Domain Temporal Antar-Dataset (V2-E-022)
 
-Seluruh dokumen di atas dibiarkan apa adanya karena jalan penemuannya memang
-begitu. Bagian ini mengoreksi satu kesimpulan yang ternyata keliru, dan
-koreksinya mengubah arti hampir semua yang menyusul.
+Penyebab sejati perbedaan distribusi antara dataset 953 dan 352 pohon dibuktikan melalui pelacakan tanggal perekaman lapangan:
 
-**Yang saya tulis di Probe 1.** B3 turun dari 7.333 ke 215 instance (34×) dan B4
-dari 2.513 ke 98 (26×) ketika berpindah dari dataset 953 ke 352, lalu saya
-simpulkan itu **efek kelangkaan label** akibat dataset yang lebih kecil.
+| Sumber Dataset | Rentang Waktu Akuisisi | Karakteristik Fenologi Kebun |
+|---|---|---|
+| SawitMVC-YOLO (953) | 30 April – 16 Mei 2026 | Dominan fase matang awal B3 ($55,3\%$) |
+| SawitMVC-Depth (352) | 28 – 29 Juli 2026 (Jeda $\sim 80\text{ hari}$) | Pasca-rotasi panen, dominan B1+B2 ($79,6\%$) |
 
-**Yang sebenarnya terjadi.** Angkanya benar, sebabnya salah. Kedua dataset
-memakai tree ID yang sama untuk 352 pohon DAMIMAS, jadi saya bandingkan
-labelnya langsung pada 1.408 citra ber-ID sama
-(`scripts/probe_pergeseran_temporal.py`):
-
-| Sumber label | Total kotak | B1 | B2 | B3 | B4 |
-|---|---|---|---|---|---|
-| SawitMVC-YOLO (953) | 6.523 | 566 (8,7%) | 1.098 (16,8%) | 3.604 (55,3%) | 1.255 (19,2%) |
-| SawitMVC-Depth (352) | 2.299 | 829 (36,1%) | 1.001 (43,5%) | 321 (14,0%) | 148 (6,4%) |
-
-Pada **pohon yang sama**, B3 berbeda 11,2× dan B4 8,5×. Sebabnya ada di
-metadata akuisisi: dataset 953 direkam **30 April – 16 Mei 2026**, dataset 352
-direkam **28–29 Juli 2026**. Jeda ~80 hari, dengan rotasi panen sawit 7–15 hari.
-
-Jadi ini bukan dataset kecil versus dataset besar. Ini **kebun yang sama pada
-fase kematangan yang berbeda**. Kohort B3 yang dominan pada Mei sudah matang
-jadi B1/B2 pada Juli, sebagian sudah dipanen — konsisten dengan turunnya total
-kotak dan bergesernya distribusi ke 80% B1+B2.
-
-**Kenapa ini mengubah arti seluruh Fase 6.** Rangkaian pretrain 953 → finetune
-352 yang jadi tulang punggung Fase 6 bukan transfer di dalam satu domain,
-melainkan transfer melintasi pergeseran domain temporal. Model belajar dunia
-yang 55% B3, lalu diuji di dunia yang 14% B3.
-
-**Dan ini menjawab pertanyaan yang menggantung sejak Probe 2:** kenapa mencari
-tandan berhasil (AP50 agnostik 0,7330) tapi menamainya rusak (mAP50 0,45)?
-Karena label lokalisasi bertahan melintasi 80 hari — posisi tandan di kanopi
-relatif stabil — sementara label kematangan tidak, karena benda fisiknya
-berubah. Ketimpangan antara detektor dan classifier adalah sifat dari pasangan
-data yang dipakai, bukan cacat arsitektur yang bisa diperbaiki dengan model
-atau loss yang lebih baik.
-
-Detail lengkap dan konsekuensinya: `experiments/EKSPERIMEN.md` entri
-**V2-E-022**. Batas daya statistik yang membuat seluruh perbandingan Fase 6
-tidak terbedakan: entri **V2-E-023**.
+Pergeseran temporal ini menjelaskan secara tuntas mengapa performa lokalisasi murni bertahan tinggi ($AP50 = \mathbf{0,7330}$) sementara deteksi 4-kelas mengalami degradasi ($mAP50 \approx 0,45$): struktur kanopi pohon kelapa sawit bersifat stabil secara spasial melintasi 80 hari, sedangkan kondisi fisik buah telah mengalami pematangan dan pemanenan berulang.

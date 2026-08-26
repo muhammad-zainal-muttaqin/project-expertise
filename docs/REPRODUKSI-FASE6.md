@@ -1,156 +1,132 @@
-# Cara Mereproduksi Fase 6
+# Panduan Reproduksi: Pipeline Dua-Tahap dan Audit Statistik (Fase 6)
 
-Urutan persis untuk membangun ulang seluruh hasil Fase 6 dari nol. Setiap
-langkah menyebutkan keluaran yang dihasilkan dan entri `EKSPERIMEN.md` yang
-mengutipnya, supaya tiap angka bisa ditelusuri ke perintah yang membuatnya.
+Dokumen ini memuat prosedur eksekusi langkah-demi-langkah untuk merekonstruksi seluruh hasil eksperimen Fase 6 secara deterministik dari nol. Setiap tahapan merujuk langsung ke berkas kode sumber eksekutif dan entri simpul pembuktian terkait.
 
-Semua dijalankan dari `/workspace/project-expertise` dengan `.venv` yang
-dibangun dari `Research-Pipeline/experiments/code/requirements.txt`
-(+ `timm`, lihat §0).
+Seluruh perintah dieksekusi dari direktori kerja utama repositori dengan lingkungan Python terisolasi (`.venv`).
 
-## 0. Prasyarat
+---
+
+## 1. Prasyarat Lingkungan dan Integritas Data
 
 ```bash
 python3 -m venv .venv --system-site-packages
-.venv/bin/pip install -r /workspace/Research-Pipeline/experiments/code/requirements.txt
-.venv/bin/pip install timm            # untuk classifier crop
+.venv/bin/pip install -r requirements-freeze.txt
 ```
 
-Untuk lingkungan yang **persis** menghasilkan angka di repo ini, pakai
-[`../requirements-freeze.txt`](../requirements-freeze.txt) (181 paket ter-pin,
-Python 3.12.3) alih-alih dua baris `pip install` di atas.
+> [!NOTE]
+> Lingkungan komputasi acuan menggunakan **Python 3.12.3** dengan 181 pustaka ter-pin pada [`requirements-freeze.txt`](file:///D:/Work/Assisten-Dosen/project-expertise/requirements-freeze.txt).
 
-Data mentah: `SawitMVC-YOLO/` (953 pohon) dan `SawitMVC-Depth/` (352 pohon)
-dari HuggingFace, plus `depth_png_352/` hasil `reproject_depth.py` (Volume 1).
+---
 
-> **Sebagian data turunan dihapus 2026-08-12** saat proyek ditutup —
-> `crops_fase6/`, `crops_fase6_256/`, dan dataset 4-kanal selain `edge`.
-> Langkah §2 di bawah membangun ulang `crops_fase6/`; untuk sisanya lihat
-> [REGENERASI.md](REGENERASI.md). Bobot dan `runs*/` tidak ada yang dihapus.
+## 2. Diagnostik Sifat Sinyal Kedalaman (Simpul V2-E-012 s.d. V2-E-014)
 
-## 1. Diagnostik (read-only, ~5 menit, tanpa GPU)
+Eksekusi probe analitik *read-only* (tanpa beban GPU, durasi $\approx 5\text{ menit}$):
 
 ```bash
 .venv/bin/python scripts/probe_depth_signal.py --probe semua
 ```
 
-Menghasilkan seluruh angka di `docs/DIAGNOSIS-DEPTH.md` dan entri
-**V2-E-012/013/014**: distribusi kelas, cakupan depth dalam box, relief per
-kelas + Kruskal-Wallis, tabel kuantisasi, AUC vs pooling.
+Menghasilkan kalkulasi distribusi frekuensi kelas, validitas spasial piksel kedalaman di dalam kotak objek, analisis relief lokal ordinal ($H = 99,8$, $p = 1,7 \times 10^{\minus 21}$), tabel resolusi kuantisasi, dan kurva efektivitas agregasi spasial (*pooling*).
 
-## 2. Split bebas kebocoran dan dataset turunan
+---
+
+## 3. Pembangunan Partisi Bebas Bocor & Dataset Turunan
 
 ```bash
-.venv/bin/python scripts/make_pretrain_split.py        # 846 pohon 953, irisan nol
-.venv/bin/python scripts/make_agnostic_dataset.py      # agnostic953 + agnostic352 (1 kelas)
+.venv/bin/python scripts/make_pretrain_split.py        # 846 pohon 953 bebas kebocoran
+.venv/bin/python scripts/make_agnostic_dataset.py      # Pembangkitan dataset 1-kelas agnostic953 & agnostic352
 .venv/bin/python scripts/build_crop_dataset.py --src 352 --workers 8
 .venv/bin/python scripts/build_crop_dataset.py --src 953 --workers 8
 ```
 
-`make_pretrain_split.py` dan `make_agnostic_dataset.py` **assert** irisan nol
-terhadap `val_trees.txt`/`test_trees.txt` 352 — kalau bocor, keduanya berhenti.
+Skrip `make_pretrain_split.py` dan `make_agnostic_dataset.py` menerapkan asersi otomatis (*zero-leakage assertion*) terhadap partisi validasi dan uji dataset 352 pohon.
 
-## 3. Detektor class-agnostic (V2-E-017/018)
+---
+
+## 4. Pelatihan Detektor Lokalisasi Murni 1-Kelas (Simpul V2-E-017 & V2-E-018)
 
 ```bash
-# pretrain 953 — jadwal cosine harus SELESAI, jangan dipotong di tengah
+# 1. Prapelatihan 953 Pohon (Jadwal Cosine Lengkap)
 .venv/bin/python scripts/train_yolo_4ch_screening.py \
   --data /workspace/agnostic953/data.yaml --epochs 12 --patience 12 \
   --imgsz 1280 --batch 4 --weights yolo26l.pt --name agn953_full
 
-# finetune 352 — patience LONGGAR; transfer kuat bisa membuat epoch 1 jadi
-# puncak palsu dan patience ketat membunuh run sebelum kurva sebenarnya mulai
+# 2. Penyesuaian Terarah 352 Pohon (Toleransi Early Stopping Longgar)
 .venv/bin/python scripts/train_yolo_4ch_screening.py \
   --data /workspace/agnostic352/data.yaml --epochs 60 --patience 45 \
   --imgsz 1280 --batch 4 --weights runs/agn953_full/weights/best.pt --name agn352_ft3
 
-# RT-DETR-L sebagai anggota ensemble (arsitektur berbeda -> galat berbeda)
-.venv/bin/python -c "
-from ultralytics import RTDETR
-RTDETR('rtdetr-l.pt').train(data='/workspace/agnostic352/data.yaml', epochs=60,
-    patience=10, imgsz=1280, batch=4, seed=42, cos_lr=True,
-    project='/workspace/project-expertise/runs', name='agn352_rtdetr')"
+# 3. Pelatihan RT-DETR-L Sebagai Anggota Ensembel
+.venv/bin/python -c "from ultralytics import RTDETR; RTDETR('rtdetr-l.pt').train(data='/workspace/agnostic352/data.yaml', epochs=60, patience=10, imgsz=1280, batch=4, seed=42, cos_lr=True, project='/workspace/project-expertise/runs', name='agn352_rtdetr')"
 ```
 
-Ukur plafon lokalisasi:
-
+Evaluasi plafon lokalisasi murni:
 ```bash
-.venv/bin/python scripts/eval_detector_agnostic.py \
-  --detektor runs/agn352_ft/weights/best.pt --split test
+.venv/bin/python scripts/eval_detector_agnostic.py --detektor runs/agn352_ft/weights/best.pt --split test
 ```
 
-## 4. Classifier kematangan pada crop (V2-E-015/016/021)
+---
+
+## 5. Pelatihan Pengklasifikasi Kematangan pada Citra Terpotong (Simpul V2-E-015, V2-E-016, V2-E-021)
 
 ```bash
-# pretrain 953
+# Prapelatihan pada Korpus 953 Bebas Bocor
 .venv/bin/python scripts/train_crop_classifier.py --tahap pretrain --mode rgb \
   --head hybrid --backbone convnext_small.fb_in22k_ft_in1k --img 176 \
   --epochs 14 --batch 24 --name pre953s
 
-# finetune 352, 3 seed untuk ensemble
+# Penyesuaian Terarah pada 352 Pohon (3 Seed untuk Ensembel)
 for s in 42 101 202; do
   .venv/bin/python scripts/train_crop_classifier.py --tahap finetune --mode rgb \
     --head hybrid --backbone convnext_small.fb_in22k_ft_in1k --img 176 \
     --epochs 50 --batch 24 --seed $s --init runs_fase6/pre953s/best.pt --name ftS_$s
 done
-```
 
-Ablasi depth (V2-E-016) — ganti `--mode rgb` jadi `--mode rgbd`, dan uji
-statistik depth terpool:
-
-```bash
+# Studi Ablasi Kontribusi Statistik Kedalaman (V2-E-016)
 .venv/bin/python scripts/probe_fitur_depth.py --model runs_fase6/ftS_202/best.pt
 ```
 
-## 5. Pemilihan, sweep, dan rekomposisi (V2-E-019/020)
+---
 
-**Pemilihan selalu di `--split val`.** Test hanya dipakai untuk angka akhir.
+## 6. Penyelarasan Ambang Inferensi, Ensembel WBF, & Rekomposisi (Simpul V2-E-019 & V2-E-020)
+
+> [!IMPORTANT]
+> Penyetelan ambang inferensi dan kombinasi ensembel **wajib dilakukan pada partisi validasi (`--split val`)**, bukan partisi uji.
 
 ```bash
+# 1. Pemilihan Kombinasi Detektor pada Validasi
 .venv/bin/python scripts/pilih_detektor.py --split val \
-  --kandidat runs/agn352_ft/weights/best.pt runs/agn352_ft3/weights/best.pt \
-             runs/agn352_rtdetr/weights/best.pt \
+  --kandidat runs/agn352_ft/weights/best.pt runs/agn352_ft3/weights/best.pt runs/agn352_rtdetr/weights/best.pt \
   --out results/detektor_pilihan.json
 
+# 2. Penelusuran Kombinasi Resolusi & Ambang NMS
 .venv/bin/python scripts/sweep_inferensi.py --split val \
   --detektor runs/agn352_ft/weights/best.pt runs/agn352_ft3/weights/best.pt \
   --out results/sweep_inferensi.json
 
-# angka akhir (mAP50 sebanding Fase 1-5)
+# 3. Evaluasi Akhir Rekomposisi Dua-Tahap pada Partisi Uji
 .venv/bin/python scripts/eval_twostage.py --split test --conf 0.005 \
   --detektor runs/agn352_ft/weights/best.pt runs/agn352_ft3/weights/best.pt \
   --classifier runs_fase6/ftS_*/best.pt runs_fase6/ftJ_*/best.pt runs_fase6/ftG_*/best.pt \
   --tta --multi-kelas --imgsz 1280 --det-iou 0.5 \
   --out results/twostage_final_v4.json
 
-# counting, memakai fungsi Ridge+F_all yang SAMA dengan Fase 1-5
+# 4. Pipeline Pencacahan Ridge + F_all
 .venv/bin/python scripts/run_counting_twostage.py --tta --imgsz 1280 --det-iou 0.5 \
   --detektor runs/agn352_ft/weights/best.pt runs/agn352_ft3/weights/best.pt \
   --classifier runs_fase6/ftS_*/best.pt runs_fase6/ftJ_*/best.pt runs_fase6/ftG_*/best.pt \
   --label TwoStage-FINAL_v4 --out results/counting_twostage.json
 ```
 
-## 6. Rangkuman seluruh angka
+---
 
-`results/fase6_ringkas.json` memuat metrik tiap detektor, tiap classifier,
-tiap versi rekomposisi, dan tiap counting dalam satu berkas.
-
-## 7. Penutupan — validitas dan daya statistik (V2-E-022/023/024)
-
-Langkah-langkah ini yang seharusnya dijalankan **sebelum** mengejar metrik,
-bukan sesudah. Urutannya sengaja ditulis begini supaya tidak terulang.
+## 7. Audit Validitas Metodologis & Evaluasi Bootstrap (Simpul V2-E-022 s.d. V2-E-025)
 
 ```bash
-# 7.1 Apakah kedua dataset benar-benar sebanding?  (CPU, ~1 menit)
-.venv/bin/python scripts/probe_pergeseran_temporal.py \
-  --out results/pergeseran_temporal.json
-```
+# 1. Audit Pergeseran Temporal Antar-Dataset (V2-E-022)
+.venv/bin/python scripts/probe_pergeseran_temporal.py --out results/pergeseran_temporal.json
 
-Jalankan ini lebih dulu. Kalau tanggal akuisisinya berjauhan, seluruh
-perbandingan lintas-dataset gugur dan sisa rencana harus dirombak.
-
-```bash
-# 7.2 Seberapa besar efek yang bisa dideteksi split ini?  (CPU, ~10 menit)
+# 2. Evaluasi Selang Kepercayaan Bootstrap mAP50 (V2-E-023)
 .venv/bin/python scripts/dump_classaware.py \
   --bobot runs/yolo26l_e60_i1280_rgbd352_edge/weights/best.pt \
   --data /workspace/SawitMVC-Depth-4ch-edge-YOLO --split test \
@@ -159,53 +135,33 @@ perbandingan lintas-dataset gugur dan sisa rencana harus dirombak.
 .venv/bin/python scripts/bootstrap_map.py --split test --n-boot 1000 \
   --sumber results/pred_edge_test.npz results/pred_rgb352_test.npz \
   --nama edge_rgbd yolo_rgb --out results/bootstrap_map.json
-```
 
-Kalau lebar CI jauh melebihi efek yang diharapkan, berhenti dan perbesar
-data — menambah model, loss, atau ensemble tidak akan mengubah kesimpulan.
-
-```bash
-# 7.3 Uji depth untuk LOKALISASI — berpasangan, hanya kanal yang beda
+# 3. Uji Lokalisasi Murni Modalitas Depth 4-Kanal vs RGB (V2-E-024)
 .venv/bin/python scripts/train_yolo_4ch_screening.py \
   --data /workspace/agnostic352_4ch/data.yaml \
   --epochs 60 --patience 45 --imgsz 1280 --batch 4 --seed 42 \
   --weights runs/agn953_full/weights/best.pt --name agn352_4ch
 
-for m in agn352_4ch:agnostic352_4ch agn352_ft3:SawitMVC-Depth; do
-  .venv/bin/python scripts/dump_classaware.py --agnostik --split test \
-    --bobot "runs/${m%%:*}/weights/best.pt" --data "/workspace/${m##*:}" \
-    --out "results/pred_${m%%:*}_test.npz"
-done
-
 .venv/bin/python scripts/bootstrap_map.py --split test --agnostik --n-boot 1000 \
   --sumber results/pred_agn352_4ch_test.npz results/pred_agn352_ft3_test.npz \
   --nama agn352_4ch agn352_ft3_rgb --out results/bootstrap_lokalisasi.json
-```
 
-```bash
-# 7.4 Angka test untuk agn953_full, yang tidak pernah ada
-.venv/bin/python scripts/buat_test_953_bersih.py     # 19 pohon tak tersentuh
+# 4. Evaluasi Partisi Uji Bersih agn953_full (V2-E-025)
+.venv/bin/python scripts/buat_test_953_bersih.py
 ```
-
-**Jebakan kesepuluh, yang paling mahal dari semuanya:** mengurutkan
-konfigurasi berdasarkan titik estimasi tanpa selang kepercayaan. Fase 6
-menghabiskan enam versi rekomposisi dan dua belas training classifier untuk
-menggeser angka yang seluruhnya berada di dalam satu CI. Petunjuknya sudah ada
-sejak awal dan terlewat: sebaran akurasi antar-**seed** (0,0756) 2,8× lebih
-lebar daripada sebaran antar-**metode** (0,0268).
 
 ---
 
-## Hal yang WAJIB diperhatikan saat mereproduksi
+## 8. Katalog 9 Jebakan Operasional (*Silent Failures*)
 
-| Jebakan | Akibat kalau diabaikan |
-|---|---|
-| **Jangan potong jadwal cosine di tengah.** `agn953_pre-2` dihentikan di epoch 4 dari 25 sehingga fase anneal tidak pernah terjadi. | Kehilangan ~5,0 poin AP50 pretrain. |
-| **Patience longgar untuk finetune ber-transfer kuat.** `agn352_ft2` mati di epoch 11 karena epoch 1 jadi puncak palsu. | Run berhenti sebelum kurva sebenarnya dimulai (0,6413 vs 0,7473). |
-| **Ultralytics auto-increment nama run** (`agn953_pre` → `agn953_pre-2`). | Tahap berikutnya menunjuk direktori kosong dan diam-diam memakai bobot default. Selalu resolve direktori secara dinamis. |
-| **Muat RT-DETR dengan kelas `RTDETR`, bukan `YOLO`.** `YOLO()` menerima bobotnya tanpa error tapi membangunnya sebagai `DetectionModel` biasa. | Hasil inference tidak bisa dipercaya, tanpa pesan error apa pun. |
-| **Resolusi crop saat inference harus ≥ resolusi saat training.** | Crop kecil diperbesar ke ukuran input → detail warna hilang, gain lenyap tanpa error. |
-| **Pemilihan detektor/konfigurasi di `val`, bukan `test`.** | Angka test menjadi tidak sah (mengepaskan model ke angka laporan). |
-| **Augmentasi fotometrik harus RINGAN.** Kematangan didefinisikan oleh warna; jitter brightness ±25% dan saturasi 0,6–1,4 menghapus label. | Akurasi classifier turun ~18 poin (0,648 → 0,471). |
-| **Crop butuh kanal mask box.** Dengan ctx=1,6 di kanopi padat sering ada >1 tandan per crop. | Model tidak tahu tandan mana yang dinilai. |
-| **`augment=True` (TTA deteksi) tidak berpengaruh** pada YOLO26 di ultralytics 8.4. | Mengira ada gain padahal nol. |
+| No. | Jebakan Operasional | Dampak Kritis Jika Terabaikan |
+|---|---|---|
+| 1 | **Pemotongan Jadwal Cosine Learning Rate di Tengah** | Fase peluruhan laju belajar tidak terjadi; kehilangan $\approx 5,0\text{ pp } AP50$. |
+| 2 | **Toleransi Penghentian Dini Terlalu Ketat pada Penyesuaian Terarah** | Puncak performa semu pada epoch 1 mematikan pelatihan sebelum konvergensi sejati dimulai ($0,6413$ vs $0,7473$). |
+| 3 | **Penomoran Otomatis Direktori Ultralytics (`run`, `run2`)** | Skrip hilir membaca direktori lama secara diam-diam. Jalur direktori wajib di-resolve secara dinamis. |
+| 4 | **Pemuatan Checkpoint RT-DETR Menggunakan Kelas `YOLO`** | Model dibangun sebagai model konvolusi standar tanpa pesan galat, merusak integritas inferensi. Wajib menggunakan kelas `RTDETR()`. |
+| 5 | **Resolusi Citra Terpotong (*Crop*) Tidak Konsisten** | *Upscaling* citra kecil saat inferensi mengaburkan tekstur warna dan mereduksi akurasi klasifikasi. |
+| 6 | **Penyetelan Ambang Model Langsung pada Partisi Uji** | Terjadi kebocoran metodologis (*test peeking*); metrik uji menjadi tidak valid. |
+| 7 | **Augmentasi Fotometrik Terlalu Ekstrem** | Distorsi warna menghapus label kematangan alami buah ($0,648 \to 0,471$). |
+| 8 | **Ketiadaan Kanal Mask Kotak Pembatas pada Citra Terpotong** | Model tidak mampu membedakan tandan target saat terdapat $>1$ tandan dalam satu *crop*. |
+| 9 | **Asumsi Peningkatan Deteksi via Test-Time Augmentation (TTA)** | Opsi `augment=True` pada Ultralytics tidak berpengaruh pada arsitektur tertentu; tidak boleh diasumsikan membawa peningkatan tanpa verifikasi. |

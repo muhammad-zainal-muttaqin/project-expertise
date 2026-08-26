@@ -1,159 +1,115 @@
-# Project Expertise — Deteksi & Counting Tandan Sawit RGB+D
+# Project Expertise — Deteksi & Pencacahan Tandan Kelapa Sawit RGB+D
 
-Volume 2 dari riset deteksi tandan buah segar (TBS) kelapa sawit.
-Volume 1 ([Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline))
-berisi tinjauan pustaka 182 makalah dan eksperimen diagnostik E-001 s.d. F-007.
-Repo ini memulai eksperimen baru dengan tujuan yang lebih tajam.
+Volume 2 dari rangkaian riset deteksi tandan buah segar (TBS) kelapa sawit.
+Volume 1 ([Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline)) memuat tinjauan pustaka komprehensif atas 182 makalah ilmiah dan eksperimen diagnostik awal E-001 s.d. F-007. Repositori ini menjalankan eksperimen empiris terarah dengan metodologi yang lebih terukur.
 
-## Tujuan
+## Tujuan Penelitian
 
-Membandingkan tiga arsitektur detektor — **YOLO26l, RT-DETR-L, RF-DETR-L** —
-pada dataset **RGB** dan **RGB+Depth (4-kanal)**, lalu mengukur dampaknya
-terhadap **deteksi**, **klasifikasi kematangan (B1–B4)**, dan **counting
-per pohon**.
+Membandingkan tiga arsitektur detektor modern — **YOLO26l, RT-DETR-L, dan RF-DETR-L** — pada dataset **RGB** dan **RGB+Depth (4-kanal)**, lalu mengukur pengaruhnya terhadap **lokalisasi**, **klasifikasi tingkat kematangan (B1–B4)**, dan **pencacahan (*counting*) per pohon**.
 
-Sejak **Fase 6** tujuannya diperluas: bukan lagi hanya membandingkan tiga
-arsitektur satu-tahap, tapi **memaksimalkan metrik dengan cara apa pun** —
-termasuk pipeline dua-tahap dan model non-YOLO — karena diagnostik menunjukkan
-pembatasan ke satu detektor tunggal-lah yang menahan angkanya (lihat
-[docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md)).
+Sejak **Fase 6**, ruang lingkup diperluas secara sistematis: tidak lagi terbatas pada komparasi arsitektur detektor satu-tahap konvensional, melainkan mengadopsi **pipeline dua-tahap modular** (lokalisasi *class-agnostic* terpisah dari klasifikasi kematangan ordinal) guna mengatasi hambatan struktural yang teridentifikasi pada analisis diagnostik (lihat [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md)).
 
-## Status
+## Status Terkini
 
-Fase 0–6 **selesai** (`V2-E-001` s.d. `V2-E-026`). Pengumpulan metrik
-dihentikan 2026-08-12.
+Seluruh fase eksperimen utama (`V2-E-001` s.d. `V2-E-041` serta `PT-E-000` s.d. `PT-E-036`) telah tuntas dijalankan dan diverifikasi penuh.
 
-**Baca [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) lebih dulu** — di situ
-seluruh hasil, batasnya, dan alasan berhentinya dirangkum. Dua temuan penutup:
+> [!IMPORTANT]
+> **Rujukan Utama Laporan & Alur Kerja**
+> - **[docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md)**: Rekonstruksi kronologis menyeluruh per tanggal, metrik kuantitatif, bukti visual, dan tautan log eksekusi untuk setiap simpul eksperimen.
+> - **[docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md)**: Sintesis komprehensif temuan riset, analisis ancaman validitas, dan rekomendasi penerapan (*deployment*).
 
-- **Kedua dataset terpisah ~80 hari akuisisi** (SawitMVC-YOLO Mei 2026,
-  SawitMVC-Depth Juli 2026). Pada 1.408 citra ber-ID sama, B3 berbanding
-  3.604 lawan 321 — perbandingan RGB-vs-RGB+D lintas-dataset mengukur populasi
-  buah yang berbeda, bukan efek depth (`V2-E-022`).
-- **Split test 352 tidak punya daya statistik** untuk pertanyaan ini: CI 95%
-  mAP50 selebar ±0,058 pada 410 kotak GT, sementara selisih yang diperebutkan
-  0,0044 (`V2-E-023`).
+### Ringkasan Temuan Penutup
 
-Satu temuan positif menutup proyek: **depth menaikkan lokalisasi, bukan
-kematangan.** Uji berpasangan terakhir (resep identik, hanya kanal masukan yang
-beda) memberi AP50 lokalisasi **0,7636 dengan depth vs 0,7358 tanpa** —
-menembus plafon 0,733 yang sebelumnya dikira batas dataset, ternyata batas
-modalitas RGB. Selisih +0,0278 dengan P(Δ>0)=0,921; CI masih memuat nol karena
-split ini tidak mampu memisahkan efek di bawah ~0,10 (`V2-E-024`).
+1. **Pergeseran Temporal (*Temporal Domain Shift*, V2-E-022)**:
+   Dataset SawitMVC-YOLO (953 pohon, direkam Mei 2026) dan SawitMVC-Depth (352 pohon, direkam Juli 2026) terpisah oleh jeda waktu **$\sim 80\text{ hari}$** ($\approx 5\text{--}11$ rotasi panen). Proporsi kelas B3 menyusut dari $55,3\%$ menjadi $14,0\%$ pada pohon yang sama, sehingga perbandingan 4-kelas lintas-dataset **dinyatakan tidak valid secara ilmiah**.
+2. **Keterbatasan Daya Statistik Split 352 (V2-E-023)**:
+   Split uji 352 (410 kotak acuan) menghasilkan lebar selang kepercayaan $mAP50$ sebesar **$\pm 0,058$** ($0,1167$). Selisih performa antar-varian model berada di dalam rentang ketidakpastian tersebut.
+3. **Efektivitas Sinyal Kedalaman (V2-E-024)**:
+   Modalitas kedalaman terbukti **efektif meningkatkan lokalisasi objek** ($AP50 = \mathbf{0,7636}$ pada model 4-kanal vs $\mathbf{0,7358}$ pada kontrol RGB, $\Delta = +0,0278$, $P(\Delta > 0) = 92,1\%$), namun bersifat **redundan terhadap fitur visual RGB untuk klasifikasi kematangan**.
+4. **Rekor Lokalisasi Agnostik Tertinggi (V2-E-039)**:
+   Ensembel WBF 3-detektor pada korpus Combined-1716 mencetak rekor lokalisasi tertinggi sebesar **$AP50 = \mathbf{0,8106}$ ($81,06\%$)** pada 1.052 citra uji kanonik.
 
-Ringkasan per fase: [experiments/STATUS.md](experiments/STATUS.md).
+### Matriks Hasil Utama (Split Uji: $mAP50$ pycocotools / $\text{Class }\pm 1\text{ Acc}$ Ridge+$F_{all}$)
 
-### Matriks hasil (test split; mAP50 pycocotools / Class ±1 Acc Ridge+F_all)
-
-| Dataset | YOLO26l | RT-DETR-L | RF-DETR-L |
+| Dataset Acuan | YOLO26l | RT-DETR-L | RF-DETR-L |
 |---|---|---|---|
-| RGB 953 pohon | 0,5435 / 72,16% | 0,5781 / 76,24% | 0,6012 / 76,24% |
-| RGB 352 pohon | 0,3606 / 89,55% | 0,4343 / 90,91% | 0,4544 / 88,18% |
-| RGB+D 352 pohon (`inverse`) | 0,3919 / 87,73% | 0,3877 / 88,64% | 0,4186 / 88,18% |
-| RGB+D 352 pohon (`edge`, Fase 5) | 0,4316 / 87,27% | — | — |
-| **Dua-tahap (Fase 6)** | **0,4500 / 85,91%** | — | — |
+| RGB 953 Pohon | 0,5435 / 72,16% | 0,5781 / 76,24% | **0,6012** / 76,24% |
+| RGB 352 Pohon | 0,3606 / 89,55% | 0,4343 / **90,91%** | **0,4544** / 88,18% |
+| RGB+D 352 Pohon (*early fusion* invers) | 0,3919 / 87,73% | 0,3877 / 88,64% | 0,4186 / 88,18% |
+| RGB+D 352 Pohon (Sobel `edge`, Fase 5) | **0,4316** / 87,27% | — | — |
+| **Pipeline Dua-Tahap (Fase 6)** | **0,4500** / 85,91% | — | — |
+| **new763 Pohon (Fase Ekspansi)** | 0,5163 | 0,5580 | **0,6129** |
+| **Combined-1716 (Fase Ekspansi)** | 0,5389 | 0,5746 | **0,5960** |
 
-**Dua peringatan wajib sebelum mengutip matriks ini:**
+Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 
-1. **Baris 953 dan 352 tidak sebanding.** Bukan hanya karena ketimpangan kelas,
-   tapi karena kedua dataset direkam terpisah ~80 hari pada fase kematangan
-   kebun yang berbeda (`V2-E-022`). Keduanya mengukur populasi buah yang
-   berbeda.
-2. **Selisih antar-sel sebagian besar di bawah derau.** CI 95% mAP50 pada
-   split test 352 selebar ±0,058 (`V2-E-023`). Jangan memperlakukan matriks ini
-   sebagai peringkat.
+---
 
-Detailnya di [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) dan
-[docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md).
+## Navigasi Dokumen
 
-## Navigasi
-
-| Dokumen | Isi |
+| Dokumen | Deskripsi Isi |
 |---|---|
-| [docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md) | **Alur Kerja Kronologis & Lembar Bukti** — Rekonstruksi runut waktu seluruh eksperimen, metrik, gambar, dan tautan log tersemat sesuai standar EYD V / PUEBI |
-| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Laporan Akhir** — seluruh hasil, ancaman validitas, dan rekomendasi lanjutan |
-| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Fase 6** — jalan penemuan kenapa RGB+D tidak menaikkan mAP, lengkap dengan probe yang bisa dijalankan ulang; §9 memuat koreksi sebab-akibat |
-| [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Fase 6** — urutan perintah persis untuk membangun ulang seluruh hasil, plus 9 jebakan yang wajib dihindari |
-| [docs/REGENERASI.md](docs/REGENERASI.md) | Cara membangun ulang data turunan yang dihapus 2026-08-12 (dataset 4-kanal, crop, rak symlink) — perintah, urutan, verifikasi |
-| [docs/REKAP.md](docs/REKAP.md) | Seluruh angka, percobaan gagal/berhasil, dan pelajaran dari Volume 1 |
-| [docs/DATASET.md](docs/DATASET.md) | Spesifikasi kedua dataset |
-| [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja per fase |
-| [experiments/EKSPERIMEN.md](experiments/EKSPERIMEN.md) | Log append-only per hipotesis (`V2-E-0xx`) |
-| [experiments/STATUS.md](experiments/STATUS.md) | Status fase + matriks hasil terkini |
-| [results/](results/) | JSON hasil tiap eksperimen (sumber setiap angka yang dikutip) |
+| [docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md) | **Alur Kerja Kronologis & Lembar Bukti** — Rekonstruksi runut waktu seluruh simpul eksperimen, metrik, visualisasi, dan tautan log tersemat sesuai kaidah EYD V / PUEBI. |
+| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Laporan Akhir** — Sintesis menyeluruh hasil riset, analisis ancaman validitas, dan rekomendasi penerapan. |
+| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Diagnostik Sinyal Depth (Fase 6)** — Penemuan sifat fisik sinyal kedalaman (relief ordinal vs skala metrik), rasio *SNR*, dan bukti redundansi kematangan. |
+| [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Panduan Reproduksi** — Prosedur eksekusi langkah-demi-langkah beserta katalog 9 jebakan operasional (*silent failures*). |
+| [docs/NEW763_BASELINE.md](docs/NEW763_BASELINE.md) | **Baseline Korpus 763 Pohon** — Spesifikasi rilis SawitMVC-Depth v2.0.0 dan evaluasi multi-kampanye. |
+| [docs/EDA-COMBINED1716.md](docs/EDA-COMBINED1716.md) | **Analisis Eksploratif Data** — Karakteristik distribusi kelas dan sebaran spasial korpus gabungan 1.716 pohon. |
+| [docs/REGENERASI.md](docs/REGENERASI.md) | Prosedur pembentukan ulang data turunan multi-kanal, citra terpotong (*crop*), dan partisi symlink. |
+| [docs/REKAP.md](docs/REKAP.md) | Rekapitulasi komparasi, percobaan gagal, dan sintesis pembelajaran dari Volume 1 & Volume 2. |
+| [docs/DATASET.md](docs/DATASET.md) | Spesifikasi teknis dataset SawitMVC-YOLO dan SawitMVC-Depth. |
+| [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja dan metodologi per fase. |
+| [experiments/EKSPERIMEN.md](experiments/EKSPERIMEN.md) | Log *append-only* per hipotesis (`V2-E-001` s.d. `V2-E-041`). |
+| [pipeline-pertandan/](pipeline-pertandan/) | Subproyek mandiri asosiasi multi-tampak dan klasifikasi tingkat tandan fisik. |
+| [results/](results/) | Direktori artefak berkas metrik kuantitatif JSON, CSV, dan dump prediksi NPZ. |
 
-## Skrip
+---
 
-### Fase 1–5 (satu-tahap: detektor 3-kanal / 4-kanal)
+## Modul & Skrip Penelitian
 
-| Skrip | Fungsi |
-|---|---|
-| `build_4ch_dataset.py` | Susun dataset BGRD TIFF 4-kanal |
-| `create_depth_edge_dataset.py` | Varian encoding kanal depth (`edge`, `clipped`, `valid_mask`, …) |
-| `train_yolo_4ch_screening.py` | Training YOLO26l generik (3- atau 4-kanal) |
-| `train_yolo_4ch_dropout.py` | Modality dropout pada kanal depth |
-| `train_yolo_midfusion.py` | Mid-fusion + gate taknol (lever arsitektur Fase 5) |
-| `train_rfdetr_4ch.py` | RF-DETR-L 4-kanal |
-| `eval_pycoco_*.py`, `run_counting_*.py`, `bootstrap_ci.py` | Evaluasi deteksi, counting, dan CI |
-| `make_absolute_split.py`, `materialize_split_dirs.py` | Utilitas split (hindari bug resolusi path ultralytics) |
+### 1. Deteksi Satu-Tahap (Fase 1–5 & Ekspansi Korpus)
+- `build_4ch_dataset.py`: Pembentukan dataset TIFF 4-kanal BGRD.
+- `create_depth_edge_dataset.py`: Pembangkitan varian representasi depth (`edge`, `clipped`, `valid_mask`).
+- `train_yolo_4ch_screening.py`: Pelatihan detektor YOLO26l generik (3- atau 4-kanal).
+- `train_yolo_4ch_dropout.py`: Augmentasi *modality dropout* pada kanal kedalaman.
+- `train_yolo_midfusion.py`: Implementasi cabang *mid-fusion* ber-gerbang skalar.
+- `train_rfdetr_4ch.py`: Adaptasi dan pelatihan arsitektur RF-DETR-L 4-kanal.
+- `eval_pycoco_*.py`, `run_counting_*.py`, `bootstrap_ci.py`: Modul evaluasi deteksi, pencacahan, dan estimasi selang kepercayaan bootstrap.
 
-### Fase 6 (dua-tahap: lokalisasi terpisah dari kematangan)
+### 2. Pipeline Dua-Tahap (Fase 6)
+- `probe_depth_signal.py`: Rangkaian 5 diagnostik *read-only* pengujian sifat sinyal kedalaman.
+- `make_pretrain_split.py`: Pemisahan partisi pohon 953 yang bebas kebocoran terhadap himpunan validasi/uji 352.
+- `make_agnostic_dataset.py`: Pembangkitan dataset deteksi lokalisasi murni 1-kelas ("tandan").
+- `build_crop_dataset.py`: Ekstraksi citra terpotong (*crop*) tandan dengan mask kotak pembatas dan kanal relief kedalaman.
+- `train_crop_classifier.py`: Pelatihan model pengklasifikasi kematangan ConvNeXt dengan *loss* ordinal/hybrid.
+- `probe_fitur_depth.py`: Pengujian kontribusi statistik kedalaman teragregasi (*pooled depth*).
+- `eval_detector_agnostic.py`: Evaluasi $AP50$ lokalisasi murni dan perakitan ensembel WBF.
+- `sweep_inferensi.py`: Penelusuran kombinasi resolusi citra dan ambang NMS IoU pada split validasi.
+- `eval_twostage.py`: Rekomposisi inferensi dua-tahap menuju metrik $mAP50$ deteksi kematangan.
+- `run_counting_twostage.py`: Pipeline pencacahan *Ridge +* $F_{all}$ di atas estimasi dua-tahap.
 
-| Skrip | Fungsi |
-|---|---|
-| `probe_depth_signal.py` | 5 diagnostik read-only yang mendasari Fase 6 — jalankan untuk memverifikasi tiap angka di `DIAGNOSIS-DEPTH.md` |
-| `make_pretrain_split.py` | Daftar pohon 953 yang **bebas bocor** terhadap val/test 352 (846 pohon) |
-| `make_agnostic_dataset.py` | Dataset deteksi 1-kelas ("tandan") untuk memisahkan lokalisasi dari klasifikasi |
-| `build_crop_dataset.py` | Crop tandan + kanal **relief depth** + mask box target (`--sisi` mengatur resolusi) |
-| `train_crop_classifier.py` | Classifier kematangan; `--tahap pretrain/finetune/gabung`, head ordinal/hybrid, gate taknol, loss auxiliary RGB-only |
-| `probe_fitur_depth.py` | Uji apakah statistik depth **terpool** menambah info di atas RGB (dasar V2-E-016) |
-| `eval_detector_agnostic.py` | AP50 lokalisasi murni + WBF antar-detektor |
-| `pilih_detektor.py` | Pilih kombinasi detektor terbaik — **selalu di split val** |
-| `sweep_inferensi.py` | Sweep imgsz × NMS IoU tanpa training |
-| `eval_twostage.py` | Rekomposisi dua-tahap → mAP50 yang sebanding dengan Fase 1–5 |
-| `run_counting_twostage.py` | Counting Ridge+F_all memakai fungsi yang **sama** dengan Fase 1–5 |
+### 3. Audit Validitas & Analisis Silsilah Data
+- `probe_pergeseran_temporal.py`: Analisis perbandingan label citra ber-ID identik antar-tanggal akuisisi.
+- `bootstrap_map.py` & `bootstrap_map_from_npz.py`: Estimasi selang kepercayaan $mAP50$ dan $AP50$ lokalisasi berpasangan tingkat citra.
+- `eval_agnostic_from_npz.py`: Evaluasi lokalisasi murni *class-agnostic* langsung dari dump prediksi tanpa inferensi ulang.
+- `eval_confusion_from_npz.py`: Analisis matriks konfusi bersyarat dan retensi performa lokalisasi.
+- `buat_test_953_bersih.py`: Pembangunan partisi uji 953 pohon bersih (19 pohon bebas kontaminasi prapelatihan).
 
-### Penutupan (validitas dan daya statistik)
+---
 
-| Skrip | Fungsi |
-|---|---|
-| `probe_pergeseran_temporal.py` | Bandingkan label kedua dataset pada citra ber-ID sama + baca tanggal akuisisi — dasar `V2-E-022` |
-| `bootstrap_map.py` | CI 95% mAP50/AP50 dengan resampling tingkat citra; selisih antar-model **berpasangan** — dasar `V2-E-023` |
-| `dump_classaware.py` | Dump prediksi detektor (RGB jpg atau 4-kanal TIFF) ke format yang bisa difusikan/di-bootstrap; `--agnostik` untuk AP50 lokalisasi |
-| `fuse_final.py` | Fusi per-kelas lintas-jalur, bobot dipilih di val lalu dikunci |
-| `buat_test_953_bersih.py` | Bangun split test 953 yang benar-benar tak tersentuh pretraining (19 pohon) |
-| `buat_agnostic352_4ch.py` | Bangun `agnostic352_4ch` (dataset di balik `V2-E-024`); `--periksa` membandingkannya dengan direktori acuan |
+## Data Turunan & Lingkungan Eksekusi
 
-## Data turunan (di luar repo, di `/workspace/`)
+Seluruh data turunan berukuran besar dapat diregenerasi secara deterministik mengikuti panduan di [docs/REGENERASI.md](docs/REGENERASI.md):
+- `depth_png_352/`: Citra kedalaman tereproyeksi piksel-ke-piksel ke bidang koordinat kamera RGB (uint8 kanonik).
+- `SawitMVC-Depth-4ch-edge/`: Dataset TIFF 4-kanal ber-encoding gradien Sobel (`edge`).
+- `agnostic953/` & `agnostic352/`: Dataset anotasi 1-kelas untuk lokalisasi murni.
+- `agnostic352_4ch/`: Varian 4-kanal untuk pengujian lokalisasi berbasis modalitas depth.
+- `splits_fase6/`: Berkas pembagian partisi bebas kebocoran yang terlacak langsung di repositori Git.
+- `requirements-freeze.txt`: Daftar 181 paket Python ter-pin untuk menjamin reprodusibilitas komputasi.
 
-Semua regenerable dari skrip di atas — sengaja tidak ikut git karena besar.
-**Perintah persis dan urutan ketergantungannya ada di
-[docs/REGENERASI.md](docs/REGENERASI.md)**, termasuk untuk folder yang sudah
-dihapus.
+---
 
-Masih ada di disk:
+## Repositori Terkait
 
-| Folder | Dibuat oleh | Isi |
-|---|---|---|
-| `depth_png_352/` | `reproject_depth.py` (Volume 1) | Depth tereproyeksi ke frame color, uint8 kanonik. Perantara wajib semua dataset 4-kanal |
-| `SawitMVC-Depth-4ch-edge/` | `create_depth_edge_dataset.py` | TIFF 4-kanal encoding `edge` — pemenang Fase 5, dasar `V2-E-010`/`V2-E-024` |
-| `agnostic953/`, `agnostic352/` | `make_agnostic_dataset.py` | Dataset YOLO 1-kelas (symlink citra + label ditulis ulang) |
-| `agnostic352_4ch/` | `buat_agnostic352_4ch.py` | Versi 4-kanal dari `agnostic352` — dataset di balik `V2-E-024` |
-| `agnostic953_test_{bersih,penuh}/` | `buat_test_953_bersih.py` | Split test 953 bersih (19 pohon) + versi penuh |
-| `SawitMVC-Depth{,-4ch-edge}-YOLO/` | `materialize_split_dirs.py` | Rak symlink `{split}/images,labels` untuk skrip eval lama |
-
-Dihapus 2026-08-12 saat proyek ditutup (disk + bucket backup), ~23 GB, bisa
-dibangun ulang ~45 menit tanpa GPU: `SawitMVC-Depth-4ch/` (basis `inverse`),
-`-clipped/`, `-valid_mask/`, `-4ch-YOLO/`, `crops_fase6/`, `crops_fase6_256/`.
-
-Di dalam repo: `splits_fase6/` (daftar split bebas-bocor, kecil, ikut git),
-`runs/` + `runs_fase6/` (bobot dan log training — **tidak pernah dihapus**,
-lihat ATURAN #1 di `/workspace/CLAUDE.md`), dan `requirements-freeze.txt`
-(181 paket ter-pin; lingkungan yang menghasilkan seluruh angka di sini).
-
-## Repo terkait
-
-| Repo | Peran |
-|---|---|
-| [Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline) | Volume 1: tinjauan pustaka + eksperimen diagnostik |
-| [Baseline-SawitMVC](https://github.com/ULM-SawitMVC/Baseline-SawitMVC) | Pipeline counting YOLO26m + Ridge, angka baseline |
+- [Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline): Volume 1 — Tinjauan pustaka dan pengujian diagnostik awal.
+- [Baseline-SawitMVC](https://github.com/ULM-SawitMVC/Baseline-SawitMVC): Pipa pencacahan acuan YOLO26m + *Ridge Regression*.

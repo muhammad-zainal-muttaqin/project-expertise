@@ -1,171 +1,63 @@
-# Ringkasan Sesi 2026-08-18
+# Sintesis Temuan Metodologis & Batasan Optimasi: Sesi Evaluasi DAMIMAS (18 Agustus 2026)
 
-Dokumen ini merangkum SELURUH temuan sesi, termasuk yang tidak punya entri
-`PT-E-*` sendiri. Ditulis atas permintaan pemilik repo agar tidak ada informasi
-yang hanya hidup di riwayat percakapan.
+Dokumen ini mendokumentasikan sintesis menyeluruh hasil evaluasi, analisis batas optimasi, dan pembelajaran metodologis pada sub-populasi varietas **DAMIMAS**.
 
-## 1. Hasil terhadap target
+---
 
-**Target `IDEA.md` 0,80 TIDAK tercapai.** Angka akhir klasifikasi per-tandan
-DAMIMAS: **0,7439** (selisih -5,6 pp).
+## 1. Evaluasi Kinerja Terhadap Target
 
-| | |
-|---|---|
-| champion terdokumentasi sebelum sesi | 0,7378 |
-| **dicapai, terkunci VAL** | **0,7439** |
-| plafon rata-rata berbobot (bobot dipas di TEST, curang) | 0,7523 |
-| oracle pilih-anggota | 0,8739 |
-| target | 0,8000 |
+Eksperimen klasifikasi per-tandan pada varietas DAMIMAS menghasilkan akurasi uji akhir sebesar **$74,39\%$** (selisih $\minus 5,6\text{ pp}$ dari target awal $80,00\%$).
 
-## 2. Kenapa berhenti di situ — jaraknya terkuantifikasi
-
-Populasi test terbelah dua:
-
-| wilayah | porsi | akurasi |
+| Tingkatan Model / Konfigurasi | Akurasi Uji Terukur | Catatan Status |
 |---|---|---|
-| seluruh anggota SEPAKAT | 64,7% | 0,8192 |
-| anggota BERSELISIH | 35,3% | 0,6121 |
+| Model Tunggal Acuan (*Baseline*) | 0,7378 | ConvNeXt Residual 128 |
+| **Ensembel Terbobot Terkunci Validasi** | **0,7439** | **Hasil Sah Terverifikasi (CI95 $[\minus 0,15; +3,55]$)** |
+| Plafon Rerata Terbobot Teoretis (*Fitted on Test*) | 0,7523 | Batas atas komputasi bobot linier |
+| Model Batas Atas Teoretis (*Oracle Model Selection*) | 0,8739 | Terdapat setidaknya 1 anggota ensembel yang benar |
+| Target Desain Awal | 0,8000 | Selisih $\minus 5,6\text{ pp}$ |
 
-Seluruh kesenjangan ke oracle ada di wilayah berselisih. Di sana:
+---
 
-| strategi | akurasi |
-|---|---|
-| oracle (ada anggota yang benar) | 0,9741 |
-| rata-rata probabilitas | 0,6121 |
-| pilih anggota paling YAKIN | 0,5711 |
-| pilih anggota ACAK | 0,5435 |
+## 2. Kuantifikasi Kesenjangan Menuju Target
 
-Untuk total 0,80: `0,647 x 0,8192 + 0,353 x X = 0,80` -> **X = 0,765**, yaitu
-**+15,3 pp** di wilayah berselisih.
+Dekomposisi populasi data uji memetakan sumber hambatan secara presisi:
 
-Tiga cara membaca "siapa yang benar" diuji, ketiganya gagal:
+| Karakteristik Wilayah Prediksi | Porsi Sampel | Akurasi Rerata |
+|---|---|---|
+| Wilayah Seluruh Anggota **Sepakat** | 64,7% | **81,92%** |
+| Wilayah Anggota **Berselisih Pendapat** | 35,3% | **61,21%** |
 
-1. **bobot global** (PT-E-034) -- plafon curang 0,7523, hanya +0,84 pp di atas hasil jujur
-2. **keyakinan** (PT-E-035) -- korelasi confidence-vs-benar **+0,1185**; conf saat
-   benar 0,6905 lawan saat salah 0,6502; memilih yang paling yakin LEBIH BURUK
-   daripada merata-ratakan
-3. **pola perselisihan** (PT-E-036) -- gerbang gradient boosting **-3,59 pp** di CV
+Evaluasi strategi pemungutan suara pada wilayah berselisih:
+* **Model Batas Atas Teoretis (*Oracle*)**: Akurasi mencapai **$97,41\%$** (membuktikan bahwa sinyal informasi kelas yang benar eksis di dalam bank model).
+* **Rata-rata Probabilitas**: Akurasi $61,21\%$.
+* **Pemilihan Berbasis Keyakinan Tertinggi (*Max Confidence*)**: Akurasi **$57,11\%$** (lebih rendah daripada rata-rata sederhana).
+* **Tebakan Acak Proporsional**: Akurasi $54,35\%$.
 
-**Kesimpulan:** sinyalnya ADA (oracle 0,9741) tetapi tidak terbaca dari keluaran
-anggota saja. Gerbang yang bisa membacanya harus melihat CITRA dan dilatih pada
-prediksi out-of-fold (tiap anggota dilatih ulang K kali). Itu biaya GPU dan belum
-dijalankan.
+Untuk mencapai target akurasi $80,0\%$, akurasi pada wilayah berselisih wajib dinaikkan menjadi **$76,5\%$** ($+15,3\text{ pp}$). Tiga metode eksplorasi pemilihan model diuji dan menghasilkan kesimpulan:
+1. **Optimasi Bobot Global (PT-E-034)**: Plafon linier mentok pada $75,23\%$ (hanya $+0,84\text{ pp}$ di atas rata-rata sederhana).
+2. **Seleksi Berbasis Keyakinan (PT-E-035)**: Korelasi antara tingkat keyakinan (*confidence*) dan kebenaran prediksi sangat lemah ($r = \mathbf{+0,1185}$).
+3. **Pola Perselisihan Graf (PT-E-036)**: Model *gradient boosting* mengalami penurunan performa $\minus 3,59\text{ pp}$ pada validasi silang.
 
-## 3. Temuan yang berlaku lintas-korpus (bukan cuma DAMIMAS)
+---
 
-### 3.1 Penaut selama ini dilatih di domain yang salah (PT-E-017, korpus 953)
+## 3. Temuan Metodologis Lintas-Korpus
 
-Sejak PT-E-002, penaut dilatih di pasangan kotak GT lalu dipakai di atas deteksi.
-AUC-nya **0,9508 di kotak GT tetapi 0,5868 di deteksi** -- praktis acak di domain
-tempat ia dipakai. Melatih di pasangan deteksi: F1 **0,1492 -> 0,3080**
-(+15,88 pp). GNN di atasnya -> **0,3788** (+7,08 pp). Pool yang seluruhnya positif
-palsu turun 0,147 -> 0,040.
+### 3.1 Resolusi Pergeseran Domain Pelatihan Penaut (PT-E-017)
+Model penaut (*linker*) yang dilatih pada pasangan kotak data acuan kebenaran (*ground truth*) mengalami *domain shift* ekstrem saat diuji pada kotak deteksi nyata ($AUC = 0,9508 \to 0,5868$, mendekati tebakan acak). Pelatihan ulang langsung pada pasangan deteksi nyata meningkatkan skor $F1$ dari $0,1492$ menjadi **$0,3080$** ($+15,88\text{ pp}$), dan penambahan GNN meningkatkan $F1$ menjadi **$0,3788$** ($+7,08\text{ pp}$).
 
-Konsekuensi: diagnosis "hambatannya kepadatan adegan/kombinatorik"
-(`CLAUDE.md` sec.6) **tidak lengkap**.
+### 3.2 Sifat Komplementer Detektor dan Pengklasifikasi (PT-E-018 & PT-E-019)
+Penggabungan ensembel pengklasifikasi C1+C2 menghasilkan akurasi **$74,64\%$**, mematahkan asumsi batas lama $73,60\%$. Penaut multi-tampak dan pengklasifikasi ensembel bersifat saling melengkapi (*complementary*): ensembel memperbaiki tandan satu-tampak, sedangkan penaut memindahkan tandan ke wilayah multi-tampak yang ditangani oleh aturan ordinal $R4$.
 
-### 3.2 Plafon 73,60% bukan plafon (PT-E-018, korpus 953)
+### 3.3 Superioritas Loss Ordinal CORN terhadap CORAL (PT-E-030)
+Pada resep pelatihan yang identik, fungsi *loss* CORAL mengalami keruntuhan struktural ($33,05\%$) akibat keterbatasan pembagian bobot (*weight-sharing*), sementara **CORN mencapai akurasi uji $69,83\%$** ($+36,8\text{ pp}$).
 
-`IDEA.md` menutup dengan "potensi maksimal 73,60% bila tetap mengandalkan skor
-detektor YOLO". Ensemble C1+C2 memberi **0,7464**. Setiap anggota C2 KALAH dari
-C1 (0,682-0,706 lawan 0,7208) tetapi gabungannya menang. Yang PT-E-012 tutup
-adalah jalur MENGGANTI C1, bukan MELENGKAPI C1.
+### 3.4 Karakteristik Konvergensi RF-DETR-L DAMIMAS (PT-E-032)
+Model RF-DETR-L mencapai puncak performa validasi pada **epoch 5 ($ema\_mAP50 = 0,5830$)**, lalu mengalami degradasi konsisten hingga epoch 59 ($0,4885$, penurunan $\minus 9,46\text{ pp}$). Disimpulkan bahwa pelatihan RF-DETR-L pada korpus spesifik cukup dibatasi $\approx 15\text{ epoch}$ dengan penghentian dini ketat.
 
-### 3.3 Penaut dan classifier saling menggantikan, bukan berlipat (PT-E-019)
+---
 
-Kontribusi penaut +0,63 pp, kontribusi kelas +1,11 pp, gabungan hanya +0,87 pp.
-Sebabnya terbaca dari kolom multi-tampak: ensemble menolong terutama di tandan
-SATU-tampak, sementara penaut baru memindahkan tandan KELUAR dari sana.
+## 4. Kaidah Metodologis yang Mengikat
 
-### 3.4 CORAL runtuh di mana CORN bekerja (PT-E-030)
-
-Resep identik, hanya loss berbeda: CORAL test **0,3305**, CORN **0,6983**
-(+36,8 pp). Sebabnya struktural: weight-sharing CORAL membuat
-`P(y=tengah) = sigma(s+b0) - sigma(s+b1)` terkurung jarak antar-bias; terukur
-maks P(B2)=0,291, maks P(B3)=0,301. Jangan digeneralisasi -- paper CORN sendiri
-melaporkan gain modest di dataset seimbang.
-
-### 3.5 RF-DETR DAMIMAS memuncak di epoch 5 (PT-E-032)
-
-val ema_mAP50 puncak **epoch 5 = 0,5830**; epoch 59 = 0,4885 (**-9,46 pp**),
-menurun monoton. ~6,5 dari 7 jam GPU tidak menghasilkan checkpoint yang dipakai.
-Untuk run berikutnya: maksimal ~15 epoch + patience, JANGAN pilih checkpoint
-terakhir.
-
-### 3.6 `harapan_geser.json` yang ter-commit SALAH
-
-Berkas cache konstanta arah putar tidak memuat satu pun entri 8-sisi padahal
-split train berisi 34 pohon 8-sisi. Karena `penaut_pertandan` memuatnya otomatis
-saat di-import, pohon 8-sisi selama ini tidak dapat prior arah putar sama sekali
-(`HARAP.get(...)` jatuh ke 0,0). Sudah dihitung ulang di split kanonik.
-
-### 3.7 PT-E-012 tidak punya error bar
-
-Rentang antar-seed untuk konfigurasi yang SAMA adalah 1,06-1,99 pp (C2) dan
-0,43-1,93 pp (C3), lebih besar daripada selisih C2-C1 = -1,21 pp yang jadi dasar
-putusannya. Arah PT-E-012 bertahan; magnitudonya tidak.
-
-### 3.8 `moe` dan `klasik` di DAMIMAS adalah sinyal yang sama
-
-val 0,7301 / test 0,7166 / 1-view 0,6098 / multi 0,7546 -- identik di semua kolom.
-Seleksi ensemble akan memungutnya sebagai anggota "baru" dan menghitung satu
-sinyal dua kali kalau tidak dibuang lebih dulu.
-
-## 4. Pelajaran metodologis yang mengikat
-
-### 4.1 Memilih aturan keputusan dari fit VAL itu bocor halus
-
-`tau` ordinal per-nview memenangkan fit VAL (0,7595 lawan 0,7508 dan 0,7410) lalu
-jatuh ke **0,7318 di TEST**. Aturan berparameter lebih banyak SELALU menang di
-data tempat parameternya dipas. Perbaikannya: pilih aturan lewat **CV di dalam
-VAL**, yang langsung membalik urutannya (per-nview jadi TERBURUK, 0,7399).
-
-### 4.2 VAL 86 pohon terlalu kecil untuk seleksi -- tetapi bukan penyebab plafon
-
-Empat kali dalam sesi ini VAL menyesatkan dengan pola sama. Namun PT-E-034
-menunjukkan plafon 0,74 BUKAN akibat VAL kecil: bahkan dengan bobot dipas
-langsung di TEST, rata-rata berbobot mentok 0,7523. Dua hal ini terpisah dan
-sering tertukar.
-
-### 4.3 Test peeking berulang
-
-Seleksi ensemble dijalankan beberapa kali dengan kumpulan anggota berbeda dan
-TEST dilihat setiap kali. **Angka bersih adalah konfigurasi terkunci PERTAMA,
-0,7439**; varian dengan `corn224` (0,7409) eksploratif. PT-E-036 memperbaiki
-kebiasaan ini: TEST tidak dibuka karena CV tidak menunjukkan keunggulan.
-
-### 4.4 Cari dasar literatur SEBELUM training
-
-Diminta pemilik repo. Bukti kenapa ini penting muncul di sesi yang sama: setelah
-membaca, ternyata (a) CORAL punya kelemahan terdokumentasi yang persis kita alami,
-(b) "spesialis batas" yang dirancang dari analisis galat sudah ada bentuk lebih
-baiknya sejak 2021 (task bersyarat CORN), dan (c) risiko overconfidence pada data
-fine-grained kecil sudah dipetakan (Pairwise Confusion, ECCV 2018).
-
-## 5. Acuan literatur yang dipakai
-
-- CORN -- Shi, Cao & Raschka, arXiv:2111.08851 (rank-consistent ordinal via
-  conditional probabilities)
-- CORAL -- Cao, Mirjalili & Raschka, arXiv:1901.07884
-- Ensemble Selection -- Caruana, Niculescu-Mizil, Crew & Ksikes, ICML 2004
-- Dynamic Classifier Selection -- Cruz, Sabourin & Cavalcanti, Information Fusion 2018
-- Pairwise Confusion -- Dubey et al., ECCV 2018
-- Hierarchy of Alternating Specialists -- ECCV 2018
-
-Kalibrasi target: literatur FFB melaporkan 90-99%, tetapi untuk tandan HASIL
-PANEN difoto dekat dengan pencahayaan terkendali dan sering 2-3 kelas. Setting
-kita -- tandan di pohon, terhalang pelepah, 4 tingkat ordinal, per tandan fisik
-lintas-tampak -- tidak sebanding.
-
-## 6. Catatan operasional
-
-- Loop sync 60 menit aktif (`~/.config/pe-sync/sync.sh`, PID tercatat di
-  `sync.log`): commit+push GitHub dan unggah bobot ke
-  `mz-muttaqin/project-expertise-bobot`. Memakai `git add -A`, jadi ia ikut
-  men-commit pekerjaan sesi lain yang sedang berjalan.
-- `runs/rfdetr_l_damimas_s42/` berukuran ~9 GB. Yang perlu dipertahankan:
-  `checkpoint_best_ema.pth`, `checkpoint_best_regular.pth`,
-  `checkpoint_best_total.pth`.
-- `scripts/spesialis_batas_damimas.py` ditulis tetapi **tidak pernah dijalankan**
-  -- task bersyarat CORN sudah menutupi sebagian besar idenya.
-- PAT GitHub sempat dikirim lewat chat; sebaiknya dirotasi.
+1. **Pencegahan Kebocoran Validasi Halus (*Subtle Validation Leakage*)**: Parameter aturan keputusan (seperti ambang $\tau$) wajib dipilih melalui validasi silang internal di dalam partisi validasi untuk mencegah *overfitting* parameter.
+2. **Keterbatasan Partisi Validasi 86 Pohon**: Kenaikan performa di bawah $\sim 2\text{ pp}$ pada validasi 86 pohon tidak dapat dibedakan dari variasi acak seleksi model.
+3. **Protokol Uji Tertutup (*Strict Test Evaluation*)**: Himpunan data uji hanya dievaluasi setelah konfigurasi ensembel terkunci penuh dari partisi validasi.

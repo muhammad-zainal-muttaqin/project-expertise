@@ -2,10 +2,12 @@
 
 Baca seluruhnya sebelum mengubah apa pun.
 
-## Bahasa
+## Bahasa & Standar Penulisan Ilmiah Baku
 
-Seluruh isi repo dan percakapan memakai **Bahasa Indonesia**.
-Istilah teknis asing ditulis apa adanya tanpa diterjemahkan.
+Seluruh isi repo, dokumentasi, dan percakapan wajib mematuhi kaidah penulisan ilmiah formal (**EYD Edisi V / PUEBI**):
+- **Prinsip Anti-Calque**: Gunakan istilah baku seperti "penurunan performa yang signifikan", "selang kepercayaan 95% mencakup nilai nol (tidak signifikan secara statistik)", "tidak menunjukkan keunggulan performa", "disimpulkan sebagai peningkatan", "nilai acuan kebenaran (*ground truth*)", "model batas atas teoretis (*oracle*)", "garis dasar pembanding (*baseline*)", "pencacahan (*counting*)", "citra terpotong (*crop*)", dan "variasi acak (*noise*) / derau".
+- **Notasi Matematika & Statistika**: Desimal menggunakan koma (`,`) (contoh: 0,6012), ribuan menggunakan titik (`.`) (contoh: 3.992 citra), minus tipografis asli `−` (`\u2212` atau `$\minus$`), selang kepercayaan `[min; max]`, dan variabel dicetak miring (*p-value*, *mAP50*, dll.).
+- **Struktur Narasi Empat Bagian**: 1. Rancangan Eksperimen, 2. Temuan Empiris Terukur, 3. Keputusan Metodologis, 4. Batasan Validitas & Audit.
 
 ## Apa Ini
 

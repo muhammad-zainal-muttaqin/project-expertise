@@ -1,94 +1,70 @@
-# Spesifikasi Dataset
+# Spesifikasi Teknis Dataset Penelitian
 
-## 1. SawitMVC (953 pohon, RGB)
+Dokumen ini memuat spesifikasi teknis, karakteristik sensor, distribusi kategori kematangan, dan protokol partisi untuk dataset **SawitMVC-YOLO** dan **SawitMVC-Depth**.
 
-| Properti | Nilai |
+---
+
+## 1. Dataset SawitMVC (953 Pohon, Modalitas RGB)
+
+| Parameter Properti | Nilai Spesifikasi |
 |---|---|
-| Sumber | [ULM-DS-Lab/SawitMVC-YOLO](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-YOLO) |
-| Lisensi | CC BY-NC 4.0 |
-| Pohon | 953 (908 difoto 4 sisi, 45 difoto 8 sisi) |
-| Citra | 3.992 |
-| Resolusi | 960 x 1280 (potret) |
-| Bbox | 18.540 |
-| Tandan unik | 9.823 |
-| Kelas | B1, B2, B3, B4 |
-| Sisi per pohon | 4 atau 8 |
-| Split (per pohon) | 716 train / 96 val / 141 test |
-| k (duplikasi lintas-sisi) | 1,89 |
-| Kebun | DAMIMAS dan LONSUM, Kab. Tanah Laut, Kalsel |
-| Perangkat | 10 model smartphone, eksposur otomatis |
+| Sumber Repositori | [ULM-DS-Lab/SawitMVC-YOLO](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-YOLO) |
+| Lisensi Data | CC BY-NC 4.0 |
+| Populasi Pohon | 953 pohon (908 pohon 4 sisi pandang, 45 pohon 8 sisi pandang) |
+| Total Citra | 3.992 citra |
+| Resolusi Asli Citra | $960 \times 1.280\text{ piksel}$ (orientasi potret) |
+| Total Kotak Pembatas (*Bounding Box*) | 18.540 kotak |
+| Entitas Tandan Buah Fisik Unik | 9.823 tandan terdeduplikasi |
+| Kategori Kematangan | B1 (lewat matang/panen) s.d. B4 (mentah) |
+| Pembagian Partisi (*Tree-Stratified*) | 716 latih / 96 validasi / 141 uji |
+| Faktor Duplikasi Lintas-Sisi ($k$) | Rerata 1,89 kemunculan per tandan |
+| Lokasi Perekaman Lapangan | Perkebunan DAMIMAS dan LONSUM, Kab. Tanah Laut, Kalimantan Selatan |
+| Perangkat Kamera | 10 model ponsel pintar, sistem eksposur otomatis |
+| **Rentang Waktu Perekaman** | **30 April – 16 Mei 2026** |
 
-### Distribusi kelas (seluruh dataset)
+### Taksonomi Tingkat Kematangan Buah
+* **B1 (Lewat Matang / Siap Panen)**: Warna jingga-kemerahan cerah, ukuran tandan besar, posisi terbawah di lingkar batang.
+* **B2 (Matang Optimal)**: Warna oranye kemerahan dengan semburat ungu kehitaman.
+* **B3 (Matang Awal / Mengkal)**: Warna ungu kemerahan kehitaman.
+* **B4 (Mentah / Muda)**: Warna hitam kehijauan pekat, ukuran tandan relatif kecil, posisi teratas dan tertanam di sela pelepah.
 
-| Kelas | Tandan unik | Proporsi |
-|---|---:|---:|
-| B3 | terbanyak | ~38% |
-| B4 | | ~20% |
-| B2 | | ~18% |
-| B1 | | ~12% |
+---
 
-### Arah kelas
+## 2. Dataset SawitMVC-Depth (352 Pohon, Modalitas RGB+Depth)
 
-**B1 = MATANG** (jingga-merah, besar, posisi paling bawah di pohon).
-Menurun sampai **B4 = MENTAH** (gelap kehijauan, kecil, posisi paling atas).
-
-### Raw master (Sawit, 3.992 citra 3024x4032)
-
-Ada master mentah beresolusi tinggi di `/workspace/Sawit/data`. Rasio aspek
-identik (0,75), sehingga koordinat YOLO ternormalisasi dari MVC berlaku
-persis. Nama berkas raw **tidak unik** secara global (936 nama kembar antar
-folder) — perlu pencocokan berbasis isi untuk pemetaan.
-
-## 2. SawitMVC-Depth (352 pohon, RGB + Depth)
-
-| Properti | Nilai |
+| Parameter Properti | Nilai Spesifikasi |
 |---|---|
-| Sumber | [ULM-DS-Lab/SawitMVC-Depth](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-Depth) |
-| Lisensi | CC BY-NC 4.0 |
-| Repo | **Private** (butuh token HuggingFace) |
-| Pohon | 352 |
-| Citra RGB | 1.408 |
-| Resolusi RGB | 1.280 x 800 (lanskap) |
-| Bbox | 2.299 |
-| Kelas | B1, B2, B3, B4 |
-| Depth | Orbbec sensor, Y16 848x480, uint16 milimeter |
-| Split | **Ada** — 70/15/15 per pohon, seed 10, di `/workspace/SawitMVC-Depth-YOLO/split_stats.json` |
+| Sumber Repositori | [ULM-DS-Lab/SawitMVC-Depth](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-Depth) |
+| Lisensi Data | CC BY-NC 4.0 (Akses Terbatas / *Private Repository*) |
+| Populasi Pohon | 352 pohon (sub-populasi DAMIMAS) |
+| Total Citra RGB | 1.408 citra ($1.280 \times 800\text{ piksel}$, orientasi lanskap) |
+| Total Kotak Pembatas | 2.299 kotak |
+| Sensor Kedalaman | Sensor inframerah Orbbec Y16 ($848 \times 480\text{ piksel}$, unit uint16 milimeter) |
+| Pembagian Partisi Kanonik | 245 latih / 52 validasi / 55 uji ($70\% / 15\% / 15\%$, *seed* 10) |
+| **Rentang Waktu Perekaman** | **28 – 29 Juli 2026 (Jeda $\sim 80\text{ hari}$ dari SawitMVC)** |
 
-### Distribusi kelas (terbalik dari SawitMVC)
+### Karakteristik Teknis Sensor Kedalaman
+1. **Kalibrasi dan Reproyeksi Spasial**:
+   Buffer kedalaman mentah berada pada bidang koordinat sensor inframerah tersendiri. Reproyeksi piksel-ke-piksel penuh ke koordinat kamera warna RGB (`scripts/reproject_depth.py`) wajib dilakukan untuk mengoreksi pergeseran fisik median 29 piksel.
+2. **Variasi Parameter Intrinsik Unit Kamera**:
+   Dua unit kamera Orbbec yang digunakan memiliki panjang fokus berbeda ($f_{x} = 416,55$ vs $414,38$). Parameter kalibrasi intrinsik dibaca secara dinamis per berkas *sidecar* JSON.
+3. **Rentang Normalisasi Kedalaman Efektif**:
+   Rentang kuantisasi dioptimalkan pada interval $[0,8; 15,0]\text{ meter}$.
 
-| Kelas | Bbox | Proporsi |
-|---|---:|---:|
-| B2 | 1.000 | 43,5% |
-| B1 | 831 | 36,1% |
-| B3 | 322 | 14,0% |
-| B4 | 148 | 6,4% |
+---
 
-Kepadatan: 1,63 bbox/citra (vs 4,64 di SawitMVC). **Angka mAP di dataset ini
-TIDAK sebanding dengan angka SawitMVC.**
+## 3. Komparasi Karakteristik Antar-Dataset
 
-### Tiga sifat penting depth (sudah terverifikasi)
-
-1. **Sidecar `alignedTo: color` menyesatkan.** Buffer depth masih di grid
-   kamera depth. Reproyeksi penuh diperlukan (`reproject_depth.py` dari
-   Research-Pipeline `experiments/code/build/`), bukan `cv2.resize` naif.
-2. **Dua unit kamera** dengan kalibrasi berbeda (fx_depth 416,55 vs 414,38).
-   Kalibrasi wajib dibaca per berkas dari sidecar.
-3. **Rentang Z_NEAR/Z_FAR** di sidecar (0,3–8,0 m) tidak cocok — gunakan
-   **0,8–15,0 m**.
-
-## 3. Perbandingan Kedua Dataset
-
-| | SawitMVC | SawitMVC-Depth |
+| Parameter Komparasi | SawitMVC (953 Pohon) | SawitMVC-Depth (352 Pohon) |
 |---|---|---|
-| Jumlah pohon | 953 | 352 |
-| Citra | 3.992 | 1.408 |
-| Resolusi | 960x1280 (potret) | 1280x800 (lanskap) |
-| Orientasi | Potret | Lanskap |
-| Bbox/citra | 4,64 | 1,63 |
-| Kelas dominan | B3 | B2 |
-| Kelas langka | B1 | B4 (hanya 148) |
-| Depth | Tidak | Ya |
-| Split resmi | Ada | Ada (70/15/15 per pohon, seed 10, tree-stratified, `SawitMVC-Depth-YOLO`) |
+| Volume Citra | 3.992 citra | 1.408 citra |
+| Orientasi Citra | Potret ($960 \times 1.280\text{ px}$) | Lanskap ($1.280 \times 800\text{ px}$) |
+| Kepadatan Objek per Citra | 4,64 kotak/citra | 1,63 kotak/citra |
+| Kategori Dominan | B3 ($55,3\%$) | B2 ($43,5\%$) dan B1 ($36,1\%$) |
+| Kategori Paling Langka | B1 ($8,7\%$) | B4 ($6,4\%$, hanya 148 kotak) |
+| Modalitas Kedalaman Fisik | Tidak Tersedia | Tersedia (Sensor Orbbec) |
+| Periode Akuisisi Lapangan | Mei 2026 | Juli 2026 |
 
-**Konsekuensi:** Perbandingan RGB vs RGB+D hanya sah pada dataset yang sama
-(352 pohon). Angka dari 953 pohon adalah referensi terpisah.
+> [!WARNING]
+> **Batasan Validitas Komparasi**:
+> Akibat perbedaan periode perekaman 80 hari dan pergeseran fenologi kebun, perbandingan efektivitas modalitas RGB vs RGB+Depth **hanya sah dilakukan di dalam partisi dataset 352 pohon**, bukan membandingkan metrik absolut 953 pohon terhadap 352 pohon.
