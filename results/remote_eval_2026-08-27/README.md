@@ -13,6 +13,9 @@ berada di luar Git; daftar jalur remote, ukuran, dan *checksum* tercatat pada
 Eksperimen lanjutan pipeline warna, detail, crop-head, TTA, detector fine-tune,
 reranking, dan evaluasi test dicatat pada
 [`PIPELINE_EXPERIMENTS_V3.md`](PIPELINE_EXPERIMENTS_V3.md).
+Ringkasan versioned untuk learned detector-space linker validation tersedia
+di [`metrics/learned_linker_validation_summary.json`](metrics/learned_linker_validation_summary.json);
+raw checkpoint dan dump pair tetap berada di artifact storage eksternal.
 
 ## Kesimpulan eksekutif
 

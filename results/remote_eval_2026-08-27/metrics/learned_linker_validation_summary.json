@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-08-27",
+  "protocol": "train-only fitting, validation-only profile selection",
+  "test_used_for_selection": false,
+  "purpose": "Versioned summary of the learned detector-space linker experiments; raw model artifacts remain in external artifact storage.",
+  "feature_count": 65,
+  "datasets": {
+    "SawitMVC-YOLO-953": {
+      "train_adjacent_pairs": 94165,
+      "train_positive_pairs": 4894,
+      "validation_adjacent_pairs": 13205,
+      "validation_positive_pairs": 593,
+      "extra_trees_edge_validation": {
+        "roc_auc": 0.9484599773550072,
+        "average_precision": 0.5963600472722672
+      },
+      "baseline_comparable_profile": {
+        "proposal_min": 0.125,
+        "link_threshold": 0.3,
+        "singleton_min": 0.15,
+        "max_size": 3,
+        "rank_mode": "support",
+        "pair_mode": "adjacent",
+        "physical_f1": 0.8055260361317748,
+        "count_mae": 1.2527472527472527,
+        "count_plus_minus_1_accuracy": 0.6703296703296703,
+        "matched_class_accuracy": 0.7071240105540897,
+        "matched": 758,
+        "end_to_end_macro_f1": 0.5300821627352239
+      },
+      "learned_extra_trees_candidate": {
+        "proposal_min": 0.125,
+        "link_threshold": 0.15,
+        "singleton_min": 0.15,
+        "max_size": 4,
+        "rank_mode": "score",
+        "pair_mode": "adjacent",
+        "physical_f1": 0.8232,
+        "count_mae": 1.2527,
+        "count_plus_minus_1_accuracy": 0.6703,
+        "matched_class_accuracy": 0.7542,
+        "end_to_end_macro_f1": 0.6014,
+        "selection_status": "validation-only; max_size=4 result came from an additional in-memory sweep and must be reproduced before test lock"
+      },
+      "raw_artifact": "/workspace/model_artifacts/project-expertise/detection_edge_linker_953_v2/results.json"
+    },
+    "SawitMVC-Depth-YOLO": {
+      "train_adjacent_pairs": 12517,
+      "train_positive_pairs": 1245,
+      "validation_adjacent_pairs": 2504,
+      "validation_positive_pairs": 250,
+      "extra_trees_best_physical_candidate": {
+        "link_threshold": 0.1,
+        "singleton_min": 0.2,
+        "max_size": 3,
+        "rank_mode": "support",
+        "pair_mode": "adjacent",
+        "physical_f1": 0.8470806302131604,
+        "count_mae": 0.9487179487179487,
+        "count_plus_minus_1_accuracy": 0.7692307692307693,
+        "matched_class_accuracy": 0.8358862144420132,
+        "end_to_end_macro_f1": 0.6699500633586768
+      },
+      "hist_deep_all_round_candidate": {
+        "link_threshold": 0.85,
+        "singleton_min": 0.15,
+        "max_size": 3,
+        "rank_mode": "support",
+        "pair_mode": "adjacent",
+        "physical_f1": 0.800711743772242,
+        "count_mae": 0.8034188034188035,
+        "count_plus_minus_1_accuracy": 0.8376068376068376,
+        "matched_class_accuracy": 0.8622222222222222,
+        "end_to_end_macro_f1": 0.6571817747235585
+      },
+      "raw_artifact": "/workspace/model_artifacts/project-expertise/detection_edge_linker_depth_v1/results.json"
+    }
+  },
+  "rejected_validation_experiment": {
+    "name": "YOLO agnostic NMS quick test",
+    "SawitMVC-YOLO-953_mAP50": 0.17586,
+    "SawitMVC-YOLO-953_mAP50_95": 0.060616,
+    "SawitMVC-Depth-YOLO_mAP50": 0.482666,
+    "SawitMVC-Depth-YOLO_mAP50_95": 0.180342,
+    "status": "rejected; not used for final pipeline"
+  }
+}
