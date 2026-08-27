@@ -1,0 +1,21 @@
+{
+  "run_name": "remote_combined1716_rfdetr_l_depth_test",
+  "kind": "rfdetr",
+  "weights": "/workspace/model_artifacts/project-expertise/combined1716/rfdetr_l_combined1716_checkpoint_best_ema.pth",
+  "dataset": "/workspace/SawitMVC-Depth-YOLO",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.671071,
+      "mAP50_95": 0.274773,
+      "per_kelas_AP50": {
+        "B1": 0.804423,
+        "B2": 0.718713,
+        "B3": 0.737285,
+        "B4": 0.423864
+      },
+      "predictions": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/predictions_combined1716/remote_combined1716_rfdetr_l_depth_test__test.npz"
+    }
+  }
+}

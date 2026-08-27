@@ -1,0 +1,21 @@
+{
+  "run_name": "remote_new763_yolo26l_953_test",
+  "kind": "yolo",
+  "weights": "/workspace/model_artifacts/project-expertise/new763/yolo26l_rgb_s42_i1280_best.pt",
+  "dataset": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/dataset_adapters/SawitMVC-YOLO",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.233091,
+      "mAP50_95": 0.083133,
+      "per_kelas_AP50": {
+        "B1": 0.45186,
+        "B2": 0.11472,
+        "B3": 0.279479,
+        "B4": 0.086305
+      },
+      "predictions": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/predictions/remote_new763_yolo26l_953_test__test.npz"
+    }
+  }
+}

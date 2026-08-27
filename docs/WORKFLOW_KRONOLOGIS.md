@@ -545,6 +545,19 @@ timeline
 
 ---
 
+### Simpul V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agustus 2026)
+
+- **Rancangan Eksperimen**: Mengambil hanya enam bobot detektor yang diperlukan dari bucket `ULM-DS-Lab/project-expertise-backup`, lalu menjalankan 12 evaluasi model tunggal pada test lokal SawitMVC-Depth-YOLO (440 citra, 110 pohon) dan SawitMVC-YOLO (588 citra, 141 pohon). Tiga model pada masing-masing bank (`new763` dan `combined1716`) digabungkan dengan WBF IoU 0,60 dan diproses melalui penaut empat sisi berbasis prior rotasi yang dikalibrasi dari data latih.
+- **Temuan Empiris Terukur**:
+  1. Bank `combined1716` menjadi kandidat paling konsisten: RF-DETR-L mencapai **mAP50 0,6711** pada Depth dan **0,5890** pada SawitMVC-YOLO. WBF class-aware mencapai 0,6691 dan 0,5861.
+  2. WBF class-agnostic mencapai **AP50 0,8764** pada Depth dan **0,8350 (83,50%)** pada SawitMVC-YOLO. Angka 83,50% adalah lokalisasi tanpa label kelas, bukan akurasi kematangan atau pencacahan. Angka historis 81,06% pada V2-E-039 memakai korpus dan protokol berbeda.
+  3. Pada pipeline empat sisi `combined1716`, F1 deteksi fisik adalah 0,6140 (Depth) dan 0,5327 (SawitMVC-YOLO); MAE pencacahan masing-masing 4,52 dan 14,99 tandan per pohon. Akurasi pencacahan ±1 hanya 18,18% dan 0%.
+- **Keputusan Metodologis**: Menggunakan `combined1716` sebagai kandidat detektor utama lintas kamera dan RF-DETR-L sebagai model tunggal utama. WBF agnostik dipertahankan sebagai pembuat proposal; pipeline empat sisi belum dikunci sebagai modul pencacahan produksi karena duplikasi klaster masih dominan.
+- **Batasan Validitas & Audit**: Hasil ini merupakan verifikasi engineering pada folder test lokal, bukan klaim hold-out publikasi baru. Audit irisan `tree_id` antara split latih `combined1716` dan test lokal belum selesai. Enam pohon delapan sisi SawitMVC-YOLO dikeluarkan dari metrik multi-tampak, tetapi tetap masuk metrik image-level.
+- **Artefak**: [`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md) · [`results/remote_eval_2026-08-27/MANIFEST.md`](../results/remote_eval_2026-08-27/MANIFEST.md) · [`scripts/eval_remote_pipeline_postprocess.py`](../scripts/eval_remote_pipeline_postprocess.py)
+
+---
+
 ## 7. Ringkasan Eksekutif Temuan Ilmiah & Rekomendasi Deployment
 
 ```mermaid

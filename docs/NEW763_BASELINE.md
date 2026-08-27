@@ -48,3 +48,19 @@ Hasil evaluasi pada partisi uji (440 citra, 891 kotak anotasi):
 * Audit Partisi Dataset: [`results/new763_dataset_audit.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/new763_dataset_audit.json)
 * Ringkasan Hasil Terstruktur: [`results/new763_summary.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/new763_summary.json)
 * Log Pelatihan: [`results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log)
+
+---
+
+## 5. Verifikasi Ulang dengan Bobot Backup dan Pipeline Empat Sisi
+
+Pada 27 Agustus 2026, bobot `new763` yang disimpan pada backup Hugging Face
+diverifikasi ulang pada test lokal dan dibandingkan dengan bank
+`combined1716`. RF-DETR-L `new763` mencapai `mAP50 = 0,6125` pada test Depth,
+sedangkan WBF tiga detektor mencapai `0,6062` secara class-aware dan `0,8451`
+secara agnostik. Pada test SawitMVC-YOLO 953, nilainya turun menjadi `0,1776`,
+`0,2018`, dan `0,4974`.
+
+Hasil tersebut adalah verifikasi engineering, bukan pengganti angka baseline
+kanonik pada bagian sebelumnya. Laporan lengkap, metrik per kelas, dump
+prediksi, dan perbandingan dengan `combined1716` tersedia di
+[`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md).

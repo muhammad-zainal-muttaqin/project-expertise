@@ -54,3 +54,21 @@ Protokol terkontrol pada 6 sel komparasi:
 
 1. **Evaluasi Partisi Bersih `agn953_full`**: Sebanyak $87\%$ citra pada `test_penuh` beririsan dengan data prapelatihan. Nilai generalisasi yang sah adalah evaluasi pada partisi bersih (**`test_bersih`, 19 pohon / 316 kotak**) dengan skor **$AP50 = \mathbf{0,7702}$**.
 2. **Keterbatasan Partisi Transfer 953 ke 352**: Sebanyak 44 dari 55 pohon uji dataset 352 termuat di dalam partisi latih dataset 953. Seluruh klaim adaptasi lintas-dataset wajib menyertakan kaveat silsilah ini.
+
+## 5. Verifikasi Bobot Remote dan Pipeline Empat Sisi (V2-E-042)
+
+Pada 27 Agustus 2026, enam bobot detektor terpilih dari bucket Hugging Face
+(`new763` dan `combined1716`) diuji ulang pada test lokal
+SawitMVC-Depth-YOLO dan SawitMVC-YOLO. Rincian lengkap dan seluruh artefak
+tersedia di [laporan V2-E-042](../results/remote_eval_2026-08-27/README.md).
+
+| Bank | Test | RF-DETR-L mAP50 | WBF class-aware mAP50 | WBF agnostik AP50 | MAE pipeline |
+|---|---|---:|---:|---:|---:|
+| `combined1716` | Depth | **0,6711** | **0,6691** | **0,8764** | 4,52 |
+| `combined1716` | SawitMVC-YOLO 953 | **0,5890** | **0,5861** | **0,8350** | 14,99 |
+| `new763` | Depth | 0,6125 | 0,6062 | 0,8451 | 3,28 |
+| `new763` | SawitMVC-YOLO 953 | 0,1776 | 0,2018 | 0,4974 | 6,56 |
+
+Nilai agnostik adalah lokalisasi tanpa label kelas. Pipeline empat sisi belum
+ditetapkan sebagai pencacah produksi karena duplikasi klaster masih
+menghasilkan akurasi tepat/±1 yang rendah, khususnya pada domain 953.

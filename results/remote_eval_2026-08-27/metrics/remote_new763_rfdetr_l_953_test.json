@@ -1,0 +1,21 @@
+{
+  "run_name": "remote_new763_rfdetr_l_953_test",
+  "kind": "rfdetr",
+  "weights": "/workspace/model_artifacts/project-expertise/new763/rfdetr_l_rgb_s42_i1280_checkpoint_best_ema.pth",
+  "dataset": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/dataset_adapters/SawitMVC-YOLO",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.177604,
+      "mAP50_95": 0.055332,
+      "per_kelas_AP50": {
+        "B1": 0.364311,
+        "B2": 0.07093,
+        "B3": 0.203042,
+        "B4": 0.072135
+      },
+      "predictions": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/predictions/remote_new763_rfdetr_l_953_test__test.npz"
+    }
+  }
+}

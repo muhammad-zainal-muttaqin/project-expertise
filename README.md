@@ -11,7 +11,7 @@ Sejak **Fase 6**, ruang lingkup diperluas secara sistematis: tidak lagi terbatas
 
 ## Status Terkini
 
-Seluruh fase eksperimen utama (`V2-E-001` s.d. `V2-E-041` serta `PT-E-000` s.d. `PT-E-036`) telah tuntas dijalankan dan diverifikasi penuh.
+Seluruh fase eksperimen utama (`V2-E-001` s.d. `V2-E-042` serta `PT-E-000` s.d. `PT-E-036`) telah tuntas dijalankan dan diverifikasi penuh.
 
 > [!IMPORTANT]
 > **Rujukan Utama Laporan & Alur Kerja**
@@ -41,6 +41,25 @@ Seluruh fase eksperimen utama (`V2-E-001` s.d. `V2-E-041` serta `PT-E-000` s.d. 
 | **new763 Pohon (Fase Ekspansi)** | 0,5163 | 0,5580 | **0,6129** |
 | **Combined-1716 (Fase Ekspansi)** | 0,5389 | 0,5746 | **0,5960** |
 
+### Verifikasi Remote Terbaru (V2-E-042)
+
+Verifikasi lokal pada 27 Agustus 2026 memakai enam bobot terpilih dari bucket
+Hugging Face, bukan seluruh bucket. Ringkasan lengkap, batas klaim, dan
+provenans tersedia pada [laporan verifikasi remote](results/remote_eval_2026-08-27/README.md)
+dan [manifest artefak](results/remote_eval_2026-08-27/MANIFEST.md).
+
+| Bank / Test | RF-DETR-L tunggal mAP50 | WBF class-aware mAP50 | WBF agnostik AP50 | Pipeline counting MAE |
+|---|---:|---:|---:|---:|
+| `combined1716` / SawitMVC-Depth | **0,6711** | 0,6691 | **0,8764** | 4,52 |
+| `combined1716` / SawitMVC-YOLO 953 | **0,5890** | 0,5861 | **0,8350** | 14,99 |
+| `new763` / SawitMVC-Depth | **0,6125** | 0,6062 | **0,8451** | 3,28 |
+| `new763` / SawitMVC-YOLO 953 | 0,1776 | 0,2018 | 0,4974 | 6,56 |
+
+`0,8350`/`83,50%` adalah AP50 lokalisasi class-agnostic, bukan akurasi
+klasifikasi B1–B4 atau akurasi pencacahan. Pipeline empat sisi masih berupa
+prototipe: pada test SawitMVC-YOLO, akurasi counting tepat dan ±1 pada bank
+`combined1716` masih `0%`.
+
 Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 
 ---
@@ -59,9 +78,9 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 | [docs/REKAP.md](docs/REKAP.md) | Rekapitulasi komparasi, percobaan gagal, dan sintesis pembelajaran dari Volume 1 & Volume 2. |
 | [docs/DATASET.md](docs/DATASET.md) | Spesifikasi teknis dataset SawitMVC-YOLO dan SawitMVC-Depth. |
 | [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja dan metodologi per fase. |
-| [experiments/EKSPERIMEN.md](experiments/EKSPERIMEN.md) | Log *append-only* per hipotesis (`V2-E-001` s.d. `V2-E-041`). |
+| [experiments/EKSPERIMEN.md](experiments/EKSPERIMEN.md) | Log *append-only* per hipotesis (`V2-E-001` s.d. `V2-E-042`). |
 | [pipeline-pertandan/](pipeline-pertandan/) | Subproyek mandiri asosiasi multi-tampak dan klasifikasi tingkat tandan fisik. |
-| [results/](results/) | Direktori artefak berkas metrik kuantitatif JSON, CSV, dan dump prediksi NPZ. |
+| [results/](results/) | Direktori artefak metrik kuantitatif JSON, CSV, dump prediksi NPZ, dan laporan verifikasi remote. |
 
 ---
 
@@ -84,6 +103,7 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 - `train_crop_classifier.py`: Pelatihan model pengklasifikasi kematangan ConvNeXt dengan *loss* ordinal/hybrid.
 - `probe_fitur_depth.py`: Pengujian kontribusi statistik kedalaman teragregasi (*pooled depth*).
 - `eval_detector_agnostic.py`: Evaluasi $AP50$ lokalisasi murni dan perakitan ensembel WBF.
+- `eval_remote_pipeline_postprocess.py`: Fusi tiga detektor, kalibrasi prior rotasi, penaut empat sisi, dan evaluasi pencacahan.
 - `sweep_inferensi.py`: Penelusuran kombinasi resolusi citra dan ambang NMS IoU pada split validasi.
 - `eval_twostage.py`: Rekomposisi inferensi dua-tahap menuju metrik $mAP50$ deteksi kematangan.
 - `run_counting_twostage.py`: Pipeline pencacahan *Ridge +* $F_{all}$ di atas estimasi dua-tahap.

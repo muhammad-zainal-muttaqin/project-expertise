@@ -2344,3 +2344,103 @@ angka di atas + provenans lengkap), `results/local_eval_combined1716_no_lonsum/p
 (dump prediksi test per model), `results/local_eval_combined1716_no_lonsum/logs_ringkas/*.txt`
 (log training asli dari Ultralytics HUB), `docs/EDA-COMBINED1716.md` (EDA
 dataset combined1716 lengkap, termasuk subset LONSUM).
+
+---
+
+## V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi pada Dua Test Set Lokal
+
+**Tanggal:** 2026-08-27
+
+### Rancangan Eksperimen
+
+Enam bobot detektor yang diperlukan diambil dari bucket Hugging Face
+`ULM-DS-Lab/project-expertise-backup`: YOLO26l, RT-DETR-L, dan RF-DETR-L dari
+bank `new763`, serta tiga model yang sama dari bank `combined1716`. Seluruh
+bucket tidak diklon dan token akses tidak dicatat. Kedua bank diuji ulang pada
+dua test set lokal dengan `imgsz = 1.280`, `pycocotools.COCOeval`, confidence
+inferensi `0,001`, NMS IoU `0,7`, dan maksimum 300 deteksi per citra.
+
+Sebanyak 12 evaluasi model tunggal dijalankan: 6 pada
+`SawitMVC-Depth-YOLO` (440 citra, 110 pohon, empat sisi) dan 6 pada
+`SawitMVC-YOLO` (588 citra, 141 pohon). Hasilnya kemudian diproses dengan
+WBF tiga detektor (IoU `0,60`, confidence masukan `0,05`) dan penaut empat
+sisi berbasis prior rotasi bertanda yang dikalibrasi hanya dari data latih.
+Metrik pencacahan hilir hanya memakai 135 pohon empat sisi pada test
+SawitMVC-YOLO; 6 pohon delapan sisi dikeluarkan dari evaluasi multi-tampak.
+
+### Temuan Empiris Terukur
+
+**1. Deteksi model tunggal.** Bank `combined1716` menghasilkan skor tertinggi
+di kedua domain:
+
+| Test | YOLO26l | RT-DETR-L | RF-DETR-L |
+|---|---:|---:|---:|
+| SawitMVC-Depth `mAP50` | 0,5765 | 0,6309 | **0,6711** |
+| SawitMVC-Depth `mAP50–95` | 0,2387 | 0,2496 | **0,2748** |
+| SawitMVC-YOLO 953 `mAP50` | 0,5403 | 0,5726 | **0,5890** |
+| SawitMVC-YOLO 953 `mAP50–95` | 0,2619 | 0,2659 | **0,2704** |
+
+Bank `new763` pada test Depth mencatat `mAP50` YOLO26l `0,5162`, RT-DETR-L
+`0,5580`, dan RF-DETR-L `0,6125`. Pada domain SawitMVC-YOLO, nilainya
+turun menjadi masing-masing `0,2331`, `0,1110`, dan `0,1776`. Temuan ini
+menguatkan bahwa cakupan domain data latih merupakan faktor utama ketangguhan
+lintas kamera.
+
+**2. Fusi WBF.** Pada bank `combined1716`, WBF class-aware mencapai
+`mAP50 = 0,6691` pada Depth dan `0,5861` pada SawitMVC-YOLO. WBF class-agnostic
+mencapai `AP50 = 0,8764` dan `0,8350`. Pada bank `new763`, hasil WBF
+class-aware adalah `0,6062` dan `0,2018`, sedangkan hasil agnostiknya `0,8451`
+dan `0,4974`.
+
+Pada test SawitMVC-YOLO, angka `0,8350` (**83,50%**) adalah AP50 lokalisasi
+class-agnostic ensembel tiga model. Angka ini bukan akurasi kelas B1–B4 dan
+bukan akurasi pencacahan.
+
+**3. Pipeline empat sisi.** Ringkasan hasil asosiasi dan pencacahan:
+
+| Bank | Test | F1 deteksi fisik | MAE tandan/pohon | Akurasi tepat | Akurasi ±1 | Akurasi kelas pada match | Macro-F1 end-to-end |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `combined1716` | Depth | 0,6140 | 4,52 | 8,18% | 18,18% | 78,95% | 0,4726 |
+| `combined1716` | SawitMVC-YOLO 953 | 0,5327 | 14,99 | 0% | 0% | 69,94% | 0,3762 |
+| `new763` | Depth | **0,6481** | **3,28** | 11,82% | **25,45%** | 77,73% | **0,4762** |
+| `new763` | SawitMVC-YOLO 953 | 0,5460 | 6,56 | 2,22% | 8,15% | 33,78% | 0,1881 |
+
+Recall deteksi fisik relatif tinggi, yakni `0,8515`–`0,9344`, tetapi presisi
+turun menjadi `0,3725`–`0,5231` karena terbentuk terlalu banyak klaster:
+910–3.366 prediksi untuk 559–1.342 tandan acuan. Pada konfigurasi
+`combined1716` SawitMVC-YOLO, 3.366 klaster diprediksi untuk 1.342 tandan;
+kelebihan klaster ini menjelaskan MAE `14,99` meskipun recall mencapai
+`0,9344`.
+
+### Keputusan Metodologis
+
+Bank `combined1716` ditetapkan sebagai kandidat detektor utama untuk kondisi
+lintas kamera karena memberikan performa empat kelas yang paling konsisten.
+RF-DETR-L adalah model tunggal terbaik berdasarkan `mAP50`, sedangkan WBF
+agnostik cocok sebagai pembuat proposal lokalisasi. Pipeline empat sisi belum
+dapat dikunci sebagai modul pencacahan produksi: tahap berikutnya harus
+memprioritaskan pengurangan duplikasi klaster, pemodelan kapasitas maksimal
+per sisi, dan audit threshold pada tingkat pohon.
+
+### Batasan Validitas & Audit
+
+1. Ini adalah **verifikasi engineering terhadap folder test lokal**, bukan
+   klaim hold-out publikasi baru. Audit irisan `tree_id` antara split latih
+   `combined1716` dan dua test set lokal belum selesai pada sesi ini.
+2. Metrik image-level dan metrik multi-tampak tidak identik: metrik image-level
+   menghitung citra, sedangkan pencacahan menghitung tandan unik per pohon.
+3. Enam pohon delapan sisi SawitMVC-YOLO tetap masuk mAP image-level, tetapi
+   dikeluarkan dari metrik pipeline karena kontrak deployment yang diuji adalah
+   empat foto per pohon.
+4. Prior rotasi dan ambang penaut (`0,32` pada Depth, `0,43` pada
+   SawitMVC-YOLO) dipelajari dari data latih; seluruh JSON menyimpan detail
+   kalibrasi, metrik per pohon, dan dump prediksi untuk audit.
+
+**Artefak utama:**
+[`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md),
+[`results/remote_eval_2026-08-27/MANIFEST.md`](../results/remote_eval_2026-08-27/MANIFEST.md),
+[`scripts/eval_remote_pipeline_postprocess.py`](../scripts/eval_remote_pipeline_postprocess.py),
+[`metrics/`](../results/remote_eval_2026-08-27/metrics/),
+[`predictions/`](../results/remote_eval_2026-08-27/predictions/),
+[`fused_new763/`](../results/remote_eval_2026-08-27/fused_new763/), dan
+[`fused_combined1716/`](../results/remote_eval_2026-08-27/fused_combined1716/).

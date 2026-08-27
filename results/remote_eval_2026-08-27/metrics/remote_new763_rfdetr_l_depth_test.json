@@ -1,0 +1,21 @@
+{
+  "run_name": "remote_new763_rfdetr_l_depth_test",
+  "kind": "rfdetr",
+  "weights": "/workspace/model_artifacts/project-expertise/new763/rfdetr_l_rgb_s42_i1280_checkpoint_best_ema.pth",
+  "dataset": "/workspace/SawitMVC-Depth-YOLO",
+  "imgsz": 1280,
+  "evaluator": "pycocotools.COCOeval",
+  "splits": {
+    "test": {
+      "mAP50": 0.612538,
+      "mAP50_95": 0.233977,
+      "per_kelas_AP50": {
+        "B1": 0.775765,
+        "B2": 0.635415,
+        "B3": 0.698339,
+        "B4": 0.340633
+      },
+      "predictions": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/predictions/remote_new763_rfdetr_l_depth_test__test.npz"
+    }
+  }
+}

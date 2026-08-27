@@ -1,0 +1,2220 @@
+{
+  "generated_at": "2026-08-27T10:27:58.261399+00:00",
+  "models": "new763: YOLO26l + RT-DETR-L + RF-DETR-L",
+  "wbf": {
+    "iou_threshold": 0.6,
+    "input_score_min": 0.05
+  },
+  "datasets": {
+    "SawitMVC-Depth-YOLO": {
+      "n_test_trees_metadata": 110,
+      "rotation_prior_train": {
+        "4|1": [
+          0.204296875,
+          -0.003124999999999989,
+          0.08716066406249998,
+          0.07690987499999996,
+          0.4875736930993687,
+          1092
+        ],
+        "4|2": [
+          0.20390625000000007,
+          0.0012499999999999734,
+          0.10250789062499993,
+          0.07783649999999999,
+          0.4210648689604026,
+          57
+        ],
+        "4|3": [
+          -0.19492187499999997,
+          -0.004375000000000018,
+          0.07644656250000001,
+          0.08246962500000005,
+          0.4859159471119925,
+          363
+        ]
+      },
+      "link_calibration_train": {
+        "threshold": 0.32000000000000006,
+        "pairs": 14562,
+        "f1": 0.47164179104477605,
+        "tp": 948,
+        "fp": 1560,
+        "fn": 564
+      },
+      "wbf_metrics": {
+        "classaware": {
+          "n_images": 440,
+          "mAP50": 0.6062425988386311,
+          "mAP50_95": 0.23137831252135943,
+          "per_class_AP50": {
+            "B1": 0.7621590332569675,
+            "B2": 0.6598563244079516,
+            "B3": 0.7096703573387996,
+            "B4": 0.29328468035080557
+          }
+        },
+        "agnostic": {
+          "n_images": 440,
+          "mAP50": 0.845118306264928,
+          "mAP50_95": 0.31367017258019403,
+          "per_class_AP50": {
+            "tandan": 0.845118306264928
+          }
+        }
+      },
+      "multiview_metrics": {
+        "protocol": "4-side only; WBF proposal + weighted detector class vote + train-prior heuristic linker",
+        "n_trees": 110,
+        "n_8_side_excluded": 0,
+        "proposal_conf_min": 0.05,
+        "link_threshold": 0.32000000000000006,
+        "physical_detection": {
+          "precision": 0.5230769230769231,
+          "recall": 0.851520572450805,
+          "f1": 0.6480599046970729,
+          "tp": 476,
+          "pred_clusters": 910,
+          "gt_bunches": 559
+        },
+        "counting": {
+          "mae": 3.2818181818181817,
+          "exact_accuracy": 0.11818181818181818,
+          "plus_minus_1_accuracy": 0.2545454545454545,
+          "vector_exact_accuracy": 0.08181818181818182
+        },
+        "classification": {
+          "matched_class_accuracy": 0.7773109243697479,
+          "matched": 476,
+          "macro_f1_end_to_end": 0.4762069133066411,
+          "per_class_f1_end_to_end": {
+            "B1": 0.6019417475728155,
+            "B2": 0.5357798165137615,
+            "B3": 0.5185185185185185,
+            "B4": 0.24858757062146894
+          }
+        },
+        "per_tree": [
+          {
+            "tree_id": "DAMIMAS_A21B_0012",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 3,
+            "matched": 2,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0016",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 10,
+            "matched": 3,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0019",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 15,
+            "matched": 9,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0032",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0034",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 2,
+            "matched": 2,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0037",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 9,
+            "matched": 6,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0039",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 5,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0047",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 6,
+            "matched": 2,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0049",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 5,
+            "matched": 1,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0062",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 11,
+            "matched": 6,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0105",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 10,
+            "matched": 3,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0113",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 11,
+            "matched": 4,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0118",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 5,
+            "matched": 5,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0119",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 2,
+            "matched": 2,
+            "count_delta": -1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0125",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 6,
+            "matched": 5,
+            "count_delta": -2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0129",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 1,
+            "matched": 1,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0131",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 4,
+            "matched": 1,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0133",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 10,
+            "matched": 6,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0136",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 2,
+            "matched": 2,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0147",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 10,
+            "matched": 6,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0148",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 11,
+            "matched": 4,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0149",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 4,
+            "matched": 2,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0152",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 12,
+            "matched": 8,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0156",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 6,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0164",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 3,
+            "matched": 1,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0169",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 7,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0170",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 10,
+            "matched": 4,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0176",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 4,
+            "matched": 1,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0177",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 6,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0179",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 6,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0196",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 5,
+            "matched": 3,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0199",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 6,
+            "matched": 1,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0209",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 6,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0211",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 5,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0212",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0229",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 10,
+            "matched": 4,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0231",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 5,
+            "matched": 4,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0233",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 3,
+            "matched": 3,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0265",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 11,
+            "matched": 4,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0272",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 5,
+            "matched": 2,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0284",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 7,
+            "matched": 5,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0287",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 5,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0302",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0303",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 4,
+            "matched": 3,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0304",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 10,
+            "matched": 4,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0309",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 2,
+            "matched": 2,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0318",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 18,
+            "matched": 5,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0323",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 12,
+            "matched": 8,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0333",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 3,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0340",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 11,
+            "matched": 3,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0343",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 6,
+            "matched": 4,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0350",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 6,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "MARIHAT_I142_0004",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 16,
+            "matched": 9,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "MARIHAT_I142_0010",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 9,
+            "matched": 6,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "MARIHAT_I142_0013",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 13,
+            "matched": 6,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "MARIHAT_I142_0014",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "MARIHAT_I142_0017",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "MARIHAT_I142_0021",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 18,
+            "matched": 7,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "MARIHAT_I142_0024",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 15,
+            "matched": 5,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "MARIHAT_I142_0036",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 12,
+            "matched": 6,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "MARIHAT_I142_0044",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 9,
+            "matched": 7,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "MARIHAT_I142_0055",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 15,
+            "matched": 6,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "MARIHAT_I142_0070",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 10,
+            "matched": 7,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_H11_0007",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 5,
+            "matched": 5,
+            "count_delta": -1
+          },
+          {
+            "tree_id": "TOPAZ_H11_0009",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 8,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_H11_0011",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 4,
+            "matched": 3,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "TOPAZ_H11_0021",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "TOPAZ_H11_0026",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 7,
+            "matched": 5,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H11_0032",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 5,
+            "matched": 4,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "TOPAZ_H11_0036",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 11,
+            "matched": 8,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H11_0050",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 9,
+            "matched": 5,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H11_0058",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_H11_0073",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 11,
+            "matched": 7,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H11_0075",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 7,
+            "matched": 3,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_H11_0080",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 5,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H11_0097",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 4,
+            "matched": 3,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_H11_0105",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 5,
+            "matched": 1,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_H13_0004",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 6,
+            "matched": 3,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "TOPAZ_H13_0005",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 9,
+            "matched": 3,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "TOPAZ_H13_0009",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 6,
+            "matched": 3,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H13_0018",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 5,
+            "matched": 4,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "TOPAZ_H13_0019",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 9,
+            "matched": 7,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H13_0021",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 6,
+            "matched": 5,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_H13_0027",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 6,
+            "matched": 4,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_H13_0035",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 10,
+            "matched": 7,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H13_0039",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 7,
+            "matched": 7,
+            "count_delta": -1
+          },
+          {
+            "tree_id": "TOPAZ_H13_0045",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 7,
+            "matched": 6,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_H13_0055",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 10,
+            "matched": 5,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "TOPAZ_H13_0063",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 5,
+            "matched": 2,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_H13_0089",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 8,
+            "matched": 4,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "TOPAZ_H13_0098",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 5,
+            "matched": 4,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "TOPAZ_I141_0004",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 14,
+            "matched": 12,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "TOPAZ_I141_0011",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 8,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_I141_0013",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 8,
+            "matched": 6,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_I141_0015",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 10,
+            "matched": 4,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "TOPAZ_I141_0016",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 10,
+            "matched": 6,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_I141_0024",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 19,
+            "matched": 4,
+            "count_delta": 14
+          },
+          {
+            "tree_id": "TOPAZ_I141_0026",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 15,
+            "matched": 6,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "TOPAZ_I141_0039",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 7,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_I141_0047",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 7,
+            "matched": 3,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "TOPAZ_I141_0058",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_I141_0079",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 16,
+            "matched": 3,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "TOPAZ_I141_0087",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 12,
+            "matched": 6,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "TOPAZ_I141_0092",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 9,
+            "matched": 2,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "TOPAZ_I141_0093",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 14,
+            "matched": 6,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "TOPAZ_I141_0094",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_I141_0098",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 9,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "TOPAZ_I19_0005",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 13,
+            "matched": 9,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "TOPAZ_I19_0023",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 9,
+            "matched": 5,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "TOPAZ_I19_0025",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": 3
+          }
+        ]
+      },
+      "fused_files": {
+        "classaware": "../fused_new763/SawitMVC_Depth_YOLO__wbf_classaware.npz",
+        "agnostic": "../fused_new763/SawitMVC_Depth_YOLO__wbf_agnostic.npz",
+        "classvote": "../fused_new763/SawitMVC_Depth_YOLO__wbf_classvote.npz"
+      }
+    },
+    "SawitMVC-YOLO": {
+      "n_test_trees_metadata": 141,
+      "rotation_prior_train": {
+        "4|1": [
+          0.2307291666666667,
+          -0.003124999999999989,
+          0.10115656250000005,
+          0.05733492187500001,
+          0.7052409650208544,
+          4394
+        ],
+        "4|2": [
+          0.23124999999999996,
+          -0.002343749999999978,
+          0.2671768750000001,
+          0.057334921874999945,
+          0.7169897355920148,
+          535
+        ],
+        "4|3": [
+          -0.25,
+          0.005078124999999989,
+          0.09729562500000007,
+          0.06486375000000001,
+          0.7135496399026863,
+          1343
+        ],
+        "8|1": [
+          0.11979166666666669,
+          0.0027343749999999556,
+          0.07181343749999995,
+          0.047199960937499987,
+          0.5614345611471384,
+          788
+        ],
+        "8|2": [
+          0.25520833333333337,
+          -0.0017578124999999972,
+          0.09266249999999991,
+          0.06283675781249996,
+          0.7510970049403601,
+          432
+        ],
+        "8|3": [
+          0.3471354166666667,
+          -0.005664062500000011,
+          0.10385921874999994,
+          0.05878277343749995,
+          0.6925905459866747,
+          186
+        ],
+        "8|4": [
+          0.30781250000000004,
+          0.0007812500000000111,
+          0.2440112499999999,
+          0.069496875,
+          0.940247162300699,
+          80
+        ],
+        "8|5": [
+          -0.3546875,
+          0.021679687500000017,
+          0.10270093750000005,
+          0.053860078125000065,
+          0.7305429893055573,
+          86
+        ],
+        "8|6": [
+          -0.2614583333333333,
+          0.006640625000000011,
+          0.091118125,
+          0.06718031249999996,
+          0.6931569443485803,
+          101
+        ],
+        "8|7": [
+          -0.15208333333333335,
+          0.0003906249999999778,
+          0.11582812500000007,
+          0.07644656249999993,
+          0.6072756715030353,
+          89
+        ]
+      },
+      "link_calibration_train": {
+        "threshold": 0.43000000000000005,
+        "pairs": 121891,
+        "f1": 0.2910253550449848,
+        "tp": 3914,
+        "fp": 14950,
+        "fn": 4120
+      },
+      "wbf_metrics": {
+        "classaware": {
+          "n_images": 588,
+          "mAP50": 0.20177265766152816,
+          "mAP50_95": 0.06226052483362177,
+          "per_class_AP50": {
+            "B1": 0.37169508543948004,
+            "B2": 0.0958237555391617,
+            "B3": 0.24499572247715592,
+            "B4": 0.09457606719031489
+          }
+        },
+        "agnostic": {
+          "n_images": 588,
+          "mAP50": 0.49743881289126163,
+          "mAP50_95": 0.150380816898287,
+          "per_class_AP50": {
+            "tandan": 0.49743881289126163
+          }
+        }
+      },
+      "multiview_metrics": {
+        "protocol": "4-side only; WBF proposal + weighted detector class vote + train-prior heuristic linker",
+        "n_trees": 135,
+        "n_8_side_excluded": 6,
+        "proposal_conf_min": 0.05,
+        "link_threshold": 0.43000000000000005,
+        "physical_detection": {
+          "precision": 0.4383747178329571,
+          "recall": 0.7235469448584203,
+          "f1": 0.5459657014337925,
+          "tp": 971,
+          "pred_clusters": 2215,
+          "gt_bunches": 1342
+        },
+        "counting": {
+          "mae": 6.555555555555555,
+          "exact_accuracy": 0.022222222222222223,
+          "plus_minus_1_accuracy": 0.08148148148148149,
+          "vector_exact_accuracy": 0.0
+        },
+        "classification": {
+          "matched_class_accuracy": 0.33779608650875387,
+          "matched": 971,
+          "macro_f1_end_to_end": 0.1880523798183208,
+          "per_class_f1_end_to_end": {
+            "B1": 0.3170731707317073,
+            "B2": 0.12998522895125553,
+            "B3": 0.21739130434782608,
+            "B4": 0.08775981524249422
+          }
+        },
+        "per_tree": [
+          {
+            "tree_id": "DAMIMAS_A21B_0001",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 18,
+            "matched": 8,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0004",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 15,
+            "matched": 8,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0009",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 9,
+            "matched": 4,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0022",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 14,
+            "matched": 4,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0024",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 19,
+            "matched": 10,
+            "count_delta": 9
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0028",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 24,
+            "matched": 11,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0038",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 26,
+            "matched": 6,
+            "count_delta": 14
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0062",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 14,
+            "matched": 6,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0066",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 23,
+            "matched": 12,
+            "count_delta": 9
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0067",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 25,
+            "matched": 12,
+            "count_delta": 13
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0070",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 18,
+            "matched": 7,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0074",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 8,
+            "matched": 2,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0079",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 24,
+            "matched": 13,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0081",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 19,
+            "matched": 11,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0084",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 11,
+            "matched": 5,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0092",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 17,
+            "matched": 11,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0104",
+            "n_sides": 4,
+            "gt_count": 15,
+            "pred_count": 21,
+            "matched": 12,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0113",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 13,
+            "matched": 6,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0116",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 20,
+            "matched": 12,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0117",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 7,
+            "matched": 3,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0131",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 14,
+            "matched": 7,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0139",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 23,
+            "matched": 6,
+            "count_delta": 15
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0143",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 18,
+            "matched": 8,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0150",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 21,
+            "matched": 10,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0156",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 24,
+            "matched": 9,
+            "count_delta": 15
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0160",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 16,
+            "matched": 6,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0161",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 21,
+            "matched": 12,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0165",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 23,
+            "matched": 9,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0187",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 11,
+            "matched": 3,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0189",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 10,
+            "matched": 5,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0190",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 22,
+            "matched": 2,
+            "count_delta": 13
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0195",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 21,
+            "matched": 7,
+            "count_delta": 13
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0200",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 12,
+            "matched": 6,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0204",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 16,
+            "matched": 9,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0219",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 17,
+            "matched": 6,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0227",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 12,
+            "matched": 2,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0230",
+            "n_sides": 4,
+            "gt_count": 0,
+            "pred_count": 6,
+            "matched": 0,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0235",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 14,
+            "matched": 9,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0244",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 14,
+            "matched": 7,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0249",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 8,
+            "matched": 5,
+            "count_delta": -2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0251",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 18,
+            "matched": 10,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0259",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 18,
+            "matched": 9,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0266",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 18,
+            "matched": 7,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0272",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 10,
+            "matched": 8,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0278",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 18,
+            "matched": 6,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0283",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 16,
+            "matched": 6,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0288",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 13,
+            "matched": 8,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0289",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 15,
+            "matched": 7,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0291",
+            "n_sides": 4,
+            "gt_count": 16,
+            "pred_count": 26,
+            "matched": 4,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0299",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 20,
+            "matched": 8,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0301",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 14,
+            "matched": 7,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0302",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 20,
+            "matched": 3,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0304",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 19,
+            "matched": 9,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0309",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 13,
+            "matched": 5,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0327",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 12,
+            "matched": 3,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0329",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 16,
+            "matched": 4,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0331",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 14,
+            "matched": 4,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0346",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 17,
+            "matched": 8,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0363",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 16,
+            "matched": 3,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0366",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 12,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0371",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 19,
+            "matched": 10,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0383",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 23,
+            "matched": 8,
+            "count_delta": 9
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0385",
+            "n_sides": 4,
+            "gt_count": 16,
+            "pred_count": 17,
+            "matched": 4,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0394",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 14,
+            "matched": 6,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0408",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 16,
+            "matched": 10,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0412",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 12,
+            "matched": 8,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0413",
+            "n_sides": 4,
+            "gt_count": 15,
+            "pred_count": 15,
+            "matched": 7,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0418",
+            "n_sides": 4,
+            "gt_count": 16,
+            "pred_count": 17,
+            "matched": 8,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0420",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 7,
+            "matched": 3,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0421",
+            "n_sides": 4,
+            "gt_count": 0,
+            "pred_count": 11,
+            "matched": 0,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0424",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 13,
+            "matched": 8,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0425",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 22,
+            "matched": 3,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0434",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 16,
+            "matched": 6,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0436",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 28,
+            "matched": 13,
+            "count_delta": 15
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0437",
+            "n_sides": 4,
+            "gt_count": 19,
+            "pred_count": 36,
+            "matched": 13,
+            "count_delta": 17
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0461",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 29,
+            "matched": 7,
+            "count_delta": 18
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0463",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 21,
+            "matched": 9,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0476",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 17,
+            "matched": 9,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0482",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 27,
+            "matched": 9,
+            "count_delta": 14
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0494",
+            "n_sides": 4,
+            "gt_count": 17,
+            "pred_count": 15,
+            "matched": 11,
+            "count_delta": -2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0497",
+            "n_sides": 4,
+            "gt_count": 18,
+            "pred_count": 21,
+            "matched": 6,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0506",
+            "n_sides": 4,
+            "gt_count": 18,
+            "pred_count": 19,
+            "matched": 13,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0542",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 18,
+            "matched": 10,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0554",
+            "n_sides": 4,
+            "gt_count": 18,
+            "pred_count": 22,
+            "matched": 13,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0562",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 13,
+            "matched": 10,
+            "count_delta": 0
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0566",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 17,
+            "matched": 11,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0580",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 21,
+            "matched": 13,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0596",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 20,
+            "matched": 9,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0600",
+            "n_sides": 4,
+            "gt_count": 16,
+            "pred_count": 22,
+            "matched": 15,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0605",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 18,
+            "matched": 11,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0611",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 21,
+            "matched": 9,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0619",
+            "n_sides": 4,
+            "gt_count": 16,
+            "pred_count": 21,
+            "matched": 15,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0631",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 13,
+            "matched": 6,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0633",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 9,
+            "matched": 2,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0639",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 22,
+            "matched": 13,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0655",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 13,
+            "matched": 8,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0661",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 20,
+            "matched": 10,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0662",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 8,
+            "matched": 1,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0664",
+            "n_sides": 4,
+            "gt_count": 15,
+            "pred_count": 28,
+            "matched": 13,
+            "count_delta": 13
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0676",
+            "n_sides": 4,
+            "gt_count": 15,
+            "pred_count": 21,
+            "matched": 12,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0680",
+            "n_sides": 4,
+            "gt_count": 17,
+            "pred_count": 29,
+            "matched": 15,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0694",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 13,
+            "matched": 3,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0702",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 13,
+            "matched": 7,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0709",
+            "n_sides": 4,
+            "gt_count": 15,
+            "pred_count": 21,
+            "matched": 14,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0712",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 18,
+            "matched": 11,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0717",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 21,
+            "matched": 12,
+            "count_delta": 8
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0725",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0728",
+            "n_sides": 4,
+            "gt_count": 14,
+            "pred_count": 20,
+            "matched": 12,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0730",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 18,
+            "matched": 6,
+            "count_delta": 10
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0731",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 10,
+            "matched": 3,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0734",
+            "n_sides": 4,
+            "gt_count": 9,
+            "pred_count": 16,
+            "matched": 3,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0737",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 4,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0748",
+            "n_sides": 4,
+            "gt_count": 13,
+            "pred_count": 18,
+            "matched": 12,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0751",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 13,
+            "matched": 11,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0763",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 6,
+            "matched": 1,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0778",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 19,
+            "matched": 1,
+            "count_delta": 11
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0781",
+            "n_sides": 4,
+            "gt_count": 12,
+            "pred_count": 14,
+            "matched": 10,
+            "count_delta": 2
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0788",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 17,
+            "matched": 11,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0793",
+            "n_sides": 4,
+            "gt_count": 0,
+            "pred_count": 3,
+            "matched": 0,
+            "count_delta": 3
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0797",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 7,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "DAMIMAS_A21B_0800",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 22,
+            "matched": 7,
+            "count_delta": 12
+          },
+          {
+            "tree_id": "LONSUM_A21A_0018",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 15,
+            "matched": 6,
+            "count_delta": 9
+          },
+          {
+            "tree_id": "LONSUM_A21A_0022",
+            "n_sides": 4,
+            "gt_count": 5,
+            "pred_count": 11,
+            "matched": 4,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "LONSUM_A21A_0032",
+            "n_sides": 4,
+            "gt_count": 1,
+            "pred_count": 5,
+            "matched": 1,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "LONSUM_A21A_0035",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 11,
+            "matched": 3,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "LONSUM_A21A_0039",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 13,
+            "matched": 4,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "LONSUM_A21A_0045",
+            "n_sides": 4,
+            "gt_count": 6,
+            "pred_count": 10,
+            "matched": 5,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "LONSUM_A21A_0046",
+            "n_sides": 4,
+            "gt_count": 2,
+            "pred_count": 8,
+            "matched": 1,
+            "count_delta": 6
+          },
+          {
+            "tree_id": "LONSUM_A21A_0047",
+            "n_sides": 4,
+            "gt_count": 8,
+            "pred_count": 13,
+            "matched": 2,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "LONSUM_A21A_0058",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 15,
+            "matched": 10,
+            "count_delta": 4
+          },
+          {
+            "tree_id": "LONSUM_A21A_0069",
+            "n_sides": 4,
+            "gt_count": 4,
+            "pred_count": 13,
+            "matched": 3,
+            "count_delta": 9
+          },
+          {
+            "tree_id": "LONSUM_A21A_0075",
+            "n_sides": 4,
+            "gt_count": 7,
+            "pred_count": 12,
+            "matched": 1,
+            "count_delta": 5
+          },
+          {
+            "tree_id": "LONSUM_A21A_0082",
+            "n_sides": 4,
+            "gt_count": 3,
+            "pred_count": 10,
+            "matched": 3,
+            "count_delta": 7
+          },
+          {
+            "tree_id": "LONSUM_A21A_0091",
+            "n_sides": 4,
+            "gt_count": 11,
+            "pred_count": 12,
+            "matched": 5,
+            "count_delta": 1
+          },
+          {
+            "tree_id": "LONSUM_A21A_0099",
+            "n_sides": 4,
+            "gt_count": 10,
+            "pred_count": 8,
+            "matched": 2,
+            "count_delta": -2
+          }
+        ]
+      },
+      "fused_files": {
+        "classaware": "../fused_new763/SawitMVC_YOLO__wbf_classaware.npz",
+        "agnostic": "../fused_new763/SawitMVC_YOLO__wbf_agnostic.npz",
+        "classvote": "../fused_new763/SawitMVC_YOLO__wbf_classvote.npz"
+      }
+    }
+  }
+}

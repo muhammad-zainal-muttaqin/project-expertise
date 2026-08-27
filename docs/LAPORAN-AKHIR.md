@@ -4,6 +4,13 @@
 **Cakupan Fase:** Fase 0 s.d. Fase 6 (`V2-E-001` s.d. `V2-E-026`)  
 **Status Evaluasi:** Pengumpulan metrik eksperimental ditutup; seluruh angka empiris telah diverifikasi dan terlacak penuh.
 
+> **Pembaruan 27 Agustus 2026:** Verifikasi lanjutan terhadap bobot remote
+> `new763` dan `combined1716`, termasuk WBF serta pipeline empat sisi, dicatat
+> sebagai `V2-E-042` pada [laporan artefak remote](../results/remote_eval_2026-08-27/README.md).
+> Angka tersebut merupakan verifikasi engineering pada test lokal dan tidak
+> menggantikan angka kanonik dalam laporan ini sebelum audit silsilah split
+> selesai.
+
 ---
 
 ## 1. Ringkasan Eksekutif
@@ -216,7 +223,8 @@ Prosedur eksekusi langkah-demi-langkah tersedia di [docs/REPRODUKSI-FASE6.md](RE
 | Berkas Artefak | Deskripsi Kandungan |
 |---|---|
 | [`docs/WORKFLOW_KRONOLOGIS.md`](WORKFLOW_KRONOLOGIS.md) | Rekam jejak alur kerja kronologis lengkap seluruh simpul eksperimen. |
-| [`experiments/EKSPERIMEN.md`](../experiments/EKSPERIMEN.md) | Log *append-only* `V2-E-001` s.d. `V2-E-041`. |
+| [`experiments/EKSPERIMEN.md`](../experiments/EKSPERIMEN.md) | Log *append-only* `V2-E-001` s.d. `V2-E-042`. |
+| [`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md) | Verifikasi bobot remote, WBF, dan pipeline empat sisi pada dua test lokal. |
 | [`results/fase6_ringkas.json`](../results/fase6_ringkas.json) | Kompilasi seluruh metrik kuantitatif Fase 6. |
 | [`results/pergeseran_temporal.json`](../results/pergeseran_temporal.json) | Bukti empiris pergeseran temporal 80 hari antar-dataset. |
 | [`results/bootstrap_map.json`](../results/bootstrap_map.json) | Estimasi selang kepercayaan bootstrap. |
