@@ -269,7 +269,8 @@ def iou_one(box: np.ndarray, boxes: np.ndarray) -> np.ndarray:
 
 def fuse_groups(rows: np.ndarray, iou_threshold: float,
                 score_min: float, n_models: int,
-                model_weights: np.ndarray | None = None) -> list[dict]:
+                model_weights: np.ndarray | None = None,
+                class_model_weights: np.ndarray | None = None) -> list[dict]:
     """Fast greedy WBF; rows are x1,y1,x2,y2,score,class,model."""
     if len(rows) == 0:
         return []
@@ -284,6 +285,16 @@ def fuse_groups(rows: np.ndarray, iou_threshold: float,
         if len(model_weights) != n_models or np.any(model_weights <= 0):
             raise ValueError("model_weights must contain one positive weight per model")
         weighted_mode = True
+    if class_model_weights is None:
+        class_model_weights = np.ones((n_models, K), dtype=float)
+    else:
+        class_model_weights = np.asarray(class_model_weights, dtype=float)
+        if (class_model_weights.shape != (n_models, K)
+                or np.any(class_model_weights < 0)
+                or np.any(class_model_weights.sum(axis=0) <= 0)):
+            raise ValueError(
+                "class_model_weights must be nonnegative with shape "
+                f"({n_models}, {K}) and positive support per class")
     rows = rows[np.argsort(-(rows[:, 4] * model_weights[rows[:, 6].astype(int)]))]
     representatives: list[np.ndarray] = []
     groups: list[list[np.ndarray]] = []
@@ -322,7 +333,8 @@ def fuse_groups(rows: np.ndarray, iou_threshold: float,
         for row, row_weight in zip(g, weights):
             c = int(row[5])
             if 0 <= c < K:
-                probs[c] += float(row_weight)
+                model_id = int(row[6])
+                probs[c] += float(row_weight * class_model_weights[model_id, c])
         if probs.sum() <= 0:
             probs[:] = 1. / K
         else:
@@ -341,17 +353,20 @@ def load_prediction_bank(cfg: dict) -> dict[str, dict[str, np.ndarray]]:
     return bank
 
 
-def _fuse_one(task: tuple[str, np.ndarray, float, float, int, np.ndarray | None]):
-    stem, rows, iou_threshold, score_min, n_models, model_weights = task
+def _fuse_one(task: tuple[str, np.ndarray, float, float, int,
+                            np.ndarray | None, np.ndarray | None]):
+    (stem, rows, iou_threshold, score_min, n_models, model_weights,
+     class_model_weights) = task
     all_groups = fuse_groups(rows, iou_threshold, score_min, n_models,
-                             model_weights)
+                             model_weights, class_model_weights)
     agnostic = np.asarray(
         [[*g["box"], g["score"], 0.] for g in all_groups], float
     ).reshape(-1, 6)
     ca_groups = []
     for c in range(K):
         ca_groups.extend(fuse_groups(rows[rows[:, 5] == c], iou_threshold,
-                                     score_min, n_models, model_weights))
+                                     score_min, n_models, model_weights,
+                                     class_model_weights))
     classaware = np.asarray(
         [[*g["box"], g["score"], int(np.argmax(g["p"]))]
          for g in ca_groups], float
@@ -362,7 +377,8 @@ def _fuse_one(task: tuple[str, np.ndarray, float, float, int, np.ndarray | None]
 def fuse_corpus(records: dict[str, dict], bank: dict[str, dict[str, np.ndarray]],
                 iou_threshold: float, score_min: float,
                 workers: int = 1,
-                model_weights: np.ndarray | None = None) -> tuple[dict, dict, dict]:
+                model_weights: np.ndarray | None = None,
+                class_model_weights: np.ndarray | None = None) -> tuple[dict, dict, dict]:
     n_models = len(bank)
     stems = [view["stem"] for rec in records.values()
              for view in rec["views"].values()]
@@ -377,7 +393,7 @@ def fuse_corpus(records: dict[str, dict], bank: dict[str, dict[str, np.ndarray]]
                                    np.full(len(rows), model_id, float)])
         rows = np.concatenate(parts, axis=0) if parts else np.zeros((0, 7))
         tasks.append((stem, rows, iou_threshold, score_min, n_models,
-                      model_weights))
+                      model_weights, class_model_weights))
     if workers > 1 and len(tasks) > 1:
         with ProcessPoolExecutor(max_workers=min(workers, len(tasks))) as pool:
             fused = pool.map(_fuse_one, tasks, chunksize=1)
@@ -636,6 +652,14 @@ def main() -> int:
                     help="maximum members in one linked cluster")
     ap.add_argument("--model-weights", nargs="+", type=float, default=None,
                     help="optional positive weights in model order: YOLO, RT-DETR, RF-DETR")
+    ap.add_argument("--class-model-weights", nargs="+", type=float, default=None,
+                    help="optional class-vote-only weights, row-major model x B1..B4; "
+                         "does not change boxes, scores, or linking")
+    ap.add_argument("--rfdetr-override", type=Path, default=None,
+                    help="replace the RF-DETR prediction dump for SawitMVC-YOLO")
+    ap.add_argument("--prediction-override", action="append", default=[],
+                    metavar="DATASET:MODEL=PATH",
+                    help="replace one prediction dump; DATASET is 953 or depth")
     ap.add_argument("--split", choices=("train", "val", "test"),
                     default="test", help="dataset split to evaluate")
     ap.add_argument("--output", type=Path, default=None)
@@ -643,6 +667,15 @@ def main() -> int:
     args = ap.parse_args()
     if args.model_weights is not None and len(args.model_weights) != 3:
         ap.error("--model-weights requires exactly three values: YOLO RT-DETR RF-DETR")
+    if args.class_model_weights is not None and len(args.class_model_weights) != 12:
+        ap.error("--class-model-weights requires exactly 12 values "
+                 "(YOLO B1..B4, RT-DETR B1..B4, RF-DETR B1..B4)")
+    class_model_weights = (np.asarray(args.class_model_weights, dtype=float).reshape(3, K)
+                           if args.class_model_weights is not None else None)
+    if class_model_weights is not None and (
+            np.any(class_model_weights < 0)
+            or np.any(class_model_weights.sum(axis=0) <= 0)):
+        ap.error("--class-model-weights must be nonnegative with positive support per class")
 
     artifact_root = Path("/workspace/model_artifacts/project-expertise/eval_2026-08-27")
     if args.output is None:
@@ -679,12 +712,32 @@ def main() -> int:
             for dataset_name, cfg in CONFIGS.items()
         }
 
+    if args.rfdetr_override is not None:
+        if args.bank != "combined1716" or args.split != "val":
+            ap.error("--rfdetr-override currently requires --bank combined1716 --split val")
+        configs["SawitMVC-YOLO"]["predictions"]["rfdetr_l"] = args.rfdetr_override
+
+    for spec in args.prediction_override:
+        if "=" not in spec or ":" not in spec.split("=", 1)[0]:
+            ap.error("--prediction-override format is DATASET:MODEL=PATH")
+        target, raw_path = spec.split("=", 1)
+        dataset_key, model_name = target.split(":", 1)
+        dataset_name = {
+            "953": "SawitMVC-YOLO", "yolo953": "SawitMVC-YOLO",
+            "depth": "SawitMVC-Depth-YOLO",
+        }.get(dataset_key.lower())
+        if dataset_name is None or model_name not in configs[dataset_name]["predictions"]:
+            ap.error(f"unknown prediction override target: {target}")
+        configs[dataset_name]["predictions"][model_name] = Path(raw_path)
+
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "models": f"{args.bank}: YOLO26l + RT-DETR-L + RF-DETR-L",
         "wbf": {"iou_threshold": args.iou_threshold,
                 "input_score_min": args.score_min,
-                "model_weights": args.model_weights},
+                "model_weights": args.model_weights,
+                "class_model_weights": (class_model_weights.tolist()
+                                         if class_model_weights is not None else None)},
         "datasets": {},
     }
     for dataset_name, cfg in configs.items():
@@ -700,7 +753,7 @@ def main() -> int:
                          if args.model_weights is not None else None)
         ca, agn, vote = fuse_corpus(split_records, bank, args.iou_threshold,
                                     args.score_min, args.workers,
-                                    model_weights)
+                                    model_weights, class_model_weights)
         ca_arrays = {k: v for k, v in ca.items()}
         agn_arrays = {k: v for k, v in agn.items()}
         vote_arrays = {

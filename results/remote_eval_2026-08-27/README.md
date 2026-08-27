@@ -10,6 +10,10 @@ Status artefak: **selesai dan tersimpan di repositori**. Bobot model tetap
 berada di luar Git; daftar jalur remote, ukuran, dan *checksum* tercatat pada
 [`MANIFEST.md`](MANIFEST.md). Tidak ada token akses yang disimpan dalam repo.
 
+Eksperimen lanjutan pipeline warna, detail, crop-head, TTA, detector fine-tune,
+reranking, dan evaluasi test dicatat pada
+[`PIPELINE_EXPERIMENTS_V3.md`](PIPELINE_EXPERIMENTS_V3.md).
+
 ## Kesimpulan eksekutif
 
 1. **Angka 83% yang benar adalah lokalisasi class-agnostic, bukan akurasi

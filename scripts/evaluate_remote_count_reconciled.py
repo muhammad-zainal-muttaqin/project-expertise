@@ -178,6 +178,46 @@ def selected_clusters(dets: list[dict], edges, link_threshold: float,
     elif rank_mode == "class_conf":
         key = lambda item: (item["score"] * float(item["p"].max()),
                             item["score"], len(item["members"]))
+    elif rank_mode == "head_conf":
+        key = lambda item: (
+            item["score"] * float(np.asarray(item.get("head_p", item["p"])).max()),
+            item["score"], len(item["members"]))
+    elif rank_mode == "joint_conf":
+        key = lambda item: (
+            item["score"] * np.sqrt(max(float(item["p"].max()), 1e-6) *
+                                     max(float(np.asarray(
+                                         item.get("head_p", item["p"])).max()), 1e-6)),
+            item["score"], len(item["members"]))
+    elif rank_mode == "support_head":
+        key = lambda item: (
+            item["score"] * np.sqrt(len(item["members"])) *
+            float(np.asarray(item.get("head_p", item["p"])).max()),
+            item["score"], len(item["members"]))
+    elif rank_mode.startswith("class_conf_power_"):
+        # A soft version of class-confidence ranking.  alpha=0 is score
+        # ranking; alpha=1 is the existing class_conf profile.  Intermediate
+        # values preserve physical proposals while using class certainty as a
+        # tie-breaker for count reconciliation.
+        power = float(rank_mode.rsplit("_", 1)[-1])
+        key = lambda item: (
+            item["score"] * max(float(item["p"].max()), 1e-6) ** power,
+            item["score"], len(item["members"]))
+    elif rank_mode.startswith("head_conf_power_"):
+        power = float(rank_mode.rsplit("_", 1)[-1])
+        key = lambda item: (
+            item["score"] * max(float(np.asarray(
+                item.get("head_p", item["p"])).max()), 1e-6) ** power,
+            item["score"], len(item["members"]))
+    elif rank_mode.startswith("score_conf_"):
+        # Joint score/confidence family used for a narrow validation sweep.
+        # Keeping both exponents explicit makes the trade-off reproducible and
+        # avoids the all-or-nothing behaviour of class_conf ranking.
+        parts = rank_mode.split("_")
+        score_power, conf_power = float(parts[-2]), float(parts[-1])
+        key = lambda item: (
+            max(float(item["score"]), 1e-6) ** score_power *
+            max(float(item["p"].max()), 1e-6) ** conf_power,
+            item["score"], len(item["members"]))
     else:
         key = lambda item: (item["score"], len(item["members"]))
     groups.sort(key=key, reverse=True)
