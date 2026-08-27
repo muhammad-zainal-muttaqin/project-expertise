@@ -1,0 +1,28 @@
+{
+  "checkpoint": "/workspace/project-expertise/runs_fase6/remote953_c2_rgb_5ep_jitter10/best.pt",
+  "input": "results/remote_eval_2026-08-27/fusions_iou575_combined1716/SawitMVC_YOLO__wbf_softvote.npz",
+  "output": "results/remote_eval_2026-08-27/fusions_iou575_combined1716/SawitMVC_YOLO__wbf_c2_softvote.npz",
+  "dataset": "SawitMVC-YOLO test",
+  "classifier": {
+    "tahap": "pretrain",
+    "mode": "rgb",
+    "backbone": "convnext_tiny.fb_in22k_ft_in1k",
+    "epochs": 5,
+    "batch": 128,
+    "img": 160,
+    "crops": "/workspace/crops_remote953",
+    "jitter": 0.1,
+    "lr": 0.0003,
+    "lr_backbone": null,
+    "aux": 0.5,
+    "gate_init": 0.1,
+    "head": "hybrid",
+    "seed": 42,
+    "init": null,
+    "name": "remote953_c2_rgb_5ep_jitter10"
+  },
+  "proposal_min_classified": 0.0,
+  "n_images": 588,
+  "n_rows": 14643,
+  "n_classified": 14643
+}

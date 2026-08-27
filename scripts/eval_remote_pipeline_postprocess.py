@@ -422,7 +422,8 @@ class UnionFind:
 
 def link_clusters(dets: list[dict], n: int,
                   prior: dict[tuple[int, int], tuple[float, ...]],
-                  threshold: float) -> list[list[dict]]:
+                  threshold: float, pair_mode: str = "all",
+                  max_cluster_size: int | None = None) -> list[list[dict]]:
     if not dets:
         return []
     per_side = defaultdict(list)
@@ -430,6 +431,9 @@ def link_clusters(dets: list[dict], n: int,
         per_side[det["side"]].append(i)
     candidates = []
     for sa, sb in combinations(sorted(per_side), 2):
+        if (pair_mode == "adjacent" and
+                (sb - sa) % n not in (1, n - 1)):
+            continue
         aa, bb = per_side[sa], per_side[sb]
         scores = np.asarray([[pair_score(dets[i], dets[j], n, prior)
                               for j in bb] for i in aa], float)
@@ -442,7 +446,8 @@ def link_clusters(dets: list[dict], n: int,
     uf = UnionFind(len(dets))
     side_sets = {i: {dets[i]["side"]} for i in range(len(dets))}
     sizes = {i: 1 for i in range(len(dets))}
-    max_size = 3 if n == 4 else 6
+    max_size = (max_cluster_size if max_cluster_size is not None
+                else (3 if n == 4 else 6))
     for score, i, j in candidates:
         ri, rj = uf.find(i), uf.find(j)
         if ri == rj or side_sets[ri] & side_sets[rj]:
@@ -480,7 +485,10 @@ def count_iou(pred: dict, bunch: dict) -> float:
 
 def multiview_metrics(records: dict[str, dict], vote: dict[str, list[dict]],
                       prior: dict[tuple[int, int], tuple[float, ...]],
-                      threshold: float, proposal_min: float) -> dict:
+                      threshold: float, proposal_min: float,
+                      singleton_min: float = 0.0,
+                      pair_mode: str = "all",
+                      max_cluster_size: int | None = None) -> dict:
     # Four-side capture is the requested product contract. Eight-side test
     # trees are reported as excluded rather than mixed into this benchmark.
     usable = [r for r in records.values() if r["n_sides"] == 4]
@@ -505,8 +513,13 @@ def multiview_metrics(records: dict[str, dict], vote: dict[str, list[dict]],
                              "cy": ((y1 + y2) / 2) / height,
                              "w": max(x2 - x1, 1.) / width,
                              "h": max(y2 - y1, 1.) / height})
-        clusters = [cluster_summary(g) for g in link_clusters(
-            dets, rec["n_sides"], prior, threshold)]
+        clusters = []
+        for group in link_clusters(dets, rec["n_sides"], prior, threshold,
+                                    pair_mode, max_cluster_size):
+            summary = cluster_summary(group)
+            if len(group) == 1 and summary["score"] < singleton_min:
+                continue
+            clusters.append(summary)
         bunches = rec["bunches"]
         matrix = np.zeros((len(clusters), len(bunches)), float)
         for i, pred in enumerate(clusters):
@@ -552,9 +565,13 @@ def multiview_metrics(records: dict[str, dict], vote: dict[str, list[dict]],
         fn = int(cm[:, c].sum() - tp)
         macro_f1.append(2 * tp / max(2 * tp + fp + fn, 1))
     return {
-        "protocol": "4-side only; WBF proposal + weighted detector class vote + train-prior heuristic linker",
+        "protocol": "4-side only; WBF proposal + weighted class probabilities + train-prior heuristic linker; counting is raw linked-cluster count, not Ridge F_all",
+        "counting_method": "raw linked-cluster count (Ridge F_all not applied to this remote detector dump)",
         "n_trees": len(usable), "n_8_side_excluded": skipped,
         "proposal_conf_min": proposal_min, "link_threshold": threshold,
+        "singleton_conf_min": singleton_min, "link_pair_mode": pair_mode,
+        "max_cluster_size": (max_cluster_size if max_cluster_size is not None
+                              else 3),
         "physical_detection": {"precision": p, "recall": r, "f1": f1,
                                 "tp": total_tp, "pred_clusters": total_pred,
                                 "gt_bunches": total_gt},
@@ -589,6 +606,12 @@ def main() -> int:
                     help="CPU workers for independent per-image WBF jobs")
     ap.add_argument("--link-threshold", type=float, default=None,
                     help="override the train-calibrated link threshold")
+    ap.add_argument("--singleton-min", type=float, default=0.0,
+                    help="drop singleton clusters below this fused score")
+    ap.add_argument("--pair-mode", choices=("all", "adjacent"), default="all",
+                    help="side pairs considered by the linker")
+    ap.add_argument("--max-cluster-size", type=int, default=None,
+                    help="maximum members in one linked cluster")
     ap.add_argument("--output", type=Path, default=None)
     ap.add_argument("--fused-dir", type=Path, default=None)
     args = ap.parse_args()
@@ -639,16 +662,23 @@ def main() -> int:
                              ).reshape(-1, 6)
             for stem, items in vote.items()
         }
+        softvote_arrays = {
+            stem: np.asarray([[*item["box"], item["score"], *item["p"]]
+                              for item in items], float).reshape(-1, 5 + K)
+            for stem, items in vote.items()
+        }
         safe = dataset_name.replace("/", "_").replace("-", "_")
         save_npz(args.fused_dir / f"{safe}__wbf_classaware.npz", ca_arrays)
         save_npz(args.fused_dir / f"{safe}__wbf_agnostic.npz", agn_arrays)
         save_npz(args.fused_dir / f"{safe}__wbf_classvote.npz", vote_arrays)
+        save_npz(args.fused_dir / f"{safe}__wbf_softvote.npz", softvote_arrays)
         wbf_metrics = {
             "classaware": coco_metrics(cfg["data_root"], ca_arrays, False),
             "agnostic": coco_metrics(cfg["data_root"], agn_arrays, True),
         }
-        mv = multiview_metrics(test_records, vote, prior, link_threshold,
-                               args.proposal_min)
+        mv = multiview_metrics(
+            test_records, vote, prior, link_threshold, args.proposal_min,
+            args.singleton_min, args.pair_mode, args.max_cluster_size)
         result["datasets"][dataset_name] = {
             "n_test_trees_metadata": len(test_records),
             "rotation_prior_train": {f"{n}|{d}": list(v)
@@ -660,6 +690,7 @@ def main() -> int:
                 "classaware": str(args.fused_dir / f"{safe}__wbf_classaware.npz"),
                 "agnostic": str(args.fused_dir / f"{safe}__wbf_agnostic.npz"),
                 "classvote": str(args.fused_dir / f"{safe}__wbf_classvote.npz"),
+                "softvote": str(args.fused_dir / f"{safe}__wbf_softvote.npz"),
             },
         }
         print(json.dumps({"dataset": dataset_name, "wbf": wbf_metrics,

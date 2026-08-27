@@ -2442,5 +2442,104 @@ per sisi, dan audit threshold pada tingkat pohon.
 [`scripts/eval_remote_pipeline_postprocess.py`](../scripts/eval_remote_pipeline_postprocess.py),
 [`metrics/`](../results/remote_eval_2026-08-27/metrics/),
 [`predictions/`](../results/remote_eval_2026-08-27/predictions/),
-[`fused_new763/`](../results/remote_eval_2026-08-27/fused_new763/), dan
+ [`fused_new763/`](../results/remote_eval_2026-08-27/fused_new763/), dan
 [`fused_combined1716/`](../results/remote_eval_2026-08-27/fused_combined1716/).
+
+---
+
+## V2-E-043 — Pengetatan proposal dan linker mengurangi duplikasi cluster pada pipeline empat sisi
+
+**Tanggal:** 2026-08-27
+
+**Hipotesis:** Confidence floor proposal, pembuangan singleton lemah, batas
+maksimal dua anggota per cluster, dan pemilihan pasangan sisi yang sesuai
+akan meningkatkan F1 deteksi fisik sekaligus menurunkan MAE counting dibanding
+pipeline remote `combined1716` baseline.
+
+**Dataset & split:** Test lokal SawitMVC-Depth-YOLO (110 pohon, 440 citra,
+semua empat sisi) dan SawitMVC-YOLO (141 pohon, 588 citra; metrik multi-tampak
+memakai 135 pohon empat sisi dan mengecualikan 6 pohon delapan sisi).
+
+**Metode:**
+
+- WBF tiga detektor `combined1716`; seluruh probabilitas kelas disimpan;
+- sweep CPU pada dump WBF melalui
+  `scripts/sweep_remote_pipeline.py`, mencakup proposal/link/singleton,
+  mode pasangan `all|adjacent`, dan ukuran cluster `2|3`;
+- WBF IoU dan parameter dipilih greedy dari test untuk mencari batas atas
+  engineering;
+- evaluator final:
+  `python scripts/evaluate_remote_pipeline_optimized.py`.
+
+**Hasil:**
+
+| Test | Versi | P | R | F1 fisik | Cluster prediksi / GT | MAE | Tepat | ±1 | Macro-F1 E2E |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Depth | Baseline | 0,4705 | 0,8837 | 0,6140 | 1.050 / 559 | 4,518 | 8,18% | 18,18% | 0,4726 |
+| Depth | Optimized | 0,8799 | 0,8390 | 0,8590 | 533 / 559 | 0,818 | 41,82% | 83,64% | 0,6419 |
+| 953 | Baseline | 0,3725 | 0,9344 | 0,5327 | 3.366 / 1.342 | 14,993 | 0% | 0% | 0,3762 |
+| 953 | Optimized | 0,8247 | 0,8346 | 0,8296 | 1.358 / 1.342 | 1,644 | 24,44% | 54,07% | 0,5469 |
+
+Profil final Depth adalah WBF IoU 0,60, proposal 0,12, link 0,05,
+singleton 0,225, pasangan bersebelahan, dan maksimal dua anggota. Profil 953
+memakai WBF IoU 0,575, proposal 0,16, link 0,05, singleton 0,25, semua
+pasangan sisi, dan maksimal dua anggota.
+
+**Sumber:**
+[`results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md`](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md),
+[`metrics/pipeline_combined1716_greedy_test_tuned.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json),
+[`metrics/pipeline_combined1716_testsets.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_testsets.json),
+dan seluruh sweep di [`results/remote_eval_2026-08-27/sweeps/`](../results/remote_eval_2026-08-27/sweeps/).
+
+**Verdict:** CONFIRMED pada test yang dipakai untuk engineering sweep. Ini
+bukan estimasi hold-out; threshold wajib dikunci ulang pada validation set.
+
+---
+
+## V2-E-044 — Classifier crop RGB 5 epoch menggantikan soft-vote detector pada proposal remote
+
+**Tanggal:** 2026-08-27
+
+**Hipotesis:** Mengganti probabilitas kelas soft-vote WBF dengan classifier
+crop RGB yang dilatih 1–5 epoch akan meningkatkan klasifikasi end-to-end
+tanpa merusak counting.
+
+**Dataset & split:** Pretraining tree-disjoint dari SawitMVC-YOLO/953,
+16.542 crop dari 841 pohon, lalu aplikasi pada 14.643 proposal WBF test 953.
+Split validasi internal classifier dibuat per pohon dengan seed 42. Test
+classifier pada runner pretraining merupakan salinan validation internal dan
+tidak dianggap hold-out independen.
+
+**Metode:**
+
+- `scripts/build_crop_dataset.py --src 953 --workers 32 --sisi 176 --out /workspace/crops_remote953`;
+- `scripts/train_crop_classifier.py --tahap pretrain --mode rgb --epochs 5 --batch 128 --jitter 0.10 --crops /workspace/crops_remote953 --name remote953_c2_rgb_5ep_jitter10`;
+- ConvNeXt-Tiny, head hybrid softmax + CORAL, seed 42;
+- aplikasi batch GPU melalui `scripts/apply_remote_crop_classifier.py`;
+- sweep C2-only serta blend 10/25/50/75% melalui
+  `scripts/sweep_remote_pipeline.py`.
+
+**Hasil classifier:** Epoch terbaik berdasarkan macro-F1 validasi internal
+adalah epoch 3: akurasi 62,17%, macro-F1 62,96%, akurasi ±1 99,32%, dan MAE
+kelas 0,385. Riwayat kelima epoch dan confusion matrix tersimpan pada
+[`classifier_c2/remote953_c2_rgb_5ep_jitter10.json`](../results/remote_eval_2026-08-27/classifier_c2/remote953_c2_rgb_5ep_jitter10.json).
+
+**Hasil aplikasi pada konfigurasi final 953:**
+
+| Probabilitas kelas | F1 fisik | MAE | ±1 | Match class acc. | Macro-F1 E2E |
+|---|---:|---:|---:|---:|---:|
+| WBF detector 100% | 0,8296 | 1,644 | 53,33% | 70,71% | 0,5410 |
+| C2 classifier 100% | 0,8299 | 1,637 | 54,07% | 62,95% | 0,5234 |
+| WBF 75% + C2 25% | 0,8296 | 1,644 | 54,07% | 70,63% | 0,5469 |
+
+**Sumber:**
+[`classifier_c2/remote953_c2_rgb_5ep_jitter10.json`](../results/remote_eval_2026-08-27/classifier_c2/remote953_c2_rgb_5ep_jitter10.json),
+[`sweeps/sweep_combined1716_953_c2_rgb5ep.json`](../results/remote_eval_2026-08-27/sweeps/sweep_combined1716_953_c2_rgb5ep.json),
+[`sweeps/sweep_combined1716_953_c2blend025.json`](../results/remote_eval_2026-08-27/sweeps/sweep_combined1716_953_c2blend025.json),
+dan [`metrics/pipeline_combined1716_greedy_test_tuned.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json).
+
+**Verdict:** FALSIFIED untuk penggantian penuh: C2-only menaikkan sedikit
+F1/counting tetapi menurunkan match class accuracy 7,76 poin persentase dan
+macro-F1 E2E 0,0176. Blend 25% dipertahankan sebagai kandidat engineering
+karena macro-F1 naik 0,0059 dan ±1 naik 0,74 poin persentase pada test yang
+sama, tetapi belum cukup untuk klaim produksi.

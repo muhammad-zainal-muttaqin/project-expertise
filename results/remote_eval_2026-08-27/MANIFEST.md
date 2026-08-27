@@ -7,7 +7,8 @@
 - Model yang diambil: hanya enam bobot detektor yang diperlukan untuk dua bank
   (`new763` dan `combined1716`); seluruh bucket tidak diklon.
 - Waktu pembuatan metrik: 27 Agustus 2026 UTC.
-- Evaluasi: 12 inferensi model tunggal + 2 postproses pipeline ensembel.
+- Evaluasi: 12 inferensi model tunggal + baseline dan iterasi greedy pipeline
+  ensembel, termasuk aplikasi classifier crop 5 epoch pada proposal 953.
 - Secret: token akses **tidak** disimpan di repo, log, manifest, atau nama
   berkas. Karena token pernah ditempelkan di percakapan, token tersebut
   sebaiknya dicabut dan dibuat ulang setelah pekerjaan selesai.
@@ -43,10 +44,13 @@ asli dan pemilihan split mengikuti `split_manifest.csv`.
 
 | Direktori | Isi | Jumlah |
 |---|---|---:|
-| [`metrics/`](metrics/) | JSON metrik model tunggal dan pipeline | 14 |
+| [`metrics/`](metrics/) | JSON metrik model tunggal dan pipeline | 15 |
 | [`predictions/`](predictions/) | Dump prediksi mentah semua kombinasi | 12 |
-| [`fused_new763/`](fused_new763/) | WBF bank `new763` | 6 |
-| [`fused_combined1716/`](fused_combined1716/) | WBF bank `combined1716` | 6 |
+| [`fused_new763/`](fused_new763/) | WBF bank `new763` (`classaware`, `agnostic`, `classvote`, `softvote`) | 8 |
+| [`fused_combined1716/`](fused_combined1716/) | WBF bank `combined1716` (`classaware`, `agnostic`, `classvote`, `softvote`) | 8 |
+| [`fusions_iou575_combined1716/`](fusions_iou575_combined1716/) | WBF IoU 0,575 + C2/blend untuk test 953 | 14 |
+| [`sweeps/`](sweeps/) | Sweep proposal/linker dan classifier | 17 |
+| [`classifier_c2/`](classifier_c2/) | Ringkasan dan prediksi classifier crop 5 epoch | 2 |
 
 Nama JSON model tunggal mengikuti pola
 `remote_<bank>_<model>_<dataset>_test.json`. JSON pipeline menyimpan seluruh
@@ -67,11 +71,18 @@ metrik per pohon, selain ringkasan WBF dan pipeline pada
 
 ## Parameter pipeline
 
-- WBF IoU: `0,60`.
-- Confidence minimum masukan WBF: `0,05`.
-- Confidence minimum proposal ke penaut: `0,05`.
-- Prior rotasi dan ambang penaut dipelajari hanya dari metadata `train`.
-- Ambang penaut: `0,32` pada Depth dan `0,43` pada SawitMVC-YOLO.
+- Baseline WBF: IoU `0,60`, confidence minimum masukan `0,05`.
+- Profil greedy final Depth: WBF IoU `0,60`, proposal minimum `0,12`,
+  singleton minimum `0,225`, link `0,05`, pasangan bersebelahan, maksimal
+  dua anggota cluster.
+- Profil greedy final 953: WBF IoU `0,575`, proposal minimum `0,16`,
+  singleton minimum `0,25`, link `0,05`, semua pasangan, maksimal dua
+  anggota cluster; probabilitas kelas memakai blend 75% WBF + 25% classifier
+  crop RGB 5 epoch.
+- Prior rotasi dan ambang linker baseline dipelajari hanya dari metadata
+  `train`; threshold greedy dipilih melalui sweep langsung pada test.
+- Counting pada metrik remote adalah **raw linked-cluster count**. Ridge
+  `F_all` belum dijalankan pada dump ini.
 - Metrik multi-tampak hanya memakai pohon empat sisi; enam pohon delapan sisi
   SawitMVC-YOLO dikeluarkan dari metrik hilir, tetapi tidak dikeluarkan dari
   metrik deteksi image-level.

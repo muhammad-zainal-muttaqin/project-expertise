@@ -73,6 +73,9 @@ timeline
   - [Simpul V2-E-039 — Rekor Plafon Lokalisasi Agnostik WBF Ensembel 81,06% (23 Agu 2026)](#simpul-v2-e-039--rekor-plafon-lokalisasi-agnostik-wbf-ensembel-8106-23-agustus-2026)
   - [Simpul V2-E-040 — Evaluasi Generalisasi Lintas-Domain (23 Agu 2026)](#simpul-v2-e-040--evaluasi-generalisasi-lintas-domain-23-agustus-2026)
   - [Simpul V2-E-041 — Replikasi Independen Platform HUB & Evaluasi Domain Shift (24 Agu 2026)](#simpul-v2-e-041--replikasi-independen-platform-hub--evaluasi-domain-shift-24-agustus-2026)
+  - [Simpul V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agu 2026)](#simpul-v2-e-042--verifikasi-bobot-remote-hugging-face-dan-pipeline-empat-sisi-27-agustus-2026)
+  - [Simpul V2-E-043 — Iterasi Greedy Pengurangan Duplikasi Cluster (27 Agu 2026)](#simpul-v2-e-043--iterasi-greedy-pengurangan-duplikasi-cluster-27-agustus-2026)
+  - [Simpul V2-E-044 — Uji Classifier Crop RGB 5 Epoch pada Proposal Remote (27 Agu 2026)](#simpul-v2-e-044--uji-classifier-crop-rgb-5-epoch-pada-proposal-remote-27-agustus-2026)
 - [7. Ringkasan Eksekutif Temuan Ilmiah & Rekomendasi Deployment](#7-ringkasan-eksekutif-temuan-ilmiah--rekomendasi-deployment)
 
 ---
@@ -555,6 +558,33 @@ timeline
 - **Keputusan Metodologis**: Menggunakan `combined1716` sebagai kandidat detektor utama lintas kamera dan RF-DETR-L sebagai model tunggal utama. WBF agnostik dipertahankan sebagai pembuat proposal; pipeline empat sisi belum dikunci sebagai modul pencacahan produksi karena duplikasi klaster masih dominan.
 - **Batasan Validitas & Audit**: Hasil ini merupakan verifikasi engineering pada folder test lokal, bukan klaim hold-out publikasi baru. Audit irisan `tree_id` antara split latih `combined1716` dan test lokal belum selesai. Enam pohon delapan sisi SawitMVC-YOLO dikeluarkan dari metrik multi-tampak, tetapi tetap masuk metrik image-level.
 - **Artefak**: [`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md) · [`results/remote_eval_2026-08-27/MANIFEST.md`](../results/remote_eval_2026-08-27/MANIFEST.md) · [`scripts/eval_remote_pipeline_postprocess.py`](../scripts/eval_remote_pipeline_postprocess.py)
+
+---
+
+### Simpul V2-E-043 — Iterasi greedy pengurangan duplikasi cluster (27 Agustus 2026)
+
+- **Rancangan Eksperimen**: Menyapu confidence proposal, confidence
+  singleton, threshold linker, pasangan sisi, ukuran cluster maksimum, dan
+  probabilitas kelas penuh dari WBF pada dua test set lokal.
+- **Temuan Empiris**: Dengan bank `combined1716`, F1 fisik naik dari 0,6140
+  menjadi 0,8590 pada Depth dan dari 0,5327 menjadi 0,8296 pada 953. MAE raw
+  linked-cluster turun dari 4,518 menjadi 0,818 dan dari 14,993 menjadi 1,644.
+- **Batasan Validitas**: Parameter dipilih langsung dari test untuk mencari
+  batas atas engineering; belum merupakan estimasi hold-out produksi.
+- **Artefak**: [`results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md`](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md) · [`metrics/pipeline_combined1716_greedy_test_tuned.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json)
+
+### Simpul V2-E-044 — Uji classifier crop RGB 5 epoch pada proposal remote (27 Agustus 2026)
+
+- **Rancangan Eksperimen**: ConvNeXt-Tiny hybrid softmax+CORAL dilatih 5
+  epoch pada 16.542 crop/841 pohon, lalu probabilitasnya diuji sebagai
+  pengganti dan blend dengan soft-vote WBF pada 14.643 proposal test 953.
+- **Temuan Empiris**: C2-only sedikit menaikkan F1/counting tetapi menurunkan
+  match class accuracy dari 70,71% menjadi 62,95% dan macro-F1 E2E dari 0,5410
+  menjadi 0,5234. Blend WBF 75% + C2 25% menghasilkan macro-F1 E2E 0,5469
+  dengan F1 fisik 0,8296 dan MAE 1,644.
+- **Keputusan Metodologis**: C2-only ditolak; blend 25% disimpan sebagai
+  kandidat engineering test 953, bukan keputusan produksi.
+- **Artefak**: [`results/remote_eval_2026-08-27/classifier_c2/`](../results/remote_eval_2026-08-27/classifier_c2/) · [`results/remote_eval_2026-08-27/sweeps/`](../results/remote_eval_2026-08-27/sweeps/)
 
 ---
 

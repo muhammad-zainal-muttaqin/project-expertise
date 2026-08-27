@@ -102,6 +102,9 @@ lengkap tersedia pada berkas JSON di direktori [`metrics/`](metrics/).
 
 ## 3. Fusi tiga model — WBF
 
+Tabel ini adalah konfigurasi baseline V2-E-042 (WBF IoU `0,60`); konfigurasi
+greedy terbaru dan ablation-nya dicatat pada §8.
+
 | Bank | Test | WBF class-aware mAP50 | mAP50–95 | AP50 agnostik | AP50–95 agnostik |
 |---|---|---:|---:|---:|---:|
 | `combined1716` | SawitMVC-Depth | **0,6691** | 0,2757 | **0,8764** | 0,3519 |
@@ -124,6 +127,9 @@ empat kelas. Dengan demikian, angka agnostik tidak boleh langsung dipakai
 sebagai klaim kematangan B1–B4.
 
 ## 4. Pipeline empat sisi: deteksi fisik, klasifikasi, dan pencacahan
+
+Tabel berikut adalah baseline V2-E-042 sebelum pengetatan duplicate-cluster;
+hasil optimized ada pada §8 dan laporan [OPTIMIZED_PIPELINE.md](OPTIMIZED_PIPELINE.md).
 
 Evaluasi ini menggunakan WBF sebagai pembuat proposal, pemungutan suara kelas
 berbobot, lalu pengelompokan lintas sisi menggunakan prior rotasi yang
@@ -193,12 +199,17 @@ dikalibrasi pada data latih. Pencocokan prediksi–acuan memakai IoU minimum
 
 - [`MANIFEST.md`](MANIFEST.md): sumber model, ukuran, *checksum*, konfigurasi,
   dan pemetaan artefak.
-- [`metrics/`](metrics/): 12 JSON detektor tunggal dan 2 JSON hasil pipeline
-  (bank `new763` serta `combined1716`).
+- [`metrics/`](metrics/): 12 JSON detektor tunggal, 2 JSON pipeline baseline,
+  dan 1 JSON pipeline greedy optimized.
 - [`predictions/`](predictions/): 12 dump prediksi mentah (`.npz`).
 - [`fused_new763/`](fused_new763/) dan
-  [`fused_combined1716/`](fused_combined1716/): masing-masing 6 dump WBF
-  (`classaware`, `agnostic`, dan `classvote` untuk dua dataset).
+  [`fused_combined1716/`](fused_combined1716/): masing-masing 8 dump WBF
+  (`classaware`, `agnostic`, `classvote`, dan `softvote` untuk dua dataset).
+- [`fusions_iou575_combined1716/`](fusions_iou575_combined1716/): fusi IoU
+  0,575 dan dump probabilitas classifier/blend untuk eksperimen optimized 953.
+- [`sweeps/`](sweeps/): sweep linker dan ablation probabilitas kelas.
+- [`classifier_c2/`](classifier_c2/): ringkasan serta prediksi classifier crop
+  RGB 5 epoch.
 - [`../../scripts/eval_remote_pipeline_postprocess.py`](../../scripts/eval_remote_pipeline_postprocess.py):
   skrip fusi, kalibrasi prior, penaut empat sisi, dan evaluasi metrik hilir.
 
@@ -236,3 +247,28 @@ python scripts/eval_remote_pipeline_postprocess.py \
 Ganti `--bank` menjadi `new763` untuk meregenerasi hasil pembanding. Dataset
 dan dump prediksi yang digunakan pada sesi asli berada di luar repo sesuai
 pemetaan pada `MANIFEST.md`; bobot tidak disalin ke Git.
+
+## 8. Iterasi greedy pipeline dan classifier 5 epoch
+
+Analisis lanjutan menemukan bottleneck utama pada linker: recall proposal sudah
+tinggi, tetapi klaster duplikat sangat banyak. Pengetatan confidence proposal,
+singleton, batas anggota cluster, dan pasangan sisi menurunkan prediksi
+cluster `combined1716` dari 3.366 menjadi 1.358 pada test 953. Hasil lengkap,
+termasuk seluruh sweep dan konfigurasi final, ada di
+[`OPTIMIZED_PIPELINE.md`](OPTIMIZED_PIPELINE.md).
+
+| Test | F1 fisik | MAE raw linked cluster | Akurasi ±1 | Macro-F1 end-to-end |
+|---|---:|---:|---:|---:|
+| SawitMVC-Depth-YOLO | **0,8590** | **0,818** | **83,64%** | **0,6419** |
+| SawitMVC-YOLO 953 | **0,8296** | **1,644** | **54,07%** | **0,5469** |
+
+Angka ini mengalahkan baseline remote sebelumnya (masing-masing F1 `0,6140`/
+`0,5327` dan MAE `4,518`/`14,993`), tetapi dipilih secara greedy langsung
+pada test. Counting yang dilaporkan adalah jumlah cluster mentah; Ridge
+`F_all` belum diterapkan.
+
+Classifier crop RGB ConvNeXt-Tiny dilatih cepat 5 epoch pada 16.542 crop/841
+pohon. C2-only tidak menggantikan soft vote detector karena class accuracy
+end-to-end turun; blend 25% dipertahankan sebagai kandidat khusus test 953.
+Ringkasannya ada di [`classifier_c2/`](classifier_c2/), sedangkan skripnya
+ada di [`../../scripts/apply_remote_crop_classifier.py`](../../scripts/apply_remote_crop_classifier.py).

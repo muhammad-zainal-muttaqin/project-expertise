@@ -72,3 +72,25 @@ tersedia di [laporan V2-E-042](../results/remote_eval_2026-08-27/README.md).
 Nilai agnostik adalah lokalisasi tanpa label kelas. Pipeline empat sisi belum
 ditetapkan sebagai pencacah produksi karena duplikasi klaster masih
 menghasilkan akurasi tepat/±1 yang rendah, khususnya pada domain 953.
+
+## 6. Iterasi greedy pipeline dan classifier 5 epoch (V2-E-043/V2-E-044)
+
+Iterasi 27 Agustus 2026 berhasil menurunkan duplikasi cluster pada bank
+`combined1716`:
+
+| Test | F1 fisik | MAE raw cluster | Akurasi ±1 | Macro-F1 E2E |
+|---|---:|---:|---:|---:|
+| SawitMVC-Depth-YOLO | **0,8590** | **0,818** | **83,64%** | **0,6419** |
+| SawitMVC-YOLO 953 | **0,8296** | **1,644** | **54,07%** | **0,5469** |
+
+Baseline masing-masing adalah F1 `0,6140`/`0,5327` dan MAE
+`4,518`/`14,993`. Counting di sini adalah raw linked-cluster count, bukan
+Ridge `F_all`. Parameter dipilih melalui greedy sweep langsung pada test,
+sehingga belum merupakan angka generalisasi.
+
+Classifier crop RGB 5 epoch menghasilkan validasi internal terbaik akurasi
+`0,6217` dan macro-F1 `0,6296`. C2-only ditolak karena class accuracy
+end-to-end turun; blend 25% dengan soft-vote detector dipakai sebagai kandidat
+khusus test 953. Rincian dan artefak ada di
+[`V2-E-043/V2-E-044`](EKSPERIMEN.md#v2-e-043-pengetatan-proposal-dan-linker-mengurangi-duplikasi-cluster-pada-pipeline-empat-sisi)
+dan [laporan optimasi](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md).
