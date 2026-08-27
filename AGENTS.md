@@ -40,6 +40,69 @@ Seluruh dokumentasi narasi wajib mematuhi **EYD Edisi V / PUEBI**, prinsip **ant
 notasi matematika desimal koma (0,6012), simbol minus tipografis asli `−`, dan format
 selang kepercayaan `[min; max]`. Rujukan lengkap: `.agents/skills/perbaikan-bahasa-penyampaian/SKILL.md`.
 
+### Standar Bahasa & Penulisan Ilmiah Baku
+
+Seluruh teks narasi, judul, kesimpulan, temuan teknis node, dan label antarmuka (UI) wajib mematuhi kaidah penulisan ilmiah formal (EYD Edisi V / PUEBI):
+
+1. **Prinsip Anti-Calque (Pencegahan Terjemahan Harfiah / Mesin):**
+   - Gunakan **"penurunan performa yang signifikan"** atau **"degradasi performa"** (bukan *"kerugian signifikan"* atau *"loss"*).
+   - Gunakan **"selang kepercayaan 95% mencakup nilai nol (tidak signifikan secara statistik)"** (bukan *"CI95 memuat nol"*).
+   - Gunakan **"tidak menunjukkan keunggulan performa"** atau **"mengalami penurunan"** (bukan *"tidak pernah menang"* atau *"kalah"*).
+   - Gunakan **"disimpulkan sebagai peningkatan"** atau **"terbukti meningkatkan"** (bukan *"menyebut kenaikan"*).
+   - Gunakan **"kemunculan objek (*appearance*)"** (bukan *"appearance"* mentah).
+
+2. **Notasi Matematika, Statistika, dan Angka:**
+   - **Tanda Desimal & Ribuan:** Gunakan tanda koma (`,`) untuk desimal (misal `0,6038`) dan tanda titik (`.`) untuk pemisah ribuan (misal `3.992 citra`, `2.612 objek`).
+   - **Tanda Minus Matematis:** Gunakan simbol minus asli `−` (*Unicode U+2212*), bukan tanda hubung keyboard biasa `-`. Contoh: `−0,0476`.
+   - **Selang Kepercayaan (*Confidence Interval*):** Tuliskan dengan format `[min; max]` menggunakan kurung siku dan titik koma, contoh: `[−0,0270; +0,0739]`.
+   - **Simbol Variabel:** Cetak miring simbol matematis/variabel seperti *$p$-value*, *$n$ sampel*, *IoU*, *$\Delta$ mAP*, *$M_{shuf}$*.
+   - **Rentang Satuan:** Gunakan *en dash* (`–`) untuk rentang: `B1–B4`, `10–11 Agu 2026`.
+
+3. **Taksonomi Padanan Istilah Teknis Baku (EYD V / KBBI):**
+   - `detector` → **detektor**
+   - `monocular / monocular-depth` → **depth monokular / monokular**
+   - `classifier` → **pengklasifikasi / model pengklasifikasi**
+   - `counting` → **pencacahan (*counting*)**
+   - `screening` → **penyaringan awal (*screening*)**
+   - `early stopping / early stop` → **penghentian dini (*early stopping*)**
+   - `data leakage` → **kebocoran data (*data leakage*) / kebocoran partisi data**
+   - `ground truth (GT)` → **nilai acuan kebenaran (*ground truth*) / data acuan riil**
+   - `oracle` → **model batas atas teoretis (*oracle*)**
+   - `ablation study` → **studi ablasi / uji eliminasi komponen**
+   - `baseline` → **garis dasar pembanding (*baseline*) / model acuan**
+   - `bounding box` → **kotak pembatas (*bounding box*)**
+   - `fine-tuning` → **penyesuaian terarah (*fine-tuning*) / adaptasi model**
+   - `spatial pooling` → **agregasi spasial (*spatial pooling*)**
+   - `temporal shift` → **pergeseran temporal (*temporal shift*)**
+   - `booster detector` → **modul penguat (*booster*) detektor**
+   - `crop` → **citra terpotong (*crop*) / pemotongan objek**
+   - `noise` → **variasi acak (*noise*) / derau**
+
+4. **Konvensi Terminologi Antarmuka (UI):**
+   - *Akar data* → **Dataset acuan**
+   - *Node / jejak* → **Simpul eksperimen**
+   - *Status bukti* → **Status validitas bukti**
+   - *Filter bukti* → **Penyaringan bukti**
+   - *Alasan lineage* → **Rasional relasi silsilah**
+   - *Kesimpulan singkat* → **Kesimpulan eksekutif**
+   - *Cerita kerja* → **Narasi metodologi & pembuktian**
+   - *Yang dikerjakan* → **Rancangan eksperimen**
+   - *Bukti yang ditemukan* → **Temuan empiris terukur**
+   - *Keputusan setelahnya* → **Keputusan metodologis**
+   - *Batas pembacaan* → **Batasan validitas & audit**
+   - *Angka utama* → **Metrik kuantitatif utama**
+   - *Penjelasan teknis* → **Catatan sintesis teknis**
+   - *Arti istilah* → **Glosarium istilah teknis**
+   - *File pendukung* → **Artefak data pendukung**
+
+5. **Struktur Narasi Empat Bagian (Lembar Bukti):**
+   - **Rancangan Eksperimen:** Ringkasan desain eksperimen, konfigurasi input/model, dan komparasi yang dijalankan.
+   - **Temuan Empiris Terukur:** Ringkasan kuantitatif terukur dengan signifikansi statistik (*confidence interval*, *p-value*, *bootstrap*).
+   - **Keputusan Metodologis:** Implikasi terhadap kelanjutan arah riset.
+   - **Batasan Validitas & Audit:** Peringatan audit, asumsi kontrol yang belum tuntas, atau batasan generalisasi.
+
+`docs/MAINTENANCE.md` memuat prosedur rinci: template node siap salin, aturan lineage, penambahan dataset, penghapusan node, dan checklist publikasi.
+
 ## Panduan Pengujian
 
 Repo ini tidak memiliki test suite otomatis atau target coverage. Minimal,
