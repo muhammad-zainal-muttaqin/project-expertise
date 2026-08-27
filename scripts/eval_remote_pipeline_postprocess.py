@@ -50,7 +50,7 @@ CONFIGS = {
     },
     "SawitMVC-YOLO": {
         "kind": "yolo953_adapter",
-        "data_root": Path("/workspace/model_artifacts/project-expertise/eval_2026-08-27/dataset_adapters/SawitMVC-YOLO"),
+        "data_root": Path("/workspace/SawitMVC-YOLO"),
         "meta_root": Path("/workspace/SawitMVC-YOLO"),
         "predictions": {
             "yolo26l": Path("/workspace/model_artifacts/project-expertise/eval_2026-08-27/predictions/remote_new763_yolo26l_953_test__test.npz"),
@@ -67,7 +67,8 @@ def read_json(path: Path) -> dict:
 
 def metadata_paths(cfg: dict, split: str) -> list[Path]:
     if cfg["kind"] == "depth":
-        return sorted((cfg["meta_root"] / split / "linked").glob("*.json"))
+        folder = "valid" if split == "val" and (cfg["meta_root"] / "valid").is_dir() else split
+        return sorted((cfg["meta_root"] / folder / "linked").glob("*.json"))
     manifest = {}
     manifest_path = cfg["meta_root"] / "split_manifest.csv"
     if manifest_path.exists():
@@ -267,14 +268,23 @@ def iou_one(box: np.ndarray, boxes: np.ndarray) -> np.ndarray:
 
 
 def fuse_groups(rows: np.ndarray, iou_threshold: float,
-                score_min: float, n_models: int) -> list[dict]:
+                score_min: float, n_models: int,
+                model_weights: np.ndarray | None = None) -> list[dict]:
     """Fast greedy WBF; rows are x1,y1,x2,y2,score,class,model."""
     if len(rows) == 0:
         return []
     rows = rows[rows[:, 4] >= score_min]
     if len(rows) == 0:
         return []
-    rows = rows[np.argsort(-rows[:, 4])]
+    if model_weights is None:
+        model_weights = np.ones(n_models, dtype=float)
+        weighted_mode = False
+    else:
+        model_weights = np.asarray(model_weights, dtype=float)
+        if len(model_weights) != n_models or np.any(model_weights <= 0):
+            raise ValueError("model_weights must contain one positive weight per model")
+        weighted_mode = True
+    rows = rows[np.argsort(-(rows[:, 4] * model_weights[rows[:, 6].astype(int)]))]
     representatives: list[np.ndarray] = []
     groups: list[list[np.ndarray]] = []
     for row in rows:
@@ -285,7 +295,7 @@ def fuse_groups(rows: np.ndarray, iou_threshold: float,
             if overlaps[index] >= iou_threshold:
                 groups[index].append(row)
                 g = np.asarray(groups[index])
-                weights = g[:, 4:5]
+                weights = g[:, 4:5] * model_weights[g[:, 6].astype(int), None]
                 representatives[index] = (g[:, :4] * weights).sum(0) / max(
                     float(weights.sum()), 1e-9)
                 continue
@@ -295,15 +305,24 @@ def fuse_groups(rows: np.ndarray, iou_threshold: float,
     out = []
     for group in groups:
         g = np.asarray(group)
-        weights = g[:, 4]
+        weights = g[:, 4] * model_weights[g[:, 6].astype(int)]
         box = (g[:, :4] * weights[:, None]).sum(0) / max(float(weights.sum()), 1e-9)
         support = len(set(g[:, 6].astype(int).tolist()))
-        score = float(weights.mean() * min(support, n_models) / n_models)
+        if weighted_mode:
+            # Missing sources still reduce the score through support/n_models;
+            # among present sources, the configured model weights only affect
+            # the confidence average and the box coordinate.
+            present = np.unique(g[:, 6].astype(int))
+            present_weight = model_weights[present].sum()
+            score_base = float(weights.sum() / max(present_weight, 1e-9))
+        else:
+            score_base = float(weights.mean())
+        score = float(score_base * min(support, n_models) / n_models)
         probs = np.zeros(K, float)
-        for row in g:
+        for row, row_weight in zip(g, weights):
             c = int(row[5])
             if 0 <= c < K:
-                probs[c] += float(row[4])
+                probs[c] += float(row_weight)
         if probs.sum() <= 0:
             probs[:] = 1. / K
         else:
@@ -322,16 +341,17 @@ def load_prediction_bank(cfg: dict) -> dict[str, dict[str, np.ndarray]]:
     return bank
 
 
-def _fuse_one(task: tuple[str, np.ndarray, float, float, int]):
-    stem, rows, iou_threshold, score_min, n_models = task
-    all_groups = fuse_groups(rows, iou_threshold, score_min, n_models)
+def _fuse_one(task: tuple[str, np.ndarray, float, float, int, np.ndarray | None]):
+    stem, rows, iou_threshold, score_min, n_models, model_weights = task
+    all_groups = fuse_groups(rows, iou_threshold, score_min, n_models,
+                             model_weights)
     agnostic = np.asarray(
         [[*g["box"], g["score"], 0.] for g in all_groups], float
     ).reshape(-1, 6)
     ca_groups = []
     for c in range(K):
         ca_groups.extend(fuse_groups(rows[rows[:, 5] == c], iou_threshold,
-                                     score_min, n_models))
+                                     score_min, n_models, model_weights))
     classaware = np.asarray(
         [[*g["box"], g["score"], int(np.argmax(g["p"]))]
          for g in ca_groups], float
@@ -341,7 +361,8 @@ def _fuse_one(task: tuple[str, np.ndarray, float, float, int]):
 
 def fuse_corpus(records: dict[str, dict], bank: dict[str, dict[str, np.ndarray]],
                 iou_threshold: float, score_min: float,
-                workers: int = 1) -> tuple[dict, dict, dict]:
+                workers: int = 1,
+                model_weights: np.ndarray | None = None) -> tuple[dict, dict, dict]:
     n_models = len(bank)
     stems = [view["stem"] for rec in records.values()
              for view in rec["views"].values()]
@@ -355,7 +376,8 @@ def fuse_corpus(records: dict[str, dict], bank: dict[str, dict[str, np.ndarray]]
                 parts.append(np.c_[rows[:, :6],
                                    np.full(len(rows), model_id, float)])
         rows = np.concatenate(parts, axis=0) if parts else np.zeros((0, 7))
-        tasks.append((stem, rows, iou_threshold, score_min, n_models))
+        tasks.append((stem, rows, iou_threshold, score_min, n_models,
+                      model_weights))
     if workers > 1 and len(tasks) > 1:
         with ProcessPoolExecutor(max_workers=min(workers, len(tasks))) as pool:
             fused = pool.map(_fuse_one, tasks, chunksize=1)
@@ -371,8 +393,8 @@ def fuse_corpus(records: dict[str, dict], bank: dict[str, dict[str, np.ndarray]]
 
 
 def coco_metrics(data_root: Path, predictions: dict[str, np.ndarray],
-                 agnostic: bool = False) -> dict:
-    gt, paths = build_gt(data_root, "test")
+                 agnostic: bool = False, split: str = "test") -> dict:
+    gt, paths = build_gt(data_root, split)
     if agnostic:
         for ann in gt.dataset["annotations"]:
             ann["category_id"] = 1
@@ -612,15 +634,23 @@ def main() -> int:
                     help="side pairs considered by the linker")
     ap.add_argument("--max-cluster-size", type=int, default=None,
                     help="maximum members in one linked cluster")
+    ap.add_argument("--model-weights", nargs="+", type=float, default=None,
+                    help="optional positive weights in model order: YOLO, RT-DETR, RF-DETR")
+    ap.add_argument("--split", choices=("train", "val", "test"),
+                    default="test", help="dataset split to evaluate")
     ap.add_argument("--output", type=Path, default=None)
     ap.add_argument("--fused-dir", type=Path, default=None)
     args = ap.parse_args()
+    if args.model_weights is not None and len(args.model_weights) != 3:
+        ap.error("--model-weights requires exactly three values: YOLO RT-DETR RF-DETR")
 
     artifact_root = Path("/workspace/model_artifacts/project-expertise/eval_2026-08-27")
     if args.output is None:
-        args.output = artifact_root / f"remote_pipeline_{args.bank}_testsets.json"
+        suffix = "testsets" if args.split == "test" else f"{args.split}sets"
+        args.output = artifact_root / f"remote_pipeline_{args.bank}_{suffix}.json"
     if args.fused_dir is None:
-        args.fused_dir = artifact_root / f"fused_{args.bank}"
+        suffix = "" if args.split == "test" else f"_{args.split}"
+        args.fused_dir = artifact_root / f"fused_{args.bank}{suffix}"
     configs = CONFIGS
     if args.bank == "combined1716":
         pred_root = artifact_root / "predictions_combined1716"
@@ -630,30 +660,47 @@ def main() -> int:
             configs[dataset_name] = {
                 **cfg,
                 "predictions": {
-                    "yolo26l": pred_root / f"remote_combined1716_yolo26l_{short}_test__test.npz",
-                    "rtdetr_l": pred_root / f"remote_combined1716_rtdetr_l_{short}_test__test.npz",
-                    "rfdetr_l": pred_root / f"remote_combined1716_rfdetr_l_{short}_test__test.npz",
+                    "yolo26l": pred_root / f"remote_combined1716_yolo26l_{short}_{args.split}__{args.split}.npz",
+                    "rtdetr_l": pred_root / f"remote_combined1716_rtdetr_l_{short}_{args.split}__{args.split}.npz",
+                    "rfdetr_l": pred_root / f"remote_combined1716_rfdetr_l_{short}_{args.split}__{args.split}.npz",
                 },
             }
+    elif args.split != "test":
+        configs = {
+            dataset_name: {
+                **cfg,
+                "predictions": {
+                    model_name: path.with_name(
+                        path.name.replace("_test__test.npz",
+                                         f"_{args.split}__{args.split}.npz"))
+                    for model_name, path in cfg["predictions"].items()
+                },
+            }
+            for dataset_name, cfg in CONFIGS.items()
+        }
 
     result = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "models": f"{args.bank}: YOLO26l + RT-DETR-L + RF-DETR-L",
         "wbf": {"iou_threshold": args.iou_threshold,
-                "input_score_min": args.score_min},
+                "input_score_min": args.score_min,
+                "model_weights": args.model_weights},
         "datasets": {},
     }
     for dataset_name, cfg in configs.items():
         print(f"[{dataset_name}] loading metadata and prediction bank", flush=True)
-        test_records = load_records(cfg, "test")
+        split_records = load_records(cfg, args.split)
         train_records = load_records(cfg, "train")
         prior = build_rotation_prior(train_records)
         calibration = calibrate_link_threshold(train_records, prior)
         link_threshold = (args.link_threshold if args.link_threshold is not None
                           else calibration["threshold"])
         bank = load_prediction_bank(cfg)
-        ca, agn, vote = fuse_corpus(test_records, bank, args.iou_threshold,
-                                    args.score_min, args.workers)
+        model_weights = (np.asarray(args.model_weights, dtype=float)
+                         if args.model_weights is not None else None)
+        ca, agn, vote = fuse_corpus(split_records, bank, args.iou_threshold,
+                                    args.score_min, args.workers,
+                                    model_weights)
         ca_arrays = {k: v for k, v in ca.items()}
         agn_arrays = {k: v for k, v in agn.items()}
         vote_arrays = {
@@ -673,14 +720,16 @@ def main() -> int:
         save_npz(args.fused_dir / f"{safe}__wbf_classvote.npz", vote_arrays)
         save_npz(args.fused_dir / f"{safe}__wbf_softvote.npz", softvote_arrays)
         wbf_metrics = {
-            "classaware": coco_metrics(cfg["data_root"], ca_arrays, False),
-            "agnostic": coco_metrics(cfg["data_root"], agn_arrays, True),
+            "classaware": coco_metrics(cfg["data_root"], ca_arrays, False,
+                                        args.split),
+            "agnostic": coco_metrics(cfg["data_root"], agn_arrays, True,
+                                      args.split),
         }
         mv = multiview_metrics(
-            test_records, vote, prior, link_threshold, args.proposal_min,
+            split_records, vote, prior, link_threshold, args.proposal_min,
             args.singleton_min, args.pair_mode, args.max_cluster_size)
         result["datasets"][dataset_name] = {
-            "n_test_trees_metadata": len(test_records),
+            f"n_{args.split}_trees_metadata": len(split_records),
             "rotation_prior_train": {f"{n}|{d}": list(v)
                                       for (n, d), v in sorted(prior.items())},
             "link_calibration_train": calibration,

@@ -21,8 +21,21 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".tif", ".tiff"}
 
 
 def build_gt(root: Path, split: str):
-    base = root / ("valid" if split == "val" else split)
-    paths = sorted(p for p in (base / "images").iterdir()
+    # Depth uses ``valid`` while the 953-tree YOLO export uses ``val``.
+    # Resolve both layouts without creating a second copy of the dataset.
+    if split == "val" and (root / "valid").is_dir():
+        base = root / "valid"
+    else:
+        base = root / split
+    if (base / "images").is_dir():
+        image_dir, label_dir = base / "images", base / "labels"
+    elif (root / "images" / split).is_dir():
+        # SawitMVC-YOLO stores split folders directly below images/ and
+        # labels/, unlike the depth export's split/images/ layout.
+        image_dir, label_dir = root / "images" / split, root / "labels" / split
+    else:
+        raise FileNotFoundError(f"No image directory for split={split}: {root}")
+    paths = sorted(p for p in image_dir.iterdir()
                    if p.suffix.lower() in IMAGE_EXTS)
     images, anns, ann_id = [], [], 1
     for image_id, p in enumerate(paths, 1):
@@ -30,7 +43,7 @@ def build_gt(root: Path, split: str):
             width, height = im.size
         images.append({"id": image_id, "file_name": p.name,
                        "width": width, "height": height})
-        lf = base / "labels" / f"{p.stem}.txt"
+        lf = label_dir / f"{p.stem}.txt"
         if lf.is_file():
             for line in lf.read_text().splitlines():
                 q = line.split()

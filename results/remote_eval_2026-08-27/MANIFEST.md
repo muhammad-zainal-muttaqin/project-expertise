@@ -7,8 +7,9 @@
 - Model yang diambil: hanya enam bobot detektor yang diperlukan untuk dua bank
   (`new763` dan `combined1716`); seluruh bucket tidak diklon.
 - Waktu pembuatan metrik: 27 Agustus 2026 UTC.
-- Evaluasi: 12 inferensi model tunggal + baseline dan iterasi greedy pipeline
-  ensembel, termasuk aplikasi classifier crop 5 epoch pada proposal 953.
+- Evaluasi: 12 inferensi model tunggal + baseline/greedy pipeline ensembel,
+  termasuk aplikasi classifier crop 5 epoch pada proposal 953 dan iterasi
+  validation-locked count-aware.
 - Secret: token akses **tidak** disimpan di repo, log, manifest, atau nama
   berkas. Karena token pernah ditempelkan di percakapan, token tersebut
   sebaiknya dicabut dan dibuat ulang setelah pekerjaan selesai.
@@ -44,7 +45,7 @@ asli dan pemilihan split mengikuti `split_manifest.csv`.
 
 | Direktori | Isi | Jumlah |
 |---|---|---:|
-| [`metrics/`](metrics/) | JSON metrik model tunggal dan pipeline | 15 |
+| [`metrics/`](metrics/) | JSON metrik model tunggal dan pipeline | 16 |
 | [`predictions/`](predictions/) | Dump prediksi mentah semua kombinasi | 12 |
 | [`fused_new763/`](fused_new763/) | WBF bank `new763` (`classaware`, `agnostic`, `classvote`, `softvote`) | 8 |
 | [`fused_combined1716/`](fused_combined1716/) | WBF bank `combined1716` (`classaware`, `agnostic`, `classvote`, `softvote`) | 8 |
@@ -83,6 +84,10 @@ metrik per pohon, selain ringkasan WBF dan pipeline pada
   `train`; threshold greedy dipilih melalui sweep langsung pada test.
 - Counting pada metrik remote adalah **raw linked-cluster count**. Ridge
   `F_all` belum dijalankan pada dump ini.
+- Profil generalisasi V2-E-045 memakai Ridge count-aware yang dilatih hanya
+  dari `train`, alpha dipilih lewat 5-fold CV train, dan threshold/ranking
+  dikunci dari validation. Detail lengkap ada di
+  [`metrics/pipeline_combined1716_generalization_locked.json`](metrics/pipeline_combined1716_generalization_locked.json).
 - Metrik multi-tampak hanya memakai pohon empat sisi; enam pohon delapan sisi
   SawitMVC-YOLO dikeluarkan dari metrik hilir, tetapi tidak dikeluarkan dari
   metrik deteksi image-level.
@@ -94,3 +99,8 @@ untuk provenance. Pemetaan artefak yang dapat dibaca pengguna ada pada
 [`README.md`](README.md) dan manifest ini. Bobot dan dataset tidak dilacak oleh
 Git; prediksi, hasil fusi, serta metrik sudah disalin ke direktori hasil agar
 analisis dapat diulang tanpa mengunduh seluruh bucket.
+
+Evaluator tambahan V2-E-045:
+[`../../scripts/evaluate_remote_count_reconciled.py`](../../scripts/evaluate_remote_count_reconciled.py)
+dan eksperimen linker pembanding
+[`../../scripts/evaluate_remote_learned_linker.py`](../../scripts/evaluate_remote_learned_linker.py).

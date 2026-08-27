@@ -2543,3 +2543,95 @@ F1/counting tetapi menurunkan match class accuracy 7,76 poin persentase dan
 macro-F1 E2E 0,0176. Blend 25% dipertahankan sebagai kandidat engineering
 karena macro-F1 naik 0,0059 dan ±1 naik 0,74 poin persentase pada test yang
 sama, tetapi belum cukup untuk klaim produksi.
+
+---
+
+## V2-E-045 — Layer count-aware validation-locked meningkatkan generalisasi pipeline empat sisi
+
+**Tanggal:** 2026-08-27
+
+### Pertanyaan
+
+Apakah kenaikan pada V2-E-043 yang dipilih langsung dari test tetap bertahan
+ketika konfigurasi pipeline dikunci dari `train`/`validation`? Jika detektor
+sudah mendekati plafon, apakah layer pascadeteksi dapat memperbaiki jumlah
+tandan tanpa memalsukan recall?
+
+### Protokol
+
+- Bank remote `combined1716`: YOLO26l + RT-DETR-L + RF-DETR-L.
+- WBF equal-weight, IoU `0,60`, input score minimum `0,05`.
+- Prior rotasi dan seluruh model count dilatih dari `train` saja.
+- Count head berupa Ridge terstandar dengan fitur proposal per sisi; alpha
+  dipilih melalui 5-fold CV di `train` (`10` untuk Depth, `100` untuk 953).
+- Validation dipakai untuk mengunci proposal floor, link threshold, singleton
+  floor, ranking cluster, dan prior kelas. Test hanya dipakai sebagai
+  konfirmasi konfigurasi tersebut.
+- Evaluasi four-side memakai IoU minimal `0,5`; enam pohon 953 delapan sisi
+  pada test dan lima pada validation dikeluarkan dari metrik pipeline.
+
+### Profil terkunci
+
+| Dataset | Proposal | Link | Singleton | Pair | Maks | Ranking | Prior kelas |
+|---|---:|---:|---:|---|---:|---|---:|
+| Depth | 0,075 | 0,25 | 0,15 | adjacent | 3 | support | −0,25 |
+| 953 | 0,125 | 0,30 | 0,15 | adjacent | 3 | max member | −0,25 |
+
+`support` merangking cluster berdasarkan score dikali akar jumlah view yang
+mendukungnya. `max member` memakai skor proposal terkuat dalam cluster.
+Keduanya hanya mengubah urutan pemilihan ketika count head meminta cap jumlah;
+detektor tidak dilatih ulang.
+
+### Hasil validation dan konfirmasi test
+
+| Dataset | Split | F1 fisik | MAE count | Tepat | ±1 | Match class acc. | Macro-F1 E2E |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Depth | val, 117 pohon | 82,57% | 0,726 | 44,44% | 84,62% | 83,55% | 0,6749 |
+| Depth | test, 110 pohon | 80,69% | 0,891 | 33,64% | 80,91% | 80,31% | 0,6047 |
+| 953 | val, 91 pohon 4 sisi | 80,87% | 1,253 | 28,57% | 67,03% | 70,04% | 0,5462 |
+| 953 | test, 135 pohon 4 sisi | 80,43% | 1,393 | 25,93% | 61,48% | 71,11% | 0,5384 |
+
+Sebagai sanity check terhadap overfit count head, MAE 5-fold train adalah
+`0,813` pada Depth dan `1,251` pada 953, sangat dekat dengan validation
+`0,726` dan `1,253`. Ini tidak membuktikan generalisasi sempurna, tetapi
+lebih informatif daripada memilih langsung dari test.
+
+### Eksperimen tambahan dan keputusan
+
+1. **Weighted WBF `[0,75; 1; 1,5]` — ditolak.** Walaupun mAP image-level
+   tertentu naik, F1 hilir validation turun menjadi `0,7951` pada Depth dan
+   `0,7736` pada 953 dibanding profil equal-weight.
+2. **Pair-linker logistic train-only — ditolak.** Model kecil berbasis fitur
+   geometry/ukuran/class similarity menghasilkan F1 validation `0,7680` pada
+   Depth dan `0,7374` pada 953, di bawah prior rotasi robust manual.
+3. **Blend predicted count dengan raw cluster count — ditolak.** Nonzero
+   blend menurunkan 953; blend `0,25` pada Depth tidak mempertahankan keuntungan
+   counting secara konsisten pada konfirmasi test. Profil final memakai blend
+   `0` (Ridge murni).
+4. **WBF IoU `0,50`–`0,70` — IoU `0,60` dipertahankan.** Titik ini memberi
+   trade-off validation terbaik pada profil tetap; IoU lebih tinggi sedikit
+   menurunkan F1 fisik.
+
+### Kesimpulan
+
+Training detektor tambahan tidak menjadi bottleneck yang paling murah untuk
+perbaikan saat ini. Layer count-aware adalah tambahan yang paling relevan:
+angka generalisasi engineering yang realistis adalah sekitar **80% F1 fisik**,
+MAE count **0,9** pada Depth dan **1,4** pada 953, dengan class match sekitar
+**80%** dan **71%**. Ini jauh lebih aman daripada klaim greedy V2-E-043
+(`85,90%`/`82,96%`) karena konfigurasi baru tidak dipilih dari test.
+
+Test lokal tetap pernah dibaca dalam eksperimen historis, jadi konfirmasi ini
+tidak disebut hold-out publikasi yang sepenuhnya pristine. Untuk klaim ilmiah
+berikutnya, konfigurasi V2-E-045 harus dibekukan dan diuji pada kumpulan pohon
+eksternal baru.
+
+**Artefak:**
+
+- [`metrics/pipeline_combined1716_generalization_locked.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json)
+- [`../../scripts/evaluate_remote_count_reconciled.py`](../scripts/evaluate_remote_count_reconciled.py)
+- [`../../scripts/evaluate_remote_learned_linker.py`](../scripts/evaluate_remote_learned_linker.py)
+- [`OPTIMIZED_PIPELINE.md`](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md)
+
+**Verdict:** CONFIRMED sebagai pipeline validation-locked yang lebih realistis;
+klaim test tetap dibatasi oleh caveat historis split.

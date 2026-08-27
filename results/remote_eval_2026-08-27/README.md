@@ -272,3 +272,57 @@ pohon. C2-only tidak menggantikan soft vote detector karena class accuracy
 end-to-end turun; blend 25% dipertahankan sebagai kandidat khusus test 953.
 Ringkasannya ada di [`classifier_c2/`](classifier_c2/), sedangkan skripnya
 ada di [`../../scripts/apply_remote_crop_classifier.py`](../../scripts/apply_remote_crop_classifier.py).
+
+## 9. Validation-locked generalization pipeline (V2-E-045)
+
+Iterasi berikutnya memisahkan pencarian konfigurasi dari test. Detector bank
+`combined1716` tetap memakai tiga model dengan bobot WBF sama; yang ditambah
+adalah layer rekonsiliasi jumlah berbasis fitur proposal. Ridge dilatih hanya
+pada tree `train`, regularisasi dipilih melalui 5-fold CV di `train`, dan
+validation dipakai untuk mengunci profil per dataset. Ranking cluster memakai
+kekuatan dukungan multi-view (`support` pada Depth, `max_member` pada 953),
+serta probabilitas kelas dikoreksi ringan dengan prior kelas `train` pangkat
+`-0,25`.
+
+| Dataset | Split | F1 fisik | MAE count | ±1 count | Match class acc. | Macro-F1 E2E |
+|---|---|---:|---:|---:|---:|---:|
+| Depth | validation, 117 pohon | **0,8257** | **0,726** | **84,62%** | **83,55%** | **0,6749** |
+| Depth | test, 110 pohon | **0,8069** | **0,891** | **80,91%** | **80,31%** | **0,6047** |
+| SawitMVC-YOLO 953 | validation, 91 pohon 4 sisi | **0,8087** | **1,253** | **67,03%** | **70,04%** | **0,5462** |
+| SawitMVC-YOLO 953 | test, 135 pohon 4 sisi | **0,8043** | **1,393** | **61,48%** | **71,11%** | **0,5384** |
+
+Profil terkunci dan angka lengkap ada di
+[`metrics/pipeline_combined1716_generalization_locked.json`](metrics/pipeline_combined1716_generalization_locked.json).
+Konfirmasi test ini **bukan** hasil tuning langsung ke test, tetapi test pernah
+dibaca pada iterasi historis sehingga tidak diklaim sebagai hold-out publikasi
+yang sepenuhnya pristine.
+
+### Apa yang berhasil dan yang ditolak
+
+- Layer count-aware menekan duplikasi tanpa menambah atau mengubah bobot
+  detector. Pada validation, Depth mencapai MAE `0,726` dan 953 `1,253`.
+- Bobot detector tidak otomatis membantu. Contoh bobot `[0,75; 1; 1,5]`
+  meningkatkan sebagian mAP image-level, tetapi F1 hilir turun menjadi `0,7951`
+  pada Depth dan `0,7736` pada 953; konfigurasi equal-weight dipertahankan.
+- Pair-linker logistic yang dilatih dari pasangan proposal `train` juga
+  ditolak: F1 validation hanya `0,7680`/`0,7374`, di bawah linker robust
+  berbasis prior rotasi.
+- Blend count dengan jumlah cluster mentah tidak stabil; `blend=0` dipakai.
+
+Dengan demikian, angka yang paling aman untuk klaim generalisasi engineering
+saat ini adalah sekitar **80% F1 fisik**, MAE count **<1 tandan/pohon pada
+Depth** dan **sekitar 1,4 pada 953**, dengan matched-class accuracy sekitar
+**80%** dan **71%**. Angka `83%` class-agnostic AP50 tetap merupakan metrik
+lokalisasi image-level, bukan akurasi counting atau klasifikasi.
+
+Reproduksi layer count-aware:
+
+```bash
+python scripts/evaluate_remote_count_reconciled.py \
+  --dataset depth --split val \
+  --proposal-mins 0.075 --link-thresholds 0.25 \
+  --singleton-mins 0.15 --max-sizes 3 --pair-modes adjacent \
+  --rank-modes support --class-prior-exponents -0.25 --count-blends 0 \
+  --workers 32 \
+  --output /tmp/count_reconciled_depth_val.json
+```

@@ -94,3 +94,23 @@ end-to-end turun; blend 25% dengan soft-vote detector dipakai sebagai kandidat
 khusus test 953. Rincian dan artefak ada di
 [`V2-E-043/V2-E-044`](EKSPERIMEN.md#v2-e-043-pengetatan-proposal-dan-linker-mengurangi-duplikasi-cluster-pada-pipeline-empat-sisi)
 dan [laporan optimasi](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md).
+
+## 7. Pipeline generalisasi validation-locked (V2-E-045)
+
+Konfigurasi baru tidak dipilih langsung dari test. Layer Ridge count-aware
+dilatih dari fitur proposal `train`, alpha dipilih dengan 5-fold CV train, lalu
+parameter pipeline dikunci pada validation. Profil final mempertahankan WBF
+equal-weight dan linker prior rotasi robust, dengan ranking cluster yang
+memanfaatkan dukungan multi-view serta koreksi prior kelas ringan.
+
+| Dataset | F1 fisik test | MAE count | ±1 count | Match class acc. | Macro-F1 E2E |
+|---|---:|---:|---:|---:|---:|
+| SawitMVC-Depth-YOLO | **0,8069** | **0,891** | **80,91%** | **80,31%** | **0,6047** |
+| SawitMVC-YOLO 953 | **0,8043** | **1,393** | **61,48%** | **71,11%** | **0,5384** |
+
+Angka ini adalah konfirmasi test atas profil validation-locked, bukan angka
+greedy/test-tuned V2-E-043. Test pernah dibaca pada iterasi historis, sehingga
+tetap tidak disebut hold-out publikasi yang sepenuhnya pristine. Rincian,
+validation, profil, dan eksperimen yang ditolak ada di
+[V2-E-045](EKSPERIMEN.md#v2-e-045-layer-count-aware-validation-locked-meningkatkan-generalisasi-pipeline-empat-sisi)
+dan [JSON metrik](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json).

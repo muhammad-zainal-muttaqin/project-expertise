@@ -111,10 +111,20 @@ luar repo sesuai `MANIFEST.md`.
 ## Batasan
 
 1. Parameter greedy dipilih setelah melihat test; hasil ini adalah batas atas
-   engineering dan berpotensi optimistis.
+engineering dan berpotensi optimistis.
 2. Evaluasi hilir memakai 110 pohon Depth dan 135 pohon empat sisi 953; enam
    pohon delapan sisi 953 dilaporkan sebagai dikecualikan.
 3. `raw linked-cluster count` belum sama dengan Ridge `F_all` yang menjadi
    target proposal produksi.
 4. Sebelum deployment, threshold harus dikunci di validation set dan diverifikasi
    sekali pada hold-out tree-level yang tidak disentuh oleh tuning.
+
+## Catatan versi generalisasi terbaru
+
+Dokumen ini sengaja mempertahankan V2-E-043 sebagai **batas atas test-tuned**.
+Untuk klaim yang lebih realistis, gunakan V2-E-045:
+[`metrics/pipeline_combined1716_generalization_locked.json`](metrics/pipeline_combined1716_generalization_locked.json)
+dan eksperimen
+[`V2-E-045`](../../experiments/EKSPERIMEN.md#v2-e-045-layer-count-aware-validation-locked-meningkatkan-generalisasi-pipeline-empat-sisi).
+Profil baru mengunci parameter dari train/validation, memakai count-aware
+Ridge layer, dan menghasilkan sekitar 80% F1 fisik pada konfirmasi test.

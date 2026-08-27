@@ -280,8 +280,9 @@ def build_payload(records, vote, prior, proposal_min, pair_mode):
 
 
 def run_sweep(cfg, vote_path: Path, proposal_mins, link_thresholds,
-              singleton_mins, max_sizes, pair_modes, workers: int):
-    all_records = base.load_records(cfg, "test")
+              singleton_mins, max_sizes, pair_modes, workers: int,
+              split: str = "test"):
+    all_records = base.load_records(cfg, split)
     records = {tree_id: rec for tree_id, rec in all_records.items()
                if rec["n_sides"] == 4}
     train_records = base.load_records(cfg, "train")
@@ -363,6 +364,8 @@ def main() -> int:
     ap.add_argument("--pair-modes", nargs="+", choices=("all", "adjacent"),
                     default=["all"],
                     help="side pairs considered by the linker")
+    ap.add_argument("--split", choices=("train", "val", "test"),
+                    default="test", help="split used for selection/evaluation")
     ap.add_argument("--workers", type=int,
                     default=min(os.cpu_count() or 1, 32),
                     help="parallel CPU workers for linker configurations")
@@ -371,7 +374,8 @@ def main() -> int:
     dataset_name = "SawitMVC-YOLO" if args.dataset == "953" else "SawitMVC-Depth-YOLO"
     cfg = base.CONFIGS[dataset_name]
     safe = "SawitMVC_YOLO" if args.dataset == "953" else "SawitMVC_Depth_YOLO"
-    fused_dir = args.fused_dir or (args.artifact_root / f"fused_{args.bank}")
+    suffix = "" if args.split == "test" else f"_{args.split}"
+    fused_dir = args.fused_dir or (args.artifact_root / f"fused_{args.bank}{suffix}")
     vote_path = args.vote_path or (fused_dir /
                                    f"{safe}__wbf_{args.vote_mode}.npz")
     if not vote_path.exists():
@@ -380,7 +384,7 @@ def main() -> int:
     result = run_sweep(cfg, vote_path, args.proposal_mins,
                        args.link_thresholds, args.singleton_mins,
                        args.max_sizes, args.pair_modes,
-                       max(args.workers, 1))
+                       max(args.workers, 1), args.split)
     result["workers"] = max(args.workers, 1)
     result["vote_mode"] = args.vote_mode
     result["max_sizes"] = args.max_sizes
@@ -389,7 +393,7 @@ def main() -> int:
     result["top"] = ranked[:30]
     print(json.dumps(result["top"][:10], indent=2, ensure_ascii=False), flush=True)
     if args.output is None:
-        args.output = args.artifact_root / f"sweep_{args.bank}_{args.dataset}.json"
+        args.output = args.artifact_root / f"sweep_{args.bank}_{args.dataset}_{args.split}.json"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
     print(f"-> {args.output}")

@@ -1,0 +1,134 @@
+{
+  "protocol": {
+    "name": "validation-locked four-view generalization",
+    "model_bank": "combined1716: YOLO26l + RT-DETR-L + RF-DETR-L",
+    "wbf": {
+      "iou_threshold": 0.6,
+      "input_score_min": 0.05,
+      "model_weights": [1.0, 1.0, 1.0]
+    },
+    "fit_split": "train",
+    "selection_split": "val",
+    "test_usage": "confirmation only; historical test inspection caveat applies",
+    "matching_iou": 0.5,
+    "four_side_only": true,
+    "count_layer": "train-fitted standardized Ridge regression; selected alpha by 5-fold train CV",
+    "class_layer": "train class-prior exponent -0.25",
+    "count_blend": 0.0
+  },
+  "profiles": {
+    "SawitMVC-Depth-YOLO": {
+      "proposal_min": 0.075,
+      "link_threshold": 0.25,
+      "singleton_min": 0.15,
+      "pair_mode": "adjacent",
+      "max_cluster_size": 3,
+      "rank_mode": "support",
+      "class_prior_exponent": -0.25,
+      "count_model_alpha": 10.0,
+      "count_cv_mae": 0.8133091035,
+      "train_class_prior": [0.1731864793, 0.3486517281, 0.3889099886, 0.0892518040]
+    },
+    "SawitMVC-YOLO": {
+      "proposal_min": 0.125,
+      "link_threshold": 0.30,
+      "singleton_min": 0.15,
+      "pair_mode": "adjacent",
+      "max_cluster_size": 3,
+      "rank_mode": "max_member",
+      "class_prior_exponent": -0.25,
+      "count_model_alpha": 100.0,
+      "count_cv_mae": 1.2506655217,
+      "train_class_prior": [0.0998571429, 0.1792857143, 0.5105714286, 0.2102857143]
+    }
+  },
+  "metrics": {
+    "SawitMVC-Depth-YOLO": {
+      "validation": {
+        "n_trees": 117,
+        "gt_bunches": 571,
+        "pred_clusters": 548,
+        "tp": 462,
+        "precision": 0.8430656934,
+        "recall": 0.8091068301,
+        "f1": 0.8257372654,
+        "count_mae": 0.7264957265,
+        "count_exact_accuracy": 0.4444444444,
+        "count_plus_minus_1_accuracy": 0.8461538462,
+        "count_vector_exact_accuracy": 0.2649572650,
+        "matched_class_accuracy": 0.8354978355,
+        "macro_f1_end_to_end": 0.6749484538
+      },
+      "test_validation_locked": {
+        "n_trees": 110,
+        "gt_bunches": 559,
+        "pred_clusters": 549,
+        "tp": 447,
+        "precision": 0.8142076503,
+        "recall": 0.7996422182,
+        "f1": 0.8068592058,
+        "count_mae": 0.8909090909,
+        "count_exact_accuracy": 0.3363636364,
+        "count_plus_minus_1_accuracy": 0.8090909091,
+        "count_vector_exact_accuracy": 0.1727272727,
+        "matched_class_accuracy": 0.8031319911,
+        "macro_f1_end_to_end": 0.6047376288
+      }
+    },
+    "SawitMVC-YOLO": {
+      "validation": {
+        "n_trees": 91,
+        "excluded_eight_side_trees": 5,
+        "gt_bunches": 936,
+        "pred_clusters": 946,
+        "tp": 761,
+        "precision": 0.8044397463,
+        "recall": 0.8130341880,
+        "f1": 0.8087141339,
+        "count_mae": 1.2527472527,
+        "count_exact_accuracy": 0.2857142857,
+        "count_plus_minus_1_accuracy": 0.6703296703,
+        "count_vector_exact_accuracy": 0.0109890110,
+        "matched_class_accuracy": 0.7003942181,
+        "macro_f1_end_to_end": 0.5461558468
+      },
+      "test_validation_locked": {
+        "n_trees": 135,
+        "excluded_eight_side_trees": 6,
+        "gt_bunches": 1342,
+        "pred_clusters": 1326,
+        "tp": 1073,
+        "precision": 0.8092006033,
+        "recall": 0.7995529061,
+        "f1": 0.8043478261,
+        "count_mae": 1.3925925926,
+        "count_exact_accuracy": 0.2592592593,
+        "count_plus_minus_1_accuracy": 0.6148148148,
+        "count_vector_exact_accuracy": 0.0370370370,
+        "matched_class_accuracy": 0.7110904007,
+        "macro_f1_end_to_end": 0.5384456664
+      }
+    }
+  },
+  "rejected_validation_experiments": {
+    "weighted_wbf_075_100_150": {
+      "depth_f1": 0.7950963222,
+      "yolo953_f1": 0.7736450584,
+      "decision": "rejected; downstream worse than equal-weight WBF"
+    },
+    "learned_pair_logistic": {
+      "depth_f1": 0.768,
+      "yolo953_f1": 0.7374005305,
+      "decision": "rejected; physical association worse than robust hand linker"
+    },
+    "count_blend_with_raw_clusters": {
+      "decision": "rejected for final profile; nonzero blend worsened 953 and gave no robust test gain on Depth"
+    }
+  },
+  "caveats": [
+    "The detector bank and historical project work include prior test-oriented analyses; these numbers are not a pristine first-look hold-out claim.",
+    "The new profile parameters were selected from train/validation, and the reported test split is a validation-locked confirmation.",
+    "Eight-side 953 trees are excluded from the four-photo pipeline metric by contract; they remain eligible for image-level detector metrics.",
+    "F1 is physical linked-bunch detection; class-agnostic image AP50 must not be called maturity or counting accuracy."
+  ]
+}
