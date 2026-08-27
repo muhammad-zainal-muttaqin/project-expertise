@@ -64,12 +64,14 @@ def build_gt(root: Path, split: str):
     return gt, paths
 
 
-def predict_ultra(model, paths: list[Path], imgsz: int, batch: int):
+def predict_ultra(model, paths: list[Path], imgsz: int, batch: int,
+                  agnostic_nms: bool = False):
     predictions, dump = [], {}
     for start in range(0, len(paths), batch):
         chunk = paths[start:start + batch]
         results = model.predict([str(p) for p in chunk], imgsz=imgsz,
                                 conf=0.001, iou=0.7, max_det=300,
+                                agnostic_nms=agnostic_nms,
                                 verbose=False, save=False)
         for offset, (path, result) in enumerate(zip(chunk, results)):
             rows = []
@@ -141,6 +143,8 @@ def main() -> int:
     ap.add_argument("--run-name", required=True)
     ap.add_argument("--imgsz", type=int, default=1280)
     ap.add_argument("--batch", type=int, default=8)
+    ap.add_argument("--agnostic-nms", action="store_true",
+                    help="suppress overlapping boxes across classes (YOLO/RT-DETR)")
     ap.add_argument("--out-json", type=Path, required=True)
     ap.add_argument("--pred-dir", type=Path, required=True)
     ap.add_argument("--splits", nargs="+", default=("val", "test"))
@@ -167,7 +171,8 @@ def main() -> int:
         if args.kind == "rfdetr":
             dt_list, dump = predict_rfdetr(model, paths, args.batch)
         else:
-            dt_list, dump = predict_ultra(model, paths, args.imgsz, args.batch)
+            dt_list, dump = predict_ultra(model, paths, args.imgsz, args.batch,
+                                          args.agnostic_nms)
         metrics = evaluate(gt, dt_list)
         pred_path = args.pred_dir / f"{args.run_name}__{split}.npz"
         np.savez_compressed(pred_path, **dump)

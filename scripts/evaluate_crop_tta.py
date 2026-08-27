@@ -106,17 +106,18 @@ def main() -> int:
         raise RuntimeError("CUDA diperlukan")
     ckpt = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     ck_args = ckpt["args"]
+    model_args = ck_args if "backbone" in ck_args else ckpt.get("backbone_args", ck_args)
     regular.CTX = float(args.context if args.context is not None
                         else ck_args.get("context", regular.CTX))
     match_iou = float(args.match_iou if args.match_iou is not None
                       else ck_args.get("match_iou", .5))
     ordinal_mode = "ordinal" in args.checkpoint.name or "ordinal" in str(args.checkpoint.parent)
     if ordinal_mode:
-        model = ordinal.OrdinalModel(ck_args["backbone"]).cuda()
+        model = ordinal.OrdinalModel(model_args["backbone"]).cuda()
     else:
         model = regular.ProposalModel(
-            ck_args["backbone"], ck_args.get("channels", 3),
-            ck_args.get("freeze_backbone", False)).cuda()
+            model_args["backbone"], model_args.get("channels", 3),
+            model_args.get("freeze_backbone", False)).cuda()
     model.load_state_dict(ckpt["model"])
     model.eval()
     cfg = regular.base.CONFIGS[
