@@ -197,3 +197,25 @@ MAE/±1 turun. Kandidat Depth unggul secara point estimate tetapi CI paired
 bootstrap 5.000 pohon melintasi nol pada seluruh metrik delta. Detail dan
 artefak reproduksi ada di
 [`WAVE2_RECAP.md`](../results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md).
+
+## 11. new763 RGB+D4 dan fixed late fusion (2026-08-28)
+
+Eksperimen fair 4-channel pada 763 pohon menggunakan 536/117 pohon TRAIN/VAL
+dan tidak mematerialkan TEST. Early fusion RGB+D4 belum konsisten: YOLO26l
+`0,529523`, RT-DETR-L `0,584088`, dan RF-DETR-L v2 `0,597070` mAP50 VALID;
+paired CI masing-masing masih mencakup nol. Prediksi yang sama kemudian diuji
+dengan post-processing fixed IoU `0,60`, tanpa sweep parameter:
+
+| Arsitektur | RGB | RGB+D4 | Union-NMS | Union-WBF |
+|---|---:|---:|---:|---:|
+| YOLO26l | 0,529357 | 0,529523 | 0,561982 | **0,567718** |
+| RF-DETR-L v2 | **0,608233** | 0,597070 | 0,606856 | 0,528041 |
+| RT-DETR-L | 0,577766 | 0,584088 | **0,606368** | 0,407071 |
+
+Paired bootstrap terhadap RGB menunjukkan union-WBF YOLO Δ `+0,037912`, CI95
+`[+0,016060; +0,059120]` (500 resample), sedangkan union-NMS RT Δ `+0,028492`,
+CI95 `[+0,009231; +0,047236]` (screen 200 resample). Ini adalah kandidat
+validation-selected/exploratory, bukan klaim generalisasi; WBF class-aware
+naif ditolak untuk RF/RT karena merusak ranking. Detail lengkap ada di
+[`docs/NEW763_RGBD4_RESULTS.md`](../docs/NEW763_RGBD4_RESULTS.md) dan JSON di
+[`results/new763_rgbd4/`](../results/new763_rgbd4/).

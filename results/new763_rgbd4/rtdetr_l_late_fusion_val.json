@@ -1,0 +1,103 @@
+{
+  "analysis": "fixed late fusion of RGB and RGB+D4; new763 VAL only",
+  "inputs": {
+    "dataset": "/workspace/new763_rgbd4",
+    "rgb_predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__val.npz",
+    "rgbd_predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best__val.npz"
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "fusion_iou": 0.6,
+    "n_images": 468,
+    "parameter_selection": "none; recipes fixed before evaluation",
+    "test_access": "forbidden; this script has no test path or test option",
+    "wbf_score": "arithmetic mean of member scores"
+  },
+  "recipes": {
+    "rgb": {
+      "metrics": {
+        "mAP50": 0.577766,
+        "mAP50_95": 0.211041,
+        "per_kelas_AP50": {
+          "B1": 0.724444,
+          "B2": 0.583357,
+          "B3": 0.668535,
+          "B4": 0.334729
+        }
+      },
+      "n_detections": 140400,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_rgb__val.npz"
+    },
+    "rgb_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.579054,
+        "mAP50_95": 0.210373,
+        "per_kelas_AP50": {
+          "B1": 0.725738,
+          "B2": 0.581654,
+          "B3": 0.671361,
+          "B4": 0.337462
+        }
+      },
+      "n_detections": 78539,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_rgb_nms_iou060__val.npz"
+    },
+    "rgbd4": {
+      "metrics": {
+        "mAP50": 0.584088,
+        "mAP50_95": 0.212043,
+        "per_kelas_AP50": {
+          "B1": 0.713045,
+          "B2": 0.59309,
+          "B3": 0.692536,
+          "B4": 0.33768
+        }
+      },
+      "n_detections": 140400,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_rgbd4__val.npz"
+    },
+    "rgbd4_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.584778,
+        "mAP50_95": 0.211865,
+        "per_kelas_AP50": {
+          "B1": 0.714274,
+          "B2": 0.590928,
+          "B3": 0.694855,
+          "B4": 0.339056
+        }
+      },
+      "n_detections": 81732,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_rgbd4_nms_iou060__val.npz"
+    },
+    "union_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.606368,
+        "mAP50_95": 0.22033,
+        "per_kelas_AP50": {
+          "B1": 0.76397,
+          "B2": 0.595164,
+          "B3": 0.704667,
+          "B4": 0.361671
+        }
+      },
+      "n_detections": 144535,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_union_nms_iou060__val.npz"
+    },
+    "union_wbf_avg_iou060": {
+      "metrics": {
+        "mAP50": 0.407071,
+        "mAP50_95": 0.145957,
+        "per_kelas_AP50": {
+          "B1": 0.470258,
+          "B2": 0.502445,
+          "B3": 0.486076,
+          "B4": 0.169507
+        }
+      },
+      "n_detections": 142509,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_union_wbf_avg_iou060__val.npz"
+    }
+  },
+  "schema_version": 1
+}

@@ -76,6 +76,25 @@ def result_row(arch: str, result_name: str, boot_name: str) -> dict[str, Any]:
     }
 
 
+def late_fusion_row(arch: str) -> dict[str, Any]:
+    """Collect fixed late-fusion screens without discovering any test file."""
+    result_path = RGBD_RESULTS / f"{arch}_late_fusion_val.json"
+    if not result_path.is_file():
+        raise FileNotFoundError(result_path)
+    item = read_json(result_path)
+    boot_name = {
+        "yolo26l": "yolo26l_union_wbf_bootstrap.json",
+        "rtdetr_l": "rtdetr_l_union_nms_screen200_bootstrap.json",
+    }.get(arch)
+    bootstrap = read_json(RGBD_RESULTS / boot_name) if boot_name else None
+    return {
+        "arch": arch,
+        "protocol": item["protocol"],
+        "recipes": item["recipes"],
+        "bootstrap_vs_rgb": bootstrap,
+    }
+
+
 def file_record(path: Path, label: str, remote: str | None = None) -> dict[str, Any]:
     item = {"label": label, "path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)}
     if remote:
@@ -115,6 +134,7 @@ def write_summary() -> dict[str, Any]:
     # configure_optimizers before parameter groups are built.
     rf_pth = ROOT / "runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_total.pth"
     rf_regular = ROOT / "runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_regular.pth"
+    rt_seed1337 = ROOT / "runs/detect/runs_new763_rgbd4/rtdetr_l_rgbd4_s1337_i1280_from_e2_w8/weights/best.pt"
     generic_rf = Path("/workspace/model_artifacts/project-expertise/pretrained/rf-detr-large-2026.pth")
 
     dataset = None
@@ -138,6 +158,7 @@ def write_summary() -> dict[str, Any]:
         "analysis": "new763 RGB versus RGB+D4; validation-only modality ablation",
         "dataset": dataset,
         "results": rows,
+        "late_fusion": [late_fusion_row(arch) for arch in ("yolo26l", "rfdetr_l", "rtdetr_l")],
         "unrun_architectures": {},
         "initialization_audit": {
             "yolo26l": "generic /workspace/yolo26l.pt; RGB stem copied exactly; fourth stem channel zero at first initialization; resumed RGBD checkpoint preserves learned fourth channel",
@@ -176,6 +197,10 @@ def write_summary() -> dict[str, Any]:
             },
         },
     }
+    if rt_seed1337.is_file():
+        payload["model_artifacts"].append(
+            file_record(rt_seed1337, "RT-DETR-L RGBD4 seed 1337 fine-tune candidate")
+        )
     (RGBD_RESULTS / "new763_rgbd4_summary.json").write_text(json.dumps(payload, indent=2) + "\n")
 
     with (RGBD_RESULTS / "new763_rgbd4_summary.csv").open("w", newline="") as f:

@@ -1,0 +1,46 @@
+{
+  "analysis": "paired image-level bootstrap, new763 VAL only",
+  "bootstrap": {
+    "baseline_mAP50_ci95": [
+      0.544276944379085,
+      0.6320680993344372
+    ],
+    "candidate_mAP50_ci95": [
+      0.5705034410127806,
+      0.65483292880315
+    ],
+    "delta_ci95": [
+      0.009230841046143832,
+      0.04723586405554516
+    ],
+    "delta_mean": 0.028492456864421666,
+    "fraction_delta_gt_zero": 1.0,
+    "significant_excludes_zero": true
+  },
+  "candidate": "rtdetr_l_union_nms_screen200",
+  "elapsed_seconds": 552.3,
+  "identity_sanity": {
+    "baseline": 0.5777662879230151,
+    "candidate": 0.6063679305782562
+  },
+  "inputs": {
+    "baseline_predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__val.npz",
+    "candidate_predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rtdetr_l_union_nms_iou060__val.npz",
+    "dataset": "/workspace/new763_rgbd4"
+  },
+  "point": {
+    "baseline_mAP50": 0.577766,
+    "candidate_mAP50": 0.606368,
+    "delta_candidate_minus_baseline": 0.028602000000000016
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "n_images": 468,
+    "n_resamples": 200,
+    "same_resample_indices_for_both_submissions": true,
+    "seed": 42,
+    "selection": "none inside bootstrap; candidate recipe was fixed before this analysis",
+    "test_access": "forbidden; this script has no test path or test option"
+  },
+  "schema_version": 1
+}

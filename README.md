@@ -28,6 +28,12 @@ Seluruh fase eksperimen utama (`V2-E-001` s.d. `V2-E-044` serta `PT-E-000` s.d. 
    Modalitas kedalaman terbukti **efektif meningkatkan lokalisasi objek** ($AP50 = \mathbf{0,7636}$ pada model 4-kanal vs $\mathbf{0,7358}$ pada kontrol RGB, $\Delta = +0,0278$, $P(\Delta > 0) = 92,1\%$), namun bersifat **redundan terhadap fitur visual RGB untuk klasifikasi kematangan**.
 4. **Rekor Lokalisasi Agnostik Tertinggi (V2-E-039)**:
    Ensembel WBF 3-detektor pada korpus Combined-1716 mencetak rekor lokalisasi tertinggi sebesar **$AP50 = \mathbf{0,8106}$ ($81,06\%$)** pada 1.052 citra uji kanonik.
+5. **new763 RGB+D4 dan fusi fixed (2026-08-28)**:
+   Early fusion empat kanal belum konsisten lintas arsitektur, tetapi fusi
+   prediksi RGB + RGB+D4 pada VALID menaikkan YOLO26l menjadi `mAP50 0,5677`
+   dan RT-DETR-L menjadi `0,6064` dengan paired CI positif. Ini masih
+   validation-selected/exploratory; rincian dan batas klaim ada di
+   [docs/NEW763_RGBD4_RESULTS.md](docs/NEW763_RGBD4_RESULTS.md).
 
 ### Matriks Hasil Utama (Split Uji: $mAP50$ pycocotools / $\text{Class }\pm 1\text{ Acc}$ Ridge+$F_{all}$)
 
@@ -81,6 +87,7 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 | [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Diagnostik Sinyal Depth (Fase 6)** — Penemuan sifat fisik sinyal kedalaman (relief ordinal vs skala metrik), rasio *SNR*, dan bukti redundansi kematangan. |
 | [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Panduan Reproduksi** — Prosedur eksekusi langkah-demi-langkah beserta katalog 9 jebakan operasional (*silent failures*). |
 | [docs/NEW763_BASELINE.md](docs/NEW763_BASELINE.md) | **Baseline Korpus 763 Pohon** — Spesifikasi rilis SawitMVC-Depth v2.0.0 dan evaluasi multi-kampanye. |
+| [docs/NEW763_RGBD4_RESULTS.md](docs/NEW763_RGBD4_RESULTS.md) | Ablasi fair RGB versus RGB+D4 dan fixed late fusion pada VALID new763, termasuk bootstrap dan audit kanal. |
 | [docs/EDA-COMBINED1716.md](docs/EDA-COMBINED1716.md) | **Analisis Eksploratif Data** — Karakteristik distribusi kelas dan sebaran spasial korpus gabungan 1.716 pohon. |
 | [docs/REGENERASI.md](docs/REGENERASI.md) | Prosedur pembentukan ulang data turunan multi-kanal, citra terpotong (*crop*), dan partisi symlink. |
 | [docs/REKAP.md](docs/REKAP.md) | Rekapitulasi komparasi, percobaan gagal, dan sintesis pembelajaran dari Volume 1 & Volume 2. |

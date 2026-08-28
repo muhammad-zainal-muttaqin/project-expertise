@@ -1,0 +1,103 @@
+{
+  "analysis": "fixed late fusion of RGB and RGB+D4; new763 VAL only",
+  "inputs": {
+    "dataset": "/workspace/new763_rgbd4",
+    "rgb_predictions": "/workspace/project-expertise/results/new763/predictions/rfdetr_l_rgb_s42_i1280__val.npz",
+    "rgbd_predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2_best_total__val.npz"
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "fusion_iou": 0.6,
+    "n_images": 468,
+    "parameter_selection": "none; recipes fixed before evaluation",
+    "test_access": "forbidden; this script has no test path or test option",
+    "wbf_score": "arithmetic mean of member scores"
+  },
+  "recipes": {
+    "rgb": {
+      "metrics": {
+        "mAP50": 0.608233,
+        "mAP50_95": 0.227471,
+        "per_kelas_AP50": {
+          "B1": 0.740754,
+          "B2": 0.638151,
+          "B3": 0.704351,
+          "B4": 0.349676
+        }
+      },
+      "n_detections": 138329,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_rgb__val.npz"
+    },
+    "rgb_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.610903,
+        "mAP50_95": 0.227635,
+        "per_kelas_AP50": {
+          "B1": 0.74245,
+          "B2": 0.640794,
+          "B3": 0.707632,
+          "B4": 0.352736
+        }
+      },
+      "n_detections": 82458,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_rgb_nms_iou060__val.npz"
+    },
+    "rgbd4": {
+      "metrics": {
+        "mAP50": 0.59707,
+        "mAP50_95": 0.226946,
+        "per_kelas_AP50": {
+          "B1": 0.752708,
+          "B2": 0.627806,
+          "B3": 0.68187,
+          "B4": 0.325896
+        }
+      },
+      "n_detections": 138269,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_rgbd4__val.npz"
+    },
+    "rgbd4_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.598472,
+        "mAP50_95": 0.226484,
+        "per_kelas_AP50": {
+          "B1": 0.753641,
+          "B2": 0.627804,
+          "B3": 0.683852,
+          "B4": 0.328591
+        }
+      },
+      "n_detections": 83254,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_rgbd4_nms_iou060__val.npz"
+    },
+    "union_nms_iou060": {
+      "metrics": {
+        "mAP50": 0.606856,
+        "mAP50_95": 0.231472,
+        "per_kelas_AP50": {
+          "B1": 0.748221,
+          "B2": 0.637558,
+          "B3": 0.700862,
+          "B4": 0.340782
+        }
+      },
+      "n_detections": 123453,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_union_nms_iou060__val.npz"
+    },
+    "union_wbf_avg_iou060": {
+      "metrics": {
+        "mAP50": 0.528041,
+        "mAP50_95": 0.19183,
+        "per_kelas_AP50": {
+          "B1": 0.719914,
+          "B2": 0.51229,
+          "B3": 0.623029,
+          "B4": 0.25693
+        }
+      },
+      "n_detections": 122055,
+      "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/rfdetr_l_union_wbf_avg_iou060__val.npz"
+    }
+  },
+  "schema_version": 1
+}

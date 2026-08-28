@@ -22,6 +22,45 @@ mAP pada `new763`. Checkpoint regular RF
 yang tidak dipilih memberi mAP50 0,604826 dan mAP50:95 0,226367; karena
 seleksi protokol memakai mAP50:95, angka utama tetap checkpoint `best_total`.
 
+## Follow-up: fixed late fusion pada VAL
+
+Karena early fusion 4-channel belum konsisten, prediksi RGB dan RGB+D4 yang
+sudah dibekukan diuji sebagai dua sumber yang saling melengkapi. Ini bukan
+penyetelan ulang model: hanya ada satu resep fixed, yaitu union class-aware
+NMS pada IoU 0,60; WBF mean-score IoU 0,60 disertakan sebagai kontrol karena
+WBF adalah modul historis proyek. NMS single-source juga dihitung sebagai
+kontrol post-processing. Semua resep dievaluasi pada 468 citra VALID yang
+sama, tanpa grid parameter dan tanpa membaca TEST.
+
+| Arsitektur | RGB mAP50 / mAP50:95 | RGB+D4 mAP50 / mAP50:95 | Union-NMS mAP50 / mAP50:95 | Union-WBF mAP50 / mAP50:95 |
+|---|---:|---:|---:|---:|
+| YOLO26l | 0,529357 / 0,197855 | 0,529523 / 0,195487 | 0,561982 / 0,205965 | **0,567718 / 0,207955** |
+| RF-DETR-L v2 | 0,608233 / 0,227471 | 0,597070 / 0,226946 | 0,606856 / **0,231472** | 0,528041 / 0,191830 |
+| RT-DETR-L | 0,577766 / 0,211041 | 0,584088 / 0,212043 | **0,606368 / 0,220330** | 0,407071 / 0,145957 |
+
+Single-source NMS sendiri hanya mengubah mAP50 menjadi 0,550878 (YOLO),
+0,610903 (RF), dan 0,579054 (RT). Jadi kenaikan union bukan sekadar efek
+menekan duplikasi dalam satu model. Untuk RT, union-NMS memberi +0,028602
+mAP50 terhadap RGB; untuk YOLO, union-WBF memberi +0,038361.
+
+Paired bootstrap level-citra dilakukan setelah resep fixed dipilih untuk
+screening: YOLO union-WBF memakai 500 resample dan menghasilkan Δ rata-rata
+0,037912, CI95 [0,016060; 0,059120], seluruh resample positif. RT union-NMS
+memakai 200 resample sebagai screen cepat dan menghasilkan Δ rata-rata
+0,028492, CI95 [0,009231; 0,047236], seluruh resample positif. Kedua hasil
+ini signifikan pada VAL, tetapi karena resep ditemukan melalui screen VAL,
+keduanya harus disebut exploratory/validation-selected dan belum menjadi
+klaim generalisasi sebelum evaluasi held-out baru. RF union-NMS tidak dipaksa
+masuk bootstrap karena mAP50 point-nya sedikit di bawah RGB (0,606856 vs
+0,608233), walaupun mAP50:95 naik +0,004001.
+
+Interpretasi sementara: sinyal paling menjanjikan bukan “depth selalu
+menang” pada early stem, melainkan kombinasi detector RGB dan RGB+D4 yang
+memiliki error berbeda, dengan NMS mengurangi duplikasi query RT dan WBF
+memberi manfaat khusus pada YOLO. WBF class-aware naif tidak universal dan
+jelas merusak RF/RT; tidak boleh dipakai sebagai modul umum tanpa validasi
+terpisah.
+
 ## Perubahan per kelas
 
 | Model | B1 Δ AP50 | B2 Δ AP50 | B3 Δ AP50 | B4 Δ AP50 |
@@ -84,6 +123,7 @@ di seluruh arsitektur.
 | Bootstrap RF JSON | [`results/new763_rfdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rfdetr_l_rgbd4_val_bootstrap.json) |
 | Hasil RT JSON | [`results/new763_rtdetr_l_rgbd4_val.json`](../results/new763_rtdetr_l_rgbd4_val.json) |
 | Bootstrap RT JSON | [`results/new763_rtdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rtdetr_l_rgbd4_val_bootstrap.json) |
+| Fixed late-fusion JSON | [`results/new763_rgbd4/`](../results/new763_rgbd4/) — berkas `*_late_fusion_val.json` dan bootstrap terkait |
 | Audit RT checkpoint | [`results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json`](../results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json) |
 | Grafik agregat | [`results/figures/new763_rgbd4_val_comparison.png`](../results/figures/new763_rgbd4_val_comparison.png) |
 | Grafik per kelas | [`results/figures/new763_rgbd4_per_class_delta.png`](../results/figures/new763_rgbd4_per_class_delta.png) |

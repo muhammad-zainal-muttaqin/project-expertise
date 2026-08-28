@@ -1,0 +1,46 @@
+{
+  "analysis": "paired image-level bootstrap, new763 VAL only",
+  "bootstrap": {
+    "baseline_mAP50_ci95": [
+      0.49801957061990754,
+      0.5749085945755538
+    ],
+    "candidate_mAP50_ci95": [
+      0.5355265130835843,
+      0.6122095068479748
+    ],
+    "delta_ci95": [
+      0.016059820071176036,
+      0.059119685195228124
+    ],
+    "delta_mean": 0.03791247367780425,
+    "fraction_delta_gt_zero": 1.0,
+    "significant_excludes_zero": true
+  },
+  "candidate": "yolo26l_union_wbf",
+  "elapsed_seconds": 547.3,
+  "identity_sanity": {
+    "baseline": 0.5293567229083047,
+    "candidate": 0.5677184807385307
+  },
+  "inputs": {
+    "baseline_predictions": "/workspace/project-expertise/results/new763/predictions/yolo26l_rgb_s42_i1280__val.npz",
+    "candidate_predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4_late_fusion/yolo26l_union_wbf_avg_iou060__val.npz",
+    "dataset": "/workspace/new763_rgbd4"
+  },
+  "point": {
+    "baseline_mAP50": 0.529357,
+    "candidate_mAP50": 0.567718,
+    "delta_candidate_minus_baseline": 0.03836099999999998
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "n_images": 468,
+    "n_resamples": 500,
+    "same_resample_indices_for_both_submissions": true,
+    "seed": 42,
+    "selection": "none inside bootstrap; candidate recipe was fixed before this analysis",
+    "test_access": "forbidden; this script has no test path or test option"
+  },
+  "schema_version": 1
+}
