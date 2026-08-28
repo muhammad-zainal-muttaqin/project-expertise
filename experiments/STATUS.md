@@ -169,3 +169,11 @@ melintasi nol. Kandidat disimpan sebagai `validation candidate`, bukan klaim
 test/signifikansi. Head-aware truncation juga tidak dipromosikan karena
 kenaikan matched class dibayar dengan penurunan physical F1. Script dan JSON
 ada di `results/remote_eval_2026-08-28/validation_wave/`.
+
+## 10. Composition-aware retraining audit
+
+Head anggota baru yang dilatih pada komposisi persis `original GSP + V2 geo
+count` tidak memberi kenaikan: matched tetap `0,850000`, tetapi macro-F1
+turun ke `0,684983` dari `0,689013`. Branch ini ditolak dan disimpan sebagai
+negative control; kandidat lintas-layer yang sudah ada tetap menjadi hasil
+terbaik sementara.

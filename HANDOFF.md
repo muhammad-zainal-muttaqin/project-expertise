@@ -174,3 +174,8 @@ tersebut belum boleh disebut klaim signifikan. Artefak lengkap ada di
 Head-aware ranking juga diuji sebagai layer berikutnya; ia menaikkan akurasi
 kelas tetapi menurunkan physical F1, sehingga tetap menjadi ablasi dan skor
 linker tetap menjadi ranking utama.
+
+Fresh composition-aware retraining juga sudah diaudit: member head yang
+dilatih ulang pada label komposisi TRAIN tidak mengalahkan head yang sudah
+ada (macro-F1 `0,684983` vs `0,689013`, matched sama `0,850000`). Branch ini
+disimpan sebagai negative control; tidak menggantikan kandidat utama.

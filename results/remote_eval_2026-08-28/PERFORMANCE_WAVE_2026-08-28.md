@@ -244,3 +244,12 @@ the primary ranking signal. Member-head confidence increased matched class
 accuracy to `0,7718` on 953 and `0,8603` on Depth, but reduced physical F1 by
 `0,0064` and `0,0037`, respectively. It is retained as a negative ablation;
 the fixed-score selector is not replaced.
+
+## Composition-aware retraining audit
+
+As a final targeted follow-up, a fresh member head was trained on the exact
+TRAIN composition (original GSP topology with V2 geo count targets). Its best
+VAL row was matched `0,850000` and macro-F1 `0,684983`, versus `0,850000`
+and `0,689013` for the existing calibrated head. It therefore adds no gain
+and is retained only as a reproducible negative control. The original
+composition candidate remains the selected validation point.
