@@ -1,0 +1,932 @@
+{
+  "dataset": "depth",
+  "protocol": "fit multi-scale member TRAIN; pool VAL; no TEST",
+  "train": {
+    "members": 4108,
+    "matched_members": 3891
+  },
+  "val": {
+    "members": 915,
+    "matched_members": 847
+  },
+  "baseline_val": {
+    "physical_f1": 0.8526413345690453,
+    "mae": 0.9316239316239316,
+    "pm1": 0.7863247863247863,
+    "matched_class_accuracy": 0.8456521739130435,
+    "matched": 460,
+    "macro_f1": 0.6806848973454227,
+    "per_class_f1": {
+      "B1": 0.7777777777777778,
+      "B2": 0.724373576309795,
+      "B3": 0.75,
+      "B4": 0.47058823529411764
+    }
+  },
+  "results": [
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8434782608695652,
+        "matched": 460,
+        "macro_f1": 0.6857776900353895,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7172413793103448,
+          "B3": 0.7480916030534351,
+          "B4": 0.5
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.1903157234191895
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8543478260869565,
+        "matched": 460,
+        "macro_f1": 0.6937545898305901,
+        "per_class_f1": {
+          "B1": 0.7804878048780488,
+          "B2": 0.728110599078341,
+          "B3": 0.7609254498714653,
+          "B4": 0.5054945054945055
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.3012382984161377
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8478260869565217,
+        "matched": 460,
+        "macro_f1": 0.6882154976353297,
+        "per_class_f1": {
+          "B1": 0.7804878048780488,
+          "B2": 0.7251732101616628,
+          "B3": 0.7525773195876289,
+          "B4": 0.4946236559139785
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.4126613140106201
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8391304347826087,
+        "matched": 460,
+        "macro_f1": 0.6820636378374626,
+        "per_class_f1": {
+          "B1": 0.7784431137724551,
+          "B2": 0.7175925925925926,
+          "B3": 0.7428571428571429,
+          "B4": 0.48936170212765956
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.5239779949188232
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6780555060662473,
+        "per_class_f1": {
+          "B1": 0.7664670658682635,
+          "B2": 0.7146171693735499,
+          "B3": 0.7362924281984334,
+          "B4": 0.4948453608247423
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.6344630718231201
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8217391304347826,
+        "matched": 460,
+        "macro_f1": 0.667138922888617,
+        "per_class_f1": {
+          "B1": 0.75,
+          "B2": 0.7069767441860465,
+          "B3": 0.7315789473684211,
+          "B4": 0.48
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.7436103820800781
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "mean",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8217391304347826,
+        "matched": 460,
+        "macro_f1": 0.664952256534,
+        "per_class_f1": {
+          "B1": 0.75,
+          "B2": 0.7102803738317757,
+          "B3": 0.7335092348284961,
+          "B4": 0.46601941747572817
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.8521387577056885
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8456521739130435,
+        "matched": 460,
+        "macro_f1": 0.690468272418098,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7172413793103448,
+          "B3": 0.75,
+          "B4": 0.5168539325842697
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.963444709777832
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8521739130434782,
+        "matched": 460,
+        "macro_f1": 0.6933837773613432,
+        "per_class_f1": {
+          "B1": 0.7852760736196319,
+          "B2": 0.7218390804597701,
+          "B3": 0.7609254498714653,
+          "B4": 0.5054945054945055
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.0727741718292236
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8478260869565217,
+        "matched": 460,
+        "macro_f1": 0.688213881617782,
+        "per_class_f1": {
+          "B1": 0.7804878048780488,
+          "B2": 0.7238979118329466,
+          "B3": 0.7538461538461538,
+          "B4": 0.4946236559139785
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.1804420948028564
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8434782608695652,
+        "matched": 460,
+        "macro_f1": 0.6841730459913065,
+        "per_class_f1": {
+          "B1": 0.7757575757575758,
+          "B2": 0.7209302325581395,
+          "B3": 0.7506426735218509,
+          "B4": 0.48936170212765956
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.2887039184570312
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8391304347826087,
+        "matched": 460,
+        "macro_f1": 0.6816975459855176,
+        "per_class_f1": {
+          "B1": 0.7831325301204819,
+          "B2": 0.7259953161592506,
+          "B3": 0.7376623376623377,
+          "B4": 0.48
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.3967196941375732
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8304347826086956,
+        "matched": 460,
+        "macro_f1": 0.6732037881139205,
+        "per_class_f1": {
+          "B1": 0.7590361445783133,
+          "B2": 0.7213114754098361,
+          "B3": 0.7324675324675325,
+          "B4": 0.48
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.5045478343963623
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "max",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8260869565217391,
+        "matched": 460,
+        "macro_f1": 0.6665552169849316,
+        "per_class_f1": {
+          "B1": 0.75,
+          "B2": 0.7216981132075472,
+          "B3": 0.7329842931937173,
+          "B4": 0.46153846153846156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.612410306930542
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.841304347826087,
+        "matched": 460,
+        "macro_f1": 0.6838458630771187,
+        "per_class_f1": {
+          "B1": 0.7730061349693251,
+          "B2": 0.7142857142857143,
+          "B3": 0.7480916030534351,
+          "B4": 0.5
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.7253127098083496
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8369565217391305,
+        "matched": 460,
+        "macro_f1": 0.6772196014115366,
+        "per_class_f1": {
+          "B1": 0.7804878048780488,
+          "B2": 0.7096774193548387,
+          "B3": 0.7468030690537084,
+          "B4": 0.47191011235955055
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.834181308746338
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6699272358846826,
+        "per_class_f1": {
+          "B1": 0.7757575757575758,
+          "B2": 0.7142857142857143,
+          "B3": 0.7428571428571429,
+          "B4": 0.44680851063829785
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.9417452812194824
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8304347826086956,
+        "matched": 460,
+        "macro_f1": 0.6665146623950227,
+        "per_class_f1": {
+          "B1": 0.7710843373493976,
+          "B2": 0.7146171693735499,
+          "B3": 0.7428571428571429,
+          "B4": 0.4375
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.0495455265045166
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8217391304347826,
+        "matched": 460,
+        "macro_f1": 0.6628260908863315,
+        "per_class_f1": {
+          "B1": 0.7810650887573964,
+          "B2": 0.7044917257683215,
+          "B3": 0.734375,
+          "B4": 0.43137254901960786
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.1571383476257324
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8021739130434783,
+        "matched": 460,
+        "macro_f1": 0.646760513191525,
+        "per_class_f1": {
+          "B1": 0.7544910179640718,
+          "B2": 0.684085510688836,
+          "B3": 0.7253886010362695,
+          "B4": 0.4230769230769231
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.264958620071411
+    },
+    {
+      "model": "ms_logistic",
+      "pooling": "top",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.7956521739130434,
+        "matched": 460,
+        "macro_f1": 0.639469052727587,
+        "per_class_f1": {
+          "B1": 0.7455621301775148,
+          "B2": 0.6795180722891566,
+          "B3": 0.7253886010362695,
+          "B4": 0.4074074074074074
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.3729188442230225
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8456521739130435,
+        "matched": 460,
+        "macro_f1": 0.6826334411108395,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7214611872146118,
+          "B3": 0.7493670886075949,
+          "B4": 0.4819277108433735
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.8194594383239746
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.841304347826087,
+        "matched": 460,
+        "macro_f1": 0.6772919105798223,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7185354691075515,
+          "B3": 0.7437185929648241,
+          "B4": 0.4691358024691358
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 1.9278645515441895
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8369565217391305,
+        "matched": 460,
+        "macro_f1": 0.6706943787760804,
+        "per_class_f1": {
+          "B1": 0.7701863354037267,
+          "B2": 0.7168949771689498,
+          "B3": 0.74,
+          "B4": 0.45569620253164556
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.0361886024475098
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6596993838080426,
+        "per_class_f1": {
+          "B1": 0.7701863354037267,
+          "B2": 0.7185354691075515,
+          "B3": 0.7344913151364765,
+          "B4": 0.4155844155844156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.1445980072021484
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6593450598026773,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7181818181818181,
+          "B3": 0.736318407960199,
+          "B4": 0.4155844155844156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.2523837089538574
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6567695268166966,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7136363636363636,
+          "B3": 0.7407407407407407,
+          "B4": 0.40540540540540543
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.3600246906280518
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "mean",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8282608695652174,
+        "matched": 460,
+        "macro_f1": 0.6484974278672242,
+        "per_class_f1": {
+          "B1": 0.759493670886076,
+          "B2": 0.7120181405895691,
+          "B3": 0.7389162561576355,
+          "B4": 0.3835616438356164
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.4685378074645996
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8456521739130435,
+        "matched": 460,
+        "macro_f1": 0.6826334411108395,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7214611872146118,
+          "B3": 0.7493670886075949,
+          "B4": 0.4819277108433735
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.5813119411468506
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8391304347826087,
+        "matched": 460,
+        "macro_f1": 0.6760911367784054,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7155963302752294,
+          "B3": 0.7418546365914787,
+          "B4": 0.4691358024691358
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.691164970397949
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8369565217391305,
+        "matched": 460,
+        "macro_f1": 0.6747862863680941,
+        "per_class_f1": {
+          "B1": 0.7701863354037267,
+          "B2": 0.7139588100686499,
+          "B3": 0.74,
+          "B4": 0.475
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.801499366760254
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6596993838080426,
+        "per_class_f1": {
+          "B1": 0.7701863354037267,
+          "B2": 0.7185354691075515,
+          "B3": 0.7344913151364765,
+          "B4": 0.4155844155844156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 2.9138355255126953
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6593450598026773,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7181818181818181,
+          "B3": 0.736318407960199,
+          "B4": 0.4155844155844156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.0223119258880615
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8369565217391305,
+        "matched": 460,
+        "macro_f1": 0.663679584939626,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7181818181818181,
+          "B3": 0.7425742574257426,
+          "B4": 0.4266666666666667
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.1309592723846436
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "max",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8304347826086956,
+        "matched": 460,
+        "macro_f1": 0.6543629240213701,
+        "per_class_f1": {
+          "B1": 0.759493670886076,
+          "B2": 0.7136363636363636,
+          "B3": 0.7389162561576355,
+          "B4": 0.40540540540540543
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.239032745361328
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.1,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8434782608695652,
+        "matched": 460,
+        "macro_f1": 0.6814289263008626,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7185354691075515,
+          "B3": 0.7474747474747475,
+          "B4": 0.4819277108433735
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.3512825965881348
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.2,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.841304347826087,
+        "matched": 460,
+        "macro_f1": 0.6772919105798223,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.7185354691075515,
+          "B3": 0.7437185929648241,
+          "B4": 0.4691358024691358
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.4594836235046387
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.3,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8391304347826087,
+        "matched": 460,
+        "macro_f1": 0.6759839872910388,
+        "per_class_f1": {
+          "B1": 0.7701863354037267,
+          "B2": 0.7168949771689498,
+          "B3": 0.7418546365914787,
+          "B4": 0.475
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.568204641342163
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.45,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8326086956521739,
+        "matched": 460,
+        "macro_f1": 0.6671183551401236,
+        "per_class_f1": {
+          "B1": 0.7625,
+          "B2": 0.7139588100686499,
+          "B3": 0.736318407960199,
+          "B4": 0.45569620253164556
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.676664352416992
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.6,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8304347826086956,
+        "matched": 460,
+        "macro_f1": 0.6581583218007228,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.715261958997722,
+          "B3": 0.7344913151364765,
+          "B4": 0.4155844155844156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.7855067253112793
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 0.8,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8282608695652174,
+        "matched": 460,
+        "macro_f1": 0.64962003152256,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7123287671232876,
+          "B3": 0.7352941176470589,
+          "B4": 0.3835616438356164
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 3.8949472904205322
+    },
+    {
+      "model": "ms_extra",
+      "pooling": "top",
+      "alpha": 1.0,
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8282608695652174,
+        "matched": 460,
+        "macro_f1": 0.6455611944998626,
+        "per_class_f1": {
+          "B1": 0.7672955974842768,
+          "B2": 0.7139588100686499,
+          "B3": 0.7347931873479319,
+          "B4": 0.36619718309859156
+        },
+        "physical_count_invariant": true
+      },
+      "fit_elapsed_sec": 4.0036914348602295
+    }
+  ],
+  "selected_validation": {
+    "model": "ms_logistic",
+    "pooling": "mean",
+    "alpha": 0.2,
+    "metrics": {
+      "physical_f1": 0.8526413345690453,
+      "mae": 0.9316239316239316,
+      "pm1": 0.7863247863247863,
+      "matched_class_accuracy": 0.8543478260869565,
+      "matched": 460,
+      "macro_f1": 0.6937545898305901,
+      "per_class_f1": {
+        "B1": 0.7804878048780488,
+        "B2": 0.728110599078341,
+        "B3": 0.7609254498714653,
+        "B4": 0.5054945054945055
+      },
+      "physical_count_invariant": true
+    },
+    "fit_elapsed_sec": 1.3012382984161377
+  },
+  "elapsed_sec": 37.79133439064026
+}

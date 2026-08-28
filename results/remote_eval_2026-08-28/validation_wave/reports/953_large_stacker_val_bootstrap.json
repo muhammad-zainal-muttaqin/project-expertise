@@ -1,0 +1,37 @@
+{
+  "dataset": "953",
+  "protocol": "paired tree bootstrap on VAL; DINOv2-Large/Base experts fit TRAIN; no TEST",
+  "seed": 20260828,
+  "n_resamples": 5000,
+  "n_val_trees": 91,
+  "weights": {
+    "large_mean": 0.1,
+    "base_extra_max": 0.2,
+    "base_logistic_max": 0.05,
+    "multiscale_extra_mean": 0.1
+  },
+  "matched_accuracy": {
+    "baseline": 0.7542043984476067,
+    "candidate": 0.7684346701164295,
+    "delta": 0.014209322050287358,
+    "ci95": [
+      0.0024968010684898317,
+      0.02574015653283948
+    ],
+    "p_positive": 0.987,
+    "excludes_zero": true
+  },
+  "macro_f1": {
+    "baseline": 0.601393979256198,
+    "candidate": 0.6106654856107152,
+    "delta": 0.009278951871386781,
+    "ci95": [
+      -0.0028926927523506892,
+      0.02199871087472299
+    ],
+    "p_positive": 0.9296,
+    "excludes_zero": false
+  },
+  "class_correct_delta": 11.0,
+  "interpretation": "VAL robustness only; does not replace locked test results"
+}

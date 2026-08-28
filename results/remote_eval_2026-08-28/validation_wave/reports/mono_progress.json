@@ -1,0 +1,14 @@
+{
+  "model_id": "depth-anything/Depth-Anything-V2-Small-hf",
+  "total_images_processed": 7044,
+  "total_expected": 7044,
+  "images_953_expected": 3992,
+  "images_depthds_expected": 3052,
+  "images_953_done": 3992,
+  "images_depthds_done": 3052,
+  "total_bytes_written_this_run": 2663148122,
+  "elapsed_sec": 3451.3746058940887,
+  "imgs_per_sec": 2.0409259510603692,
+  "disk_guard_tripped": false,
+  "free_gb_at_end": 44.86559295654297
+}

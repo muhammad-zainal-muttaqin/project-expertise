@@ -126,3 +126,30 @@ sendiri turun ke mAP50 `0.175860` pada 953 dan `0.482666` pada Depth.
 
 Last known repository commit sebelum handoff: `cd6c809`. Model besar dan dump
 regenerable tetap berada di artifact storage eksternal.
+
+## Validation wave 2026-08-28
+
+Wave lanjutan tetap mematuhi pemisahan TRAIN/VALIDATION/TEST. Kandidat
+terpilih untuk 953 adalah opini DINOv2-Large dengan bobot `0,15`, opini
+logistic anggota dengan bobot `0,05`, serta bias logit B2 `+0,15`; opini
+detektor tetap menjadi jalur *skip*. Pada validation, matched-class accuracy
+meningkat dari `0,7542` menjadi `0,7684`, sedangkan macro-F1 meningkat dari
+`0,6014` menjadi `0,6164`. Bootstrap berpasangan pada 5.000 resampling
+pohon menghasilkan selang delta matched `[+0,0026; +0,0268]` dan selang delta
+macro-F1 `[+0,0007; +0,0303]`; keduanya tidak mencakup nilai nol.
+
+Perubahan tersebut belum dijalankan pada TEST dan tidak mengubah topology
+fisik maupun kepala pencacahan. OOF stacking, agregasi per sisi, kepala
+ordinal, KNN/prototype, attention GPU, selector Hungarian–GSP, serta regresor
+pencacahan kaya fitur dicatat sebagai ablasi; tidak ada yang memenuhi kriteria
+all-round pada validation. Rincian angka, konfigurasi, skrip reproduksi, dan
+checksum tersedia di
+[`PERFORMANCE_WAVE_2026-08-28`](results/remote_eval_2026-08-28/PERFORMANCE_WAVE_2026-08-28.md).
+
+Follow-up ConvNeXt/Swin/EfficientNet independen hanya memberi fusion nominal
+`0,7697` matched dan `0,6166` macro-F1 pada validation 953—satu pohon lebih
+baik dari anchor tanpa CI independen—sehingga tidak dipromosikan. Selector
+Depth antara original GSP dan V2 geo/count juga ditolak karena pertukaran
+physical F1/macro-F1 versus MAE. Kedua hasil ini tersimpan sebagai ablasi
+TRAIN/VAL-only; original Depth GSP dan kandidat 953 robust di atas tetap
+menjadi keputusan kerja.

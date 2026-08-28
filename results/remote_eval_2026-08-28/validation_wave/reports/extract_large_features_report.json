@@ -1,0 +1,50 @@
+[
+  {
+    "dataset": "953",
+    "split": "train",
+    "model": "facebook/dinov2-large",
+    "n_crops": 17075,
+    "feature_dim": 2048,
+    "out_path": "/workspace/dino_head/features_large/953/train_dinolargefeat.npy",
+    "elapsed_sec": 110.66662883758545,
+    "images_per_sec": 154.2922214162618,
+    "batch_size": 32,
+    "skipped_existing": false
+  },
+  {
+    "dataset": "953",
+    "split": "val",
+    "model": "facebook/dinov2-large",
+    "n_crops": 2364,
+    "feature_dim": 2048,
+    "out_path": "/workspace/dino_head/features_large/953/val_dinolargefeat.npy",
+    "elapsed_sec": 14.778294801712036,
+    "images_per_sec": 159.9643282069414,
+    "batch_size": 32,
+    "skipped_existing": false
+  },
+  {
+    "dataset": "depth",
+    "split": "train",
+    "model": "facebook/dinov2-large",
+    "n_crops": 4670,
+    "feature_dim": 2048,
+    "out_path": "/workspace/dino_head/features_large/depth/train_dinolargefeat.npy",
+    "elapsed_sec": 29.183168172836304,
+    "images_per_sec": 160.02374972936752,
+    "batch_size": 32,
+    "skipped_existing": false
+  },
+  {
+    "dataset": "depth",
+    "split": "val",
+    "model": "facebook/dinov2-large",
+    "n_crops": 1001,
+    "feature_dim": 2048,
+    "out_path": "/workspace/dino_head/features_large/depth/val_dinolargefeat.npy",
+    "elapsed_sec": 6.222482681274414,
+    "images_per_sec": 160.86826613633696,
+    "batch_size": 32,
+    "skipped_existing": false
+  }
+]

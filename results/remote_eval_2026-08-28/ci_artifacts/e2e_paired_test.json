@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-08-28",
+  "analysis": "paired end-to-end test bootstrap",
+  "datasets": {
+    "953": {
+      "dataset": "953",
+      "n_trees": 135,
+      "n_resamples": 5000,
+      "seed": 20260828,
+      "protocol": "paired tree bootstrap over existing locked per-tree summaries; no image/model inference; no selection",
+      "baseline_artifact": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/count_reconciled_calibration_953_test_locked.json",
+      "candidate_artifact": "/workspace/gsp_linker/artifacts/953/results_test_locked.json",
+      "tree_alignment": "exact ID and order match; GT counts match per tree",
+      "metrics": {
+        "physical_f1": {
+          "baseline": 0.8043478260869564,
+          "candidate": 0.8387096774193548,
+          "improvement_positive": 0.03436185133239833,
+          "paired_bootstrap_ci95": [
+            0.020939110576259367,
+            0.047689690372510196
+          ],
+          "p_improvement_positive": 1.0,
+          "ci_excludes_zero": true
+        },
+        "mae": {
+          "baseline": 1.3925925925925926,
+          "candidate": 1.362962962962963,
+          "improvement_positive": 0.029629629629629672,
+          "paired_bootstrap_ci95": [
+            -0.014814814814814836,
+            0.08148148148148149
+          ],
+          "p_improvement_positive": 0.8826,
+          "ci_excludes_zero": false
+        },
+        "exact_accuracy": {
+          "baseline": 0.25925925925925924,
+          "candidate": 0.2740740740740741,
+          "improvement_positive": 0.014814814814814836,
+          "paired_bootstrap_ci95": [
+            -0.01481481481481478,
+            0.04444444444444445
+          ],
+          "p_improvement_positive": 0.7818,
+          "ci_excludes_zero": false
+        },
+        "plus_minus_1_accuracy": {
+          "baseline": 0.6148148148148148,
+          "candidate": 0.6370370370370371,
+          "improvement_positive": 0.022222222222222254,
+          "paired_bootstrap_ci95": [
+            0.0,
+            0.051851851851851816
+          ],
+          "p_improvement_positive": 0.9558,
+          "ci_excludes_zero": false
+        }
+      },
+      "class_aware_scope": "not computed: legacy baseline lacks per-tree class-correct/confusion decomposition"
+    },
+    "depth": {
+      "dataset": "depth",
+      "n_trees": 110,
+      "n_resamples": 5000,
+      "seed": 20260829,
+      "protocol": "paired tree bootstrap over existing locked per-tree summaries; no image/model inference; no selection",
+      "baseline_artifact": "/workspace/model_artifacts/project-expertise/eval_2026-08-27/count_reconciled_calibration_depth_test_locked.json",
+      "candidate_artifact": "/workspace/gsp_linker/artifacts/depth/results_test_locked.json",
+      "tree_alignment": "exact ID and order match; GT counts match per tree",
+      "metrics": {
+        "physical_f1": {
+          "baseline": 0.8068592057761733,
+          "candidate": 0.8534080298786182,
+          "improvement_positive": 0.046548824102444875,
+          "paired_bootstrap_ci95": [
+            0.025732949196548626,
+            0.06902547584001507
+          ],
+          "p_improvement_positive": 1.0,
+          "ci_excludes_zero": true
+        },
+        "mae": {
+          "baseline": 0.8909090909090909,
+          "candidate": 0.7727272727272727,
+          "improvement_positive": 0.11818181818181817,
+          "paired_bootstrap_ci95": [
+            -0.036363636363636376,
+            0.26363636363636367
+          ],
+          "p_improvement_positive": 0.9326,
+          "ci_excludes_zero": false
+        },
+        "exact_accuracy": {
+          "baseline": 0.33636363636363636,
+          "candidate": 0.44545454545454544,
+          "improvement_positive": 0.10909090909090907,
+          "paired_bootstrap_ci95": [
+            0.00886363636363639,
+            0.21818181818181814
+          ],
+          "p_improvement_positive": 0.975,
+          "ci_excludes_zero": true
+        },
+        "plus_minus_1_accuracy": {
+          "baseline": 0.8090909090909091,
+          "candidate": 0.8545454545454545,
+          "improvement_positive": 0.045454545454545414,
+          "paired_bootstrap_ci95": [
+            -0.018181818181818188,
+            0.10909090909090913
+          ],
+          "p_improvement_positive": 0.8994,
+          "ci_excludes_zero": false
+        }
+      },
+      "class_aware_scope": "not computed: legacy baseline lacks per-tree class-correct/confusion decomposition"
+    }
+  }
+}

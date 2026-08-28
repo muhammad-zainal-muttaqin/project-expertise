@@ -1,0 +1,34 @@
+{
+  "dataset": "953",
+  "protocol": "paired tree-level bootstrap on VAL; member experts fit TRAIN; no TEST",
+  "seed": 20260828,
+  "n_resamples": 2000,
+  "n_val_trees": 91,
+  "pooling": "max",
+  "extra_weight": 0.45,
+  "logistic_weight": 0.1,
+  "point_baseline": 0.7542043984476067,
+  "point_candidate": 0.7606727037516171,
+  "point_delta": 0.00646830530401035,
+  "ci95_delta": [
+    -0.002692245966874249,
+    0.01662404092071612
+  ],
+  "delta_mean": 0.006366023148583107,
+  "frac_delta_gt_zero": 0.8805,
+  "excludes_zero": false,
+  "matched_total": 773,
+  "class_point_delta_correct": [
+    1,
+    -2,
+    3,
+    3
+  ],
+  "class_matched_total": [
+    77,
+    153,
+    391,
+    152
+  ],
+  "interpretation": "VAL robustness only; it does not replace the locked test result"
+}

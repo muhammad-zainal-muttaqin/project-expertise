@@ -1,0 +1,57 @@
+{
+  "reprojection": {
+    "total_expected": 3052,
+    "total_done": 3052,
+    "errors": [],
+    "n_errors": 0,
+    "total_bytes_written": 471391055,
+    "mean_valid_fraction": 0.6205742251494922,
+    "elapsed_sec": 1053.485783815384,
+    "imgs_per_sec": 2.8970490602603536,
+    "disk_guard_tripped": false,
+    "free_gb_at_end": 46.76631546020508,
+    "calibration_variants": [
+      {
+        "count": 1480,
+        "example": "train/DAMIMAS_A21B_0001_1"
+      },
+      {
+        "count": 1572,
+        "example": "train/DAMIMAS_A21B_0017_1"
+      }
+    ],
+    "calibration_per_split_variant_counts": {
+      "train": [
+        1048,
+        1096
+      ],
+      "valid": [
+        220,
+        248
+      ],
+      "test": [
+        212,
+        228
+      ]
+    }
+  },
+  "verification": {
+    "n_samples_requested": 50,
+    "n_samples_used": 50,
+    "seed": 1234,
+    "primary_analytic_geometric_check": {
+      "description": "Deterministic, RGB-content-independent check: for every real valid depth pixel in each sampled image, Euclidean pixel distance between where the naive axis-scale mapping places it and where the full calibrated reprojection places it, at the native color resolution 1280x800. Median taken per image, then median-of-medians over the sample.",
+      "median_naive_vs_reprojected_geometric_offset_px": 28.362492832619907,
+      "documented_baseline_px": 29,
+      "interpretation": "Matches the dataset's own documented naive-resize misalignment figure (median 29 px @ 1280x800) almost exactly, confirming the calibration parsing and reprojection implementation are correct."
+    },
+    "secondary_empirical_edge_correlation_check": {
+      "description": "Image-content check at the actual half-res (640x400) deliverable resolution: block matching (64x64 tiles, +/-20 px search) between the depth-edge map (Sobel magnitude of the depth image, hole-eroded) and the RGB luminance-edge map (Sobel magnitude), aggregated per image via component-wise median vote across tiles, then median over the sample.",
+      "median_offset_naive_nearest_resize_px": 3.622803110052124,
+      "median_offset_reprojected_px": 3.0,
+      "mean_n_blocks_used_naive": 53.48,
+      "mean_n_blocks_used_reprojected": 53.26,
+      "caveat": "Signal is weak/noisy on this dataset: oil-palm canopy is dense, repetitive foliage texture with few unique macro edges, so block-level correlation values are low in absolute terms and this number should be read as directional, not precise. The primary analytic check above is the one to trust for confirming reprojection correctness."
+    }
+  }
+}

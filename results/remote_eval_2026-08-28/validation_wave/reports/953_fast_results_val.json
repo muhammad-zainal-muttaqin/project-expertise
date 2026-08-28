@@ -1,0 +1,864 @@
+{
+  "dataset": "953",
+  "protocol": "fit count models TRAIN; choose within predeclared V2 frontier VAL; no TEST",
+  "profiles": [
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0
+    },
+    {
+      "mode": "ptp",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0
+    }
+  ],
+  "rows": [
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8162828066416712,
+        "mae": 1.4395604395604396,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7506561679790026,
+        "macro": 0.5902727283780731,
+        "pred_clusters": 931
+      },
+      "elapsed_model_sec": 1.6091973781585693
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8162828066416712,
+        "mae": 1.4395604395604396,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7506561679790026,
+        "macro": 0.5902727283780731,
+        "pred_clusters": 931
+      },
+      "elapsed_model_sec": 2.5908777713775635
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.814270724029381,
+        "mae": 1.4725274725274726,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7564432989690721,
+        "macro": 0.5986544278152687,
+        "pred_clusters": 970
+      },
+      "elapsed_model_sec": 3.5726256370544434
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.814270724029381,
+        "mae": 1.4725274725274726,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7564432989690721,
+        "macro": 0.5986544278152687,
+        "pred_clusters": 970
+      },
+      "elapsed_model_sec": 4.5545971393585205
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8188559322033898,
+        "mae": 1.4725274725274726,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5714285714285714,
+        "matched": 0.7529107373868047,
+        "macro": 0.5984153778903327,
+        "pred_clusters": 952
+      },
+      "elapsed_model_sec": 5.5228166580200195
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8188559322033898,
+        "mae": 1.4725274725274726,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5714285714285714,
+        "matched": 0.7529107373868047,
+        "macro": 0.5984153778903327,
+        "pred_clusters": 952
+      },
+      "elapsed_model_sec": 6.492857933044434
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8171581769436999,
+        "mae": 1.4395604395604396,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5714285714285714,
+        "matched": 0.7532808398950132,
+        "macro": 0.5943148612152551,
+        "pred_clusters": 929
+      },
+      "elapsed_model_sec": 7.472097873687744
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8171581769436999,
+        "mae": 1.4395604395604396,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5714285714285714,
+        "matched": 0.7532808398950132,
+        "macro": 0.5943148612152551,
+        "pred_clusters": 929
+      },
+      "elapsed_model_sec": 8.46253228187561
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8121720881427072,
+        "mae": 1.4725274725274726,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7545219638242894,
+        "macro": 0.5947298796328331,
+        "pred_clusters": 970
+      },
+      "elapsed_model_sec": 9.455676555633545
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8121720881427072,
+        "mae": 1.4725274725274726,
+        "exact": 0.21978021978021978,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7545219638242894,
+        "macro": 0.5947298796328331,
+        "pred_clusters": 970
+      },
+      "elapsed_model_sec": 10.436376094818115
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8184747583243824,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7519685039370079,
+        "macro": 0.5945232404538745,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 11.402806282043457
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8184747583243824,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7519685039370079,
+        "macro": 0.5945232404538745,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 12.37719440460205
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8174006444683136,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7477003942181341,
+        "macro": 0.5921866795511607,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 13.343282699584961
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8174006444683136,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7477003942181341,
+        "macro": 0.5921866795511607,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 14.325705289840698
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8174006444683136,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7503285151116952,
+        "macro": 0.5909916508958005,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 15.28863525390625
+    },
+    {
+      "mode": "ptp",
+      "model": "extra",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8174006444683136,
+        "mae": 1.4505494505494505,
+        "exact": 0.23076923076923078,
+        "pm1": 0.5604395604395604,
+        "matched": 0.7503285151116952,
+        "macro": 0.5909916508958005,
+        "pred_clusters": 926
+      },
+      "elapsed_model_sec": 16.25467538833618
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8184252811997857,
+        "mae": 1.4395604395604396,
+        "exact": 0.24175824175824176,
+        "pm1": 0.5934065934065934,
+        "matched": 0.75,
+        "macro": 0.594516047168623,
+        "pred_clusters": 931
+      },
+      "elapsed_model_sec": 2.457249641418457
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.15,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8184252811997857,
+        "mae": 1.4395604395604396,
+        "exact": 0.24175824175824176,
+        "pm1": 0.5934065934065934,
+        "matched": 0.75,
+        "macro": 0.594516047168623,
+        "pred_clusters": 931
+      },
+      "elapsed_model_sec": 3.4549307823181152
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8165618448637316,
+        "mae": 1.4945054945054945,
+        "exact": 0.27472527472527475,
+        "pm1": 0.5274725274725275,
+        "matched": 0.7535301668806161,
+        "macro": 0.5996624247785238,
+        "pred_clusters": 972
+      },
+      "elapsed_model_sec": 4.450871467590332
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8165618448637316,
+        "mae": 1.4945054945054945,
+        "exact": 0.27472527472527475,
+        "pm1": 0.5274725274725275,
+        "matched": 0.7535301668806161,
+        "macro": 0.5996624247785238,
+        "pred_clusters": 972
+      },
+      "elapsed_model_sec": 5.455207824707031
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8217874140666315,
+        "mae": 1.4835164835164836,
+        "exact": 0.26373626373626374,
+        "pm1": 0.5384615384615384,
+        "matched": 0.7516087516087516,
+        "macro": 0.6018029723426038,
+        "pred_clusters": 955
+      },
+      "elapsed_model_sec": 7.003843069076538
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8217874140666315,
+        "mae": 1.4835164835164836,
+        "exact": 0.26373626373626374,
+        "pm1": 0.5384615384615384,
+        "matched": 0.7516087516087516,
+        "macro": 0.6018029723426038,
+        "pred_clusters": 955
+      },
+      "elapsed_model_sec": 7.989958763122559
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8208154506437768,
+        "mae": 1.4285714285714286,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5934065934065934,
+        "matched": 0.7529411764705882,
+        "macro": 0.5997133161218927,
+        "pred_clusters": 928
+      },
+      "elapsed_model_sec": 8.971968173980713
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8208154506437768,
+        "mae": 1.4285714285714286,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5934065934065934,
+        "matched": 0.7529411764705882,
+        "macro": 0.5997133161218927,
+        "pred_clusters": 928
+      },
+      "elapsed_model_sec": 9.957375049591064
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8144654088050315,
+        "mae": 1.4945054945054945,
+        "exact": 0.27472527472527475,
+        "pm1": 0.5274725274725275,
+        "matched": 0.7516087516087516,
+        "macro": 0.5966287921040384,
+        "pred_clusters": 972
+      },
+      "elapsed_model_sec": 10.950387001037598
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.2,
+      "rank_mode": "score",
+      "count_blend": 0.25,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8144654088050315,
+        "mae": 1.4945054945054945,
+        "exact": 0.27472527472527475,
+        "pm1": 0.5274725274725275,
+        "matched": 0.7516087516087516,
+        "macro": 0.5966287921040384,
+        "pred_clusters": 972
+      },
+      "elapsed_model_sec": 11.936125993728638
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8221386351423965,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7516339869281046,
+        "macro": 0.5999350293950101,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 12.914774179458618
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "support",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8221386351423965,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7516339869281046,
+        "macro": 0.5999350293950101,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 13.890730857849121
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8199892530897367,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.747051114023591,
+        "macro": 0.5964000951881839,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 14.85668683052063
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "max_member",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8199892530897367,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.747051114023591,
+        "macro": 0.5964000951881839,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 15.85905933380127
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 3,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8199892530897367,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7496723460026212,
+        "macro": 0.5954264214355698,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 16.823060989379883
+    },
+    {
+      "mode": "ptp",
+      "model": "gradient_boost",
+      "tau_prob": 0.2,
+      "max_size": 4,
+      "singleton_min": 0.25,
+      "rank_mode": "score",
+      "count_blend": 0.0,
+      "solver_tag_counts": {
+        "milp": 91
+      },
+      "metrics": {
+        "f1": 0.8199892530897367,
+        "mae": 1.4395604395604396,
+        "exact": 0.25274725274725274,
+        "pm1": 0.5824175824175825,
+        "matched": 0.7496723460026212,
+        "macro": 0.5954264214355698,
+        "pred_clusters": 925
+      },
+      "elapsed_model_sec": 17.781506776809692
+    }
+  ],
+  "best_allrounder_953": null,
+  "best_by_matched": {
+    "mode": "ptp",
+    "model": "extra",
+    "tau_prob": 0.2,
+    "max_size": 3,
+    "singleton_min": 0.2,
+    "rank_mode": "support",
+    "count_blend": 0.25,
+    "solver_tag_counts": {
+      "milp": 91
+    },
+    "metrics": {
+      "f1": 0.814270724029381,
+      "mae": 1.4725274725274726,
+      "exact": 0.21978021978021978,
+      "pm1": 0.5824175824175825,
+      "matched": 0.7564432989690721,
+      "macro": 0.5986544278152687,
+      "pred_clusters": 970
+    },
+    "elapsed_model_sec": 3.5726256370544434
+  },
+  "elapsed_sec": 89.77623724937439
+}

@@ -1,0 +1,228 @@
+{
+  "953": {
+    "dataset": "953",
+    "split": "val",
+    "passed": true,
+    "checks": {
+      "f1": {
+        "expected": 0.8232,
+        "actual": 0.8232161874334399,
+        "diff": 1.6187433439895926e-05,
+        "ok": true
+      },
+      "mae": {
+        "expected": 1.2527,
+        "actual": 1.2527472527472527,
+        "diff": 4.725274725281281e-05,
+        "ok": true
+      },
+      "pm1": {
+        "expected": 0.6703,
+        "actual": 0.6703296703296703,
+        "diff": 2.967032967027272e-05,
+        "ok": true
+      },
+      "matched": {
+        "expected": 0.7542,
+        "actual": 0.7542043984476067,
+        "diff": 4.398447606690503e-06,
+        "ok": true
+      },
+      "matched_count": {
+        "expected": 773,
+        "actual": 773,
+        "ok": true
+      },
+      "macro_f1": {
+        "expected": 0.6014,
+        "actual": 0.601393979256198,
+        "diff": 6.02074380207096e-06,
+        "ok": true
+      }
+    },
+    "cross_check_agrees": {
+      "f1": true,
+      "mae": true,
+      "matched": true,
+      "macro_f1": true
+    },
+    "metrics": {
+      "physical_detection": {
+        "precision": 0.8205944798301487,
+        "recall": 0.8258547008547008,
+        "f1": 0.8232161874334399,
+        "tp": 773,
+        "pred_clusters": 942,
+        "gt_bunches": 936
+      },
+      "counting": {
+        "mae": 1.2527472527472527,
+        "exact_accuracy": 0.2857142857142857,
+        "plus_minus_1_accuracy": 0.6703296703296703,
+        "vector_exact_accuracy": 0.02197802197802198
+      },
+      "classification": {
+        "matched_class_accuracy": 0.7542043984476067,
+        "matched": 773,
+        "macro_f1_end_to_end": 0.601393979256198,
+        "per_class_f1_end_to_end": {
+          "B1": 0.7058823529411765,
+          "B2": 0.4697986577181208,
+          "B3": 0.6737451737451737,
+          "B4": 0.5561497326203209
+        },
+        "confusion_prediction_rows": [
+          [
+            60,
+            17,
+            0,
+            0,
+            7
+          ],
+          [
+            16,
+            70,
+            15,
+            0,
+            11
+          ],
+          [
+            1,
+            66,
+            349,
+            48,
+            96
+          ],
+          [
+            0,
+            0,
+            27,
+            104,
+            55
+          ],
+          [
+            9,
+            33,
+            85,
+            36,
+            0
+          ]
+        ]
+      }
+    },
+    "n_trees": 91
+  },
+  "depth": {
+    "dataset": "depth",
+    "split": "val",
+    "passed": true,
+    "checks": {
+      "f1": {
+        "expected": 0.8526,
+        "actual": 0.8526413345690453,
+        "diff": 4.133456904531485e-05,
+        "ok": true
+      },
+      "mae": {
+        "expected": 0.9316,
+        "actual": 0.9316239316239316,
+        "diff": 2.393162393166115e-05,
+        "ok": true
+      },
+      "pm1": {
+        "expected": 0.7863,
+        "actual": 0.7863247863247863,
+        "diff": 2.4786324786307823e-05,
+        "ok": true
+      },
+      "matched": {
+        "expected": 0.8457,
+        "actual": 0.8456521739130435,
+        "diff": 4.7826086956526126e-05,
+        "ok": true
+      },
+      "matched_count": {
+        "expected": 460,
+        "actual": 460,
+        "ok": true
+      },
+      "macro_f1": {
+        "expected": 0.6807,
+        "actual": 0.6806848973454227,
+        "diff": 1.5102654577270336e-05,
+        "ok": true
+      }
+    },
+    "cross_check_agrees": {
+      "f1": true,
+      "mae": true,
+      "matched": true,
+      "macro_f1": true
+    },
+    "metrics": {
+      "physical_detection": {
+        "precision": 0.905511811023622,
+        "recall": 0.8056042031523643,
+        "f1": 0.8526413345690453,
+        "tp": 460,
+        "pred_clusters": 508,
+        "gt_bunches": 571
+      },
+      "counting": {
+        "mae": 0.9316239316239316,
+        "exact_accuracy": 0.3418803418803419,
+        "plus_minus_1_accuracy": 0.7863247863247863,
+        "vector_exact_accuracy": 0.19658119658119658
+      },
+      "classification": {
+        "matched_class_accuracy": 0.8456521739130435,
+        "matched": 460,
+        "macro_f1_end_to_end": 0.6806848973454227,
+        "per_class_f1_end_to_end": {
+          "B1": 0.7777777777777778,
+          "B2": 0.724373576309795,
+          "B3": 0.75,
+          "B4": 0.47058823529411764
+        },
+        "confusion_prediction_rows": [
+          [
+            63,
+            3,
+            0,
+            0,
+            0
+          ],
+          [
+            18,
+            159,
+            27,
+            4,
+            26
+          ],
+          [
+            1,
+            7,
+            147,
+            4,
+            17
+          ],
+          [
+            0,
+            1,
+            6,
+            20,
+            5
+          ],
+          [
+            14,
+            35,
+            36,
+            25,
+            0
+          ]
+        ]
+      }
+    },
+    "n_trees": 117
+  }
+}

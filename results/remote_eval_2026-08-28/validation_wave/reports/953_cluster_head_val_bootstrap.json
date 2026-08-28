@@ -1,0 +1,33 @@
+{
+  "dataset": "953",
+  "protocol": "paired tree-level bootstrap on VAL; candidate fit TRAIN; no TEST",
+  "base_weight": 0.25,
+  "aux_weight": 0.0,
+  "seed": 20260828,
+  "n_resamples": 2000,
+  "n_val_trees": 91,
+  "point_baseline": 0.7542043984476067,
+  "point_candidate": 0.7580853816300129,
+  "point_delta": 0.0038809831824062097,
+  "ci95_delta": [
+    -0.004016604777116592,
+    0.012302409269445898
+  ],
+  "delta_mean": 0.0037017193462813786,
+  "frac_delta_gt_zero": 0.7565,
+  "excludes_zero": false,
+  "matched_total": 773,
+  "class_point_delta_correct": [
+    1,
+    -2,
+    5,
+    -1
+  ],
+  "class_matched_total": [
+    77,
+    153,
+    391,
+    152
+  ],
+  "interpretation": "positive but non-significant if the interval crosses zero; this does not replace the locked test result or undo VAL selection bias"
+}

@@ -1,0 +1,81 @@
+{
+  "dataset": "depth",
+  "status": "test-locked",
+  "generated_at": "2026-08-28T01:27:39.552714+00:00",
+  "profile_agnostic": {
+    "floor": 0.05,
+    "a": 1.0,
+    "b": 0.5
+  },
+  "profile_classaware": {
+    "floor": 0.02,
+    "a": 1.0,
+    "b": 0.0,
+    "gamma": 1.0
+  },
+  "test_metrics": {
+    "agnostic": {
+      "profile": {
+        "floor": 0.05,
+        "a": 1.0,
+        "b": 0.5
+      },
+      "AP50": 0.8782756457337404,
+      "mAP50_95": 0.35225853725681033,
+      "n_images_eval": 440,
+      "baseline": 0.8764,
+      "delta": 0.0018756457337404386,
+      "n_boxes_fused_at_floor": 4965
+    },
+    "classaware": {
+      "profile": {
+        "floor": 0.02,
+        "a": 1.0,
+        "b": 0.0,
+        "gamma": 1.0
+      },
+      "mAP50": 0.6551619994815038,
+      "mAP50_95": 0.2701359375623503,
+      "per_class_AP50": {
+        "B1": 0.8287907829446731,
+        "B2": 0.6863311320834738,
+        "B3": 0.7361838034876581,
+        "B4": 0.36934227941021003
+      },
+      "n_images_eval": 440,
+      "baseline": 0.6691,
+      "delta": -0.013938000518496252,
+      "n_boxes_fused_at_floor": 17229
+    }
+  },
+  "test_baselines": {
+    "agnostic": 0.8764,
+    "classaware": 0.6691
+  },
+  "fused_box_counts_by_floor": {
+    "0.05": {
+      "seconds": 29.290127992630005,
+      "n_boxes_fused": 4965,
+      "n_boxes_scored": 4965,
+      "ranker_path": "/workspace/map_boost/artifacts/depth/ranker_floor0.05.joblib"
+    },
+    "0.02": {
+      "seconds": 59.97362518310547,
+      "n_boxes_fused": 17229,
+      "n_boxes_scored": 17229,
+      "ranker_path": "/workspace/map_boost/artifacts/depth/ranker_floor0.02.joblib"
+    }
+  },
+  "n_images": 440,
+  "n_trees": 110,
+  "n_raw_stems": 440,
+  "missing_records_count": 0,
+  "extra_predictions_count": 0,
+  "bootstrap_ci": {
+    "attempted": true,
+    "ran": false,
+    "reason": "bootstrap_map.py hardcodes dataset /workspace/SawitMVC-Depth (the 352 canonical split, its own YOLO-txt GT loader, fixed 1280x800 image size) with no way to point it at the SawitMVC-YOLO / SawitMVC-Depth-YOLO COCO configs used in this pipeline -- not compatible without modification. bootstrap_map_from_npz.py hardcodes a CORPORA dict (new763, combined1716) with fixed single-model prediction paths and a fixed output path, its main() takes no CLI arguments, and it re-implements AP50 itself (a hand-rolled greedy-IoU/101-point routine, not base.coco_metrics/pycocotools) rather than exposing a generic entry point that accepts an arbitrary submission dict. Wiring either script to this task's fused/re-ranked test submissions would require writing new glue code around their internals, which the task explicitly instructs against ('do not build new bootstrap machinery'). Skipped per instructions; no CI computed for the four locked test metrics."
+  },
+  "missing_depth_count": 0,
+  "depth_total_stems": 440
+}

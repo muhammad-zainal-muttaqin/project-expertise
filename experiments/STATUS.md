@@ -114,3 +114,36 @@ tetap tidak disebut hold-out publikasi yang sepenuhnya pristine. Rincian,
 validation, profil, dan eksperimen yang ditolak ada di
 [V2-E-045](EKSPERIMEN.md#v2-e-045-layer-count-aware-validation-locked-meningkatkan-generalisasi-pipeline-empat-sisi)
 dan [JSON metrik](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json).
+
+## 8. Validation wave 2026-08-28
+
+Eksperimen lanjutan yang tidak membuka TEST menemukan satu kandidat yang
+layak dipertahankan. Stack opini DINOv2-Large (`0,15`) dan logistic anggota
+(`0,05`) dengan bias logit B2 `+0,15` meningkatkan matched-class accuracy
+validation 953 dari `0,7542` menjadi `0,7684` dan macro-F1 dari `0,6014`
+menjadi `0,6164`. Bootstrap berpasangan pada 5.000 pohon memberi selang
+delta `[+0,0026; +0,0268]` untuk matched accuracy dan `[+0,0007; +0,0303]`
+untuk macro-F1; kedua selang tidak mencakup nilai nol.
+
+OOF stacking, agregasi fitur per sisi, kepala ordinal, KNN/prototype,
+attention GPU, selector adaptif Hungarian–GSP, dan regresor pencacahan kaya
+fitur tidak memperbaiki seluruh metrik utama secara bersamaan. Semua hasil
+tersebut disimpan sebagai studi ablasi pada
+[`PERFORMANCE_WAVE_2026-08-28`](../results/remote_eval_2026-08-28/PERFORMANCE_WAVE_2026-08-28.md).
+Kandidat baru masih berupa hasil validation-lock dan belum menggantikan
+angka TEST yang telah dikunci sebelumnya.
+
+Follow-up backbone independen memakai ConvNeXt-Small, Swin-Tiny, dan
+EfficientNetV2-S sebagai opini tambahan. Head terbaik tunggal 953 mencapai
+matched `0,7594` / macro-F1 `0,6055`; fusion nominal mencapai `0,7697` /
+`0,6166`, tetapi hanya menambah satu pohon benar dibanding anchor `0,7684` /
+`0,6164` dan belum memiliki CI independen. Karena itu branch tersebut dicatat
+sebagai ablasi, bukan kandidat produksi.
+
+Selector TRAIN-fitted untuk memilih original GSP versus V2 geo/count pada
+Depth juga ditolak sebagai kompromi: V2-only menurunkan MAE menjadi `0,7607`
+dan menaikkan matched menjadi `0,8495`, tetapi menurunkan physical F1 menjadi
+`0,8341` dan macro-F1 menjadi `0,6667`; policy terbaik count-oriented masih
+menukar physical F1 (`0,8421`) demi MAE (`0,7265`). Original GSP tetap
+menjadi referensi. Seluruh follow-up ini TRAIN/VAL-only dan tidak membuka
+TEST.
