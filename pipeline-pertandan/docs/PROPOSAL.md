@@ -1,9 +1,18 @@
 # Proposal — Pipeline per-tandan: deteksi → penautan lintas-sisi → klasifikasi terkumpul
 
-Status: **proposal disetujui 2026-08-17, belum satu pun eksperimennya dijalankan.**
+Status: **proposal awal disetujui 2026-08-17; menjadi landasan eksperimen V1/V2
+yang kemudian dijalankan dan dicatat di log hasil.**
 ID: `PT-E-001` … `PT-E-005`.
 Asal-usul: sketsa tangan 22 Juli 2026 —
 [`sketsa-asal-2026-07-22.png`](sketsa-asal-2026-07-22.png).
+
+> **Posisi dokumen ini.** Ini adalah *design record* historis untuk proposal
+> per-tandan, bukan satu-satunya sumber status implementasi. Peta versi dan
+> arsitektur terkini ada di [`PROPOSAL-Pipeline.md`](../../PROPOSAL-Pipeline.md).
+> V1 berarti jalur baseline/original; V2 berarti jalur learned proposal,
+> re-ranking, dan GSP. Hasil rinci tetap berada di
+> [`experiments/EKSPERIMEN.md`](../../experiments/EKSPERIMEN.md) dan laporan
+> wave yang ditautkan dari handoff.
 
 Semua angka "bukti awal" di §4 terlacak ke
 [`results/probe_penautan_953.json`](../results/probe_penautan_953.json),

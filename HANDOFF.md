@@ -43,6 +43,17 @@ Dasar desain adalah [`PROPOSAL-Pipeline.md`](PROPOSAL-Pipeline.md):
 -> ordinal/class aggregation -> count reconciliation -> laporan confidence
 ```
 
+### Pemetaan revisi
+
+| Revisi | Komponen | Dokumen hasil |
+|---|---|---|
+| **V1/original** | WBF proposal, prior rotasi, linker awal, classifier per tandan, counting/reconciliation | [`PIPELINE_EXPERIMENTS_V3.md`](results/remote_eval_2026-08-27/PIPELINE_EXPERIMENTS_V3.md), [`experiments/EKSPERIMEN.md`](experiments/EKSPERIMEN.md) |
+| **V2** | Deep-tail proposal, `p_tp` re-ranker, learned edge linker, GSP MILP, V2 count/class composition | [`GSP_LINKER.md`](results/remote_eval_2026-08-28/GSP_LINKER.md), [`MAP_BOOST.md`](results/remote_eval_2026-08-28/MAP_BOOST.md), [`WAVE2_RECAP.md`](results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md) |
+| **RGB+D4 follow-up** | Ablasi modalitas dan fixed late fusion pada `new763` | [`NEW763_RGBD4_RESULTS.md`](docs/NEW763_RGBD4_RESULTS.md) |
+
+V2 dan RGB+D4 follow-up berstatus validation-only untuk konfigurasi terbaru;
+hasil test-locked sebelumnya tidak ditimpa.
+
 ## Progres aktual
 
 | Modul | Status |

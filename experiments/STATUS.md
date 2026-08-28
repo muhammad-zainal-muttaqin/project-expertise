@@ -4,6 +4,17 @@
 > **Rujukan Utama Riset:**  
 > Sintesis akhir komprehensif, evaluasi pergeseran temporal ($\sim 80\text{ hari}$, `V2-E-022`), dan audit daya statistik (`V2-E-023`) dirangkum lengkap pada [docs/LAPORAN-AKHIR.md](../docs/LAPORAN-AKHIR.md) dan alur waktu kronologis pada [docs/WORKFLOW_KRONOLOGIS.md](../docs/WORKFLOW_KRONOLOGIS.md).
 
+## 0. Peta revisi pipeline
+
+| Revisi | Definisi ringkas | Status |
+|---|---|---|
+| **V1/original** | WBF proposal → linker awal/prior rotasi → classifier per tandan → counting/reconciliation | Reference dan baseline end-to-end; hasil serta ablasi historis tercatat. |
+| **V2** | Deep-tail + `p_tp` re-ranker → learned edge linker → GSP MILP → count/class composition | Sudah diimplementasikan dan diaudit pada TRAIN/VAL; belum menggantikan hasil test-locked. |
+| **RGB+D4 follow-up** | Ablasi empat kanal dan fixed late fusion pada `new763` | Jalur modality follow-up terpisah; validation-only. |
+
+Definisi arsitektur lengkap ada di [`../PROPOSAL-Pipeline.md`](../PROPOSAL-Pipeline.md);
+log numerik dan artefak reproduksi tetap menjadi sumber kebenaran untuk angka.
+
 ---
 
 ## 1. Matriks Hasil Deteksi dan Pencacahan Utama

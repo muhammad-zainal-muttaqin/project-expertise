@@ -1,5 +1,30 @@
 # Proposal Pipeline Pencacahan Tandan per Pohon
 
+> **Status dokumentasi (2026-08-28).** Dokumen ini adalah arsitektur kanonik
+> pipeline. Istilah **V1/V2** di bawah berarti revisi pipeline, bukan label
+> tampak foto `V1`/`V2` pada crop. Semua angka dan keputusan eksperimen dirujuk
+> ke log hasil; dokumen ini tidak mengubah hasil test-locked.
+
+## Peta revisi pipeline
+
+| Revisi | Jalur utama | Status dan rujukan |
+|---|---|---|
+| **V1 — baseline/original** | WBF proposal class-agnostic → linker awal (Hungarian/Union-Find dan prior rotasi) → classifier per tandan → counting Ridge/reconciliation | Baseline end-to-end dan eksperimen awal tercatat di [`HANDOFF.md`](HANDOFF.md), [`experiments/EKSPERIMEN.md`](experiments/EKSPERIMEN.md), dan [`PIPELINE_EXPERIMENTS_V3.md`](results/remote_eval_2026-08-27/PIPELINE_EXPERIMENTS_V3.md). |
+| **V2 — learned/re-ranked** | Proposal deep-tail → skor `p_tp` → learned edge linker → GSP MILP set-partition → count/class layer dan residual/skip composition | Implementasi, konfigurasi, ablasi, dan hasil TRAIN/VAL tercatat di [`GSP_LINKER.md`](results/remote_eval_2026-08-28/GSP_LINKER.md), [`MAP_BOOST.md`](results/remote_eval_2026-08-28/MAP_BOOST.md), dan [`WAVE2_RECAP.md`](results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md). V2 terbaru belum menggantikan hasil test-locked. |
+| **Modality follow-up** | RGB+D4 native dan fixed late fusion pada `new763` | Ablasi terkontrol, bukan revisi V2 production; hasilnya ada di [`NEW763_RGBD4_RESULTS.md`](docs/NEW763_RGBD4_RESULTS.md). |
+
+### Keputusan versi saat ini
+
+- V1 tetap menjadi reference pipeline yang dapat dibandingkan secara langsung.
+- V2 menyimpan peningkatan dan trade-off secara eksplisit; tidak ada kandidat
+  V2 yang memenuhi seluruh guardrail end-to-end 953 dan sekaligus menggantikan
+  anchor pada validation.
+- Hasil test-locked yang sudah dipilih sebelum test tetap beku. Kandidat V2,
+  DINO/stacking, dan late fusion hanya boleh dipromosikan setelah evaluasi
+  hold-out baru dengan profile yang dikunci.
+- Modul quality gate, retake recommendation, confidence/UI, dan deployment
+  belum dianggap selesai hanya karena proposal arsitekturnya sudah terdokumentasi.
+
 Menurut saya, pipeline terbaik harus memisahkan tiga tugas:
 
 1. menemukan tandan;
