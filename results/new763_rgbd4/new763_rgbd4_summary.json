@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "analysis": "new763 RGB versus RGB+D4; validation-only modality ablation",
+  "dataset": {
+    "dataset": "SawitMVC-Depth-YOLO v2.0.0 / new763",
+    "channels": 4,
+    "image_shape": [
+      800,
+      1280
+    ],
+    "disk_channel_order": "BGRD",
+    "model_channel_order": "RGBD",
+    "depth_encoding": {
+      "dtype": "uint8",
+      "formula": "d8=1+round(254*clip((1/z-1/z_far)/(1/z_near-1/z_far),0,1))",
+      "invalid_value": 0,
+      "statistics_source": "fixed physical bounds; no split-derived statistic",
+      "valid_values": "1..255",
+      "z_far_mm": 20000.0,
+      "z_near_mm": 300.0
+    },
+    "depth_source": {
+      "alignment": "per-image cameraParamDump; calibrated depth->color reprojection with Brown-Conrady distortion and z-buffer",
+      "invalid_raw": 0,
+      "raw_shape": [
+        480,
+        848
+      ],
+      "reprojection_helper": "/workspace/depth_assets/reproject_depth.py",
+      "target_grid": [
+        800,
+        1280
+      ],
+      "unit": "millimetres"
+    },
+    "splits": {
+      "train": {
+        "bytes": 6005749824,
+        "n_generated": 2144,
+        "n_images": 2144,
+        "n_resumed": 0,
+        "valid_fraction_mean": 0.28588920889327774,
+        "valid_fraction_median": 0.2945478515625
+      },
+      "valid": {
+        "bytes": 1313504676,
+        "n_generated": 468,
+        "n_images": 468,
+        "n_resumed": 0,
+        "valid_fraction_mean": 0.28815322849893166,
+        "valid_fraction_median": 0.2963349609375
+      }
+    },
+    "output_validation": {
+      "bad": [],
+      "n_images": 2612,
+      "n_labels": 2612
+    },
+    "splits_materialized": [
+      "train",
+      "valid"
+    ],
+    "test_policy": "test directory was intentionally not read or materialized"
+  },
+  "results": [
+    {
+      "arch": "yolo26l",
+      "baseline_rgb_val": {
+        "run_name": "yolo26l_rgb_s42_i1280",
+        "mAP50": 0.529357,
+        "mAP50_95": 0.197855,
+        "per_kelas_AP50": {
+          "B1": 0.677939,
+          "B2": 0.56838,
+          "B3": 0.630913,
+          "B4": 0.240195
+        },
+        "predictions": "/workspace/project-expertise/results/new763/predictions/yolo26l_rgb_s42_i1280__val.npz"
+      },
+      "rgbd4_val": {
+        "run_name": "yolo26l_rgbd4_s42_i1280_best",
+        "mAP50": 0.529523,
+        "mAP50_95": 0.195487,
+        "per_kelas_AP50": {
+          "B1": 0.659098,
+          "B2": 0.566088,
+          "B3": 0.657088,
+          "B4": 0.235818
+        },
+        "weights": "/workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/best.pt"
+      },
+      "delta": {
+        "mAP50": 0.000166,
+        "mAP50_95": -0.002368,
+        "per_kelas_AP50": {
+          "B1": -0.018841,
+          "B2": -0.002292,
+          "B3": 0.026175,
+          "B4": -0.004377
+        }
+      },
+      "bootstrap": {
+        "delta_ci95": [
+          -0.024195080392619493,
+          0.028891972463638057
+        ],
+        "delta_mean": 0.0020976863586517898,
+        "fraction_delta_gt_zero": 0.558,
+        "rgb_mAP50_ci95": [
+          0.49801957061990754,
+          0.5749085945755538
+        ],
+        "rgbd_mAP50_ci95": [
+          0.5017245500521017,
+          0.5779608622114702
+        ],
+        "significant_excludes_zero": false
+      },
+      "protocol": {
+        "evaluator": "pycocotools.COCOeval",
+        "n_images": 468,
+        "n_resamples": 500,
+        "same_resample_indices_for_both_models": true,
+        "seed": 42,
+        "selection": "none; weights and prediction dumps fixed before bootstrap",
+        "test_access": "forbidden; this script has no test path or test option"
+      }
+    },
+    {
+      "arch": "rfdetr_l",
+      "baseline_rgb_val": {
+        "run_name": "rfdetr_l_rgb_s42_i1280",
+        "mAP50": 0.608233,
+        "mAP50_95": 0.227471,
+        "per_kelas_AP50": {
+          "B1": 0.740754,
+          "B2": 0.638151,
+          "B3": 0.704351,
+          "B4": 0.349676
+        },
+        "predictions": "/workspace/project-expertise/results/new763/predictions/rfdetr_l_rgb_s42_i1280__val.npz"
+      },
+      "rgbd4_val": {
+        "run_name": "rfdetr_l_rgbd4_s42_i1280_fair_v2_best_total",
+        "mAP50": 0.59707,
+        "mAP50_95": 0.226946,
+        "per_kelas_AP50": {
+          "B1": 0.752708,
+          "B2": 0.627806,
+          "B3": 0.68187,
+          "B4": 0.325896
+        },
+        "weights": "/workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_total.pth"
+      },
+      "delta": {
+        "mAP50": -0.011163,
+        "mAP50_95": -0.000525,
+        "per_kelas_AP50": {
+          "B1": 0.011954,
+          "B2": -0.010345,
+          "B3": -0.022481,
+          "B4": -0.02378
+        }
+      },
+      "bootstrap": {
+        "delta_ci95": [
+          -0.037048603651120636,
+          0.0180742346779972
+        ],
+        "delta_mean": -0.009709348543481542,
+        "fraction_delta_gt_zero": 0.232,
+        "rgb_mAP50_ci95": [
+          0.5748383950704716,
+          0.6581595007081503
+        ],
+        "rgbd_mAP50_ci95": [
+          0.5622699106335992,
+          0.6499012603464296
+        ],
+        "significant_excludes_zero": false
+      },
+      "protocol": {
+        "evaluator": "pycocotools.COCOeval",
+        "n_images": 468,
+        "n_resamples": 500,
+        "same_resample_indices_for_both_models": true,
+        "seed": 42,
+        "selection": "none; weights and prediction dumps fixed before bootstrap",
+        "test_access": "forbidden; this script has no test path or test option"
+      }
+    }
+  ],
+  "unrun_architectures": {
+    "rtdetr_l": "not run in this wave"
+  },
+  "initialization_audit": {
+    "yolo26l": "generic /workspace/yolo26l.pt; RGB stem copied exactly; fourth stem channel zero at first initialization; resumed RGBD checkpoint preserves learned fourth channel",
+    "rfdetr_l": "generic rf-detr-large-2026.pth; patch projection fourth channel zero at initialization; optimizer-safe 3->4 expansion before PTL parameter groups; COCO head reinitialized to four classes; v2 selected by framework validation mAP50:95; invalid v1 retained only in failed-run audit"
+  },
+  "model_artifacts": [
+    {
+      "label": "YOLO26l RGBD4 best.pt",
+      "path": "/workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/best.pt",
+      "bytes": 53064741,
+      "sha256": "9ddd646db1b52c4482f94b733ff72273de046c5a659056aeb9a1ea5c684dcd34",
+      "hf_bucket_path": "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/yolo26l_rgbd4_s42_i1280_best.pt"
+    },
+    {
+      "label": "RF-DETR-L RGBD4 v2 best total (mAP50:95 selection)",
+      "path": "/workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_total.pth",
+      "bytes": 141956883,
+      "sha256": "5d4d7f88ebd264737e7bdd4c4cc456a37952b0c5df70af1027a41069b79f221d",
+      "hf_bucket_path": "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2_checkpoint_best_total.pth"
+    },
+    {
+      "label": "RF-DETR-L RGBD4 v2 best regular",
+      "path": "/workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_regular.pth",
+      "bytes": 142005187,
+      "sha256": "157cbfa8159cb24c853294b836112410447ad945666e9af901765592a9725706"
+    },
+    {
+      "label": "RF-DETR-L generic initialization",
+      "path": "/workspace/model_artifacts/project-expertise/pretrained/rf-detr-large-2026.pth",
+      "bytes": 135954129,
+      "sha256": "0f4e20e19a99c0f8a62b5685f57f6c8b5c371c59081feda6752a0561a79ccf38"
+    }
+  ],
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "comparison": "same 468 validation images, same labels, paired image-level bootstrap",
+    "bootstrap_resamples": 500,
+    "seed": 42,
+    "test_access": "forbidden; RGBD4 builder and evaluators contain no test path",
+    "raw_rgbd4_dataset_committed": false,
+    "large_checkpoints_committed": false,
+    "excluded_runs": {
+      "rfdetr_l_rgbd4_v1": "excluded: lazy 3->4 stem replacement occurred after optimizer creation, leaving the depth slice absent/frozen"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "args": {
+    "arch": "rtdetr_l",
+    "batch": 4,
+    "data": "/workspace/new763_rgbd4",
+    "epochs": null,
+    "grad_accum": 4,
+    "imgsz": 256,
+    "name": "rtdetr_l_rgbd4_smoke",
+    "patience": null,
+    "project": "/workspace/project-expertise/runs_new763_rgbd4",
+    "seed": 42,
+    "smoke": true,
+    "weights": "/workspace/rtdetr-l.pt",
+    "workers": 8
+  },
+  "batch": 4,
+  "created_utc": "2026-08-28T07:20:06Z",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "imgsz": 256,
+  "result": {
+    "arch": "rtdetr_l",
+    "forward": "pass",
+    "loader_dtype": "torch.uint8",
+    "loader_shape_chw": [
+      4,
+      256,
+      256
+    ],
+    "output_type": "tuple",
+    "stem": {
+      "depth_initialization": "zero",
+      "source_key": "model.0.stem1.conv.weight",
+      "source_shape": [
+        32,
+        3,
+        3,
+        3
+      ],
+      "target_module": "model.0.stem1.conv",
+      "target_shape": [
+        32,
+        4,
+        3,
+        3
+      ]
+    },
+    "target_device": "cuda:0"
+  },
+  "schema_version": 1,
+  "seed": 42,
+  "test_access": "forbidden; data.yaml has no test entry",
+  "weights": "/workspace/rtdetr-l.pt",
+  "workers": 8
+}

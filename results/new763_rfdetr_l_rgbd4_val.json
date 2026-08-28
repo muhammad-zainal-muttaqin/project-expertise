@@ -1,0 +1,38 @@
+{
+  "arch": "rfdetr_l",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "delta_vs_rgb_baseline_val_mAP50": -0.011163,
+  "evaluator": "pycocotools.COCOeval",
+  "extra": {
+    "depth_stats": {
+      "mean": 0.0540224127471447,
+      "n_images": 200,
+      "pixels_per_image_max": 20000,
+      "sampled_values": 4000000,
+      "seed": 42,
+      "source_split": "train",
+      "std": 0.11910304427146912,
+      "valid_fraction_mean": 0.285402138671875
+    },
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "imgsz": 1280,
+  "metrics": {
+    "mAP50": 0.59707,
+    "mAP50_95": 0.226946,
+    "per_kelas_AP50": {
+      "B1": 0.752708,
+      "B2": 0.627806,
+      "B3": 0.68187,
+      "B4": 0.325896
+    }
+  },
+  "predictions": "/tmp/rfdetr_l_rgbd4_predictions_best_total/rfdetr_l_rgbd4_s42_i1280_fair_v2_best_total__val.npz",
+  "rgb_baseline_val_mAP50": 0.608233,
+  "run_name": "rfdetr_l_rgbd4_s42_i1280_fair_v2_best_total",
+  "schema_version": 1,
+  "split": "val only (468 images); test forbidden",
+  "weights": "/workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_total.pth"
+}

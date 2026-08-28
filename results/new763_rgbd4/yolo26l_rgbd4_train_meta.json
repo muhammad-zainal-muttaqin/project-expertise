@@ -1,0 +1,37 @@
+{
+  "args": {
+    "arch": "yolo26l",
+    "batch": 4,
+    "data": "/workspace/new763_rgbd4",
+    "epochs": 60,
+    "grad_accum": 4,
+    "imgsz": 1280,
+    "name": "yolo26l_rgbd4_s42_i1280",
+    "patience": 15,
+    "project": "/workspace/project-expertise/runs_new763_rgbd4",
+    "resume": true,
+    "seed": 42,
+    "smoke": false,
+    "weights": "/workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/last.pt",
+    "workers": 8
+  },
+  "batch": 4,
+  "created_utc": "2026-08-28T09:59:37Z",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "imgsz": 1280,
+  "result": {
+    "arch": "yolo26l",
+    "elapsed_seconds": 8610.7,
+    "epochs_requested": 60,
+    "framework": "ultralytics",
+    "initialization": "resume from RGB+D checkpoint; fourth stem channel preserved",
+    "patience": 15,
+    "resume": true
+  },
+  "schema_version": 1,
+  "seed": 42,
+  "test_access": "forbidden; data.yaml has no test entry",
+  "weights": "/workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/last.pt",
+  "workers": 8
+}

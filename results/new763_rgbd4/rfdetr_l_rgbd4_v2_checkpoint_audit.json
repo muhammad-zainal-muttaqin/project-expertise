@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_name": "rfdetr_l_rgbd4_s42_i1280_fair_v2",
+  "status": "valid_and_selected",
+  "selection_split": "validation only; 468 images; test forbidden",
+  "selection_metric": "independent pycocotools COCOeval mAP50:95",
+  "training_monitor": "RF-DETR validation mAP50:95 with EMA effective score",
+  "checkpoints": {
+    "checkpoint_best_total.pth": {
+      "source": "EMA selected by trainer",
+      "independent_mAP50": 0.59707,
+      "independent_mAP50_95": 0.226946,
+      "selected": true
+    },
+    "checkpoint_best_ema.pth": {
+      "source": "EMA checkpoint file",
+      "independent_mAP50": 0.59707,
+      "independent_mAP50_95": 0.226946,
+      "selected": false,
+      "note": "Numerically identical to best_total under the independent evaluator; best_total is retained as the canonical packaged file."
+    },
+    "checkpoint_best_regular.pth": {
+      "source": "regular model checkpoint",
+      "independent_mAP50": 0.604826,
+      "independent_mAP50_95": 0.226367,
+      "selected": false,
+      "note": "Higher mAP50 but lower mAP50:95; retained as a sensitivity reference."
+    }
+  },
+  "initialization_audit": {
+    "patch_projection_shape": [384, 4, 16, 16],
+    "depth_initialization": "zero",
+    "optimizer_order": "4-channel patch projection installed before PTL optimizer parameter groups",
+    "depth_weight_nonzero_after_training": true,
+    "invalid_v1_excluded": "results/new763_rgbd4/rfdetr_l_rgbd4_failed_run_audit.json"
+  },
+  "protocol": {
+    "rgb_baseline_run": "rfdetr_l_rgb_s42_i1280",
+    "same_validation_evaluator": "scripts/eval_new763_rgbd4_val.py",
+    "test_access": "forbidden"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "arch": "yolo26l",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "delta_vs_rgb_baseline_val_mAP50": 0.000166,
+  "evaluator": "pycocotools.COCOeval",
+  "extra": {},
+  "imgsz": 1280,
+  "metrics": {
+    "mAP50": 0.529523,
+    "mAP50_95": 0.195487,
+    "per_kelas_AP50": {
+      "B1": 0.659098,
+      "B2": 0.566088,
+      "B3": 0.657088,
+      "B4": 0.235818
+    }
+  },
+  "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4/yolo26l_rgbd4_s42_i1280_best__val.npz",
+  "rgb_baseline_val_mAP50": 0.529357,
+  "run_name": "yolo26l_rgbd4_s42_i1280_best",
+  "schema_version": 1,
+  "split": "val only (468 images); test forbidden",
+  "weights": "/workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/best.pt"
+}

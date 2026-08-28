@@ -1,0 +1,83 @@
+{
+  "calibration_variant_sha256_counts": {
+    "2fbcfb7614d21e6674441ec423e4f3e5d243cd4c52a3e1eb0fbc3be0575206ac": 1344,
+    "40beda0e242c1f7ea7a8830fc9d5127576e298f5339133cea01fedc2f362cbb2": 1268
+  },
+  "channels": 4,
+  "compression": {
+    "codec": "Deflate",
+    "format": "TIFF",
+    "lossless": true,
+    "opencv_value": 8
+  },
+  "created_utc": "2026-08-28T07:18:20Z",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "SawitMVC-Depth-YOLO v2.0.0 / new763",
+  "depth_encoding": {
+    "dtype": "uint8",
+    "formula": "d8=1+round(254*clip((1/z-1/z_far)/(1/z_near-1/z_far),0,1))",
+    "invalid_value": 0,
+    "statistics_source": "fixed physical bounds; no split-derived statistic",
+    "valid_values": "1..255",
+    "z_far_mm": 20000.0,
+    "z_near_mm": 300.0
+  },
+  "depth_source": {
+    "alignment": "per-image cameraParamDump; calibrated depth->color reprojection with Brown-Conrady distortion and z-buffer",
+    "invalid_raw": 0,
+    "raw_shape": [
+      480,
+      848
+    ],
+    "reprojection_helper": "/workspace/depth_assets/reproject_depth.py",
+    "target_grid": [
+      800,
+      1280
+    ],
+    "unit": "millimetres"
+  },
+  "disk_channel_order": "BGRD",
+  "elapsed_seconds": 344.7,
+  "image_shape": [
+    800,
+    1280
+  ],
+  "model_channel_order": "RGBD",
+  "output_root": "/workspace/new763_rgbd4",
+  "output_validation": {
+    "bad": [],
+    "n_images": 2612,
+    "n_labels": 2612
+  },
+  "schema_version": 1,
+  "source_pairing": {
+    "rule": "same stem across canonical RGB JPEG, YOLO label, raw depth, and JSON sidecar",
+    "source_rgb_is_canonical": true,
+    "source_rgb_reencoded": false
+  },
+  "source_root": "/workspace/SawitMVC-Depth-YOLO",
+  "split_unit": "tree; inherited source train/valid split",
+  "splits": {
+    "train": {
+      "bytes": 6005749824,
+      "n_generated": 2144,
+      "n_images": 2144,
+      "n_resumed": 0,
+      "valid_fraction_mean": 0.28588920889327774,
+      "valid_fraction_median": 0.2945478515625
+    },
+    "valid": {
+      "bytes": 1313504676,
+      "n_generated": 468,
+      "n_images": 468,
+      "n_resumed": 0,
+      "valid_fraction_mean": 0.28815322849893166,
+      "valid_fraction_median": 0.2963349609375
+    }
+  },
+  "splits_materialized": [
+    "train",
+    "valid"
+  ],
+  "test_policy": "test directory was intentionally not read or materialized"
+}

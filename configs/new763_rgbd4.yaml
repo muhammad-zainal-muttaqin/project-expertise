@@ -1,0 +1,13 @@
+# Referensi konfigurasi dataset RGB+D new763.
+# Builder menghasilkan salinan absolut di /workspace/new763_rgbd4/data.yaml.
+# Test sengaja tidak dicantumkan untuk menjaga eksperimen validation-only.
+path: /workspace/new763_rgbd4
+train: train/images
+val: valid/images
+channels: 4
+nc: 4
+names:
+  0: B1
+  1: B2
+  2: B3
+  3: B4

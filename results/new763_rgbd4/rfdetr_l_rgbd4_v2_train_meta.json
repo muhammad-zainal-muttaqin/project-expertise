@@ -1,0 +1,56 @@
+{
+  "args": {
+    "arch": "rfdetr_l",
+    "batch": 4,
+    "data": "/workspace/new763_rgbd4",
+    "epochs": 20,
+    "grad_accum": 4,
+    "imgsz": 1280,
+    "name": "rfdetr_l_rgbd4_s42_i1280_fair_v2",
+    "patience": 5,
+    "project": "/workspace/project-expertise/runs_new763_rgbd4",
+    "resume": false,
+    "seed": 42,
+    "smoke": false,
+    "weights": "/workspace/model_artifacts/project-expertise/pretrained/rf-detr-large-2026.pth",
+    "workers": 8
+  },
+  "batch": 4,
+  "created_utc": "2026-08-28T13:28:00Z",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "imgsz": 1280,
+  "result": {
+    "arch": "rfdetr_l",
+    "depth_stats": {
+      "mean": 0.0540224127471447,
+      "n_images": 200,
+      "pixels_per_image_max": 20000,
+      "sampled_values": 4000000,
+      "seed": 42,
+      "source_split": "train",
+      "std": 0.11910304427146912,
+      "valid_fraction_mean": 0.285402138671875
+    },
+    "elapsed_seconds": 5198.0,
+    "epochs_requested": 20,
+    "framework": "rfdetr",
+    "inference_stem": {
+      "depth_initialization": "zero",
+      "module": "backbone.0.encoder.encoder.embeddings.patch_embeddings.projection",
+      "shape": [
+        384,
+        4,
+        16,
+        16
+      ]
+    },
+    "initialization": "same generic RF-DETR pretrain as RGB baseline; patch embed depth channel zero; COCO head reinitialized",
+    "patience": 5
+  },
+  "schema_version": 1,
+  "seed": 42,
+  "test_access": "forbidden; data.yaml has no test entry",
+  "weights": "/workspace/model_artifacts/project-expertise/pretrained/rf-detr-large-2026.pth",
+  "workers": 8
+}

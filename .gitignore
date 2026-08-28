@@ -53,6 +53,7 @@ runs_fase6/
 # backup HF bucket manual, ringkasan angka + riwayat epoch ada di results/)
 runs_new763/
 runs_combined1716/
+runs_new763_rgbd4/
 runs/detect/runs_new763/
 runs/detect/runs_combined1716/
 runs/detect/runs_combined1716_quicktest/

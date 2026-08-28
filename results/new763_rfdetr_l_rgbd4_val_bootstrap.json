@@ -1,0 +1,47 @@
+{
+  "analysis": "paired image-level bootstrap, new763 VAL only",
+  "bootstrap": {
+    "delta_ci95": [
+      -0.037048603651120636,
+      0.0180742346779972
+    ],
+    "delta_mean": -0.009709348543481542,
+    "fraction_delta_gt_zero": 0.232,
+    "rgb_mAP50_ci95": [
+      0.5748383950704716,
+      0.6581595007081503
+    ],
+    "rgbd_mAP50_ci95": [
+      0.5622699106335992,
+      0.6499012603464296
+    ],
+    "significant_excludes_zero": false
+  },
+  "elapsed_seconds": 977.8,
+  "identity_sanity": {
+    "rgb": 0.6082328454406732,
+    "rgbd": 0.5970701030682385
+  },
+  "inputs": {
+    "dataset": "/workspace/SawitMVC-Depth-YOLO",
+    "rgb_predictions": "/workspace/project-expertise/results/new763/predictions/rfdetr_l_rgb_s42_i1280__val.npz",
+    "rgb_result": "/workspace/project-expertise/results/new763/rfdetr_l_rgb_s42_i1280.json",
+    "rgbd_predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2_best_total__val.npz",
+    "rgbd_result": "/workspace/project-expertise/results/new763_rfdetr_l_rgbd4_val.json"
+  },
+  "point": {
+    "delta_rgbd_minus_rgb": -0.011163000000000034,
+    "rgb_mAP50": 0.608233,
+    "rgbd_mAP50": 0.59707
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "n_images": 468,
+    "n_resamples": 500,
+    "same_resample_indices_for_both_models": true,
+    "seed": 42,
+    "selection": "none; weights and prediction dumps fixed before bootstrap",
+    "test_access": "forbidden; this script has no test path or test option"
+  },
+  "schema_version": 1
+}

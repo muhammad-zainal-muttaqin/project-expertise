@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "excluded_from_comparison",
+  "run_name": "rfdetr_l_rgbd4_s42_i1280_fair",
+  "dataset": "new763 RGBD4 train/valid only",
+  "old_validation_mAP50": 0.595464,
+  "old_validation_mAP50_95": 0.22363,
+  "old_checkpoint": "/workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair/checkpoint_best_total.pth",
+  "audit": {
+    "patch_projection_shape": [384, 4, 16, 16],
+    "checkpoint_depth_weight_norm": 0.0,
+    "checkpoint_rgb_weight_norm": 4.430938243865967,
+    "depth_input_valid_fraction_mean": 0.28815322849893166,
+    "cause": "The PTL training builder created a 3-channel patch projection. The first-forward adapter replaced it with a 4-channel module after optimizer parameter groups had been constructed, so the new depth parameter was absent from the optimizer.",
+    "evidence": "The corrected construction smoke test shows the 3-channel projection before the guard, a 4-channel trainable projection after the guard, and the same parameter object after a 4-channel forward. The corrected run's first checkpoint has nonzero depth weights."
+  },
+  "action": "Retained as a reproducibility audit only; not used for tables, bootstrap, publication claims, or model selection. Repeated from the generic RF-DETR pretrain after adding the pre-optimizer stem guard."
+}
