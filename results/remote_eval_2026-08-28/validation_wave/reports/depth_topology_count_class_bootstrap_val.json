@@ -1,0 +1,108 @@
+{
+  "dataset": "depth",
+  "protocol": "paired tree bootstrap; fit TRAIN, select VAL; no TEST",
+  "seed": 20260828,
+  "resamples": 5000,
+  "candidate": {
+    "topology": "original_gsp",
+    "count_targets": "v2_geo_ridge_fit_train",
+    "class_calibration": "depth_member_stack_macro_scale_macro",
+    "v2_solver_tags": {
+      "milp": 111,
+      "empty": 6
+    }
+  },
+  "tree_count": 117,
+  "baseline_point": {
+    "physical_f1": 0.8526413345690453,
+    "mae": 0.9316239316239316,
+    "exact": 0.3418803418803419,
+    "pm1": 0.7863247863247863,
+    "matched_class_accuracy": 0.8456521739130435,
+    "matched": 460,
+    "macro_f1": 0.6806848973454227,
+    "per_class_f1": {
+      "B1": 0.7777777777777778,
+      "B2": 0.724373576309795,
+      "B3": 0.75,
+      "B4": 0.47058823529411764
+    },
+    "pred_clusters": 508,
+    "gt_bunches": 571
+  },
+  "candidate_point": {
+    "physical_f1": 0.8542246982358404,
+    "mae": 0.9145299145299145,
+    "exact": 0.36752136752136755,
+    "pm1": 0.7863247863247863,
+    "matched_class_accuracy": 0.85,
+    "matched": 460,
+    "macro_f1": 0.6890133871315192,
+    "per_class_f1": {
+      "B1": 0.7852760736196319,
+      "B2": 0.7252252252252253,
+      "B3": 0.7571801566579635,
+      "B4": 0.4883720930232558
+    },
+    "pred_clusters": 506,
+    "gt_bunches": 571
+  },
+  "delta_point": {
+    "physical_f1": 0.0015833636667950124,
+    "mae": -0.017094017094017144,
+    "exact": 0.02564102564102566,
+    "pm1": 0.0,
+    "matched_class_accuracy": 0.004347826086956497,
+    "macro_f1": 0.00832848978609646
+  },
+  "bootstrap": {
+    "physical_f1": {
+      "mean_delta": 0.0016871350402732049,
+      "ci95": [
+        -0.006160166837434583,
+        0.009540470260000664
+      ],
+      "p_positive": 0.6552
+    },
+    "mae": {
+      "mean_delta": -0.01707863247863248,
+      "ci95": [
+        -0.08547008547008539,
+        0.05128205128205132
+      ],
+      "p_positive": 0.2594
+    },
+    "exact": {
+      "mean_delta": 0.02548717948717949,
+      "ci95": [
+        -0.03418803418803418,
+        0.08547008547008544
+      ],
+      "p_positive": 0.7718
+    },
+    "pm1": {
+      "mean_delta": 0.00015042735042735146,
+      "ci95": [
+        -0.03418803418803418,
+        0.03418803418803418
+      ],
+      "p_positive": 0.4076
+    },
+    "matched_class_accuracy": {
+      "mean_delta": 0.004300806440191903,
+      "ci95": [
+        -0.01174359342860161,
+        0.0215576683345741
+      ],
+      "p_positive": 0.688
+    },
+    "macro_f1": {
+      "mean_delta": 0.008258782566975707,
+      "ci95": [
+        -0.015424910632285821,
+        0.033033706747641715
+      ],
+      "p_positive": 0.759
+    }
+  }
+}

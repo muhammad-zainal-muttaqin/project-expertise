@@ -1,0 +1,46 @@
+{
+  "dataset": "depth",
+  "protocol": "paired tree bootstrap for TRAIN-fitted class head; VAL only; no TEST",
+  "spec": "member_stack_macro",
+  "candidate_selection": "scale_macro",
+  "candidate_bias": [
+    0.0,
+    0.15000000596046448,
+    -0.10000000149011612,
+    0.0
+  ],
+  "candidate_scales": [
+    1.0,
+    1.15,
+    1.15,
+    1.15
+  ],
+  "baseline_point": {
+    "matched_class_accuracy": 0.8456521739130435,
+    "macro_f1": 0.6806848973454227,
+    "matched": 460
+  },
+  "candidate_point": {
+    "matched_class_accuracy": 0.8543478260869565,
+    "macro_f1": 0.6976021820575233,
+    "matched": 460
+  },
+  "bootstrap": {
+    "resamples": 5000,
+    "unit": "tree",
+    "seed": 20260828,
+    "matched_delta": 0.008656015668942049,
+    "matched_ci95": [
+      -0.006465517241379337,
+      0.025463331564048067
+    ],
+    "matched_p_positive": 0.8296,
+    "macro_delta": 0.01643391277207667,
+    "macro_ci95": [
+      0.000694219052509149,
+      0.03440340838186692
+    ],
+    "macro_p_positive": 0.981
+  },
+  "tree_count": 117
+}

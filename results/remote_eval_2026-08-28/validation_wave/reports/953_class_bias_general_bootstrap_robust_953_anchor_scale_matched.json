@@ -1,0 +1,46 @@
+{
+  "dataset": "953",
+  "protocol": "paired tree bootstrap for TRAIN-fitted class head; VAL only; no TEST",
+  "spec": "robust_953_anchor",
+  "candidate_selection": "scale_matched",
+  "candidate_bias": [
+    0.0,
+    0.15000000596046448,
+    0.0,
+    -0.15000000596046448
+  ],
+  "candidate_scales": [
+    1.0,
+    1.0,
+    1.0,
+    0.85
+  ],
+  "baseline_point": {
+    "matched_class_accuracy": 0.7542043984476067,
+    "macro_f1": 0.601393979256198,
+    "matched": 773
+  },
+  "candidate_point": {
+    "matched_class_accuracy": 0.7697283311772316,
+    "macro_f1": 0.6170814752426634,
+    "matched": 773
+  },
+  "bootstrap": {
+    "resamples": 5000,
+    "unit": "tree",
+    "seed": 20260828,
+    "matched_delta": 0.015409958462799725,
+    "matched_ci95": [
+      0.003735873868515471,
+      0.027883396704689534
+    ],
+    "matched_p_positive": 0.9918,
+    "macro_delta": 0.0155748555951747,
+    "macro_ci95": [
+      0.0012661643032185756,
+      0.030756322562384603
+    ],
+    "macro_p_positive": 0.9842
+  },
+  "tree_count": 91
+}

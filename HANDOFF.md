@@ -153,3 +153,24 @@ Depth antara original GSP dan V2 geo/count juga ditolak karena pertukaran
 physical F1/macro-F1 versus MAE. Kedua hasil ini tersimpan sebagai ablasi
 TRAIN/VAL-only; original Depth GSP dan kandidat 953 robust di atas tetap
 menjadi keputusan kerja.
+
+### Cross-layer composition follow-up
+
+Komposisi empat cabang pada VAL menemukan kandidat yang lebih kuat daripada
+sekadar V2-only: topology original GSP dipertahankan, tetapi target count
+diganti dengan Ridge V2 geo yang dilatih TRAIN, kemudian class head
+`scale_macro` diterapkan. Pada Depth VAL, physical F1 berubah
+`0,852641 → 0,854225`, MAE `0,931624 → 0,914530`, matched class
+`0,845652 → 0,850000`, dan macro-F1 `0,680685 → 0,689013`; ±1 tetap
+`0,786325`. Ini adalah kandidat validation-only terbaik sementara dan
+menutupi kompromi antar-layer tanpa test tuning.
+
+Paired bootstrap 5.000 pohon tidak memberi CI yang mengecualikan nol (F1
+`[-0,006160; +0,009540]`, MAE `[-0,085470; +0,051282]`, matched
+`[-0,011744; +0,021558]`, macro `[-0,015425; +0,033033]`), sehingga angka
+tersebut belum boleh disebut klaim signifikan. Artefak lengkap ada di
+`results/remote_eval_2026-08-28/validation_wave/reports/`.
+
+Head-aware ranking juga diuji sebagai layer berikutnya; ia menaikkan akurasi
+kelas tetapi menurunkan physical F1, sehingga tetap menjadi ablasi dan skor
+linker tetap menjadi ranking utama.

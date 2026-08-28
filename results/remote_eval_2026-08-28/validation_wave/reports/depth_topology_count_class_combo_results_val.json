@@ -1,0 +1,281 @@
+{
+  "dataset": "depth",
+  "protocol": "fixed TRAIN-fitted topology/count/class branches; Cartesian composition VAL only; no TEST",
+  "baseline_val": {
+    "physical_f1": 0.8526413345690453,
+    "mae": 0.9316239316239316,
+    "pm1": 0.7863247863247863,
+    "matched_class_accuracy": 0.8456521739130435,
+    "matched": 460,
+    "macro_f1": 0.6806848973454227,
+    "per_class_f1": {
+      "B1": 0.7777777777777778,
+      "B2": 0.724373576309795,
+      "B3": 0.75,
+      "B4": 0.47058823529411764
+    }
+  },
+  "v2_solver_tags": {
+    "milp": 111,
+    "empty": 6
+  },
+  "count_target_summary": {
+    "original_mean": 4.786324786324786,
+    "v2_mean": 4.6923076923076925
+  },
+  "rows": [
+    {
+      "combination": "original_topology__original_count",
+      "class_mode": "detector",
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8456521739130435,
+        "matched": 460,
+        "macro_f1": 0.6806848973454227,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.724373576309795,
+          "B3": 0.75,
+          "B4": 0.47058823529411764
+        }
+      }
+    },
+    {
+      "combination": "original_topology__original_count",
+      "class_mode": "scale_matched",
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8565217391304348,
+        "matched": 460,
+        "macro_f1": 0.6974739846674926,
+        "per_class_f1": {
+          "B1": 0.7852760736196319,
+          "B2": 0.7289719626168224,
+          "B3": 0.7587939698492462,
+          "B4": 0.5168539325842697
+        }
+      }
+    },
+    {
+      "combination": "original_topology__original_count",
+      "class_mode": "scale_macro",
+      "metrics": {
+        "physical_f1": 0.8526413345690453,
+        "mae": 0.9316239316239316,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.8543478260869565,
+        "matched": 460,
+        "macro_f1": 0.6976021820575233,
+        "per_class_f1": {
+          "B1": 0.7852760736196319,
+          "B2": 0.7252252252252253,
+          "B3": 0.7571801566579635,
+          "B4": 0.5227272727272727
+        }
+      }
+    },
+    {
+      "combination": "original_topology__v2_count",
+      "class_mode": "detector",
+      "metrics": {
+        "physical_f1": 0.8542246982358404,
+        "mae": 0.9145299145299145,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.841304347826087,
+        "matched": 460,
+        "macro_f1": 0.6714715734616523,
+        "per_class_f1": {
+          "B1": 0.7777777777777778,
+          "B2": 0.724373576309795,
+          "B3": 0.75,
+          "B4": 0.43373493975903615
+        }
+      }
+    },
+    {
+      "combination": "original_topology__v2_count",
+      "class_mode": "scale_matched",
+      "metrics": {
+        "physical_f1": 0.8542246982358404,
+        "mae": 0.9145299145299145,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.85,
+        "matched": 460,
+        "macro_f1": 0.687743731969811,
+        "per_class_f1": {
+          "B1": 0.7852760736196319,
+          "B2": 0.7272727272727273,
+          "B3": 0.7556675062972292,
+          "B4": 0.4827586206896552
+        }
+      }
+    },
+    {
+      "combination": "original_topology__v2_count",
+      "class_mode": "scale_macro",
+      "metrics": {
+        "physical_f1": 0.8542246982358404,
+        "mae": 0.9145299145299145,
+        "pm1": 0.7863247863247863,
+        "matched_class_accuracy": 0.85,
+        "matched": 460,
+        "macro_f1": 0.6890133871315192,
+        "per_class_f1": {
+          "B1": 0.7852760736196319,
+          "B2": 0.7252252252252253,
+          "B3": 0.7571801566579635,
+          "B4": 0.4883720930232558
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__original_count",
+      "class_mode": "detector",
+      "metrics": {
+        "physical_f1": 0.8300536672629697,
+        "mae": 0.7863247863247863,
+        "pm1": 0.8290598290598291,
+        "matched_class_accuracy": 0.8491379310344828,
+        "matched": 464,
+        "macro_f1": 0.6746081208348217,
+        "per_class_f1": {
+          "B1": 0.7857142857142857,
+          "B2": 0.6948775055679287,
+          "B3": 0.7294685990338164,
+          "B4": 0.4883720930232558
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__original_count",
+      "class_mode": "scale_matched",
+      "metrics": {
+        "physical_f1": 0.8300536672629697,
+        "mae": 0.7863247863247863,
+        "pm1": 0.8290598290598291,
+        "matched_class_accuracy": 0.8620689655172413,
+        "matched": 464,
+        "macro_f1": 0.6865141371566297,
+        "per_class_f1": {
+          "B1": 0.7928994082840237,
+          "B2": 0.7048054919908466,
+          "B3": 0.7428571428571429,
+          "B4": 0.5054945054945055
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__original_count",
+      "class_mode": "scale_macro",
+      "metrics": {
+        "physical_f1": 0.8300536672629697,
+        "mae": 0.7863247863247863,
+        "pm1": 0.8290598290598291,
+        "matched_class_accuracy": 0.853448275862069,
+        "matched": 464,
+        "macro_f1": 0.6825631044439752,
+        "per_class_f1": {
+          "B1": 0.7928994082840237,
+          "B2": 0.691304347826087,
+          "B3": 0.7405541561712846,
+          "B4": 0.5054945054945055
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__v2_count",
+      "class_mode": "detector",
+      "metrics": {
+        "physical_f1": 0.8340807174887892,
+        "mae": 0.7606837606837606,
+        "pm1": 0.8205128205128205,
+        "matched_class_accuracy": 0.8494623655913979,
+        "matched": 465,
+        "macro_f1": 0.6666644099921315,
+        "per_class_f1": {
+          "B1": 0.7928994082840237,
+          "B2": 0.7008928571428571,
+          "B3": 0.7391304347826086,
+          "B4": 0.43373493975903615
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__v2_count",
+      "class_mode": "scale_matched",
+      "metrics": {
+        "physical_f1": 0.8340807174887892,
+        "mae": 0.7606837606837606,
+        "pm1": 0.8205128205128205,
+        "matched_class_accuracy": 0.8623655913978494,
+        "matched": 465,
+        "macro_f1": 0.6804273207496686,
+        "per_class_f1": {
+          "B1": 0.8,
+          "B2": 0.7077625570776256,
+          "B3": 0.7541766109785203,
+          "B4": 0.45977011494252873
+        }
+      }
+    },
+    {
+      "combination": "v2_topology__v2_count",
+      "class_mode": "scale_macro",
+      "metrics": {
+        "physical_f1": 0.8340807174887892,
+        "mae": 0.7606837606837606,
+        "pm1": 0.8205128205128205,
+        "matched_class_accuracy": 0.8559139784946237,
+        "matched": 465,
+        "macro_f1": 0.67767667878873,
+        "per_class_f1": {
+          "B1": 0.8,
+          "B2": 0.6971677559912854,
+          "B3": 0.7537688442211056,
+          "B4": 0.45977011494252873
+        }
+      }
+    }
+  ],
+  "best_by_macro": {
+    "combination": "original_topology__original_count",
+    "class_mode": "scale_macro",
+    "metrics": {
+      "physical_f1": 0.8526413345690453,
+      "mae": 0.9316239316239316,
+      "pm1": 0.7863247863247863,
+      "matched_class_accuracy": 0.8543478260869565,
+      "matched": 460,
+      "macro_f1": 0.6976021820575233,
+      "per_class_f1": {
+        "B1": 0.7852760736196319,
+        "B2": 0.7252252252252253,
+        "B3": 0.7571801566579635,
+        "B4": 0.5227272727272727
+      }
+    }
+  },
+  "best_allrounder_guardrail": {
+    "combination": "original_topology__original_count",
+    "class_mode": "scale_macro",
+    "metrics": {
+      "physical_f1": 0.8526413345690453,
+      "mae": 0.9316239316239316,
+      "pm1": 0.7863247863247863,
+      "matched_class_accuracy": 0.8543478260869565,
+      "matched": 460,
+      "macro_f1": 0.6976021820575233,
+      "per_class_f1": {
+        "B1": 0.7852760736196319,
+        "B2": 0.7252252252252253,
+        "B3": 0.7571801566579635,
+        "B4": 0.5227272727272727
+      }
+    }
+  },
+  "elapsed_sec": 29.638394594192505
+}

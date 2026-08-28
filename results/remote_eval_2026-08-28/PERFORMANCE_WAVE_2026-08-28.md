@@ -208,3 +208,39 @@ The companion files in this directory contain the locked reports and scripts:
 The full local SHA-256 manifest is generated alongside the staged artifacts.
 Large crop arrays and feature matrices remain outside the repository tree;
 they are reproducible intermediates rather than publication metadata.
+
+## Latest cross-layer composition (VAL only)
+
+The next layer was deliberately tested after the preceding negative count
+ablations. Instead of replacing the original Depth GSP topology, the
+experiment crossed the two count-target branches with both topologies, then
+applied the already selected class calibration. The strongest point estimate
+keeps the original GSP topology and uses the TRAIN-fitted V2 geo Ridge count
+target, followed by the predeclared Depth `scale_macro` class calibration:
+
+| Depth VAL metric | Original profile | Cross-layer candidate | Delta |
+|---|---:|---:|---:|
+| physical F1 | 0,852641 | **0,854225** | +0,001583 |
+| count MAE | 0,931624 | **0,914530** | −0,017094 |
+| count ±1 | 0,786325 | **0,786325** | 0 |
+| matched class accuracy | 0,845652 | **0,850000** | +0,004348 |
+| macro-F1 E2E | 0,680685 | **0,689013** | +0,008328 |
+
+This is a genuine all-metric point improvement on the locked validation
+profile, and it illustrates the intended layered compromise policy: retain
+the GSP recall backbone, borrow the better count target, and let the class
+head repair the changed class mix. The paired 5,000-tree bootstrap is still
+inconclusive because the validation set has only 117 trees: F1 delta CI
+`[-0,006160; +0,009540]`, MAE delta CI `[-0,085470; +0,051282]`, matched
+accuracy CI `[-0,011744; +0,021558]`, and macro-F1 CI
+`[-0,015425; +0,033033]`. Therefore this is recorded as the strongest
+validation candidate, not as a statistically confirmed or test-validated
+claim. The full composition and bootstrap are in
+`validation_wave/reports/depth_topology_count_class_combo_results_val.json`
+and `validation_wave/reports/depth_topology_count_class_bootstrap_val.json`.
+
+A separate head-aware truncation ablation showed why the linker score remains
+the primary ranking signal. Member-head confidence increased matched class
+accuracy to `0,7718` on 953 and `0,8603` on Depth, but reduced physical F1 by
+`0,0064` and `0,0037`, respectively. It is retained as a negative ablation;
+the fixed-score selector is not replaced.

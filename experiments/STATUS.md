@@ -147,3 +147,25 @@ dan menaikkan matched menjadi `0,8495`, tetapi menurunkan physical F1 menjadi
 menukar physical F1 (`0,8421`) demi MAE (`0,7265`). Original GSP tetap
 menjadi referensi. Seluruh follow-up ini TRAIN/VAL-only dan tidak membuka
 TEST.
+
+## 9. Komposisi lintas-layer dan head-aware ranking (V2-E-047)
+
+Dengan topology, target count, dan class head sebagai layer terpisah, seluruh
+komposisi VAL yang telah dideklarasikan diuji ulang. Kandidat terbaik menjaga
+original GSP, memakai target count V2 geo (Ridge fit TRAIN), lalu memakai
+class calibration `scale_macro` yang sudah dipilih dari VAL:
+
+| Metrik Depth VAL | Baseline | Kandidat |
+|---|---:|---:|
+| physical F1 | 0,852641 | **0,854225** |
+| MAE | 0,931624 | **0,914530** |
+| ±1 | 0,786325 | **0,786325** |
+| matched class | 0,845652 | **0,850000** |
+| macro-F1 | 0,680685 | **0,689013** |
+
+Point estimate ini unggul secara umum, tetapi paired bootstrap 5.000
+resampling pohon (117 pohon VAL) masih inconclusive; seluruh CI delta
+melintasi nol. Kandidat disimpan sebagai `validation candidate`, bukan klaim
+test/signifikansi. Head-aware truncation juga tidak dipromosikan karena
+kenaikan matched class dibayar dengan penurunan physical F1. Script dan JSON
+ada di `results/remote_eval_2026-08-28/validation_wave/`.
