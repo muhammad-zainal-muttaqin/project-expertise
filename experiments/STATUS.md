@@ -177,3 +177,23 @@ count` tidak memberi kenaikan: matched tetap `0,850000`, tetapi macro-F1
 turun ke `0,684983` dari `0,689013`. Branch ini ditolak dan disimpan sebagai
 negative control; kandidat lintas-layer yang sudah ada tetap menjadi hasil
 terbaik sementara.
+
+## Wave 2: cross-layer frontier (2026-08-28)
+
+Sebanyak 2.893 baris evaluator TRAIN/VAL selesai pada Pipeline V2,
+cross-layer topology/count/class, composition-aware head, count
+meta-ensemble, edge ensemble→GSP, dan GPU group-attention. Tidak ada
+all-rounder baru terhadap anchor.
+
+| Dataset | Kandidat | F1 | MAE | ±1 | Matched | Macro |
+|---|---|---:|---:|---:|---:|---:|
+| 953 | robust class calibration | 0,823216 | 1,252747 | 0,670330 | **0,769728** | **0,617081** |
+| 953 | cross-layer best macro | 0,839396 | 1,527473 | 0,582418 | 0,758667 | **0,631103** |
+| Depth | original GSP anchor | 0,852641 | 0,931624 | 0,786325 | 0,845652 | 0,680685 |
+| Depth | topology + V2 geo count + scale macro | **0,854225** | **0,914530** | 0,786325 | **0,850000** | **0,689013** |
+
+Baris cross-layer best macro 953 dan count-meta 953 tidak dipromosikan karena
+MAE/±1 turun. Kandidat Depth unggul secara point estimate tetapi CI paired
+bootstrap 5.000 pohon melintasi nol pada seluruh metrik delta. Detail dan
+artefak reproduksi ada di
+[`WAVE2_RECAP.md`](../results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md).

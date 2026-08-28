@@ -179,3 +179,44 @@ Fresh composition-aware retraining juga sudah diaudit: member head yang
 dilatih ulang pada label komposisi TRAIN tidak mengalahkan head yang sudah
 ada (macro-F1 `0,684983` vs `0,689013`, matched sama `0,850000`). Branch ini
 disimpan sebagai negative control; tidak menggantikan kandidat utama.
+
+## Validation wave 2 — cross-layer audit (2026-08-28)
+
+Wave kedua menjalankan **2.893 baris evaluasi** pada TRAIN/VAL: Pipeline V2
+stage 1+2 (172 per dataset), cross-layer 953 (815 detector + 176 class
+frontier), composition-aware head (378), count meta-ensemble (58 untuk 953,
+30 untuk Depth), edge ensemble→GSP (1.080), dan GPU group-attention (6 per
+dataset). Semua branch memiliki jalur TEST yang ditolak atau tidak tersedia.
+
+Hasil paling penting:
+
+| Dataset / branch | F1 fisik | MAE | ±1 | matched | macro-F1 | Keputusan |
+|---|---:|---:|---:|---:|---:|---|
+| 953 anchor | 0,823216 | 1,252747 | 0,670330 | 0,754204 | 0,601394 | Referensi |
+| 953 robust class calibration | 0,823216 | 1,252747 | 0,670330 | **0,769728** | **0,617081** | Kandidat terbaik; count invariant |
+| 953 cross-layer best macro | 0,839396 | 1,527473 | 0,582418 | 0,758667 | **0,631103** | Exploratory; count turun |
+| 953 count-meta + calibration | 0,825994 | 1,318681 | 0,626374 | 0,768531 | 0,622456 | Exploratory; ±1 turun |
+| Depth anchor original GSP | 0,852641 | 0,931624 | 0,786325 | 0,845652 | 0,680685 | Profil kerja |
+| Depth topology + V2 geo count + scale macro | **0,854225** | **0,914530** | 0,786325 | **0,850000** | **0,689013** | Kandidat VAL; CI inconclusive |
+| Depth GPU group-attention | 0,852641 | 0,931624 | 0,786325 | 0,845652 | 0,680688 | Flat control |
+
+Cross-layer 953 mengulang persis kandidat robust sebagai best-by-matched dan
+tidak menghasilkan all-rounder baru. Skor macro tertinggi berasal dari
+topology original GSP + target count V2 geo Ridge + `scale_macro`, tetapi
+fragmentasi count menurunkan MAE dan ±1. Pada Depth, kandidat topology/count/
+class lebih baik secara point estimate, namun bootstrap 5.000 pohon memberi
+CI delta yang seluruhnya melintasi nol: F1 `[-0,006160; +0,009540]`, MAE
+`[-0,085470; +0,051282]`, matched `[-0,011744; +0,021558]`, dan macro-F1
+`[-0,015425; +0,033034]`.
+
+Bootstrap class calibration 953 untuk kandidat robust memberi matched delta
+`+0,015410` dengan CI `[+0,003736; +0,027883]`, serta macro delta `+0,015575`
+dengan CI `[+0,001266; +0,030756]`. Anchor gate train/VAL tetap lulus dengan
+selisih maksimum kurang dari `5×10⁻⁵`. Rincian tabel, jumlah percobaan,
+konfigurasi, dan artefak ada di
+[`WAVE2_RECAP.md`](results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md).
+
+Keputusan operasional tidak berubah: jangan menimpa hasil test-locked dengan
+kandidat VAL baru. Kandidat macro/matched yang mengorbankan count tetap
+disimpan sebagai exploratory, sedangkan Depth topology+count+class menunggu
+validasi independen sebelum dipromosikan.
