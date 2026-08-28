@@ -188,13 +188,75 @@
         "selection": "none; weights and prediction dumps fixed before bootstrap",
         "test_access": "forbidden; this script has no test path or test option"
       }
+    },
+    {
+      "arch": "rtdetr_l",
+      "baseline_rgb_val": {
+        "run_name": "rtdetr_l_rgb_s42_i1280",
+        "mAP50": 0.577766,
+        "mAP50_95": 0.211041,
+        "per_kelas_AP50": {
+          "B1": 0.724444,
+          "B2": 0.583357,
+          "B3": 0.668535,
+          "B4": 0.334729
+        },
+        "predictions": "/workspace/project-expertise/results/new763/predictions/rtdetr_l_rgb_s42_i1280__val.npz"
+      },
+      "rgbd4_val": {
+        "run_name": "rtdetr_l_rgbd4_s42_i1280_fair_best",
+        "mAP50": 0.584088,
+        "mAP50_95": 0.212043,
+        "per_kelas_AP50": {
+          "B1": 0.713045,
+          "B2": 0.59309,
+          "B3": 0.692536,
+          "B4": 0.33768
+        },
+        "weights": "/workspace/project-expertise/runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt"
+      },
+      "delta": {
+        "mAP50": 0.006322,
+        "mAP50_95": 0.001002,
+        "per_kelas_AP50": {
+          "B1": -0.011399,
+          "B2": 0.009733,
+          "B3": 0.024001,
+          "B4": 0.002951
+        }
+      },
+      "bootstrap": {
+        "delta_ci95": [
+          -0.026770144868497076,
+          0.0396697466423762
+        ],
+        "delta_mean": 0.006264586259744239,
+        "fraction_delta_gt_zero": 0.65,
+        "rgb_mAP50_ci95": [
+          0.5453691082445214,
+          0.6276604524606973
+        ],
+        "rgbd_mAP50_ci95": [
+          0.5505847587204892,
+          0.637047709426318
+        ],
+        "significant_excludes_zero": false
+      },
+      "protocol": {
+        "evaluator": "pycocotools.COCOeval",
+        "n_images": 468,
+        "n_resamples": 500,
+        "same_resample_indices_for_both_models": true,
+        "seed": 42,
+        "selection": "none; weights and prediction dumps fixed before bootstrap",
+        "test_access": "forbidden; this script has no test path or test option"
+      }
     }
   ],
-  "unrun_architectures": {
-    "rtdetr_l": "not run in this wave"
-  },
+  "unrun_architectures": {},
   "initialization_audit": {
     "yolo26l": "generic /workspace/yolo26l.pt; RGB stem copied exactly; fourth stem channel zero at first initialization; resumed RGBD checkpoint preserves learned fourth channel",
+    "rtdetr_l": "generic /workspace/rtdetr-l.pt; HGStem built with ch=4 before trainer optimizer; RGB stem copied exactly; fourth stem channel zero at first initialization; COCO head reinitialized to four classes",
     "rfdetr_l": "generic rf-detr-large-2026.pth; patch projection fourth channel zero at initialization; optimizer-safe 3->4 expansion before PTL parameter groups; COCO head reinitialized to four classes; v2 selected by framework validation mAP50:95; invalid v1 retained only in failed-run audit"
   },
   "model_artifacts": [
@@ -204,6 +266,13 @@
       "bytes": 53064741,
       "sha256": "9ddd646db1b52c4482f94b733ff72273de046c5a659056aeb9a1ea5c684dcd34",
       "hf_bucket_path": "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/yolo26l_rgbd4_s42_i1280_best.pt"
+    },
+    {
+      "label": "RT-DETR-L RGBD4 best.pt",
+      "path": "/workspace/project-expertise/runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt",
+      "bytes": 66458365,
+      "sha256": "6439e3b3b79ab0a53429780cb5b88cddc6b5e359f21350078a5bbaf36f881e3b",
+      "hf_bucket_path": "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best.pt"
     },
     {
       "label": "RF-DETR-L RGBD4 v2 best total (mAP50:95 selection)",

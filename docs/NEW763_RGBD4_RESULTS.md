@@ -12,11 +12,13 @@ depth pada eksperimen ini karena cakupan depth-nya tidak lengkap.
 |---|---:|---:|---:|---:|---:|---:|---|---|
 | YOLO26l | 0,529357 | 0,529523 | +0,000166 | 0,197855 | 0,195487 | −0,002368 | [−0,024195; +0,028892] | Tidak ada gain |
 | RF-DETR-L v2 | 0,608233 | 0,597070 | −0,011163 | 0,227471 | 0,226946 | −0,000525 | [−0,037049; +0,018074] | Point turun; belum signifikan |
+| RT-DETR-L | 0,577766 | 0,584088 | +0,006322 | 0,211041 | 0,212043 | +0,001002 | [−0,026770; +0,039670] | Point naik; belum signifikan |
 
 Bootstrap memakai 500 resample level-citra dengan indeks yang sama untuk
-kedua model. Untuk YOLO26l, fraksi resample dengan Δ positif adalah 0,558;
-untuk RF-DETR-L v2 0,232. Kedua CI masih melintasi nol, sehingga data ini tidak
-mendukung klaim bahwa depth menaikkan mAP pada `new763`. Checkpoint regular RF
+ketiga model. Untuk YOLO26l, fraksi resample dengan Δ positif adalah 0,558;
+untuk RF-DETR-L v2 0,232; untuk RT-DETR-L 0,650. Semua CI masih melintasi
+nol, sehingga data ini belum mendukung klaim signifikansi bahwa depth menaikkan
+mAP pada `new763`. Checkpoint regular RF
 yang tidak dipilih memberi mAP50 0,604826 dan mAP50:95 0,226367; karena
 seleksi protokol memakai mAP50:95, angka utama tetap checkpoint `best_total`.
 
@@ -26,14 +28,17 @@ seleksi protokol memakai mAP50:95, angka utama tetap checkpoint `best_total`.
 |---|---:|---:|---:|---:|
 | YOLO26l RGB+D4 − RGB | −0,018841 | −0,002292 | +0,026175 | −0,004377 |
 | RF-DETR-L v2 RGB+D4 − RGB | +0,011954 | −0,010345 | −0,022481 | −0,023780 |
+| RT-DETR-L RGB+D4 − RGB | −0,011399 | +0,009733 | +0,024001 | +0,002951 |
 
 Pada YOLO26l, depth membantu B3 tetapi hampir seluruh gain itu diimbangi
 turunnya B1, B2, dan B4. Pada RF-DETR-L v2, B1 naik, tetapi B3 dan B4 turun;
 B4 tetap menjadi kelas yang paling lemah. Run RF-DETR v1 tidak masuk tabel
 karena ekspansi stem 3→4 terjadi setelah optimizer dibuat sehingga kanal depth
-tidak pernah dilatih.
-Pola ini konsisten dengan kesimpulan agregat: kanal keempat terbaca dan
-berkontribusi, tetapi belum memberi sinyal generalisasi yang lebih baik.
+tidak pernah dilatih. Pada RT-DETR-L, point gain terutama datang dari B3;
+paired CI masih melintasi nol sehingga hasil ini belum signifikan.
+Pola ini menunjukkan bahwa kanal keempat terbaca dan dapat berkontribusi,
+terutama pada RT-DETR, tetapi belum memberi bukti generalisasi yang konsisten
+di seluruh arsitektur.
 
 ## Desain yang membuat perbandingan adil
 
@@ -61,6 +66,9 @@ berkontribusi, tetapi belum memberi sinyal generalisasi yang lebih baik.
   baseline RGB (MD5 `5cb72153541cbcb9aa6efa26222acc75`). Patch projection
   DINO memiliki bentuk `(384, 4, 16, 16)`, kanal depth awal nol, dan head COCO
   di-reinitialize menjadi empat kelas pada kedua recipe.
+- RT-DETR-L memakai `/workspace/rtdetr-l.pt` generic yang sama dengan baseline
+  RGB, membangun HGStem dengan `ch=4` sebelum optimizer, menyalin bobot RGB ke
+  tiga kanal pertama, dan menginisialisasi kanal depth ke nol.
 - Checkpoint dipilih oleh validation mAP50:95 framework masing-masing sebelum
   prediksi dibekukan. Bootstrap dijalankan setelah prediksi dan checkpoint
   terkunci; tidak ada pemilihan ulang dari test.
@@ -74,6 +82,9 @@ berkontribusi, tetapi belum memberi sinyal generalisasi yang lebih baik.
 | Bootstrap YOLO JSON | [`results/new763_yolo26l_rgbd4_val_bootstrap.json`](../results/new763_yolo26l_rgbd4_val_bootstrap.json) |
 | Hasil RF JSON | [`results/new763_rfdetr_l_rgbd4_val.json`](../results/new763_rfdetr_l_rgbd4_val.json) |
 | Bootstrap RF JSON | [`results/new763_rfdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rfdetr_l_rgbd4_val_bootstrap.json) |
+| Hasil RT JSON | [`results/new763_rtdetr_l_rgbd4_val.json`](../results/new763_rtdetr_l_rgbd4_val.json) |
+| Bootstrap RT JSON | [`results/new763_rtdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rtdetr_l_rgbd4_val_bootstrap.json) |
+| Audit RT checkpoint | [`results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json`](../results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json) |
 | Grafik agregat | [`results/figures/new763_rgbd4_val_comparison.png`](../results/figures/new763_rgbd4_val_comparison.png) |
 | Grafik per kelas | [`results/figures/new763_rgbd4_per_class_delta.png`](../results/figures/new763_rgbd4_per_class_delta.png) |
 | Script builder/training/eval/CI | [`scripts/`](../scripts/) dengan nama `*new763_rgbd4*` |
@@ -82,9 +93,10 @@ Checkpoint besar tidak dimasukkan ke GitHub. Best model sudah diunggah
 langsung ke bucket Hugging Face:
 
 - `hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2_checkpoint_best_total.pth`
+- `hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best.pt`
 - `hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/yolo26l_rgbd4_s42_i1280_best.pt`
 
-Hash dan ukuran kedua model tercantum dalam
+Hash dan ukuran ketiga model tercantum dalam
 [`results/new763_rgbd4/new763_rgbd4_summary.json`](../results/new763_rgbd4/new763_rgbd4_summary.json).
 Dataset TIFF RGBD4 sekitar 6,9 GiB juga sengaja tidak dimasukkan ke GitHub;
 manifest, konfigurasi, metrics training, prediction dump VALID, dan seluruh
@@ -93,9 +105,15 @@ JSON hasil sudah dicatat di repository.
 ## Keputusan
 
 Dengan protokol ini, depth belum layak menggantikan baseline RGB pada
-`new763`: YOLO26l pada dasarnya imbang dan RF-DETR-L v2 memiliki point estimate
-lebih rendah. Ini bukan bukti bahwa depth tidak berguna secara umum; cakupan
+`new763`: YOLO26l pada dasarnya imbang, RF-DETR-L v2 memiliki point estimate
+lebih rendah, dan RT-DETR-L memberi gain point kecil yang belum signifikan. Ini
+bukan bukti bahwa depth tidak berguna secara umum; cakupan
 valid sensor hanya sekitar 0,286–0,288 dari grid warna dan eksperimen ini
 baru menguji early 4-channel fusion dengan depth stem nol. Eksperimen fusion
 lain harus tetap diperlakukan sebagai ablation baru dan tidak boleh membuka
 TEST secara diam-diam.
+
+Catatan kualitas RT-DETR: kolom validation loss framework menjadi `NaN` pada
+sejumlah epoch akhir, tetapi metrik COCO dan seluruh tensor checkpoint tetap
+finite. Anomali ini dicatat di `rtdetr_l_rgbd4_checkpoint_audit.json` dan harus
+diungkapkan bila hasil dipakai dalam naskah.

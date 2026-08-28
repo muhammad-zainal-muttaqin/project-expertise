@@ -1,0 +1,25 @@
+{
+  "arch": "rtdetr_l",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "delta_vs_rgb_baseline_val_mAP50": 0.006322,
+  "evaluator": "pycocotools.COCOeval",
+  "extra": {},
+  "imgsz": 1280,
+  "metrics": {
+    "mAP50": 0.584088,
+    "mAP50_95": 0.212043,
+    "per_kelas_AP50": {
+      "B1": 0.713045,
+      "B2": 0.59309,
+      "B3": 0.692536,
+      "B4": 0.33768
+    }
+  },
+  "predictions": "/workspace/project-expertise/results/predictions_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best__val.npz",
+  "rgb_baseline_val_mAP50": 0.577766,
+  "run_name": "rtdetr_l_rgbd4_s42_i1280_fair_best",
+  "schema_version": 1,
+  "split": "val only (468 images); test forbidden",
+  "weights": "/workspace/project-expertise/runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt"
+}

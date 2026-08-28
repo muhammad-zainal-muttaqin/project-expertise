@@ -100,9 +100,15 @@ def write_summary() -> dict[str, Any]:
             "new763_rfdetr_l_rgbd4_val.json",
             "new763_rfdetr_l_rgbd4_val_bootstrap.json",
         ),
+        result_row(
+            "rtdetr_l",
+            "new763_rtdetr_l_rgbd4_val.json",
+            "new763_rtdetr_l_rgbd4_val_bootstrap.json",
+        ),
     ]
 
     yolo_pt = ROOT / "runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/best.pt"
+    rt_pt = ROOT / "runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt"
     # The first RF-DETR RGBD4 run is explicitly excluded: its lazy 3->4
     # expansion happened after PTL created the optimizer, leaving the depth
     # slice frozen at zero.  The v2 run expands the stem inside
@@ -132,9 +138,10 @@ def write_summary() -> dict[str, Any]:
         "analysis": "new763 RGB versus RGB+D4; validation-only modality ablation",
         "dataset": dataset,
         "results": rows,
-        "unrun_architectures": {"rtdetr_l": "not run in this wave"},
+        "unrun_architectures": {},
         "initialization_audit": {
             "yolo26l": "generic /workspace/yolo26l.pt; RGB stem copied exactly; fourth stem channel zero at first initialization; resumed RGBD checkpoint preserves learned fourth channel",
+            "rtdetr_l": "generic /workspace/rtdetr-l.pt; HGStem built with ch=4 before trainer optimizer; RGB stem copied exactly; fourth stem channel zero at first initialization; COCO head reinitialized to four classes",
             "rfdetr_l": "generic rf-detr-large-2026.pth; patch projection fourth channel zero at initialization; optimizer-safe 3->4 expansion before PTL parameter groups; COCO head reinitialized to four classes; v2 selected by framework validation mAP50:95; invalid v1 retained only in failed-run audit",
         },
         "model_artifacts": [
@@ -142,6 +149,11 @@ def write_summary() -> dict[str, Any]:
                 yolo_pt,
                 "YOLO26l RGBD4 best.pt",
                 "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/yolo26l_rgbd4_s42_i1280_best.pt",
+            ),
+            file_record(
+                rt_pt,
+                "RT-DETR-L RGBD4 best.pt",
+                "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best.pt",
             ),
             file_record(
                 rf_pth,
@@ -173,7 +185,7 @@ def write_summary() -> dict[str, Any]:
             "delta_ci95_low", "delta_ci95_high", "fraction_delta_gt_zero",
             "significant_excludes_zero",
         ]
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             b = row["baseline_rgb_val"]
@@ -229,9 +241,10 @@ def plot(payload: dict[str, Any]) -> None:
     fig, ax = plt.subplots(figsize=(9, 4.5), constrained_layout=True)
     classes = list(rows[0]["delta"]["per_kelas_AP50"])
     x = np.arange(len(classes))
+    center = (len(rows) - 1) / 2
     for i, row in enumerate(rows):
         vals = [row["delta"]["per_kelas_AP50"][c] for c in classes]
-        ax.bar(x + (i - 0.5) * width, vals, width, label=row["arch"])
+        ax.bar(x + (i - center) * width, vals, width, label=row["arch"])
     ax.axhline(0, color="black", linewidth=0.8)
     ax.set_xticks(x, classes)
     ax.set_ylabel("Δ AP50 (RGB+D4 − RGB)")

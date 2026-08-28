@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "arch": "rtdetr_l",
+  "run_name": "rtdetr_l_rgbd4_s42_i1280_fair",
+  "dataset": "/workspace/new763_rgbd4",
+  "split": "valid only; test forbidden",
+  "recipe": {
+    "epochs_requested": 60,
+    "epochs_completed": 60,
+    "patience": 15,
+    "imgsz": 1280,
+    "batch": 4,
+    "workers": 8,
+    "seed": 42,
+    "pretrained": "/workspace/rtdetr-l.pt",
+    "optimizer": "auto",
+    "deterministic": true
+  },
+  "checkpoint_selection": {
+    "selected_checkpoint": "best.pt",
+    "framework_selection_metric": "metrics/mAP50-95(B)",
+    "framework_best_epoch_zero_based": 45,
+    "framework_best_mAP50": 0.57807,
+    "framework_best_mAP50_95": 0.20861,
+    "independent_cocoeval_mAP50": 0.584088,
+    "independent_cocoeval_mAP50_95": 0.212043,
+    "independent_cocoeval_delta_vs_rgb_mAP50": 0.006322,
+    "independent_cocoeval_delta_vs_rgb_mAP50_95": 0.001002
+  },
+  "stem_audit": {
+    "module": "model.0.stem1.conv",
+    "shape": [32, 4, 3, 3],
+    "initialization": "RGB weights copied to channels 0..2; channel 3 zero at initialization",
+    "epoch0_depth_weight_norm": 1.634765625,
+    "best_depth_weight_norm": 1.587890625,
+    "best_rgb_weight_norm": 3.0625,
+    "depth_channel_trained": true,
+    "optimizer_created_after_4ch_stem": true,
+    "all_best_float_tensors_finite": true
+  },
+  "weight_artifact": {
+    "path": "runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt",
+    "bytes": 66458365,
+    "sha256": "6439e3b3b79ab0a53429780cb5b88cddc6b5e359f21350078a5bbaf36f881e3b",
+    "hf_bucket_path": "hf://buckets/ULM-DS-Lab/project-expertise-backup/runs/new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair_best.pt"
+  },
+  "quality_flags": {
+    "framework_validation_loss_nonfinite_epochs_one_based": [30, 33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 45, 47, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
+    "metrics_remained_finite": true,
+    "weights_remained_finite": true,
+    "interpretation": "Ultralytics validation loss columns became NaN intermittently/late in training, while COCO detection metrics and all checkpoint tensors remained finite; this diagnostic caveat must be disclosed."
+  },
+  "protocol": {
+    "evaluator": "pycocotools.COCOeval",
+    "predictions_fixed_before_bootstrap": true,
+    "test_access": "forbidden; builder, trainer, evaluator, and bootstrap expose no test split"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "args": {
+    "arch": "rtdetr_l",
+    "batch": 4,
+    "data": "/workspace/new763_rgbd4",
+    "epochs": 60,
+    "grad_accum": 4,
+    "imgsz": 1280,
+    "name": "rtdetr_l_rgbd4_s42_i1280_fair",
+    "patience": 15,
+    "project": "/workspace/project-expertise/runs_new763_rgbd4",
+    "resume": false,
+    "seed": 42,
+    "smoke": false,
+    "weights": "/workspace/rtdetr-l.pt",
+    "workers": 8
+  },
+  "batch": 4,
+  "created_utc": "2026-08-28T17:12:02Z",
+  "data_yaml": "/workspace/new763_rgbd4/data.yaml",
+  "dataset": "/workspace/new763_rgbd4",
+  "imgsz": 1280,
+  "result": {
+    "arch": "rtdetr_l",
+    "elapsed_seconds": 12489.1,
+    "epochs_requested": 60,
+    "framework": "ultralytics",
+    "initialization": "same generic RGB pretrained weights as RGB baseline; first depth stem channel zero; COCO head reinitialized",
+    "patience": 15,
+    "resume": false
+  },
+  "schema_version": 1,
+  "seed": 42,
+  "test_access": "forbidden; data.yaml has no test entry",
+  "weights": "/workspace/rtdetr-l.pt",
+  "workers": 8
+}

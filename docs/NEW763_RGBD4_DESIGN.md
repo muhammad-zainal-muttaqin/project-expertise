@@ -13,7 +13,7 @@ Perbandingan ditetapkan sebelum membaca hasil eksperimen baru:
 | Arsitektur | Model acuan RGB, mAP50 validasi | Model RGB+D, mAP50 validasi | Δ RGB+D − RGB |
 |---|---:|---:|---:|
 | YOLO26l | 0,529357 | 0,529523 | +0,000166 |
-| RT-DETR-L | 0,577766 | belum dijalankan | — |
+| RT-DETR-L | 0,577766 | 0,584088 | +0,006322 |
 | RF-DETR-L v2 | 0,608233 | 0,597070 | −0,011163 |
 
 Model acuan RGB tidak dilatih ulang dalam eksperimen ini. YOLO26l dan RT-DETR-L
@@ -87,8 +87,10 @@ sehingga tidak ada bukti peningkatan. RF-DETR-L v2 menghasilkan mAP50 0,597070
 versus RGB 0,608233; CI95 paired Δ [-0,037049; 0,018074], juga melintasi nol.
 Metrik mAP50:95 RF v2 adalah 0,226946 versus 0,227471 pada RGB. Angka RF v1
 tidak dipakai karena stem depth-nya dibuat setelah optimizer sehingga tidak
-trainable melalui optimizer yang sudah ada.
-Metrik mAP50:95 turun sedikit pada kedua model. Selisih semuanya dihitung
+trainable melalui optimizer yang sudah ada. RT-DETR-L menghasilkan mAP50
+0,584088 versus RGB 0,577766 dan mAP50:95 0,212043 versus 0,211041; paired
+bootstrap memberi CI95 Δ [-0,026770; 0,039670], sehingga point gain RT juga
+belum signifikan. Selisih semuanya dihitung
 oleh `pycocotools.COCOeval` pada 468 citra validasi yang sama. Uji pada TEST
 tidak termasuk dalam eksperimen ini.
 
@@ -106,9 +108,9 @@ diajukan sebagai pembukaan TEST terpisah dengan label protokol yang eksplisit.
    diimputasi dengan nilai acuan dan tidak dianggap sebagai objek.
 2. TIFF menambah penyimpanan sekitar 6,9 GiB, tetapi berkas sumber RGB tidak
    diubah dan dataset gabungan `combined1716` tidak digunakan.
-3. RT-DETR-L sedang dilatih RGB+D pada gelombang ini dan belum menjadi hasil
-   final sampai checkpoint serta evaluasi VALID terkunci; ia tidak boleh
-   disimpulkan dari hasil YOLO atau RF-DETR. Untuk YOLO26l dan RF-DETR-L,
+3. RT-DETR-L sudah selesai dilatih RGB+D dan evaluasi independen VALID sudah
+   terkunci; paired bootstrap tetap menjadi syarat sebelum klaim signifikansi.
+   Untuk YOLO26l, RT-DETR-L, dan RF-DETR-L,
    sumber bobot RGB dan RGB+D dicatat eksplisit dan sama dalam pasangan
    arsitektur masing-masing. Run RF-DETR v1 yang memperluas stem terlambat
    dikeluarkan dari perbandingan; hanya run v2 dengan guard sebelum optimizer
@@ -134,6 +136,9 @@ python3 scripts/train_new763_rgbd4.py --arch rfdetr_l \
 python3 scripts/eval_new763_rgbd4_val.py --arch yolo26l \
   --weights /workspace/project-expertise/runs_new763_rgbd4/yolo26l_rgbd4_s42_i1280/weights/best.pt \
   --dataset /workspace/new763_rgbd4 --run-name yolo26l_rgbd4_s42_i1280_best
+python3 scripts/eval_new763_rgbd4_val.py --arch rtdetr_l \
+  --weights /workspace/project-expertise/runs_new763_rgbd4/rtdetr_l_rgbd4_s42_i1280_fair/weights/best.pt \
+  --dataset /workspace/new763_rgbd4 --run-name rtdetr_l_rgbd4_s42_i1280_fair_best
 python3 scripts/eval_new763_rgbd4_val.py --arch rfdetr_l \
   --weights /workspace/project-expertise/runs_new763_rgbd4/rfdetr_l_rgbd4_s42_i1280_fair_v2/checkpoint_best_total.pth \
   --dataset /workspace/new763_rgbd4 --run-name rfdetr_l_rgbd4_s42_i1280_fair_v2_best
