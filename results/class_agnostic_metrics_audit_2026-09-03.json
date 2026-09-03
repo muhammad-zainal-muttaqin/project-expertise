@@ -1,0 +1,222 @@
+{
+  "generated_at": "2026-09-03",
+  "purpose": "Audit dan pengisian metrik kosong pada Tabel Lokalisasi Murni.",
+  "protocol": {
+    "average_precision": "pycocotools.COCOeval",
+    "class_agnostic": "seluruh kategori dilipat menjadi satu kategori tandan",
+    "point_metrics": {
+      "confidence_threshold": 0.25,
+      "iou_threshold": 0.5,
+      "matching": "greedy score-descending per image"
+    },
+    "retraining": false
+  },
+  "download_scope": {
+    "bucket": "hf://buckets/ULM-DS-Lab/project-expertise-backup",
+    "policy": "hanya checkpoint yang diperlukan; tidak melakukan sync seluruh bucket",
+    "audit_workspace": "/workspace/model_artifacts/project-expertise-audit-2026-09-03"
+  },
+  "selected_weights": [
+    {
+      "remote": "project-expertise/runs/agn953_full/weights/best.pt",
+      "local": "weights/agn953_full_best.pt",
+      "bytes": 53074661,
+      "sha256": "b09168a9c9ba29afbcab0de4fee55d1e4dc215f28a2fbe7b55e4131741d11a63"
+    },
+    {
+      "remote": "project-expertise/runs/agn352_ft/weights/best.pt",
+      "local": "weights/agn352_ft_best.pt",
+      "bytes": 53053669,
+      "sha256": "11cbda301ce94d4f183bbf98296deef4e704c8ab22293b1fc0df14f9c38f770f"
+    },
+    {
+      "remote": "project-expertise/runs/agn352_ft3/weights/best.pt",
+      "local": "weights/agn352_ft3_best.pt",
+      "bytes": 53054949,
+      "sha256": "8ef2393d5324890068dd2f1330aeb9aaa8ea006472d7b28193e038c5854dd3fb"
+    },
+    {
+      "remote": "project-expertise/runs/agn352_4ch/weights/best.pt",
+      "local": "weights/agn352_4ch_best.pt",
+      "bytes": 53056165,
+      "sha256": "0d393741f4ad6114d8daf7bde1bdf398f9b236c69b36f6bf8c8a2700ffdb041e"
+    },
+    {
+      "remote": "project-expertise/runs/yolo26l_e60_i1280_rgb352/weights/best.pt",
+      "local": "weights/yolo26l_e60_i1280_rgb352_best.pt",
+      "bytes": 53064165,
+      "sha256": "271cad3e0036502362a46fec74887e54e4bb850470caec3aaad85bd190660855"
+    }
+  ],
+  "rows": [
+    {
+      "experiment": "V2-E-042",
+      "dataset": "SawitMVC-Depth Test",
+      "images": 440,
+      "gt_boxes": 891,
+      "model": "WBF 3-detektor",
+      "ap50_agnostic": 0.8764,
+      "ap50_95_agnostic": 0.3519,
+      "precision_at_025": 0.9296,
+      "recall_at_025": 0.6813,
+      "f1_at_025": 0.7863,
+      "tp": 607,
+      "fp": 46,
+      "fn": 284,
+      "source": "results/remote_eval_2026-08-27/README.md"
+    },
+    {
+      "experiment": "V2-E-042",
+      "dataset": "SawitMVC-YOLO 953 Test",
+      "images": 588,
+      "gt_boxes": 2612,
+      "model": "WBF 3-detektor",
+      "ap50_agnostic": 0.8350,
+      "ap50_95_agnostic": 0.3679,
+      "precision_at_025": 0.8825,
+      "recall_at_025": 0.6443,
+      "f1_at_025": 0.7449,
+      "tp": 1683,
+      "fp": 224,
+      "fn": 929,
+      "source": "results/remote_eval_2026-08-27/README.md"
+    },
+    {
+      "experiment": "V2-E-039",
+      "dataset": "Combined-1716 Test",
+      "images": 1052,
+      "gt_boxes": 3513,
+      "model": "WBF 3-detektor agnostik",
+      "ap50_agnostic": 0.8104,
+      "ap50_95_agnostic": 0.3363,
+      "precision_at_025": 0.9371,
+      "recall_at_025": 0.0763,
+      "f1_at_025": 0.1411,
+      "tp": 268,
+      "fp": 18,
+      "fn": 3245,
+      "source": "results/extra_metrics_sesi2026-08.json"
+    },
+    {
+      "experiment": "V2-E-036",
+      "dataset": "SawitMVC-Depth v2 Test",
+      "images": 440,
+      "gt_boxes": 891,
+      "model": "RF-DETR-L",
+      "ap50_agnostic": 0.7951,
+      "ap50_95_agnostic": 0.3003,
+      "precision_at_025": 0.5748,
+      "recall_at_025": 0.8361,
+      "f1_at_025": 0.6813,
+      "tp": 745,
+      "fp": 551,
+      "fn": 146,
+      "source": "results/agnostic_ap50_sesi2026-08.json"
+    },
+    {
+      "experiment": "V2-E-036",
+      "dataset": "Combined-1716 Test",
+      "images": 1052,
+      "gt_boxes": 3513,
+      "model": "RF-DETR-L",
+      "ap50_agnostic": 0.7850,
+      "ap50_95_agnostic": 0.3245,
+      "precision_at_025": 0.4820,
+      "recall_at_025": 0.8497,
+      "f1_at_025": 0.6151,
+      "tp": 2985,
+      "fp": 3208,
+      "fn": 528,
+      "source": "results/agnostic_ap50_sesi2026-08.json"
+    },
+    {
+      "experiment": "V2-E-025",
+      "dataset": "SawitMVC-YOLO 953 Test Bersih",
+      "images": 76,
+      "gt_boxes": 316,
+      "model": "YOLO26l agn953_full",
+      "ap50_agnostic": 0.7702,
+      "ap50_95_agnostic": 0.3324,
+      "precision_at_025": 0.7352,
+      "recall_at_025": 0.6677,
+      "f1_at_025": 0.6998,
+      "tp": 211,
+      "fp": 76,
+      "fn": 105,
+      "source": "results/pred_agn953_bersih.npz"
+    },
+    {
+      "experiment": "V2-E-024",
+      "dataset": "SawitMVC-Depth 352 Test",
+      "images": 220,
+      "gt_boxes": 410,
+      "model": "YOLO26l agn352_4ch",
+      "ap50_agnostic": 0.7636,
+      "ap50_95_agnostic": 0.2686,
+      "precision_at_025": 0.7807,
+      "recall_at_025": 0.7293,
+      "f1_at_025": 0.7541,
+      "tp": 299,
+      "fp": 84,
+      "fn": 111,
+      "source": "results/pred_agn4ch_test.npz"
+    },
+    {
+      "experiment": "V2-E-017",
+      "dataset": "SawitMVC-YOLO 953 Test",
+      "images": 588,
+      "gt_boxes": 2612,
+      "model": "YOLO26l v2repro, kelas dilipat",
+      "ap50_agnostic": 0.7388,
+      "ap50_95_agnostic": 0.3312,
+      "precision_at_025": 0.7547,
+      "recall_at_025": 0.6336,
+      "f1_at_025": 0.6889,
+      "tp": 1655,
+      "fp": 538,
+      "fn": 957,
+      "legacy_ap50_agnostic": 0.7374,
+      "source": "results/pred_sel5_953_rgb_test.npz",
+      "status": "legacy value not reproduced; corrected to current dump"
+    },
+    {
+      "experiment": "V2-E-024",
+      "dataset": "SawitMVC-Depth 352 Test",
+      "images": 220,
+      "gt_boxes": 410,
+      "model": "YOLO26l agn352_ft3 RGB",
+      "ap50_agnostic": 0.7358,
+      "ap50_95_agnostic": 0.2531,
+      "precision_at_025": 0.7875,
+      "recall_at_025": 0.7049,
+      "f1_at_025": 0.7439,
+      "tp": 289,
+      "fp": 78,
+      "fn": 121,
+      "source": "results/pred_agnrgb_test.npz"
+    },
+    {
+      "experiment": "V2-E-013",
+      "dataset": "SawitMVC-Depth 352 Test",
+      "images": 220,
+      "gt_boxes": 410,
+      "model": "YOLO26l RGB",
+      "ap50_agnostic": 0.6676,
+      "ap50_95_agnostic": 0.2283,
+      "precision_at_025": 0.7188,
+      "recall_at_025": 0.6610,
+      "f1_at_025": 0.6887,
+      "tp": 271,
+      "fp": 106,
+      "fn": 139,
+      "legacy_ap50_agnostic": 0.6677,
+      "source": "selective HF checkpoint + local 220-image legacy test subset",
+      "checkpoint": "project-expertise/runs/yolo26l_e60_i1280_rgb352/weights/best.pt"
+    }
+  ],
+  "notes": [
+    "The 220 legacy 352-test image names were already present in the local merged 763 release; their split memberships changed in the new release, so selection was by the legacy prediction-dump stems.",
+    "V2-E-039 source AP50 0.8106 came from the repository custom AP implementation; COCOeval recomputation is 0.810358 and is reported as 0.8104 in the table.",
+    "WBF point metrics use the fused score at confidence 0.25; the three-model score normalization explains the low V2-E-039 recall at that operating point."
+  ]
+}

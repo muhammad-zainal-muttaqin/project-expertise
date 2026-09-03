@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-09-03",
+  "scope": {
+    "repository": "muhammad-zainal-muttaqin/project-expertise",
+    "base_commit_last_pushed": "66474ba56d433c593fae78969d0aba8de9bfb34e",
+    "remote_main_verified": true,
+    "metric_documents": [
+      "metrics/README.md",
+      "metrics/01_deteksi_dan_lokalisasi.md",
+      "metrics/02_klasifikasi_kematangan.md",
+      "metrics/03_pencacahan_per_pohon.md",
+      "metrics/04_pengaitan_multi_tampak.md",
+      "metrics/05_pipeline_end_to_end.md",
+      "metrics/06_komputasi_dan_diagnostik.md",
+      "metrics/07_buku_besar_eksperimen.md"
+    ]
+  },
+  "protocol": {
+    "retraining": false,
+    "inference": "hanya dijalankan untuk menutup celah yang tidak memiliki dump prediksi; seluruh metrik lain dihitung dari artefak yang sudah tersimpan",
+    "average_precision": "pycocotools.COCOeval bila tersedia; evaluator custom diberi label terpisah",
+    "na_policy": "N/A — tidak dilaporkan bila sumber tidak mengeluarkan field; N/A — bukan metrik uji bila unit/protokol baris tidak cocok",
+    "provenance": "setiap koreksi di tabel menunjuk ke JSON/NPZ/README sumber dan tidak memakai angka dari eksperimen lain"
+  },
+  "hf_download_scope": {
+    "bucket": "hf://buckets/ULM-DS-Lab/project-expertise-backup",
+    "policy": "selektif; tidak melakukan sinkronisasi seluruh bucket",
+    "local_audit_dir": "/workspace/model_artifacts/project-expertise-audit-2026-09-03",
+    "asset_manifest": "results/class_agnostic_metrics_audit_2026-09-03.json"
+  },
+  "verified_or_recomputed_by_domain": {
+    "detection_localization": [
+      "V2-E-013 exact old 352-test audit from selected YOLO26l checkpoint",
+      "V2-E-024, V2-E-025, V2-E-036, V2-E-039, V2-E-042 class-agnostic metrics",
+      "V2-E-027, V2-E-030, V2-E-031, V2-E-034, V2-E-035, V2-E-040 class-aware AP/mAP from evaluation JSONs"
+    ],
+    "classification": [
+      "PT-E-018, PT-E-023, PT-E-029, PT-E-030, PT-E-031, PT-E-033, PT-E-035",
+      "V2-E-015 and V2-E-016 three-seed averages from results/fase6_classifier.json",
+      "PT-E-012 and the TIMM/propagation rows explicitly separated when their protocol is not crop-classifier test"
+    ],
+    "counting": [
+      "V2-E-002, V2-E-004, V2-E-006 live JSON values and derived total bias",
+      "PT-E-004, PT-E-006, PT-E-026, PT-E-028 values from matching counting artifacts",
+      "V2-E-042, V2-E-043, V2-E-045 and Wave locked pipeline rows kept at their reported total-count protocol"
+    ],
+    "association": [
+      "PT-E-002, PT-E-008, PT-E-009, PT-E-010, PT-E-016, PT-E-017, PT-E-020, PT-E-022",
+      "physical-cluster metrics from Wave/V2-E-043 are labeled physical, not pair metrics"
+    ],
+    "end_to_end": [
+      "PT-E-003, PT-E-019, PT-E-025 and V2-E-020 category corrections",
+      "V2-E-042, V2-E-043, V2-E-044, V2-E-045 and locked remote results"
+    ],
+    "diagnostics": [
+      "Spearman summaries from results/probe_mono_vs_sensor.json",
+      "parameter counts from pycocotools result JSONs",
+      "profiling cells left explicit N/A because no GFLOPs/latency/training-time artifact exists"
+    ]
+  },
+  "intentional_na_examples": [
+    "Total MAE or exact accuracy when the source stores only per-class MAE/bias or joint_acc",
+    "Pair metrics for physical-cluster/end-to-end rows",
+    "Matched-class or macro-F1 E2E for detector-only/counting-only rows",
+    "GFLOPs, T4/V100 latency, and training duration without a profiling artifact",
+    "Per-class AP or mAP50-95 for screening/remote rows whose source stores only aggregate AP50"
+  ],
+  "result": "Seluruh delapan dokumen metrics telah diaudit dan diselaraskan; angka yang dapat ditutup dari artefak diisi, klaim salah kategori dikoreksi, dan sisa ketidaktersediaan diberi N/A dengan alasan eksplisit."
+}
