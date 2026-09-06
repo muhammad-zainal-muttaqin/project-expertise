@@ -36,3 +36,15 @@ dipindahkan ke kolom metrik end-to-end.
 | `V2-E-042` | Baseline Remote (WBF + Hungarian) | 953 Test (135 pohon) | **0,3725** | **0,9344** | **0,5327** | **14,993** | **0%** | N/A — tidak dilaporkan | **0,3762** | `SUPERSEDED` | Idem — seluruh nilai lama salah; baseline 953 sangat buruk (Tree$\pm1$ 0%, bukan 4,44%). |
 | `PT-E-003` | Pipeline Utuh Awal (Hungarian + C1) | DAMIMAS (Test, n=1.269 pool) | **0,3342** | **0,1200** | **0,1766** | N/A — tidak diukur | N/A — tidak diukur | **0,7124** *(R4, bukan "matched")* | N/A — tidak diukur | `FALSIFIED` | `pipeline-pertandan/results/pt_e_003_endtoend.json` — hanya P/R/F1 penautan di atas deteksi dan R4; Counting MAE, Tree±1, dan Macro-F1 E2E tidak disimpan. |
 | `V2-E-044` | Pipeline + Classifier C2 25% Blend | Depth Test (110 pohon) | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | N/A — baris tidak ditemukan | `INVALID` | Baris Depth tidak ditemukan di sumber; V2-E-044 hanya memiliki hasil 953/validasi internal. |
+
+---
+
+## Tambahan — Audit Forensik 6 September 2026 (`AF-E-012`, `AF-E-013`)
+
+Kolom `Tree ± 1 Acc` di sini bermakna akurasi cacah total per pohon dengan
+toleransi ±1, sesuai definisi berkas ini. Rujukan penuh: `experiments/AUDIT-FORENSIK-2026-09-06.md`.
+
+| ID Eksperimen | Konfigurasi | Kumpulan Uji | Presisi | Recall | F1 Fisik | MAE | Tree $\pm 1$ | Matched Class | Macro-F1 | Status Bukti | Rujukan Artefak |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|---|
+| `AF-E-012` | Pipeline Panen — kelas ordinal tingkat tandan, cacah klaster mentah | 953 Uji (132 pohon empat sisi) | 0,8538 | 0,6878 | 0,7619 | 2,288 | 37,1% | 0,7161 | **0,6692** | `VALID` | `panen_eval.py`; F1 fisik **di bawah** GSP terkunci `0,8387`; proposal satu detektor, bukan WBF tiga detektor |
+| `AF-E-013` | Idem + lapisan pencacahan Ridge per kelas | 953 Uji (132 pohon empat sisi) | 0,8538 | 0,6878 | 0,7619 | **1,402** | **56,8%** | 0,7161 | **0,6692** | `VALID` | `panen_final.py`; cacah **B1 siap panen** ±1 **`0,970`**. Pembanding GSP: MAE `1,363`, ±1 `63,70%`, kelas `0,7442`, makro `0,6034` |

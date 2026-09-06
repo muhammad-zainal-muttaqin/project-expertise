@@ -47,3 +47,19 @@ karena keduanya menguji hal yang berbeda.
 | `V2-E-045` | Validation-Locked Count Layer | Layered Reconciled Count | Depth Test (110 pohon) | N/A — sumber hanya MAE total | **0,891** | N/A — tidak dilaporkan | N/A — tidak dilaporkan | **80,91%** | N/A — tidak dilaporkan | `VALID` | `experiments/EKSPERIMEN.md` (STATUS.md §7) — ±1 dipindah ke kolom Tree; Exact/Class±1/Bias tidak disimpan. |
 | `Wave-V2` | Locked GSP Pipeline + Map Boost | GSP Reconciled Count | Depth Test (110 pohon, *test-locked*) | N/A — sumber hanya MAE total | **0,7727** | N/A — tidak dilaporkan | N/A — tidak dilaporkan | **85,45%** | **44,55%** | `VALID` | `results/remote_eval_2026-08-28/gsp_artifacts/depth/results_test_locked.json` — MAE/Tree±1/Exact cocok; sumber tidak memberi Macro MAE, Class±1, atau bias. |
 | `Wave-V2` | Locked Hungarian+UF Pipeline | *Reconciled Count* | 953 Test (135 pohon, *test-locked*, profil **Hungarian**, bukan GSP) | N/A — sumber hanya MAE total | **1,3630** | N/A — tidak dilaporkan | N/A — tidak dilaporkan | **63,70%** | **27,41%** | `VALID` | `results/remote_eval_2026-08-28/gsp_artifacts/953/results_test_locked.json` — MAE/Tree±1/Exact cocok; profil terkunci 953 adalah Hungarian+union-find. |
+
+---
+
+## Tambahan — Audit Forensik 6 September 2026 (`AF-E-004`, `AF-E-008`, `AF-E-013`)
+
+`Class ± 1 Acc` pada berkas ini didefinisikan sebagai persentase sel pohon–kelas
+dengan galat ≤ 1; `Tree ± 1 Acc` mensyaratkan keempat kelas sekaligus. Audit
+tidak menghitung definisi kedua tersebut, sehingga selnya ditulis
+`N/A — definisi berbeda` dan angka yang ada diletakkan pada kolom catatan.
+Rujukan penuh: `experiments/AUDIT-FORENSIK-2026-09-06.md`.
+
+| ID Eksperimen | Detektor / Model Masukan | Metode Estimasi Cacah | Dataset & Pohon Uji | Macro MAE | Total MAE | Total Bias | Class $\pm 1$ Acc | Tree $\pm 1$ Acc | Exact Acc | Status Bukti | Rujukan Artefak |
+|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|
+| `AF-E-004` | Kotak acuan (*oracle*) | Ridge dari cacah kotak per kelas | 953 Uji (136 pohon) | **0,312** | 1,058 | N/A — tidak dilaporkan | 0,982 | N/A — definisi berbeda | 0,290 | `VALID` | `an8_counting.py`; mereproduksi jalur *oracle* `0,275`–`0,277` pada `REKAP` §2. Per kelas ±1: B1 `1,000`, B2 `0,993`, B3 `0,942`, B4 `0,993` |
+| `AF-E-008` | YOLO26s dua kelas, 960 px | Ridge $F_{all}$, *fit* pada VAL | 953 Uji (141 pohon) | N/A — definisi berbeda | N/A — definisi berbeda | N/A — tidak dilaporkan | N/A — definisi berbeda | N/A — definisi berbeda | 0,624 | `VALID` | `run_e345.py`; cacah **tandan siap panen** MAE `0,418`, ±1 `0,965`. Cacah total: MAE `1,518`, ±1 `0,553` |
+| `AF-E-013` | YOLO26m agnostik + CORN, 1.280 px | Ridge 37 fitur klaster & deteksi | 953 Uji (132 pohon empat sisi) | N/A — definisi berbeda | 1,402 | N/A — tidak dilaporkan | N/A — definisi berbeda | N/A — definisi berbeda | 0,227 | `VALID` | `panen_final.py`; **B1 siap panen** MAE `0,402`, tepat `0,629`, ±1 **`0,970`**. B1+B2 ±1 `0,765`; B3+B4 ±1 `0,545`; total ±1 `0,568` |

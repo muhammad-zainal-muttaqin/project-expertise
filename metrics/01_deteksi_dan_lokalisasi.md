@@ -74,3 +74,26 @@ Dokumen ini memuat rangkuman terstruktur seluruh eksperimen deteksi objek kotak 
 | `V2-E-013` | Plafon Lokalisasi Baseline | 2026-08-11 | YOLO26l (RGB, 60 ep) | SawitMVC-Depth (352, Test) | 0,6676 | **0,2283** | **0,7188** | **0,6610** | **0,6887** | `CORRECTED` | `results/class_agnostic_metrics_audit_2026-09-03.json`; checkpoint yang tepat diambil selektif dari HF bucket. AP50 lama `0,6677` berbeda hanya karena pembulatan/evaluator; label RF-DETR-L dan path lama dikoreksi. |
 
 **Catatan audit 2026-09-03.** AP dihitung dengan `pycocotools.COCOeval` setelah semua kelas dilipat menjadi satu kategori. Presisi/Recall/F1 dihitung dari dump prediksi yang sama pada $\tau=0,25$ dan $IoU=0,50$, dengan pencocokan greedy per citra. Untuk WBF, ambang diterapkan pada skor kotak hasil fusi; karena formula skor WBF menekan kotak yang hanya muncul pada satu detektor, nilai Recall/F1 V2-E-039 pada $\tau=0,25$ memang rendah dan tidak boleh disamakan dengan AP yang mengurutkan seluruh skor.
+
+---
+
+## Tambahan — Audit Forensik 6 September 2026 (`AF-E-005` … `AF-E-011`)
+
+Baris berikut berasal dari audit independen yang direplikasi ulang dari data
+mentah. Detektor audit adalah **YOLO26s pada 960 piksel** (`AF-E-006`) dan
+**YOLO26m pada 1.280 piksel** (`AF-E-011`), bukan YOLO26l pada 1.280 piksel;
+kesetaraannya diverifikasi pada satu titik saja (`0,5433` berbanding `0,5435`).
+Rujukan penuh: `experiments/AUDIT-FORENSIK-2026-09-06.md`.
+
+| ID Eksperimen | Nama / Deskripsi Pengujian | Tanggal | Arsitektur & Modalitas Input | Dataset & Partisi | $mAP50$ | $mAP50\text{--}95$ | $AP_{B1}$ | $AP_{B2}$ | $AP_{B3}$ | $AP_{B4}$ | Status Bukti | Rujukan Artefak & Skrip |
+|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|
+| `AF-E-005` | Plafon $mAP50$ dengan lokalisasi sempurna | 2026-09-06 | Kotak acuan + ConvNeXt-Tiny (kelas saja) | 953 Uji (588 citra) | **0,6569** | N/A — bukan metrik uji | 0,7653 | 0,4912 | 0,7625 | 0,6088 | `VALID` | `scripts/audit_forensik/exp_ceiling.py`; batas atas, bukan performa detektor |
+| `AF-E-005` | Plafon taksonomi dua kelas (B1 lawan sisanya) | 2026-09-06 | Idem | 953 Uji (588 citra) | **0,8766** | N/A — bukan metrik uji | 0,7653 | N/A — taksonomi berbeda | N/A — taksonomi berbeda | N/A — taksonomi berbeda | `VALID` | Idem; kolom per kelas tidak sebanding dengan skema empat kelas |
+| `AF-E-006` | Replikasi taksonomi empat kelas | 2026-09-06 | YOLO26s RGB, 960 px | 953 Uji (588 citra) | 0,5433 | N/A — tidak dilaporkan | 0,7588 | 0,4495 | 0,6095 | 0,3553 | `VALID` | `scripts/audit_forensik/run_exp.py`; kalibrasi terhadap YOLO26l `0,5435` |
+| `AF-E-006` | Taksonomi dua kelas (siap panen / belum) | 2026-09-06 | YOLO26s RGB, 960 px | 953 Uji (588 citra) | **0,7754** | N/A — tidak dilaporkan | N/A — taksonomi berbeda | N/A — taksonomi berbeda | N/A — taksonomi berbeda | N/A — taksonomi berbeda | `VALID` | Idem; $AP$ per kelas: siap panen `0,7819`, belum `0,7689` |
+| `AF-E-006` | Taksonomi satu kelas (agnostik) | 2026-09-06 | YOLO26s RGB, 960 px | 953 Uji (588 citra) | **0,8057** | N/A — tidak dilaporkan | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | `VALID` | Idem; presisi `0,7965`, daya tangkap `0,7087` |
+| `AF-E-011` | Detektor agnostik Pipeline Panen | 2026-09-06 | YOLO26m RGB, 1.280 px | 953 Uji (588 citra) | **0,8104** | N/A — tidak dilaporkan | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | `VALID` | `scripts/audit_forensik/panen_det.py`; model tunggal, bukan ansambel WBF |
+| `AF-E-007` | Generalisasi lintas-kampanye: dilatih Mei → uji Juli | 2026-09-06 | YOLO26s agnostik, 960 px | Juli 352 (1.408 citra) | 0,4720 | N/A — tidak dilaporkan | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | `VALID` | Presisi runtuh `0,797 → 0,581`; `95,9%` positif palsu berpusat di dalam kotak acuan |
+| `AF-E-007` | Dilatih Mei → uji Agustus | 2026-09-06 | Idem | Agustus 411 (1.644 citra) | 0,5955 | N/A — tidak dilaporkan | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | `VALID` | Idem |
+| `AF-E-007` | Dilatih 763 → uji Mei (agnostik) | 2026-09-06 | Idem | 953 Uji (588 citra) | 0,6243 | N/A — tidak dilaporkan | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | N/A — bukan evaluasi kelas | `VALID` | Daya tangkap runtuh `0,818 → 0,609` |
+| `AF-E-007` | Dilatih 763 → uji Mei (empat kelas) | 2026-09-06 | YOLO26s RGB, 960 px | 953 Uji (588 citra) | 0,1898 | N/A — tidak dilaporkan | 0,4199 | 0,1027 | 0,1712 | 0,0653 | `VALID` | Mereproduksi rentang `0,1776`–`0,2018` pada `V2-E-042` |

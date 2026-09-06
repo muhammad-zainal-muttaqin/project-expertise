@@ -10,8 +10,8 @@ Atlas ini dirancang agar seluruh data kuantitatif dapat ditelusuri (*traceable*)
 
 | Parameter Inventaris | Nilai Terukur / Cakupan | Keterangan Metodologis |
 |---|---|---|
-| **Total Simpul Eksperimen Terlacak** | **85 Simpul** | 45 simpul Volume 2 (`V2-E-001`–`V2-E-045`), 36 simpul pipeline pertandan (`PT-E-000`–`PT-E-036`), dan 4 gelombang verifikasi/ablasi mutakhir (`remote_eval_2026-08-27`, `validation_wave_2026-08-28`, `new763_rgbd4`, dan `pipeline_damimas`). |
-| **Rentang Tanggal Penelitian** | **09 Agustus 2026 – 30 Agustus 2026** | Fondasi tinjauan pustaka & eksplorasi awal bersumber dari Volume 1 (Mei–Juli 2026). |
+| **Total Simpul Eksperimen Terlacak** | **101 Simpul** | 45 simpul Volume 2 (`V2-E-001`–`V2-E-045`), 36 simpul pipeline pertandan (`PT-E-000`–`PT-E-036`), 16 simpul audit forensik (`AF-E-001`–`AF-E-016`, 6 September 2026), dan 4 gelombang verifikasi/ablasi mutakhir (`remote_eval_2026-08-27`, `validation_wave_2026-08-28`, `new763_rgbd4`, dan `pipeline_damimas`). |
+| **Rentang Tanggal Penelitian** | **09 Agustus 2026 – 6 September 2026** | Fondasi tinjauan pustaka & eksplorasi awal bersumber dari Volume 1 (Mei–Juli 2026). |
 | **Arsitektur Detektor Utama** | **YOLO26l, RT-DETR-L, RF-DETR-L** | Detektor berbasis satu-tahap konvensional, Transformer hibrida waktu-nyata, dan arsitektur DETR modern. |
 | **Modalitas Citra Diuji** | **RGB, RGB+Depth (Sensor Y16), RGB+Mono (Depth Monokular), RGB+Depth+Mono (5-kanal)** | Evaluasi perbandingan *early fusion*, *mid-fusion*, dan fusi lanjut (*late fusion*). |
 | **Korpus & Partisi Data** | **SawitMVC-YOLO (953 pohon), SawitMVC-Depth (352 & 763 pohon), Combined-1716 (1.716 pohon)** | Pembagian partisi terkontrol (*train, val, test*) untuk mencegah kebocoran partisi data (*data leakage*). |
