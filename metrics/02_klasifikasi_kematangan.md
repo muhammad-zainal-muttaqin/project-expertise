@@ -1,6 +1,34 @@
 # Atlas Metrik: Klasifikasi Tingkat Kematangan Citra Terpotong (*Crop*)
 
-Dokumen ini merangkum seluruh hasil eksperimen klasifikasi kematangan tandan buah segar kelapa sawit 4 kelas ordinal (**B1**: Mentah, **B2**: Mengkal/Matang Awal, **B3**: Matang, **B4**: Lewat Matang) menggunakan model pengklasifikasi terpisah pada wilayah objek terpotong (*bounding box crop*), fungsi rugi ordinal khusus (CORAL, CORN), evaluasi multi-tampak (C1–C3), serta aturan keputusan per tandan (R0–R4).
+Dokumen ini merangkum seluruh hasil eksperimen klasifikasi kematangan tandan buah segar kelapa sawit 4 kelas ordinal (**B1**: Mentah, **B2**: Mengkal/Matang Awal, **B3**: Matang, **B4**: Lewat Matang)
+
+> [!WARNING]
+> **Ketidaksesuaian definisi kelas yang belum diselesaikan (temuan audit `AF-E-013`).**
+> Baris pembuka di atas mendefinisikan B1 sebagai *mentah* dan B4 sebagai *lewat
+> matang*. Definisi tersebut **berlawanan arah** dengan tiga sumber lain:
+>
+> 1. Kartu dataset resmi `ULM-DS-Lab/SawitMVC-YOLO`: "B1 — Ripe — red, large,
+>    round; optimal harvest stage" dan "B4 — Very unripe — small, deeply
+>    positioned, black to green", dengan pernyataan eksplisit
+>    *"Biological order: B1 → B4 from most ripe to least ripe"*.
+> 2. [`docs/DATASET.md`](../docs/DATASET.md) §1: B1 lewat matang/siap panen
+>    berwarna jingga-kemerahan cerah; B4 mentah/muda berwarna hitam kehijauan.
+> 3. Dua sinyal data yang saling menguatkan: ukuran kotak median monoton
+>    menurun `B1 → B4` pada **ketiga** korpus (953: `133/120/107/93` piksel),
+>    dan relief kedalaman pada [`docs/DIAGNOSIS-DEPTH.md`](../docs/DIAGNOSIS-DEPTH.md)
+>    §4 menunjukkan B1 menonjol `+2,8 cm` sedangkan B4 tertanam `−5,1 cm` —
+>    konsisten dengan B4 "deeply positioned".
+>
+> Arah yang sama juga terbalik pada [`docs/EDA-COMBINED1716.md`](../docs/EDA-COMBINED1716.md) §2
+> dan [`docs/LAPORAN-AKHIR.md`](../docs/LAPORAN-AKHIR.md) §3.
+>
+> Audit **tidak mengubah** definisi mana pun karena pilihan itu milik pemelihara
+> repositori. Yang perlu diketahui pembaca: seluruh baris `AF-E-###` pada atlas
+> ini memakai arah **kartu dataset resmi**, sehingga "B1 siap panen" pada
+> [`03_pencacahan_per_pohon.md`](03_pencacahan_per_pohon.md) dan
+> [`05_pipeline_end_to_end.md`](05_pipeline_end_to_end.md) merujuk tandan
+> **matang**, bukan mentah. Penyelarasan istilah lintas dokumen perlu diputuskan
+> sebelum publikasi. menggunakan model pengklasifikasi terpisah pada wilayah objek terpotong (*bounding box crop*), fungsi rugi ordinal khusus (CORAL, CORN), evaluasi multi-tampak (C1–C3), serta aturan keputusan per tandan (R0–R4).
 
 ---
 
@@ -64,3 +92,18 @@ diisi dari eksperimen lain).
 | **R0cal** | Rekalibrasi probabilitas Isotonik | 0,7100 | 0,9984 | 0,2734 | $-0,22\text{ pp}$ | Rekalibrasi TIDAK menaikkan akurasi tandan pada agregasi test penuh (nilai lama seluruh baris tabel ini tertukar/salah — lihat catatan di bawah) |
 
 > **Koreksi menyeluruh tabel ini**: seluruh baris R0–R4 lama tidak cocok satu sumber JSON pun yang bisa ditemukan (angka R0 lama `0,6820` sebenarnya milik baris `PT-E-000` yang salah kategori, dan R4 lama `0,7439` sebenarnya milik `PT-E-029`, eksperimen berbeda). Nilai pengganti di atas diambil langsung dari `pipeline-pertandan/results/pt_e_001_oracle.json` (`split.test.semua_pool.*`, n=1.269 pool, PT-E-001), progresi R0→R4 yang benar-benar koheren dari satu eksperimen yang sama. Kolom "$\Delta$ vs R0" dihitung ulang dari akurasi terkoreksi.
+
+---
+
+## Tambahan — Audit Forensik 6 September 2026 (`AF-E-003`, `AF-E-005`, `AF-E-009`, `AF-E-012`)
+
+Rujukan penuh: `experiments/AUDIT-FORENSIK-2026-09-06.md`.
+
+| ID Eksperimen | Metode / Model Pengklasifikasi | Modalitas Masukan | Dataset & Partisi | Akurasi | Akurasi $\pm 1$ | MAE Ordinal | Macro-F1 | Status Bukti | Rujukan Artefak & Skrip |
+|---|---|---|---|---:|---:|---:|---:|---|---|
+| `AF-E-003` | Geometri dalam pohon saja, **tanpa satu piksel pun** | Peringkat vertikal & ukuran (8 fitur) | 953 Uji (1.402 tandan) | 0,5713 | 0,9429 | N/A — tidak dilaporkan | 0,4729 | `VALID` | `scripts/audit_forensik/an6_structure.py`; garis dasar kelas mayoritas `0,5300` |
+| `AF-E-003` | Penataan monoton + komposisi kelas *oracle* | Urutan vertikal dalam pohon | 953 Uji (1.402 tandan) | 0,6912 | N/A — tidak dilaporkan | N/A — tidak dilaporkan | **0,6237** | `VALID` | `an7_monotone.py`; memakai komposisi acuan, jadi batas atas |
+| `AF-E-005` | ConvNeXt-Tiny, citra terpotong cincin `1,6×` | RGB | 953 Uji (2.612 *crop*) | 0,6612 | N/A — tidak dilaporkan | N/A — tidak dilaporkan | N/A — tidak dilaporkan | `VALID` | `exp_train.py`; berada di dalam pita `0,62`–`0,70` proyek |
+| `AF-E-009` | Penampilan saja, tingkat tandan, deteksi nyata | RGB | 953 Uji (2.466 deteksi terpasangkan) | 0,6951 | 0,9943 | N/A — tidak dilaporkan | 0,6470 | `VALID` | `e4b_fuse.py` |
+| `AF-E-009` | Penampilan + struktur dalam pohon | RGB + geometri | 953 Uji (2.466 deteksi terpasangkan) | **0,6963** | 0,9935 | N/A — tidak dilaporkan | **0,6528** | `VALID` | Idem; `w = 0,8` ditala pada VAL; kenaikan `+0,0058` tanpa selang kepercayaan |
+| `AF-E-012` | Kepala ordinal CORN, agregasi antartampak | RGB, skor kontinu | 953 Uji (132 pohon empat sisi) | 0,7161 | **0,9946** | N/A — tidak dilaporkan | **0,6692** | `VALID` | `panen_final.py`; makro-F1 melampaui GSP terkunci `0,6034` |

@@ -8,6 +8,8 @@ build/
 
 # Virtual environment
 .venv/
+.venv-audit/
+.pytest_cache/
 venv/
 env/
 
