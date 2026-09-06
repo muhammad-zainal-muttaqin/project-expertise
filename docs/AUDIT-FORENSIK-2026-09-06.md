@@ -4,7 +4,7 @@ Dokumen ini memuat sintesis, kronologi kerja, dan rekomendasi dari audit
 independen terhadap korpus dan pipeline `project-expertise`. Seluruh angka
 dihitung ulang dari data mentah; log eksperimen berformat *append-only* berada
 pada [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../experiments/AUDIT-FORENSIK-2026-09-06.md)
-dengan penomoran `AF-E-001` sampai `AF-E-010`.
+dengan penomoran `AF-E-001` sampai `AF-E-013`.
 
 > [!NOTE]
 > Audit ini bersifat **aditif**. Tidak ada entri eksperimen, metrik, atau
@@ -181,12 +181,61 @@ kondisi kontrol yang jarang tersedia pada set data lapangan.
 
 ---
 
-## 6. Artefak
+## 6. Tindak lanjut yang sudah dijalankan (`AF-E-011` … `AF-E-013`)
+
+Setelah cacat `AF-E-010` diperbaiki, rekomendasi §4 nomor 2, 3, dan 6 diuji
+secara ujung ke ujung, bukan sebagai plafon. Hasilnya terbelah dan keduanya
+dilaporkan.
+
+### 6.1 Yang mengungguli hasil terkunci
+
+| Metrik test 953 | Pipeline Panen | Pembanding proyek |
+|---|---:|---:|
+| Cacah **B1 siap panen**, toleransi ±1 | **0,970** | tidak pernah dilaporkan |
+| Makro-F1 kelas empat | **0,6692** | `0,6034` (GSP) |
+| Akurasi ordinal ±1 | **0,9946** | tidak pernah dilaporkan |
+| Akurasi dua kelas matang/belum | **0,8678** | tidak pernah dilaporkan |
+
+Ketiganya berasal dari satu keputusan rancangan: kelas ditentukan di tingkat
+tandan fisik melalui skor ordinal kontinu, dan keputusan kasar maupun halus
+menjadi ambang pada skor yang sama.
+
+### 6.2 Yang masih tertinggal
+
+| Metrik test 953 | Pipeline Panen | GSP terkunci |
+|---|---:|---:|
+| F1 fisik | 0,7619 | **0,8387** |
+| Cacah total, MAE | 1,402 | **1,363** |
+| Cacah total, ±1 | 0,568 | **0,6370** |
+| Akurasi kelas empat | 0,7161 | **0,7442** |
+
+Penyebabnya teridentifikasi: penaut audit ini memakai proposal satu detektor,
+bukan WBF tiga detektor, dan daya tangkap fisiknya hanya `0,6878`. GSP MILP
+proyek tetap merupakan penaut yang lebih baik. **Rekomendasi yang benar karena
+itu adalah menggabungkan keduanya** — penaut GSP proyek dengan tahap kelas
+ordinal tingkat tandan dari audit ini — bukan mengganti salah satunya.
+
+### 6.3 Koreksi terhadap usulan taksonomi
+
+Menggabungkan B1+B2 sebagai "matang" tidak didukung data maupun kartu dataset.
+Kartu `SawitMVC-YOLO` menyebut B1 sebagai *optimal harvest stage* sedangkan B2
+masih *transitioning*. Secara empiris, cacah B1 mencapai ±1 `0,970` sedangkan
+cacah B1+B2 hanya `0,765`. Besaran operasional yang benar adalah **B1**.
+
+Selain itu, batas B2\|B3 adalah batas tersulit dalam data ini — pada matriks
+konfusi `AF-E-009`, B2↔B3 menyumbang 195 galat berbanding 57 untuk B1↔B2 —
+sehingga menaruhnya sebagai akar hierarki keras akan mengunci sekitar 15% tandan
+pada jalur yang salah. Skor ordinal dengan dua ambang menghindari hal itu.
+
+---
+
+## 7. Artefak
 
 | Lokasi | Isi |
 |---|---|
 | `experiments/AUDIT-FORENSIK-2026-09-06.md` | Log *append-only* `AF-E-001` … `AF-E-010` |
 | `results/audit_forensik_2026-09-06/` | Seluruh metrik JSON dan bukti citra |
+| `results/audit_forensik_2026-09-06/panen/` | Metrik Pipeline Panen (`AF-E-011` … `AF-E-013`) |
 | `logs_ringkas/audit_forensik_2026-09-06/` | Log eksekusi, `results.csv`, dan `args.yaml` tiap pelatihan |
 | `scripts/audit_forensik/` | 21 skrip analisis dan eksperimen |
 | Bucket `ULM-DS-Lab/project-expertise-backup`, awalan `audit_forensik_2026-09-06/` | Bobot lima detektor, bobot pengklasifikasi *crop*, dump probabilitas |

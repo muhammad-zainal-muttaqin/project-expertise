@@ -325,3 +325,112 @@ seluruh penelusuran parameter wajib dijalankan ulang sesudahnya.
 bukan penaut terlatih milik proyek. Angka `45,3%` karena itu mengukur besarnya
 celah kendala, bukan besarnya perubahan metrik akhir. Besaran yang terakhir
 hanya dapat diketahui setelah *sweep* dijalankan ulang dengan kode yang benar.
+
+---
+
+## AF-E-011 — Detektor agnostik berkapasitas lebih tinggi dan kepala ordinal CORN
+
+**Rancangan.** Dua komponen dilatih untuk menguji rekomendasi `AF-E-005` dan
+`AF-E-002` secara ujung ke ujung, bukan sebagai plafon.
+
+1. Detektor **class-agnostic** YOLO26m pada `imgsz 1280`, 40 *epoch*,
+   `patience 10`, `batch 12`, `workers 32`, `cache ram`, *seed* 42; berhenti
+   dini pada *epoch* 36. Skrip: `scripts/audit_forensik/panen_det.py`.
+2. Kepala **ordinal CORN** (ConvNeXt-Small, tiga logit terkondisi untuk K=4)
+   pada 18.540 citra terpotong, 18 *epoch*, masukan 176 piksel. Keluarannya
+   satu skor kontinu $s \in [0;3]$, bukan `argmax`. Skrip: `panen_ordinal.py`.
+
+**Temuan empiris terukur.**
+
+| Komponen | Metrik | Nilai |
+|---|---|---:|
+| Detektor agnostik | `AP50` test 953 | **0,8104** |
+| | presisi / daya tangkap | 0,7942 / 0,7271 |
+| Kepala ordinal | MAE skor validasi terbaik | **0,3474** |
+
+Sebagai pembanding, ansambel WBF tiga detektor proyek mencapai `AP50` agnostik
+`0,8350`, dan `0,8419` setelah lapisan *re-ranker*. Satu model tunggal pada
+audit ini mendekati angka tersebut tanpa ansambel.
+
+**Keputusan metodologis.** Skor ordinal tunggal menggantikan keputusan empat
+kelas. Keputusan kasar matang/belum dan keputusan halus di dalam tiap kelompok
+keduanya menjadi **ambang pada skor yang sama**, sehingga tandan yang keliru di
+batas B2\|B3 tidak hilang permanen sebagaimana pada hierarki keras.
+
+---
+
+## AF-E-012 — Pipeline Panen ujung ke ujung
+
+**Rancangan.** Deteksi agnostik → penaut tepi terlatih → `UF` berkendala sisi
+(versi diperbaiki `AF-E-010`) → skor kematangan tingkat tandan (rerata berbobot
+keyakinan atas seluruh tampak anggota klaster) → ambang. Penaut memakai 13 fitur
+termasuk pergeseran horizontal **bertanda** menurut arah rotasi kamera dan
+selisih skor kematangan. Seluruh ambang ditala pada VALIDATION; TEST dibuka
+satu kali. Metrik dihitung pada pohon empat sisi saja (132 pohon test),
+sejalan dengan konvensi metrik proyek.
+Skrip: `panen_pipeline.py`, `panen_eval.py`, `panen_final.py`.
+
+**Temuan empiris terukur.** Penaut versi pertama dilatih pada pasangan dengan
+`conf ≥ 0,10` sedangkan inferensi memakai `conf ≥ 0,30`; ketidakcocokan
+distribusi itu memberi VAL AUC `0,9064` dan AP `0,3609`. Setelah dilatih ulang
+pada ambang yang sama dengan inferensi: AUC `0,9185`, AP **`0,5562`**.
+Sebagai pembanding, penaut tepi proyek mencatat AUC `0,94846` dan AP `0,59636`.
+
+| Metrik test 953 | Pipeline Panen | `V2-E-045` | GSP terkunci |
+|---|---:|---:|---:|
+| F1 fisik | 0,7619 | 0,8043 | **0,8387** |
+| Presisi / daya tangkap | 0,8538 / 0,6878 | — | — |
+| Akurasi kelas empat | 0,7161 | 0,7111 | **0,7442** |
+| Makro-F1 kelas empat | **0,6692** | — | 0,6034 |
+| Akurasi ordinal ±1 | **0,9946** | — | — |
+| Akurasi dua kelas (matang/belum) | **0,8678** (F1 `0,9072`) | — | — |
+
+**Keputusan metodologis.** Dua hasil berlawanan arah dan keduanya dilaporkan.
+Keputusan kelas di tingkat tandan dengan skor ordinal **mengungguli** hasil
+terkunci proyek pada makro-F1 (`+0,0658`) dan memberi metrik ordinal ±1 yang
+praktis sempurna. Sebaliknya, penaut audit ini **lebih lemah** daripada GSP MILP
+proyek: F1 fisik `0,7619` berbanding `0,8387`, terutama karena daya tangkap
+`0,6878`. Klaim yang sah karena itu terbatas pada tahap klasifikasi, bukan pada
+tahap asosiasi.
+
+**Batasan validitas.** Proposal berasal dari satu detektor, bukan WBF tiga
+detektor; sebagian selisih F1 fisik dapat berasal dari situ dan belum
+dipisahkan. Tidak ada selang kepercayaan berpasangan untuk selisih makro-F1.
+
+---
+
+## AF-E-013 — Lapisan pencacahan Ridge per kelas dan cacah tandan siap panen
+
+**Rancangan.** Cacah klaster mentah diganti lapisan Ridge yang memetakan
+statistik klaster dan statistik deteksi multi-ambang (37 fitur, gaya `F_all`)
+menuju empat target cacah per pohon: total, B1, B1+B2, dan B3+B4. Dilatih pada
+TRAIN, `alpha` melalui `RidgeCV`, TEST dibuka sekali. Skrip: `panen_count.py`,
+`panen_final.py`.
+
+**Temuan empiris terukur.** Test 953, 132 pohon empat sisi.
+
+| Besaran | MAE | Tepat | ±1 | Rerata acuan |
+|---|---:|---:|---:|---:|
+| **B1 — siap panen** | **0,402** | **0,629** | **0,970** | 0,86/pohon |
+| B1+B2 — matang | 1,068 | 0,379 | 0,765 | 2,72/pohon |
+| B3+B4 — belum matang | 1,636 | 0,235 | 0,545 | 7,45/pohon |
+| Total tandan | 1,402 | 0,227 | 0,568 | 10,17/pohon |
+
+Perbandingan langsung terhadap cacah klaster mentah pada profil yang sama:
+total MAE `2,288 → 1,402`, ±1 `0,371 → 0,568`; B3+B4 MAE `2,189 → 1,636`.
+Pembanding proyek untuk cacah total: `V2-E-045` MAE `1,393` dengan ±1 `0,6148`;
+GSP MAE `1,363` dengan ±1 `0,6370`.
+
+**Keputusan metodologis.** Target `≥95%` **tercapai untuk cacah tandan siap
+panen** (`±1 = 0,970`) pada pipeline ujung ke ujung tanpa *oracle* apa pun.
+Target yang sama **tidak tercapai** untuk cacah total (`0,568`) maupun untuk
+gabungan B1+B2 (`0,765`). Karena kartu dataset menetapkan B1 sebagai
+*optimal harvest stage* sedangkan B2 masih *transitioning*, besaran operasional
+yang benar adalah B1, bukan B1+B2 — dan besaran itulah yang justru memenuhi
+target.
+
+**Batasan validitas.** Cacah B1 memiliki rerata acuan hanya `0,86` per pohon,
+sehingga ambang toleransi ±1 relatif longgar terhadap besarannya; angka ini
+tidak sebanding langsung dengan ±1 pada cacah total yang reratanya `10,17`.
+Cacah total masih di bawah hasil terkunci proyek, konsisten dengan penaut yang
+lebih lemah pada `AF-E-012`.
