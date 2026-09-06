@@ -1,0 +1,37 @@
+--- tune w on VAL (appearance+structure weight) ---
+    w=0    val acc=0.6915 macroF1=0.6580
+    w=0.2  val acc=0.6915 macroF1=0.6636
+    w=0.4  val acc=0.6835 macroF1=0.6597
+    w=0.6  val acc=0.6845 macroF1=0.6636
+    w=0.8  val acc=0.6865 macroF1=0.6700
+    w=1.0  val acc=0.6855 macroF1=0.6701
+    w=1.3  val acc=0.6754 macroF1=0.6574
+    w=1.6  val acc=0.6643 macroF1=0.6468
+    w=2.0  val acc=0.6502 macroF1=0.6328
+  -> chosen w=0.8
+--- tune monotone keep-threshold on VAL ---
+    keep>1.01  val acc=0.6351 macroF1=0.5914
+    keep>0.95  val acc=0.6492 macroF1=0.6123
+    keep>0.9   val acc=0.6522 macroF1=0.6152
+    keep>0.8   val acc=0.6633 macroF1=0.6323
+    keep>0.7   val acc=0.6754 macroF1=0.6485
+    keep>0.6   val acc=0.6784 macroF1=0.6556
+    keep>0.5   val acc=0.6855 macroF1=0.6680
+    keep>0.0   val acc=0.6865 macroF1=0.6700
+  -> chosen keep>0.0
+
+=== TEST (touched once) ===
+  A. appearance only                     acc=0.6745 macroF1=0.6368 ±1=0.9943 classcountMAE=2.167 ripeMAE=0.406 ripe±1=0.957
+  B. structure only (no pixels)          acc=0.5812 macroF1=0.4812 ±1=0.9387 classcountMAE=2.522 ripeMAE=0.790 ripe±1=0.833
+  C. fused (w=0.8)                       acc=0.6809 macroF1=0.6588 ±1=0.9915 classcountMAE=2.000 ripeMAE=0.399 ripe±1=0.949
+  D. fused + monotone (keep>0.0)         acc=0.6809 macroF1=0.6588 ±1=0.9915 classcountMAE=2.000 ripeMAE=0.399 ripe±1=0.949
+
+  confusion D (rows=true B1..B4):
+[[ 93  22   4   1]
+ [ 35 120  97   4]
+ [  1  98 555  91]
+ [  0   2  93 188]]
+  [harvest-ready B1 vs rest] A. appearance          acc=0.9558 F1=0.7500
+  [B1+B2 vs B3+B4]           A. appearance          acc=0.8590 F1=0.7179
+  [harvest-ready B1 vs rest] D. fused+monotone      acc=0.9551 F1=0.7470
+  [B1+B2 vs B3+B4]           D. fused+monotone      acc=0.8526 F1=0.7229

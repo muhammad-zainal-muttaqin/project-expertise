@@ -1,0 +1,32 @@
+
+=== MAY 953 - the 352 shared trees (n=6523) ===
+  cy (0=top,1=bottom): p10=0.323 p50=0.441 p90=0.529
+  boxes touching TOP edge (top<0.02): 0.2%
+  boxes in upper third (cy<0.33): 11.2%   lower third(cy>0.67): 0.0%
+  median cy per class:  B1(ripe)=0.496(n=566)  B2(trans)=0.469(n=1098)  B3(unripe)=0.441(n=3604)  B4(v.unripe)=0.390(n=1255)
+
+=== JULY Depth - same 352 trees (n=2299) ===
+  cy (0=top,1=bottom): p10=0.336 p50=0.464 p90=0.565
+  boxes touching TOP edge (top<0.02): 0.0%
+  boxes in upper third (cy<0.33): 8.7%   lower third(cy>0.67): 0.5%
+  median cy per class:  B1(ripe)=0.491(n=829)  B2(trans)=0.461(n=1001)  B3(unripe)=0.407(n=321)  B4(v.unripe)=0.417(n=148)
+
+=== AUGUST Depth - 411 new trees (n=3573) ===
+  cy (0=top,1=bottom): p10=0.291 p50=0.440 p90=0.607
+  boxes touching TOP edge (top<0.02): 0.1%
+  boxes in upper third (cy<0.33): 17.0%   lower third(cy>0.67): 3.6%
+  median cy per class:  B1(ripe)=0.386(n=305)  B2(trans)=0.388(n=1057)  B3(unripe)=0.481(n=1930)  B4(v.unripe)=0.396(n=281)
+
+=== empty sides & per-side counts (shared 352 trees) ===
+  MAY: side1: n=352 mean=4.64 empty=1% | side2: n=352 mean=4.63 empty=1% | side3: n=352 mean=4.57 empty=1% | side4: n=352 mean=4.69 empty=1%
+  JULY: side1: n=352 mean=1.85 empty=4% | side2: n=352 mean=1.64 empty=13% | side3: n=352 mean=1.51 empty=19% | side4: n=352 mean=1.52 empty=20%
+
+=== trees with ZERO annotated boxes across all sides ===
+  MAY 953(shared): 2/352 trees empty; total boxes=6523; boxes/tree=18.53
+  JULY: 0/352 trees empty; total boxes=2299; boxes/tree=6.53
+  AUG: 0/411 trees empty; total boxes=3573; boxes/tree=8.69
+
+=== vertical ordering of classes (median cy, 0=top) ===
+  MAY 953: B1(ripe)=0.450  B2(trans)=0.432  B3(unripe)=0.394  B4(v.unripe)=0.341   -> B1<B2<B3<B4 (ripe lower)
+  JULY: B1(ripe)=0.491  B2(trans)=0.461  B3(unripe)=0.407  B4(v.unripe)=0.417   -> not monotone
+  AUG: B1(ripe)=0.386  B2(trans)=0.388  B3(unripe)=0.481  B4(v.unripe)=0.396   -> not monotone

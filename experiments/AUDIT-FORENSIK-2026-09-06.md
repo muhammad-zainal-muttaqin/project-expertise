@@ -1,0 +1,327 @@
+# Log Eksperimen — Audit Forensik Data dan Pipeline (6 September 2026)
+
+Berkas ini bersifat *append-only* dan memakai penomoran `AF-E-###` agar tidak
+bertabrakan dengan rangkaian `V2-E-###` maupun `PT-E-###` yang sudah ada. Tidak
+ada satu pun entri lama yang diubah oleh audit ini.
+
+**Lingkungan eksekusi.** NVIDIA RTX 3090 (24 GB), 64 vCPU, 503 GB RAM,
+`torch 2.14.0+cu130`, `ultralytics 8.4.142`, Python 3.12. Seluruh angka pada
+berkas ini dihitung ulang dari data mentah; tidak ada angka yang dikutip dari
+laporan lama kecuali disebut secara eksplisit sebagai pembanding.
+
+**Korpus.** `ULM-DS-Lab/SawitMVC-YOLO` (953 pohon, Mei 2026) dan
+`ULM-DS-Lab/SawitMVC-Depth-YOLO` v2.0.0 (763 pohon = 352 pohon Juli 2026 +
+411 pohon Agustus 2026). Kedua korpus diunduh utuh; 26.838 dan 38.928 berkas.
+
+**Artefak.** Metrik pada `results/audit_forensik_2026-09-06/`, log eksekusi pada
+`logs_ringkas/audit_forensik_2026-09-06/`, skrip pada `scripts/audit_forensik/`.
+Bobot model, dump prediksi, dan citra terpotong berada di bucket
+`ULM-DS-Lab/project-expertise-backup` pada awalan `audit_forensik_2026-09-06/`.
+
+---
+
+## AF-E-001 — Perbandingan tingkat pohon antar-kampanye pada 352 pohon identik
+
+**Rancangan.** Membaca `bunches` tingkat pohon pada kedua rilis untuk 352 pohon
+fisik yang sama, lalu membandingkan jumlah tandan unik dan komposisi kelasnya.
+Tidak melibatkan model apa pun.
+Skrip: `scripts/audit_forensik/an1_overlap.py`, `an3_framing.py`, `an4_bunches.py`.
+
+**Temuan empiris terukur.**
+
+| Besaran | Mei (953) | Juli (Depth) | Perubahan |
+|---|---:|---:|---:|
+| Tandan unik per pohon | 9,89 | 3,99 | −60% |
+| Kotak mentah per citra | 4,63 | 1,63 | −65% |
+| B1 (matang, siap panen) | 275 | 457 | **+66%** |
+| B2 (peralihan) | 584 | 620 | +6% |
+| B3 (mentah) | 1.883 | 212 | **−89%** |
+| B4 (sangat mentah) | 739 | 111 | **−85%** |
+| Sisi tanpa satu kotak pun | 1,1% | 14,2% | — |
+
+Laju sisi kosong Juli memburuk secara berurutan menurut nomor sisi:
+`4% → 13% → 19% → 20%` untuk sisi 1 sampai 4, sedangkan pada Mei keempat sisi
+seragam pada `1%`. Kampanye Agustus (411 pohon, blok MARIHAT/TOPAZ) mencatat
+5,76 tandan unik per pohon.
+
+**Keputusan metodologis.** Dua arah perubahan bertentangan dengan fenologi
+sekaligus: panen berulang seharusnya menurunkan stok B1, sedangkan inisiasi
+tandan yang berlangsung terus seharusnya mempertahankan stok B4. Penjelasan
+"pergeseran temporal 80 hari" pada `V2-E-022` karena itu **tidak memadai
+sebagai penjelasan tunggal**; terdapat komponen perbedaan protokol pengamatan
+atau kelengkapan anotasi yang belum terkuantifikasi.
+
+**Batasan validitas.** Analisis ini menunjukkan ketidakcocokan, bukan
+menetapkan penyebabnya. Penentuan penyebab memerlukan verifikasi manual
+berstrata oleh anotator, yang belum dilakukan.
+
+---
+
+## AF-E-002 — Konsistensi label lintas-tampak untuk tandan fisik yang sama
+
+**Rancangan.** Untuk setiap tandan multi-tampak, membandingkan `class_id` pada
+seluruh tampak tempat ia muncul. Skrip: `scripts/audit_forensik/an5_labelnoise.py`.
+
+**Temuan empiris terukur.** Korpus 953: 7.328 tandan multi-tampak,
+**0 (0,00%)** memiliki tampak yang berselisih kelas. Juli: 2 dari 841 (0,24%).
+Agustus: 0 dari 1.184.
+
+**Keputusan metodologis.** Angka nol tersebut bukan indikator mutu anotasi,
+melainkan bukti bahwa satu kelas ditetapkan per tandan fisik lalu disalin ke
+seluruh tampak oleh perkakas anotasi. Konsekuensinya, **label kematangan adalah
+properti tandan fisik, bukan properti tampak**. Pengklasifikasi per-tampak
+dipaksa memprediksi atribut yang tidak selalu teramati pada masukannya, dan
+`mAP50` sadar-kelas per citra karena itu menghukum model atas informasi yang
+definisi labelnya sendiri tidak sediakan.
+
+---
+
+## AF-E-003 — Struktur posisi tandan dalam pohon sebagai prediktor kematangan
+
+**Rancangan.** Menghitung peringkat vertikal dan peringkat ukuran setiap tandan
+di dalam pohonnya, lalu melatih pengklasifikasi tanpa satu piksel pun.
+Partisi tingkat pohon kanonik. Skrip: `an6_structure.py`, `an7_monotone.py`.
+
+**Temuan empiris terukur.**
+
+- Korelasi Spearman antara indeks kelas dan peringkat vertikal dalam pohon:
+  **−0,616**; terhadap peringkat ukuran: **+0,431**.
+- Pengklasifikasi geometri murni (8 fitur, tanpa piksel), test 953:
+  akurasi `0,5713`, makro-F1 `0,4729`, akurasi ordinal ±1 `0,9429`
+  (garis dasar kelas mayoritas `0,5300`).
+- Penataan monoton dengan komposisi kelas pohon diketahui (*oracle*),
+  diurutkan menurut posisi vertikal: akurasi `0,6912`, makro-F1 **`0,6237`**.
+  Dengan komposisi dari prior global saja: akurasi `0,5207`.
+
+**Keputusan metodologis.** Makro-F1 `0,6237` tanpa piksel melampaui makro-F1
+*end-to-end* `0,6034` yang dicapai seluruh tumpukan visual pada 953. Sinyal
+struktur layak dimasukkan ke tahap klasifikasi; pengujiannya ada pada `AF-E-009`.
+
+**Batasan validitas.** Angka `0,6912` memakai komposisi kelas acuan, sehingga
+merupakan batas atas, bukan performa yang dapat dicapai saat inferensi.
+
+---
+
+## AF-E-004 — Plafon lapisan pencacahan dengan deteksi *oracle*
+
+**Rancangan.** Mengganti seluruh tahap deteksi dengan kotak acuan, lalu
+menjalankan Ridge dari cacah kotak per kelas menuju cacah tandan unik per kelas.
+Skrip: `scripts/audit_forensik/an8_counting.py`.
+
+**Temuan empiris terukur.** Test 953, 136 pohon.
+
+| Besaran | MAE | Tepat | ±1 | Tampak tunggal |
+|---|---:|---:|---:|---:|
+| B1 | 0,101 | 0,899 | **1,000** | 11,6% |
+| B2 | 0,239 | 0,768 | **0,993** | 23,4% |
+| B3 | 0,638 | 0,428 | **0,942** | 22,7% |
+| B4 | 0,268 | 0,739 | **0,993** | **40,5%** |
+| Total per pohon | 1,058 | **0,290** | **0,754** | — |
+
+Makro-MAE `0,312`, berdekatan dengan jalur *oracle* historis `0,275`–`0,277`
+pada `docs/REKAP.md` §2, sehingga pengukuran ini terkalibrasi terhadap angka
+proyek sendiri. Faktor duplikasi per pohon `k = 1,905` dengan simpangan baku
+`0,384`; *estimator* "kotak dibagi k" hanya mencapai `0,304` tepat persis
+walaupun kotaknya sempurna.
+
+**Keputusan metodologis.** Target pencacahan **total** yang tepat persis tidak
+dapat dicapai. Target pencacahan **per kelas dengan toleransi ±1** dapat
+dicapai. Laju tampak-tunggal yang bergantung kelas (B4 `40,5%` berbanding B1
+`11,6%`) berarti aturan "konfirmasi minimal dua tampak" menghapus B4 secara
+sistematis; ambang *singleton* global tidak sesuai untuk tugas ini.
+
+---
+
+## AF-E-005 — Plafon `mAP50` dengan lokalisasi sempurna
+
+**Rancangan.** Membentuk 18.540 citra terpotong tandan (cincin konteks `1,6×`,
+sesuai `PROPOSAL-Pipeline.md` §4), melatih ConvNeXt-Tiny 10 *epoch*, lalu
+menyusun prediksi deteksi yang kotaknya **identik dengan kotak acuan** sehingga
+lokalisasi bernilai sempurna dan hanya kelas yang diprediksi.
+Skrip: `exp_crops.py`, `exp_train.py`, `exp_ceiling.py`, `exp_sensitivity.py`.
+
+**Temuan empiris terukur.**
+
+- Akurasi validasi per-*crop* `0,6635` — berada di dalam pita `0,62`–`0,70`
+  yang dicapai berulang oleh ConvNeXt, Swin, EfficientNetV2, dan DINOv2 pada
+  repositori ini.
+- Plafon `mAP50` empat kelas dengan kotak sempurna: **`0,6569`**
+  (B1 `0,7653`, B2 `0,4912`, B3 `0,7625`, B4 `0,6088`).
+  Uji kewarasan dengan kelas *oracle* menghasilkan `1,0000`.
+- Taksonomi dua kelas, pengklasifikasi yang sama: B1 lawan sisanya
+  **`0,8766`**; B1+B2 lawan B3+B4 **`0,8891`**.
+- Kurva sensitivitas (galat disalurkan ke kelas bertetangga): akurasi
+  kematangan `0,661 → 0,587`; `0,80 → 0,735`; **`0,90 → 0,847`**; `0,95 → 0,927`.
+
+**Keputusan metodologis.** Hasil test terkunci proyek `0,5970` berada pada
+`91%` dari plafon `0,6569`. Seluruh ruang perbaikan yang tersisa untuk semua
+detektor digabung adalah sekitar `6` poin `mAP`. Target `0,85` pada empat kelas
+menuntut akurasi kematangan `≈0,90`, dua puluh poin di atas segala yang pernah
+dicapai; target tersebut **dinyatakan tidak terjangkau pada taksonomi empat
+kelas**, dan terjangkau pada taksonomi dua kelas.
+
+---
+
+## AF-E-006 — Perbandingan taksonomi dengan detektor nyata
+
+**Rancangan.** Tiga pelatihan YOLO26s yang identik kecuali taksonomi labelnya,
+`imgsz 960`, 30 *epoch*, `patience 8`, `batch 16`, `workers 32`, `cache ram`,
+*seed* 42, partisi kanonik 953. Skrip: `build_ds.py`, `run_exp.py`.
+
+**Temuan empiris terukur.** Test 953 (588 citra).
+
+| Taksonomi | `mAP50` | Presisi | Daya tangkap |
+|---|---:|---:|---:|
+| Empat kelas B1–B4 | 0,5433 | 0,5087 | 0,5856 |
+| Dua kelas (siap panen / belum) | **0,7754** | 0,7662 | 0,7021 |
+| Satu kelas (agnostik) | **0,8057** | 0,7965 | 0,7087 |
+
+**Kalibrasi terhadap angka proyek.** YOLO26**l** pada tugas empat kelas
+tercatat `0,5435` (`experiments/STATUS.md` §1). Replikasi ini dengan YOLO26**s**
+pada resolusi lebih rendah menghasilkan `0,5433`. Selisihnya `0,0002`, sehingga
+perbandingan taksonomi di atas sah dibaca sebagai perbandingan setara.
+
+**Keputusan metodologis.** Perubahan definisi target menaikkan `mAP50` sebesar
+`+0,2321` tanpa mengubah model, resolusi, maupun data.
+
+---
+
+## AF-E-007 — Matriks generalisasi lintas-kampanye dan dekomposisi galatnya
+
+**Rancangan.** Dua detektor *class-agnostic* dilatih terpisah — satu pada Mei
+(953), satu pada 763 (Juli+Agustus) — lalu disilangkan. Evaluasi kampanye pada
+model 763 memakai partisi uji miliknya sendiri untuk mencegah kontaminasi.
+Skrip: `run_exp.py`, `e1b_fp.py`, `e1c_fpkind.py`, `e1d_merge.py`.
+
+**Temuan empiris terukur — `mAP50` lokalisasi agnostik.**
+
+| Dilatih pada | Mei 953 | Juli 352 | Agustus 411 |
+|---|---:|---:|---:|
+| Mei (953) | **0,8057** (P 0,797 · R 0,709) | 0,4720 (P **0,581** · R 0,470) | 0,5955 (P 0,663 · R 0,539) |
+| 763 (Juli+Agustus) | 0,6243 (P 0,707 · R **0,609**) | **0,7691** (P 0,782 · R 0,724) | **0,8522** (P 0,852 · R 0,818) |
+
+Pada taksonomi empat kelas, model 763 mencapai `mAP50 = 0,1898` di test Mei —
+mereproduksi rentang bencana `0,1776`–`0,2018` yang dilaporkan `V2-E-042`.
+
+**Dekomposisi positif palsu** (model Mei, `conf ≥ 0,50`):
+
+| Kumpulan | TP | FP | *nested* | *shifted* | *orphan* | sisi kotak model / acuan |
+|---|---:|---:|---:|---:|---:|---:|
+| Mei 953 test | 1.123 | 79 | 74,7% | 5,1% | 20,3% | 1,003 |
+| Juli 352 | 657 | 193 | **95,9%** | 0,5% | 3,6% | 0,869 |
+| Agustus 411 | 1.135 | 195 | **96,4%** | 0,5% | 3,1% | 0,922 |
+
+*nested* berarti titik pusat deteksi berada **di dalam** sebuah kotak acuan
+tetapi `IoU < 0,5`. Melonggarkan kriteria menjadi `IoU ≥ 0,3` menaikkan presisi
+Juli dari `0,612` menjadi `0,867` — melampaui presisi Mei sendiri (`0,839`) —
+dan daya tangkapnya dari `0,454` menjadi `0,644`.
+
+**Hipotesis penggabungan kotak diuji dan ditolak.** Bila Juli membingkai satu
+gerombol tandan sebagai satu kotak, sebuah kotak acuan akan memuat beberapa
+deteksi yakin. Terukur: `0,2%` pada Mei, `0,2%` pada Juli, `0,0%` pada Agustus.
+
+**Keputusan metodologis.** Terdapat **dua perbedaan protokol yang terpisah**:
+(a) konvensi kotak — Juli/Agustus membingkai objek tunggal yang sama secara
+lebih longgar, dan ini menjelaskan sebagian besar keruntuhan `AP` lintas-korpus;
+(b) kelengkapan anotasi tingkat pohon (`AF-E-001`), yang tidak dapat dijelaskan
+oleh konvensi kotak maupun penggabungan. Keduanya membuat pelatihan gabungan
+`combined1716` dan evaluasi lintas-korpus **tidak mengukur mutu model**.
+
+**Koreksi terhadap hipotesis awal audit ini.** Dugaan awal bahwa positif palsu
+Juli sebagian besar adalah tandan nyata yang tidak dilabeli **tidak didukung**:
+hanya `3,6%` yang benar-benar berada di lokasi tanpa kotak acuan. Dugaan itu
+dicatat di sini sebagai hipotesis yang gugur.
+
+---
+
+## AF-E-008 — Pencacahan tandan siap panen ujung ke ujung
+
+**Rancangan.** Detektor dua kelas `AF-E-006` dijalankan pada seluruh partisi
+953, lalu fitur bergaya `F_all` (cacah deteksi per kelas pada sepuluh ambang
+keyakinan, ditambah statistik geometri dan jumlah sisi) dimasukkan ke
+`RidgeCV`. Target diambil dari `bunches` acuan. Skrip: `run_e345.py` bagian E3.
+
+**Temuan empiris terukur.** Test 953, 141 pohon.
+
+| Besaran | Ridge di-*fit* pada | MAE | Tepat | ±1 |
+|---|---|---:|---:|---:|
+| Tandan siap panen | TRAIN | 0,369 | 0,674 | **0,957** |
+| Tandan siap panen | VAL | 0,418 | 0,624 | **0,965** |
+| Total tandan | TRAIN | 1,383 | 0,227 | 0,610 |
+| Total tandan | VAL | 1,518 | 0,213 | 0,553 |
+
+**Kalibrasi terhadap angka proyek.** Total tandan ±1 pada replikasi ini
+`0,610`; angka test terkunci `V2-E-045` adalah `0,6148`. Kesesuaian tersebut
+membuat angka `0,957`–`0,965` sah dibaca sebagai perbandingan setara.
+
+**Keputusan metodologis.** Target konsistensi `≥95%` **tercapai** apabila
+besaran yang dilaporkan adalah cacah tandan siap panen per pohon dengan
+toleransi ±1, dan **tidak tercapai** untuk cacah total.
+
+---
+
+## AF-E-009 — Fusi penampilan dan struktur pada deteksi nyata
+
+**Rancangan.** Model struktur (`HistGradientBoosting`, 8 fitur geometri)
+dilatih pada deteksi partisi TRAIN; pengklasifikasi *crop* dijalankan pada
+deteksi yang berpasangan dengan kotak acuan (`IoU ≥ 0,5`); satu skalar bobot
+fusi `w` ditala pada VAL; TEST dibuka satu kali.
+Skrip: `e4b_fuse.py`. Deteksi berasal dari detektor agnostik `AF-E-006`.
+
+**Temuan empiris terukur.** 2.466 deteksi berpasangan pada test 953, `w = 0,8`.
+
+| Konfigurasi | Akurasi | Makro-F1 | ±1 |
+|---|---:|---:|---:|
+| Penampilan saja | 0,6951 | 0,6470 | 0,9943 |
+| Struktur saja | 0,5669 | 0,3973 | 0,9152 |
+| **Penampilan + struktur** | **0,6963** | **0,6528** | 0,9935 |
+
+Pada kotak acuan (bukan deteksi nyata), fusi yang sama memberi akurasi
+`0,6745 → 0,6809` dan makro-F1 `0,6368 → 0,6588`.
+
+**Kontrol negatif yang dilaporkan apa adanya.** Percobaan pertama melatih model
+struktur pada VAL dan menala `w` pada VAL yang sama. Protokol bocor itu memilih
+`w = 1,3` dan menghasilkan **regresi** pada test: akurasi `0,6468`, makro-F1
+`0,5934`. Hasilnya disimpan pada `results/audit_forensik_2026-09-06/e345.json`
+bagian `E4` sebagai kontrol, dan tidak dipakai sebagai klaim.
+
+**Keputusan metodologis.** Manfaat struktur pada deteksi nyata **nyata tetapi
+kecil** (`+0,0058` makro-F1), jauh di bawah manfaatnya pada kotak acuan
+(`+0,0220`). Penyebab yang paling mungkin: peringkat dalam-pohon dihitung dari
+himpunan deteksi yang memuat positif palsu dan kehilangan objek, sehingga
+urutannya lebih berderau. Komponen ini layak dipertahankan karena biayanya nol,
+tetapi **tidak boleh dipasarkan sebagai perbaikan besar**.
+
+**Batasan validitas.** Belum ada selang kepercayaan berpasangan untuk selisih
+`+0,0058`; dengan 2.466 deteksi, selisih sekecil itu belum tentu dapat
+dibedakan dari derau seleksi.
+
+---
+
+## AF-E-010 — Verifikasi cacat kendala sisi pada `sweep_remote_pipeline.UF`
+
+**Rancangan.** Kedua varian `UF` — versi repositori dan versi yang diperbaiki —
+diberi daftar tepi yang sama dari proposal nyata detektor agnostik pada test
+953, lalu jumlah klaster yang memuat dua deteksi atau lebih dari sisi fisik yang
+sama dihitung. Skrip: `run_e345.py` bagian E5.
+
+**Temuan empiris terukur.**
+
+| Varian | Klaster | Memuat ≥2 deteksi dari sisi yang sama |
+|---|---:|---:|
+| Versi repositori (`self.sides = [{i} …]`) | 1.191 | **540 (45,3%)** |
+| Versi diperbaiki (`{dets[i]["side"]}`) | 1.249 | **0 (0,0%)** |
+
+**Keputusan metodologis.** Cacat yang dicatat pada
+`docs/ANALISIS_PIPELINE_MENDALAM.md` §5.5 masih ada dan **tidak dorman**:
+`45,3%` klaster melanggar kendala "maksimal satu proposal per sisi fisik".
+Karena modul ini yang memilih ambang proposal, ambang tautan, ambang
+*singleton*, dan ukuran klaster maksimum, seluruh profil parameter terpilih
+terhadap klasterer yang mengizinkan penghitungan ganda dalam satu tampak, lalu
+diterapkan pada evaluator yang melarangnya. Perbaikannya satu baris, tetapi
+seluruh penelusuran parameter wajib dijalankan ulang sesudahnya.
+
+**Batasan validitas.** Daftar tepi pada uji ini memakai skor geometri sederhana,
+bukan penaut terlatih milik proyek. Angka `45,3%` karena itu mengukur besarnya
+celah kendala, bukan besarnya perubahan metrik akhir. Besaran yang terakhir
+hanya dapat diketahui setelah *sweep* dijalankan ulang dengan kode yang benar.

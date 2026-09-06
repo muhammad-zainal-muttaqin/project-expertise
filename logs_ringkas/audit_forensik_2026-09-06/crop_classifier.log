@@ -1,0 +1,12 @@
+{'train': 14041, 'val': 1887, 'test': 2612}
+ep1/10 loss=1.1284 val_crop_acc=0.6566 (34s)
+ep2/10 loss=0.8677 val_crop_acc=0.6534 (17s)
+ep3/10 loss=0.8301 val_crop_acc=0.6672 (17s)
+ep4/10 loss=0.7870 val_crop_acc=0.6561 (17s)
+ep5/10 loss=0.7417 val_crop_acc=0.6566 (17s)
+ep6/10 loss=0.6591 val_crop_acc=0.6624 (14s)
+ep7/10 loss=0.5643 val_crop_acc=0.6624 (17s)
+ep8/10 loss=0.4578 val_crop_acc=0.6486 (17s)
+ep9/10 loss=0.3933 val_crop_acc=0.6688 (17s)
+ep10/10 loss=0.3663 val_crop_acc=0.6635 (17s)
+saved probabilities

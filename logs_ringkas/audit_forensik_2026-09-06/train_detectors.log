@@ -1,0 +1,401 @@
+
+=== TRAIN may4 (4-class) ===
+
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26s.pt to 'yolo26s.pt': 24% ━━╸───────── 4.7/19.5MB 46.9MB/s 0.1s<0.3s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26s.pt to 'yolo26s.pt': 53% ━━━━━━────── 10.5/19.5MB 57.6MB/s 0.2s<0.2s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26s.pt to 'yolo26s.pt': 80% ━━━━━━━━━╸── 15.6/19.5MB 50.7MB/s 0.3s<0.1s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26s.pt to 'yolo26s.pt': 100% ━━━━━━━━━━━━ 19.5MB 51.7MB/s 0.4s
+
+[KDownloading https://ultralytics.com/assets/Arial.ttf to '/tmp/Ultralytics/Arial.ttf': 100% ━━━━━━━━━━━━ 755.1KB 8.6MB/s 0.1s
+
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26n.pt to 'weights/yolo26n.pt': 54% ━━━━━━╸───── 2.9/5.3MB 28.5MB/s 0.1s<0.1s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26n.pt to 'weights/yolo26n.pt': 100% ━━━━━━━━━━━━ 5.3MB 33.6MB/s 0.2s
+
+[K[34m[1mtrain: [0mCaching images (0.2GB RAM): 2% ──────────── 89/3000 261.3it/s 0.1s<11.1s
+[K[34m[1mtrain: [0mCaching images (0.4GB RAM): 6% ╸─────────── 188/3000 474.4it/s 0.2s<5.9s
+[K[34m[1mtrain: [0mCaching images (0.6GB RAM): 9% ━─────────── 286/3000 625.1it/s 0.3s<4.3s
+[K[34m[1mtrain: [0mCaching images (0.7GB RAM): 12% ━╸────────── 383/3000 724.2it/s 0.4s<3.6s
+[K[34m[1mtrain: [0mCaching images (0.9GB RAM): 15% ━╸────────── 479/3000 792.0it/s 0.5s<3.2s
+[K[34m[1mtrain: [0mCaching images (1.1GB RAM): 19% ━━────────── 581/3000 858.1it/s 0.6s<2.8s
+[K[34m[1mtrain: [0mCaching images (1.3GB RAM): 22% ━━╸───────── 689/3000 915.2it/s 0.7s<2.5s
+[K[34m[1mtrain: [0mCaching images (1.5GB RAM): 26% ━━━───────── 802/3000 974.7it/s 0.8s<2.3s
+[K[34m[1mtrain: [0mCaching images (1.8GB RAM): 30% ━━━╸──────── 920/3000 1.0Kit/s 0.9s<2.0s
+[K[34m[1mtrain: [0mCaching images (2.0GB RAM): 34% ━━━━──────── 1032/3000 1.0Kit/s 1.0s<1.9s
+[K[34m[1mtrain: [0mCaching images (2.2GB RAM): 37% ━━━━╸─────── 1139/3000 1.1Kit/s 1.1s<1.8s
+[K[34m[1mtrain: [0mCaching images (2.4GB RAM): 41% ━━━━╸─────── 1248/3000 1.1Kit/s 1.2s<1.6s
+[K[34m[1mtrain: [0mCaching images (2.6GB RAM): 45% ━━━━━─────── 1353/3000 1.1Kit/s 1.3s<1.6s
+[K[34m[1mtrain: [0mCaching images (2.8GB RAM): 48% ━━━━━╸────── 1459/3000 1.1Kit/s 1.4s<1.5s
+[K[34m[1mtrain: [0mCaching images (3.0GB RAM): 52% ━━━━━━────── 1565/3000 1.1Kit/s 1.5s<1.4s
+[K[34m[1mtrain: [0mCaching images (3.2GB RAM): 55% ━━━━━━╸───── 1669/3000 1.0Kit/s 1.6s<1.3s
+[K[34m[1mtrain: [0mCaching images (3.4GB RAM): 59% ━━━━━━━───── 1776/3000 1.0Kit/s 1.7s<1.2s
+[K[34m[1mtrain: [0mCaching images (3.6GB RAM): 62% ━━━━━━━╸──── 1882/3000 1.0Kit/s 1.8s<1.1s
+[K[34m[1mtrain: [0mCaching images (3.8GB RAM): 66% ━━━━━━━╸──── 1987/3000 1.0Kit/s 1.9s<1.0s
+[K[34m[1mtrain: [0mCaching images (4.0GB RAM): 69% ━━━━━━━━──── 2096/3000 1.1Kit/s 2.0s<0.9s
+[K[34m[1mtrain: [0mCaching images (4.3GB RAM): 73% ━━━━━━━━╸─── 2205/3000 1.1Kit/s 2.1s<0.7s
+[K[34m[1mtrain: [0mCaching images (4.5GB RAM): 77% ━━━━━━━━━─── 2313/3000 1.1Kit/s 2.2s<0.6s
+[K[34m[1mtrain: [0mCaching images (4.7GB RAM): 80% ━━━━━━━━━╸── 2423/3000 1.1Kit/s 2.3s<0.5s
+[K[34m[1mtrain: [0mCaching images (4.9GB RAM): 84% ━━━━━━━━━━── 2528/3000 1.1Kit/s 2.4s<0.4s
+[K[34m[1mtrain: [0mCaching images (5.1GB RAM): 87% ━━━━━━━━━━╸─ 2633/3000 1.1Kit/s 2.5s<0.3s
+[K[34m[1mtrain: [0mCaching images (5.3GB RAM): 91% ━━━━━━━━━━╸─ 2740/3000 1.1Kit/s 2.6s<0.2s
+[K[34m[1mtrain: [0mCaching images (5.5GB RAM): 95% ━━━━━━━━━━━─ 2859/3000 1.1Kit/s 2.7s<0.1s
+[K[34m[1mtrain: [0mCaching images (5.7GB RAM): 99% ━━━━━━━━━━━╸ 2976/3000 1.1Kit/s 2.8s<0.0s
+[K[34m[1mtrain: [0mCaching images (5.8GB RAM): 100% ━━━━━━━━━━━━ 3000/3000 1.1Kit/s 2.9s
+
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 0% ──────────── 1/404 2.9it/s 0.1s<2:20
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 2% ──────────── 9/404 23.2it/s 0.2s<17.0s
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 6% ╸─────────── 25/404 32.8it/s 0.5s<11.5s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 10% ━─────────── 42/404 69.5it/s 0.6s<5.2s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 12% ━─────────── 50/404 60.6it/s 0.8s<5.8s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 16% ━╸────────── 65/404 69.5it/s 1.0s<4.9s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 17% ━━────────── 69/404 54.7it/s 1.2s<6.1s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 21% ━━╸───────── 86/404 61.6it/s 1.4s<5.2s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 25% ━━━───────── 102/404 67.4it/s 1.6s<4.5s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 27% ━━━───────── 111/404 69.5it/s 1.7s<4.2s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 32% ━━━╸──────── 130/404 104.2it/s 1.8s<2.6s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 39% ━━━━╸─────── 159/404 156.7it/s 1.9s<1.6s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 49% ━━━━━╸────── 199/404 215.8it/s 2.0s<0.9s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 55% ━━━━━━╸───── 223/404 206.1it/s 2.2s<0.9s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 64% ━━━━━━━╸──── 261/404 221.5it/s 2.3s<0.6s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 74% ━━━━━━━━╸─── 301/404 263.7it/s 2.4s<0.4s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 84% ━━━━━━━━━━── 341/404 277.7it/s 2.6s<0.2s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 94% ━━━━━━━━━━━─ 381/404 303.4it/s 2.7s<0.1s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 100% ━━━━━━━━━━━━ 404/404 148.7it/s 2.7s
+    may4 -> test: mAP50=0.5433 P=0.5087 R=0.5856 {'B1': 0.7588418343805543, 'B2': 0.4494533852200796, 'B3': 0.6094764027398504, 'B4': 0.35530824054514504}
+
+=== TRAIN may2 (2-class) ===
+
+[K[34m[1mtrain: [0mCaching images (0.2GB RAM): 2% ──────────── 89/3000 266.3it/s 0.1s<10.9s
+[K[34m[1mtrain: [0mCaching images (0.4GB RAM): 6% ╸─────────── 186/3000 475.5it/s 0.2s<5.9s
+[K[34m[1mtrain: [0mCaching images (0.5GB RAM): 9% ━─────────── 284/3000 624.3it/s 0.3s<4.4s
+[K[34m[1mtrain: [0mCaching images (0.7GB RAM): 12% ━╸────────── 381/3000 725.7it/s 0.4s<3.6s
+[K[34m[1mtrain: [0mCaching images (0.9GB RAM): 15% ━╸────────── 476/3000 791.7it/s 0.5s<3.2s
+[K[34m[1mtrain: [0mCaching images (1.1GB RAM): 19% ━━────────── 573/3000 844.7it/s 0.6s<2.9s
+[K[34m[1mtrain: [0mCaching images (1.3GB RAM): 22% ━━╸───────── 680/3000 909.0it/s 0.7s<2.6s
+[K[34m[1mtrain: [0mCaching images (1.5GB RAM): 26% ━━━───────── 790/3000 958.6it/s 0.8s<2.3s
+[K[34m[1mtrain: [0mCaching images (1.7GB RAM): 30% ━━━╸──────── 906/3000 1.0Kit/s 0.9s<2.1s
+[K[34m[1mtrain: [0mCaching images (2.0GB RAM): 33% ━━━━──────── 1019/3000 1.0Kit/s 1.0s<1.9s
+[K[34m[1mtrain: [0mCaching images (2.2GB RAM): 37% ━━━━──────── 1125/3000 1.0Kit/s 1.1s<1.8s
+[K[34m[1mtrain: [0mCaching images (2.4GB RAM): 41% ━━━━╸─────── 1230/3000 1.0Kit/s 1.2s<1.7s
+[K[34m[1mtrain: [0mCaching images (2.6GB RAM): 44% ━━━━━─────── 1337/3000 1.1Kit/s 1.3s<1.6s
+[K[34m[1mtrain: [0mCaching images (2.8GB RAM): 48% ━━━━━╸────── 1443/3000 1.1Kit/s 1.4s<1.5s
+[K[34m[1mtrain: [0mCaching images (3.0GB RAM): 51% ━━━━━━────── 1551/3000 1.1Kit/s 1.5s<1.4s
+[K[34m[1mtrain: [0mCaching images (3.2GB RAM): 55% ━━━━━━╸───── 1653/3000 1.0Kit/s 1.6s<1.3s
+[K[34m[1mtrain: [0mCaching images (3.4GB RAM): 58% ━━━━━━━───── 1759/3000 1.0Kit/s 1.7s<1.2s
+[K[34m[1mtrain: [0mCaching images (3.6GB RAM): 62% ━━━━━━━───── 1865/3000 1.0Kit/s 1.8s<1.1s
+[K[34m[1mtrain: [0mCaching images (3.8GB RAM): 65% ━━━━━━━╸──── 1973/3000 1.1Kit/s 1.9s<1.0s
+[K[34m[1mtrain: [0mCaching images (4.0GB RAM): 69% ━━━━━━━━──── 2080/3000 1.1Kit/s 2.0s<0.9s
+[K[34m[1mtrain: [0mCaching images (4.2GB RAM): 73% ━━━━━━━━╸─── 2190/3000 1.1Kit/s 2.1s<0.8s
+[K[34m[1mtrain: [0mCaching images (4.4GB RAM): 76% ━━━━━━━━━─── 2296/3000 1.1Kit/s 2.2s<0.7s
+[K[34m[1mtrain: [0mCaching images (4.6GB RAM): 80% ━━━━━━━━━╸── 2405/3000 1.1Kit/s 2.3s<0.6s
+[K[34m[1mtrain: [0mCaching images (4.8GB RAM): 83% ━━━━━━━━━━── 2511/3000 1.1Kit/s 2.4s<0.5s
+[K[34m[1mtrain: [0mCaching images (5.1GB RAM): 87% ━━━━━━━━━━── 2616/3000 1.1Kit/s 2.5s<0.4s
+[K[34m[1mtrain: [0mCaching images (5.3GB RAM): 90% ━━━━━━━━━━╸─ 2720/3000 1.1Kit/s 2.6s<0.3s
+[K[34m[1mtrain: [0mCaching images (5.5GB RAM): 94% ━━━━━━━━━━━─ 2834/3000 1.1Kit/s 2.7s<0.2s
+[K[34m[1mtrain: [0mCaching images (5.7GB RAM): 98% ━━━━━━━━━━━╸ 2949/3000 1.1Kit/s 2.8s<0.0s
+[K[34m[1mtrain: [0mCaching images (5.8GB RAM): 100% ━━━━━━━━━━━━ 3000/3000 1.0Kit/s 2.9s
+
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 0% ──────────── 2/404 5.8it/s 0.1s<1:09
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 0% ──────────── 4/404 9.8it/s 0.2s<41.0s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 6% ╸─────────── 28/404 33.1it/s 0.5s<11.3s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 10% ━─────────── 43/404 58.4it/s 0.6s<6.2s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 12% ━╸────────── 51/404 55.1it/s 0.8s<6.4s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 12% ━╸────────── 52/404 41.2it/s 0.9s<8.5s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 16% ━╸────────── 65/404 64.5it/s 1.0s<5.3s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 19% ━━────────── 78/404 63.4it/s 1.2s<5.1s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 24% ━━╸───────── 97/404 75.1it/s 1.4s<4.1s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 25% ━━━───────── 104/404 62.7it/s 1.6s<4.8s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 31% ━━━╸──────── 127/404 82.3it/s 1.8s<3.4s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 33% ━━━━──────── 137/404 73.2it/s 2.0s<3.6s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 38% ━━━━╸─────── 156/404 102.8it/s 2.1s<2.4s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 40% ━━━━╸─────── 165/404 85.5it/s 2.3s<2.8s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 45% ━━━━━─────── 185/404 117.6it/s 2.4s<1.9s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 48% ━━━━━╸────── 194/404 104.8it/s 2.5s<2.0s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 54% ━━━━━━╸───── 221/404 101.9it/s 2.8s<1.8s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 61% ━━━━━━━───── 247/404 109.8it/s 3.0s<1.4s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 65% ━━━━━━━╸──── 266/404 125.3it/s 3.1s<1.1s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 73% ━━━━━━━━╸─── 298/404 182.0it/s 3.2s<0.6s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 80% ━━━━━━━━━╸── 325/404 208.0it/s 3.3s<0.4s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 88% ━━━━━━━━━━╸─ 358/404 243.8it/s 3.4s<0.2s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 96% ━━━━━━━━━━━╸ 391/404 260.6it/s 3.5s<0.0s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 100% ━━━━━━━━━━━━ 404/404 113.4it/s 3.6s
+    may2 -> test: mAP50=0.7754 P=0.7662 R=0.7021 {'siap_panen': 0.7818786198059438, 'belum': 0.7689433441589202}
+
+=== TRAIN may1 (1-class) ===
+
+[K[34m[1mtrain: [0mCaching images (0.2GB RAM): 3% ──────────── 92/3000 273.0it/s 0.1s<10.7s
+[K[34m[1mtrain: [0mCaching images (0.4GB RAM): 6% ╸─────────── 193/3000 488.9it/s 0.2s<5.7s
+[K[34m[1mtrain: [0mCaching images (0.6GB RAM): 9% ━─────────── 294/3000 635.9it/s 0.3s<4.3s
+[K[34m[1mtrain: [0mCaching images (0.8GB RAM): 13% ━╸────────── 396/3000 750.3it/s 0.4s<3.5s
+[K[34m[1mtrain: [0mCaching images (1.0GB RAM): 16% ━╸────────── 494/3000 817.0it/s 0.5s<3.1s
+[K[34m[1mtrain: [0mCaching images (1.2GB RAM): 19% ━━────────── 597/3000 880.9it/s 0.6s<2.7s
+[K[34m[1mtrain: [0mCaching images (1.4GB RAM): 23% ━━╸───────── 708/3000 949.1it/s 0.7s<2.4s
+[K[34m[1mtrain: [0mCaching images (1.6GB RAM): 27% ━━━───────── 824/3000 1.0Kit/s 0.8s<2.2s
+[K[34m[1mtrain: [0mCaching images (1.8GB RAM): 31% ━━━╸──────── 940/3000 1.1Kit/s 0.9s<2.0s
+[K[34m[1mtrain: [0mCaching images (2.0GB RAM): 35% ━━━━──────── 1052/3000 1.1Kit/s 1.0s<1.8s
+[K[34m[1mtrain: [0mCaching images (2.2GB RAM): 38% ━━━━╸─────── 1164/3000 1.1Kit/s 1.1s<1.7s
+[K[34m[1mtrain: [0mCaching images (2.5GB RAM): 42% ━━━━━─────── 1272/3000 1.1Kit/s 1.2s<1.6s
+[K[34m[1mtrain: [0mCaching images (2.7GB RAM): 45% ━━━━━╸────── 1377/3000 1.1Kit/s 1.3s<1.5s
+[K[34m[1mtrain: [0mCaching images (2.9GB RAM): 49% ━━━━━╸────── 1486/3000 1.1Kit/s 1.4s<1.4s
+[K[34m[1mtrain: [0mCaching images (3.1GB RAM): 53% ━━━━━━────── 1593/3000 1.1Kit/s 1.5s<1.3s
+[K[34m[1mtrain: [0mCaching images (3.3GB RAM): 56% ━━━━━━╸───── 1699/3000 1.1Kit/s 1.6s<1.2s
+[K[34m[1mtrain: [0mCaching images (3.5GB RAM): 60% ━━━━━━━───── 1805/3000 1.1Kit/s 1.7s<1.1s
+[K[34m[1mtrain: [0mCaching images (3.7GB RAM): 63% ━━━━━━━╸──── 1913/3000 1.1Kit/s 1.8s<1.0s
+[K[34m[1mtrain: [0mCaching images (3.9GB RAM): 67% ━━━━━━━━──── 2018/3000 1.1Kit/s 1.9s<0.9s
+[K[34m[1mtrain: [0mCaching images (4.1GB RAM): 70% ━━━━━━━━──── 2124/3000 1.1Kit/s 2.0s<0.8s
+[K[34m[1mtrain: [0mCaching images (4.3GB RAM): 74% ━━━━━━━━╸─── 2236/3000 1.1Kit/s 2.1s<0.7s
+[K[34m[1mtrain: [0mCaching images (4.5GB RAM): 78% ━━━━━━━━━─── 2345/3000 1.1Kit/s 2.2s<0.6s
+[K[34m[1mtrain: [0mCaching images (4.7GB RAM): 81% ━━━━━━━━━╸── 2456/3000 1.1Kit/s 2.3s<0.5s
+[K[34m[1mtrain: [0mCaching images (5.0GB RAM): 85% ━━━━━━━━━━── 2565/3000 1.1Kit/s 2.4s<0.4s
+[K[34m[1mtrain: [0mCaching images (5.1GB RAM): 88% ━━━━━━━━━━╸─ 2666/3000 1.1Kit/s 2.5s<0.3s
+[K[34m[1mtrain: [0mCaching images (5.4GB RAM): 92% ━━━━━━━━━━━─ 2779/3000 1.1Kit/s 2.6s<0.2s
+[K[34m[1mtrain: [0mCaching images (5.6GB RAM): 96% ━━━━━━━━━━━╸ 2894/3000 1.1Kit/s 2.7s<0.1s
+[K[34m[1mtrain: [0mCaching images (5.8GB RAM): 100% ━━━━━━━━━━━━ 3000/3000 1.1Kit/s 2.8s
+
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 0% ──────────── 4/404 6.5it/s 0.2s<1:02
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 4% ╸─────────── 17/404 40.6it/s 0.3s<9.5s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 7% ╸─────────── 32/404 68.7it/s 0.4s<5.4s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 12% ━─────────── 49/404 75.3it/s 0.6s<4.7s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 16% ━╸────────── 66/404 103.1it/s 0.7s<3.3s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 19% ━━────────── 78/404 106.1it/s 0.8s<3.1s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 23% ━━╸───────── 94/404 100.7it/s 1.0s<3.1s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 27% ━━━───────── 112/404 124.3it/s 1.1s<2.3s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 31% ━━━╸──────── 126/404 125.5it/s 1.2s<2.2s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 34% ━━━━──────── 141/404 132.0it/s 1.3s<2.0s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 38% ━━━━╸─────── 156/404 116.0it/s 1.5s<2.1s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 44% ━━━━━─────── 180/404 153.1it/s 1.6s<1.5s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 46% ━━━━━╸────── 189/404 134.0it/s 1.7s<1.6s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 50% ━━━━━━────── 204/404 134.8it/s 1.8s<1.5s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 54% ━━━━━━╸───── 222/404 146.6it/s 1.9s<1.2s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 60% ━━━━━━━───── 246/404 163.6it/s 2.0s<1.0s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 71% ━━━━━━━━╸─── 287/404 225.2it/s 2.1s<0.5s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 80% ━━━━━━━━━╸── 327/404 276.7it/s 2.2s<0.3s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 92% ━━━━━━━━━━━─ 373/404 324.6it/s 2.3s<0.1s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 100% ━━━━━━━━━━━━ 404/404 170.0it/s 2.4s
+    may1 -> test: mAP50=0.8057 P=0.7965 R=0.7087 {'tandan': 0.8056876695987658}
+    may1 -> jul_all: mAP50=0.4720 P=0.5805 R=0.4702 {'tandan': 0.4720344836720896}
+    may1 -> aug_all: mAP50=0.5955 P=0.6626 R=0.5388 {'tandan': 0.5955474934526007}
+
+=== TRAIN dep1 (1-class) ===
+
+[K[34m[1mtrain: [0mCaching images (0.2GB RAM): 6% ╸─────────── 134/2144 402.0it/s 0.1s<5.0s
+[K[34m[1mtrain: [0mCaching images (0.4GB RAM): 12% ━╸────────── 276/2144 702.9it/s 0.2s<2.7s
+[K[34m[1mtrain: [0mCaching images (0.7GB RAM): 19% ━━────────── 410/2144 889.9it/s 0.3s<1.9s
+[K[34m[1mtrain: [0mCaching images (0.9GB RAM): 25% ━━━───────── 548/2144 1.0Kit/s 0.4s<1.5s
+[K[34m[1mtrain: [0mCaching images (1.1GB RAM): 31% ━━━╸──────── 682/2144 1.1Kit/s 0.5s<1.3s
+[K[34m[1mtrain: [0mCaching images (1.3GB RAM): 37% ━━━━╸─────── 814/2144 1.2Kit/s 0.6s<1.1s
+[K[34m[1mtrain: [0mCaching images (1.5GB RAM): 44% ━━━━━─────── 949/2144 1.2Kit/s 0.7s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.7GB RAM): 48% ━━━━━╸────── 1044/2144 1.1Kit/s 0.8s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.8GB RAM): 52% ━━━━━━────── 1120/2144 1.0Kit/s 0.9s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.9GB RAM): 55% ━━━━━━╸───── 1198/2144 951.8it/s 1.0s<1.0s
+[K[34m[1mtrain: [0mCaching images (2.1GB RAM): 59% ━━━━━━━───── 1276/2144 899.9it/s 1.1s<1.0s
+[K[34m[1mtrain: [0mCaching images (2.2GB RAM): 62% ━━━━━━━╸──── 1350/2144 847.1it/s 1.2s<0.9s
+[K[34m[1mtrain: [0mCaching images (2.3GB RAM): 66% ━━━━━━━╸──── 1424/2144 811.4it/s 1.3s<0.9s
+[K[34m[1mtrain: [0mCaching images (2.4GB RAM): 69% ━━━━━━━━──── 1499/2144 789.9it/s 1.4s<0.8s
+[K[34m[1mtrain: [0mCaching images (2.5GB RAM): 73% ━━━━━━━━╸─── 1571/2144 767.6it/s 1.5s<0.7s
+[K[34m[1mtrain: [0mCaching images (2.7GB RAM): 76% ━━━━━━━━━─── 1648/2144 768.3it/s 1.6s<0.6s
+[K[34m[1mtrain: [0mCaching images (2.8GB RAM): 80% ━━━━━━━━━╸── 1718/2144 746.7it/s 1.7s<0.6s
+[K[34m[1mtrain: [0mCaching images (2.9GB RAM): 83% ━━━━━━━━━━── 1800/2144 763.2it/s 1.8s<0.5s
+[K[34m[1mtrain: [0mCaching images (3.0GB RAM): 87% ━━━━━━━━━━── 1876/2144 759.0it/s 1.9s<0.4s
+[K[34m[1mtrain: [0mCaching images (3.1GB RAM): 91% ━━━━━━━━━━╸─ 1953/2144 761.5it/s 2.0s<0.3s
+[K[34m[1mtrain: [0mCaching images (3.3GB RAM): 94% ━━━━━━━━━━━─ 2027/2144 752.8it/s 2.1s<0.2s
+[K[34m[1mtrain: [0mCaching images (3.4GB RAM): 98% ━━━━━━━━━━━╸ 2105/2144 753.0it/s 2.2s<0.1s
+[K[34m[1mtrain: [0mCaching images (3.5GB RAM): 100% ━━━━━━━━━━━━ 2144/2144 942.3it/s 2.3s
+
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 1% ──────────── 7/468 17.4it/s 0.1s<26.5s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 7% ╸─────────── 36/468 58.5it/s 0.3s<7.4s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 13% ━╸────────── 63/468 119.3it/s 0.4s<3.4s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 16% ━╸────────── 76/468 122.5it/s 0.5s<3.2s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 20% ━━────────── 96/468 136.5it/s 0.6s<2.7s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 25% ━━━───────── 118/468 131.4it/s 0.8s<2.7s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 30% ━━━╸──────── 144/468 161.1it/s 0.9s<2.0s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 36% ━━━━──────── 170/468 156.3it/s 1.1s<1.9s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 40% ━━━━╸─────── 188/468 157.8it/s 1.2s<1.8s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 43% ━━━━━─────── 205/468 158.7it/s 1.3s<1.7s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 45% ━━━━━╸────── 215/468 141.0it/s 1.4s<1.8s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 49% ━━━━━╸────── 233/468 129.7it/s 1.6s<1.8s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 53% ━━━━━━────── 250/468 140.0it/s 1.7s<1.6s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 56% ━━━━━━╸───── 264/468 139.8it/s 1.8s<1.5s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 59% ━━━━━━━───── 280/468 142.2it/s 1.9s<1.3s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 63% ━━━━━━━╸──── 298/468 148.2it/s 2.0s<1.1s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 67% ━━━━━━━━──── 316/468 157.2it/s 2.1s<1.0s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 74% ━━━━━━━━╸─── 348/468 195.2it/s 2.2s<0.6s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 82% ━━━━━━━━━╸── 388/468 252.7it/s 2.3s<0.3s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 93% ━━━━━━━━━━━─ 436/468 314.9it/s 2.4s<0.1s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 100% ━━━━━━━━━━━━ 468/468 186.3it/s 2.5s
+    dep1 -> test: mAP50=0.8173 P=0.8142 R=0.7772 {'tandan': 0.8172509560810913}
+    dep1 -> jul_test: mAP50=0.7691 P=0.7819 R=0.7243 {'tandan': 0.7690659178821506}
+    dep1 -> aug_test: mAP50=0.8522 P=0.8519 R=0.8177 {'tandan': 0.8521806634493976}
+    dep1 -> test: mAP50=0.6243 P=0.7066 R=0.6091 {'tandan': 0.6243015112235877}
+
+=== TRAIN dep4 (4-class) ===
+
+[K[34m[1mtrain: [0mCaching images (0.2GB RAM): 5% ╸─────────── 124/2144 364.4it/s 0.1s<5.5s
+[K[34m[1mtrain: [0mCaching images (0.4GB RAM): 12% ━─────────── 258/2144 656.8it/s 0.2s<2.9s
+[K[34m[1mtrain: [0mCaching images (0.6GB RAM): 18% ━━────────── 392/2144 842.3it/s 0.3s<2.1s
+[K[34m[1mtrain: [0mCaching images (0.8GB RAM): 24% ━━╸───────── 526/2144 980.1it/s 0.4s<1.7s
+[K[34m[1mtrain: [0mCaching images (1.1GB RAM): 30% ━━━╸──────── 657/2144 1.1Kit/s 0.5s<1.4s
+[K[34m[1mtrain: [0mCaching images (1.3GB RAM): 36% ━━━━──────── 789/2144 1.1Kit/s 0.6s<1.2s
+[K[34m[1mtrain: [0mCaching images (1.5GB RAM): 42% ━━━━━─────── 914/2144 1.2Kit/s 0.7s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.6GB RAM): 47% ━━━━━╸────── 1019/2144 1.1Kit/s 0.8s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.8GB RAM): 50% ━━━━━━────── 1092/2144 1.0Kit/s 0.9s<1.0s
+[K[34m[1mtrain: [0mCaching images (1.9GB RAM): 54% ━━━━━━╸───── 1170/2144 937.4it/s 1.0s<1.0s
+[K[34m[1mtrain: [0mCaching images (2.0GB RAM): 58% ━━━━━━╸───── 1247/2144 877.9it/s 1.1s<1.0s
+[K[34m[1mtrain: [0mCaching images (2.1GB RAM): 61% ━━━━━━━───── 1320/2144 832.3it/s 1.2s<1.0s
+[K[34m[1mtrain: [0mCaching images (2.2GB RAM): 65% ━━━━━━━╸──── 1396/2144 801.3it/s 1.3s<0.9s
+[K[34m[1mtrain: [0mCaching images (2.4GB RAM): 68% ━━━━━━━━──── 1470/2144 780.4it/s 1.4s<0.9s
+[K[34m[1mtrain: [0mCaching images (2.5GB RAM): 71% ━━━━━━━━╸─── 1543/2144 762.5it/s 1.5s<0.8s
+[K[34m[1mtrain: [0mCaching images (2.6GB RAM): 75% ━━━━━━━━━─── 1616/2144 750.9it/s 1.6s<0.7s
+[K[34m[1mtrain: [0mCaching images (2.7GB RAM): 78% ━━━━━━━━━─── 1689/2144 744.0it/s 1.7s<0.6s
+[K[34m[1mtrain: [0mCaching images (2.8GB RAM): 82% ━━━━━━━━━╸── 1763/2144 742.6it/s 1.8s<0.5s
+[K[34m[1mtrain: [0mCaching images (3.0GB RAM): 85% ━━━━━━━━━━── 1835/2144 732.2it/s 1.9s<0.4s
+[K[34m[1mtrain: [0mCaching images (3.1GB RAM): 88% ━━━━━━━━━━╸─ 1908/2144 726.6it/s 2.0s<0.3s
+[K[34m[1mtrain: [0mCaching images (3.2GB RAM): 92% ━━━━━━━━━━━─ 1985/2144 739.4it/s 2.1s<0.2s
+[K[34m[1mtrain: [0mCaching images (3.3GB RAM): 96% ━━━━━━━━━━━╸ 2062/2144 741.0it/s 2.2s<0.1s
+[K[34m[1mtrain: [0mCaching images (3.4GB RAM): 99% ━━━━━━━━━━━╸ 2136/2144 731.4it/s 2.3s<0.0s
+[K[34m[1mtrain: [0mCaching images (3.5GB RAM): 100% ━━━━━━━━━━━━ 2144/2144 911.7it/s 2.4s
+
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 1% ──────────── 5/468 7.9it/s 0.2s<58.6s
+[K[34m[1mval: [0mCaching images (0.0GB RAM): 6% ╸─────────── 30/468 73.6it/s 0.3s<6.0s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 10% ━─────────── 48/468 83.3it/s 0.5s<5.0s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 14% ━╸────────── 67/468 104.6it/s 0.6s<3.8s
+[K[34m[1mval: [0mCaching images (0.1GB RAM): 17% ━━────────── 81/468 114.9it/s 0.7s<3.4s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 21% ━━╸───────── 101/468 113.1it/s 0.9s<3.2s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 24% ━━╸───────── 116/468 120.7it/s 1.0s<2.9s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 29% ━━━╸──────── 139/468 152.0it/s 1.1s<2.2s
+[K[34m[1mval: [0mCaching images (0.2GB RAM): 31% ━━━╸──────── 149/468 134.3it/s 1.2s<2.4s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 33% ━━━━──────── 159/468 123.8it/s 1.3s<2.5s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 38% ━━━━╸─────── 182/468 124.0it/s 1.5s<2.3s
+[K[34m[1mval: [0mCaching images (0.3GB RAM): 43% ━━━━━─────── 204/468 147.3it/s 1.6s<1.8s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 46% ━━━━━╸────── 219/468 147.5it/s 1.7s<1.7s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 50% ━━━━━━────── 234/468 128.6it/s 1.9s<1.8s
+[K[34m[1mval: [0mCaching images (0.4GB RAM): 55% ━━━━━━╸───── 261/468 162.7it/s 2.0s<1.3s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 61% ━━━━━━━───── 290/468 199.3it/s 2.1s<0.9s
+[K[34m[1mval: [0mCaching images (0.5GB RAM): 70% ━━━━━━━━╸─── 332/468 249.9it/s 2.2s<0.5s
+[K[34m[1mval: [0mCaching images (0.6GB RAM): 81% ━━━━━━━━━╸── 380/468 310.5it/s 2.3s<0.3s
+[K[34m[1mval: [0mCaching images (0.7GB RAM): 91% ━━━━━━━━━━╸─ 428/468 350.4it/s 2.4s<0.1s
+[K[34m[1mval: [0mCaching images (0.8GB RAM): 100% ━━━━━━━━━━━━ 468/468 187.1it/s 2.5s
+    dep4 -> test: mAP50=0.5570 P=0.6121 R=0.5420 {'B1': 0.7267678559580498, 'B2': 0.6056767386929904, 'B3': 0.6480084738282649, 'B4': 0.2476199009393227}
+    dep4 -> test: mAP50=0.1898 P=0.2657 R=0.3057 {'B1': 0.41990069852461076, 'B2': 0.10272440014326417, 'B3': 0.1711772173165854, 'B4': 0.06533316108199838}
+
+DONE
+{
+ "may4": {
+  "may4/test": {
+   "map50": 0.5432699657214073,
+   "map": 0.2598296324442348,
+   "precision": 0.5087042236850566,
+   "recall": 0.5856482830306635,
+   "per_class_map50": {
+    "B1": 0.7588418343805543,
+    "B2": 0.4494533852200796,
+    "B3": 0.6094764027398504,
+    "B4": 0.35530824054514504
+   }
+  }
+ },
+ "may2": {
+  "may2/test": {
+   "map50": 0.775410981982432,
+   "map": 0.39214552618466925,
+   "precision": 0.7661709755253994,
+   "recall": 0.702129427349672,
+   "per_class_map50": {
+    "siap_panen": 0.7818786198059438,
+    "belum": 0.7689433441589202
+   }
+  }
+ },
+ "may1": {
+  "may1/test": {
+   "map50": 0.8056876695987658,
+   "map": 0.3738087612657164,
+   "precision": 0.7964701067672494,
+   "recall": 0.7086523736600306,
+   "per_class_map50": {
+    "tandan": 0.8056876695987658
+   }
+  },
+  "dep1/jul_all": {
+   "map50": 0.4720344836720896,
+   "map": 0.1302759147962238,
+   "precision": 0.5804825782387717,
+   "recall": 0.47020443671161377,
+   "per_class_map50": {
+    "tandan": 0.4720344836720896
+   }
+  },
+  "dep1/aug_all": {
+   "map50": 0.5955474934526007,
+   "map": 0.18409530558869378,
+   "precision": 0.6625825765870204,
+   "recall": 0.538762944304506,
+   "per_class_map50": {
+    "tandan": 0.5955474934526007
+   }
+  }
+ },
+ "dep1": {
+  "dep1/test": {
+   "map50": 0.8172509560810913,
+   "map": 0.3042273042460609,
+   "precision": 0.814229560621332,
+   "recall": 0.7772304811507517,
+   "per_class_map50": {
+    "tandan": 0.8172509560810913
+   }
+  },
+  "dep1/jul_test": {
+   "map50": 0.7690659178821506,
+   "map": 0.29188316437693534,
+   "precision": 0.7819388554128355,
+   "recall": 0.7243243243243244,
+   "per_class_map50": {
+    "tandan": 0.7690659178821506
+   }
+  },
+  "dep1/aug_test": {
+   "map50": 0.8521806634493976,
+   "map": 0.3161601943904647,
+   "precision": 0.8519470492873056,
+   "recall": 0.817658349328215,
+   "per_class_map50": {
+    "tandan": 0.8521806634493976
+   }
+  },
+  "may1/test": {
+   "map50": 0.6243015112235877,
+   "map": 0.22174947197509084,
+   "precision": 0.7065953143875483,
+   "recall": 0.6091117917304747,
+   "per_class_map50": {
+    "tandan": 0.6243015112235877
+   }
+  }
+ },
+ "dep4": {
+  "dep4/test": {
+   "map50": 0.5570182423546569,
+   "map": 0.2102734793451077,
+   "precision": 0.6120881309458908,
+   "recall": 0.5420036308557037,
+   "per_class_map50": {
+    "B1": 0.7267678559580498,
+    "B2": 0.6056767386929904,
+    "B3": 0.6480084738282649,
+    "B4": 0.2476199009393227
+   }
+  },
+  "may4/test": {
+   "map50": 0.18978386926661467,
+   "map": 0.06707489013588583,
+   "precision": 0.2656639955627395,
+   "recall": 0.3057392281284197,
+   "per_class_map50": {
+    "B1": 0.41990069852461076,
+    "B2": 0.10272440014326417,
+    "B3": 0.1711772173165854,
+    "B4": 0.06533316108199838
+   }
+  }
+ }
+}
