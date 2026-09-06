@@ -434,3 +434,56 @@ sehingga ambang toleransi ±1 relatif longgar terhadap besarannya; angka ini
 tidak sebanding langsung dengan ±1 pada cacah total yang reratanya `10,17`.
 Cacah total masih di bawah hasil terkunci proyek, konsisten dengan penaut yang
 lebih lemah pada `AF-E-012`.
+
+---
+
+## AF-E-014 — Sweep dijalankan ulang dengan `UF` yang benar, dan koreksi atas `AF-E-010`
+
+**Rancangan.** Setelah perbaikan `AF-E-010` diterapkan, seluruh penelusuran
+parameter dijalankan ulang dengan **grid yang persis sama** dengan berkas hasil
+lama (`proposal_min` 9 nilai × `link_threshold` 10 nilai × `singleton_min`
+7 nilai = 630 konfigurasi, `max_size` 3, `pair_mode` "all", `vote_mode`
+softvote, split test), memakai dump WBF `combined1716` yang sudah tersimpan di
+repositori. Skrip: `scripts/sweep_remote_pipeline.py` (versi diperbaiki) dan
+`scripts/audit_forensik/uf_impact.py`.
+
+**Temuan empiris terukur.**
+
+| Kumpulan | Profil terbaik | F1 lama → baru | MAE lama → baru | Konfigurasi berubah |
+|---|---|---|---|---:|
+| 953 | proposal `0,10`, tautan `0,20`, singleton `0,25` | `0,8068 → 0,8068` | `1,719 → 1,719` | **0 dari 630** |
+| Depth | idem berkas lama | `0,8231 → 0,8231` | `1,091 → 1,091` | **0 dari 630** |
+
+Pengukuran pelanggaran kendala pada daftar tepi yang **sebenarnya dipakai**
+sweep — yaitu setelah `linear_sum_assignment` per pasangan sisi:
+
+| `pair_mode` | `max_size` | Klaster melanggar (versi cacat) | Δ jumlah klaster setelah diperbaiki |
+|---|---:|---:|---:|
+| `all` | 2 | 0,00% | 0 |
+| `all` | 3 | 0,00% | 0 |
+| `all` | **4** | **7,95%** | **+60** |
+| `adjacent` | 2, 3, 4 | 0,00% | 0 |
+
+**Keputusan metodologis — koreksi terhadap `AF-E-010`.** Angka `45,3%` pada
+`AF-E-010` **melebih-lebihkan dampak operasional cacat tersebut**. Angka itu
+diukur pada daftar tepi geometri sederhana tanpa penugasan Hungarian,
+sedangkan jalur sweep yang sebenarnya menerapkan `linear_sum_assignment` pada
+setiap pasangan sisi lebih dahulu. Penugasan satu-lawan-satu itu membuat satu
+deteksi hanya dapat memiliki satu tepi per pasangan sisi, sehingga membentuk
+klaster dengan dua anggota dari sisi yang sama memerlukan **tiga pasangan sisi
+berbeda** — mustahil bila anggotanya paling banyak tiga. Cacat itu karena itu
+**dorman untuk seluruh profil yang pernah dikunci proyek**: `V2-E-043` memakai
+maksimum dua anggota, `V2-E-045` memakai tiga anggota bersebelahan.
+
+Perbaikannya tetap dipertahankan karena ia mencegah kegagalan nyata pada
+`max_size ≥ 4` dengan `pair_mode` "all" — konfigurasi yang ada di dalam ruang
+pencarian dan dipakai oleh jangkar Hungarian A pada `GSP_LINKER` (`max_size` 4).
+Namun perbaikan ini **tidak mengubah satu pun angka test terkunci**, dan
+penilaian `docs/ANALISIS_PIPELINE_MENDALAM.md` §5.5 bahwa cacat tersebut dorman
+terbukti benar.
+
+**Batasan validitas.** Verifikasi ini memakai bank `combined1716` dengan
+`vote_mode` softvote pada split test. Jangkar Hungarian A pada `GSP_LINKER`
+memakai `max_size` 4; profil itu berada di wilayah tempat cacat aktif dan
+**belum** dijalankan ulang di sini karena dump serta jalur evaluasinya berbeda.
+Itu adalah satu-satunya profil terkunci yang masih perlu diperiksa ulang.

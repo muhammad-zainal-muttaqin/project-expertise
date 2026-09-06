@@ -4,7 +4,7 @@ Dokumen ini memuat sintesis, kronologi kerja, dan rekomendasi dari audit
 independen terhadap korpus dan pipeline `project-expertise`. Seluruh angka
 dihitung ulang dari data mentah; log eksperimen berformat *append-only* berada
 pada [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../experiments/AUDIT-FORENSIK-2026-09-06.md)
-dengan penomoran `AF-E-001` sampai `AF-E-013`.
+dengan penomoran `AF-E-001` sampai `AF-E-014`.
 
 > [!NOTE]
 > Audit ini bersifat **aditif**. Tidak ada entri eksperimen, metrik, atau
@@ -136,11 +136,21 @@ memberi `+0,0058` makro-F1 (`0,6470 → 0,6528`), jauh di bawah `+0,0220` yang
 diperoleh pada kotak acuan. Komponen ini layak dipertahankan karena biayanya
 nol, tetapi bukan pengungkit besar.
 
-### 3.5 Cacat kendala sisi masih aktif
+### 3.5 Cacat kendala sisi masih ada, tetapi dorman (dikoreksi pada `AF-E-014`)
 
 `scripts/sweep_remote_pipeline.py:123` mengisi himpunan sisi dengan indeks
-proposal. Pada proposal nyata, `45,3%` klaster memuat dua deteksi atau lebih
-dari sisi fisik yang sama; versi yang diperbaiki menghasilkan `0,0%`.
+proposal, bukan sisi fisik. Cacat itu nyata dan sudah diperbaiki.
+
+Namun besarnya dampak yang semula saya laporkan **keliru dan sudah dikoreksi
+pada `AF-E-014`**. Angka `45,3%` pada `AF-E-010` diukur pada daftar tepi
+geometri sederhana tanpa penugasan Hungarian. Pada jalur sweep yang sebenarnya —
+yang menerapkan `linear_sum_assignment` per pasangan sisi lebih dahulu —
+pelanggarannya `0,00%` untuk `max_size ≤ 3` pada kedua mode pasangan, dan baru
+muncul (`7,95%`) pada `max_size 4` dengan `pair_mode` "all". Menjalankan ulang
+seluruh grid 630 konfigurasi pada 953 dan Depth menghasilkan **nol perubahan**:
+profil terbaik, F1 fisik, dan MAE seluruhnya identik. Penilaian
+`docs/ANALISIS_PIPELINE_MENDALAM.md` §5.5 bahwa cacat ini dorman terbukti benar,
+dan tidak ada angka test terkunci yang berubah karenanya.
 
 ---
 
@@ -150,7 +160,7 @@ Diurutkan menurut rasio dampak terhadap biaya.
 
 | # | Tindakan | Biaya | Dasar bukti |
 |---|---|---|---|
-| 1 | Perbaiki `UF.sides` menjadi `{dets[i]["side"]}`, lalu jalankan ulang seluruh penelusuran parameter | jam | `AF-E-010` |
+| 1 | ~~Perbaiki `UF.sides`, lalu jalankan ulang penelusuran parameter~~ **sudah dikerjakan**; hasilnya nol perubahan pada 630 konfigurasi, kecuali profil `max_size 4` yang masih perlu diperiksa | selesai | `AF-E-010`, `AF-E-014` |
 | 2 | Definisikan ulang target rekayasa ke taksonomi dua kelas; laporkan empat kelas sebagai metrik ordinal ±1 | jam | `AF-E-005`, `AF-E-006` |
 | 3 | Ganti besaran pencacahan utama menjadi cacah tandan siap panen per pohon dengan toleransi ±1 | jam | `AF-E-004`, `AF-E-008` |
 | 4 | Audit kelengkapan dan konvensi anotasi lintas-kampanye oleh anotator, berstrata | hari | `AF-E-001`, `AF-E-007` |
