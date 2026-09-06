@@ -1,34 +1,6 @@
 # Atlas Metrik: Klasifikasi Tingkat Kematangan Citra Terpotong (*Crop*)
 
-Dokumen ini merangkum seluruh hasil eksperimen klasifikasi kematangan tandan buah segar kelapa sawit 4 kelas ordinal (**B1**: Mentah, **B2**: Mengkal/Matang Awal, **B3**: Matang, **B4**: Lewat Matang)
-
-> [!WARNING]
-> **Ketidaksesuaian definisi kelas yang belum diselesaikan (temuan audit `AF-E-013`).**
-> Baris pembuka di atas mendefinisikan B1 sebagai *mentah* dan B4 sebagai *lewat
-> matang*. Definisi tersebut **berlawanan arah** dengan tiga sumber lain:
->
-> 1. Kartu dataset resmi `ULM-DS-Lab/SawitMVC-YOLO`: "B1 — Ripe — red, large,
->    round; optimal harvest stage" dan "B4 — Very unripe — small, deeply
->    positioned, black to green", dengan pernyataan eksplisit
->    *"Biological order: B1 → B4 from most ripe to least ripe"*.
-> 2. [`docs/DATASET.md`](../docs/DATASET.md) §1: B1 lewat matang/siap panen
->    berwarna jingga-kemerahan cerah; B4 mentah/muda berwarna hitam kehijauan.
-> 3. Dua sinyal data yang saling menguatkan: ukuran kotak median monoton
->    menurun `B1 → B4` pada **ketiga** korpus (953: `133/120/107/93` piksel),
->    dan relief kedalaman pada [`docs/DIAGNOSIS-DEPTH.md`](../docs/DIAGNOSIS-DEPTH.md)
->    §4 menunjukkan B1 menonjol `+2,8 cm` sedangkan B4 tertanam `−5,1 cm` —
->    konsisten dengan B4 "deeply positioned".
->
-> Arah yang sama juga terbalik pada [`docs/EDA-COMBINED1716.md`](../docs/EDA-COMBINED1716.md) §2
-> dan [`docs/LAPORAN-AKHIR.md`](../docs/LAPORAN-AKHIR.md) §3.
->
-> Audit **tidak mengubah** definisi mana pun karena pilihan itu milik pemelihara
-> repositori. Yang perlu diketahui pembaca: seluruh baris `AF-E-###` pada atlas
-> ini memakai arah **kartu dataset resmi**, sehingga "B1 siap panen" pada
-> [`03_pencacahan_per_pohon.md`](03_pencacahan_per_pohon.md) dan
-> [`05_pipeline_end_to_end.md`](05_pipeline_end_to_end.md) merujuk tandan
-> **matang**, bukan mentah. Penyelarasan istilah lintas dokumen perlu diputuskan
-> sebelum publikasi. menggunakan model pengklasifikasi terpisah pada wilayah objek terpotong (*bounding box crop*), fungsi rugi ordinal khusus (CORAL, CORN), evaluasi multi-tampak (C1–C3), serta aturan keputusan per tandan (R0–R4).
+Dokumen ini merangkum seluruh hasil eksperimen klasifikasi kematangan tandan buah segar kelapa sawit 4 kelas ordinal (**B1**: Lewat Matang / Siap Panen, **B2**: Matang Optimal, **B3**: Matang Awal / Mengkal, **B4**: Mentah / Muda) menggunakan model pengklasifikasi terpisah pada wilayah objek terpotong (*bounding box crop*), fungsi rugi ordinal khusus (CORAL, CORN), evaluasi multi-tampak (C1–C3), serta aturan keputusan per tandan (R0–R4).
 
 ---
 

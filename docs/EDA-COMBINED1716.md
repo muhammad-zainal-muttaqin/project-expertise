@@ -35,12 +35,12 @@ python scripts/build_combined_rgb_dataset.py \
 
 | Kategori Kematangan | Jumlah Kotak | Proporsi Relatif |
 |---|---|---|
-| Mentah (B1) | 3.166 | 13,0% |
-| Matang Awal (B2) | 5.558 | 22,8% |
-| Matang Optimal (B3) | 11.952 | 49,0% |
-| Lewat Matang (B4) | 3.736 | 15,3% |
+| Lewat Matang / Siap Panen (B1) | 3.166 | 13,0% |
+| Matang Optimal (B2) | 5.558 | 22,8% |
+| Matang Awal / Mengkal (B3) | 11.952 | 49,0% |
+| Mentah / Muda (B4) | 3.736 | 15,3% |
 
-Rasio kelas mayoritas terhadap minoritas mencapai **$3,8\times$** (B3 terhadap B1). Kelas B4 merupakan kelas paling langka pada ketiga partisi, selaras dengan fenomena agronomi di mana buah lewat matang dipanen lebih cepat.
+Rasio kelas mayoritas terhadap minoritas mencapai **$3,8\times$** (B3 terhadap B1). Kelas B1 merupakan kelas paling langka pada ketiga partisi, selaras dengan fenomena agronomi di mana tandan yang sudah siap panen segera dipanen sehingga jarang terekam.
 
 ![Distribusi Kelas](eda_figures_combined1716/01_distribusi_kelas.png)
 *Gambar 1: Distribusi frekuensi total kotak pembatas per kelas kematangan.*
@@ -54,10 +54,10 @@ Rasio kelas mayoritas terhadap minoritas mencapai **$3,8\times$** (B3 terhadap B
 
 | Kategori Kematangan | Proporsi SawitMVC ($n = 18.540$) | Proporsi Depth-RGB ($n = 5.872$) |
 |---|---|---|
-| Mentah (B1) | 2.032 ($11,0\%$) | 1.134 ($19,3\%$) |
-| Matang Awal (B2) | 3.500 ($18,9\%$) | 2.058 ($35,0\%$) |
-| Matang Optimal (B3) | 9.701 ($52,3\%$) | 2.251 ($38,3\%$) |
-| Lewat Matang (B4) | 3.307 ($17,8\%$) | 429 ($7,3\%$) |
+| Lewat Matang / Siap Panen (B1) | 2.032 ($11,0\%$) | 1.134 ($19,3\%$) |
+| Matang Optimal (B2) | 3.500 ($18,9\%$) | 2.058 ($35,0\%$) |
+| Matang Awal / Mengkal (B3) | 9.701 ($52,3\%$) | 2.251 ($38,3\%$) |
+| Mentah / Muda (B4) | 3.307 ($17,8\%$) | 429 ($7,3\%$) |
 
 ![Distribusi Kelas per Sumber](eda_figures_combined1716/03_distribusi_kelas_per_sumber.png)
 *Gambar 3: Perbandingan proporsi kelas kematangan antara sumber SawitMVC dan Depth-RGB.*
