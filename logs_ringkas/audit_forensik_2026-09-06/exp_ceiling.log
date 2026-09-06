@@ -1,0 +1,10 @@
+=== CEILING: perfect boxes + learned maturity classifier (953 test) ===
+  argmax-only  B1=0.6748  B2=0.2832  B3=0.6006  B4=0.3811   ->  mAP50 = 0.4849
+  all-classes  B1=0.7653  B2=0.4912  B3=0.7625  B4=0.6088   ->  mAP50 = 0.6569
+  oracle-class B1=1.0000  B2=1.0000  B3=1.0000  B4=1.0000   ->  mAP50 = 1.0000   (sanity: must be 1.0)
+
+  per-view class accuracy of this model: 0.6612
+  project's best reported class-aware mAP50 on 953 test: 0.5970 (with real detectors)
+  [B1 vs rest (harvest decision) ] mAP50 = 0.8766   per-class 0.765 0.988
+  [B1+B2 vs B3+B4                ] mAP50 = 0.8891   per-class 0.835 0.943
+  [B1 / B2 / B3+B4               ] mAP50 = 0.7332   per-class 0.765 0.491 0.943

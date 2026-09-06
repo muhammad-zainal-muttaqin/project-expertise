@@ -1,0 +1,14 @@
+
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m.pt to 'yolo26m.pt': 17% ━━────────── 7.4/42.2MB 74.2MB/s 0.1s<0.5s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m.pt to 'yolo26m.pt': 44% ━━━━━─────── 18.6/42.2MB 111.5MB/s 0.2s<0.2s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m.pt to 'yolo26m.pt': 70% ━━━━━━━━──── 29.8/42.2MB 111.7MB/s 0.3s<0.1s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m.pt to 'yolo26m.pt': 97% ━━━━━━━━━━━╸ 41.0/42.2MB 111.8MB/s 0.4s<0.0s
+[KDownloading https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26m.pt to 'yolo26m.pt': 100% ━━━━━━━━━━━━ 42.2MB 102.6MB/s 0.4s
+
+[KDownloading https://ultralytics.com/assets/Arial.ttf to '/home/claudeuser/.config/Ultralytics/Arial.ttf': 100% ━━━━━━━━━━━━ 755.1KB 12.7MB/s 0.1s
+
+
+
+
+AGNOSTIK test AP50=0.8104 P=0.7942 R=0.7271
+DET DONE

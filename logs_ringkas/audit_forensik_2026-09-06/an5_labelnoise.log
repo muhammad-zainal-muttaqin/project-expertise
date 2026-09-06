@@ -1,0 +1,31 @@
+
+=== MAY 953 (all trees) ===
+  multi-view bunches: 7328
+  bunches whose OWN views disagree on class: 0 (0.00%)
+  disagreement spread: 
+  most common disagreeing pairs: 
+  declared bunch class not among its view labels: 0
+
+=== JULY Depth (352 trees) ===
+  multi-view bunches: 841
+  bunches whose OWN views disagree on class: 2 (0.24%)
+  disagreement spread: |d|=1:1  |d|=2:1
+  most common disagreeing pairs: B1/B2:1  B1/B3:1
+  declared bunch class not among its view labels: 0
+
+=== AUGUST Depth (411 trees) ===
+  multi-view bunches: 1184
+  bunches whose OWN views disagree on class: 0 (0.00%)
+  disagreement spread: 
+  most common disagreeing pairs: 
+  declared bunch class not among its view labels: 0
+
+=== class codes present in bunch records ===
+  953: {'B3': 5067, 'B2': 1791, 'B1': 954, 'B4': 2011}
+  July: {'B1': 457, 'B3': 212, 'B2': 620, 'B4': 111, 'U': 3}
+  Aug: {'B1': 189, 'B2': 702, 'B3': 1243, 'B4': 227, 'U': 7}
+
+=== same-bunch box-size variability across views (log2 ratio max/min) ===
+  953: n=3056 median=0.35 p90=0.85 (fraction >1 octave in linear size: 5.9%)
+  July: n=841 median=0.24 p90=0.54 (fraction >1 octave in linear size: 0.8%)
+  Aug: n=1184 median=0.25 p90=0.63 (fraction >1 octave in linear size: 1.6%)

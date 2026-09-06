@@ -1,0 +1,32 @@
+{
+ "mei_test": {
+  "kind": {
+   "nested": 59,
+   "orphan": 16,
+   "shifted": 4,
+   "tp": 1123
+  },
+  "size_ratio_median": 1.0027371441080457,
+  "iou_median": 0.7777629138181716
+ },
+ "juli": {
+  "kind": {
+   "nested": 185,
+   "orphan": 7,
+   "shifted": 1,
+   "tp": 657
+  },
+  "size_ratio_median": 0.8691495827353555,
+  "iou_median": 0.6526706687574182
+ },
+ "agustus": {
+  "kind": {
+   "nested": 188,
+   "orphan": 6,
+   "shifted": 1,
+   "tp": 1135
+  },
+  "size_ratio_median": 0.922334901756168,
+  "iou_median": 0.6837542342786462
+ }
+}

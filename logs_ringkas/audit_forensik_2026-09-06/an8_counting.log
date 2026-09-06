@@ -1,0 +1,21 @@
+=== appearance count by class (all 953 trees) ===
+class       n   1 view       2       3      4+
+B1        954   11.6%   70.0%   13.9%    4.4%
+B2       1791   23.4%   62.6%   10.7%    3.4%
+B3       5067   22.7%   66.4%    8.6%    2.3%
+B4       2011   40.5%   55.2%    3.7%    0.5%
+
+=== per-tree duplication factor k = boxes / unique bunches ===
+  train: mean=1.905 sd=0.384 p10=1.57 p90=2.25
+  test : mean=1.894 sd=0.395
+  [oracle boxes] boxes / mean k   MAE=1.217  exact=0.304  ±1=0.754
+  [oracle boxes] boxes / 1.887    MAE=1.225  exact=0.290  ±1=0.761
+
+=== per-class counting from ORACLE boxes (upper bound of the counting head) ===
+  B1: MAE=0.101  exact=0.899  ±1=1.000
+  B2: MAE=0.239  exact=0.768  ±1=0.993
+  B3: MAE=0.638  exact=0.428  ±1=0.942
+  B4: MAE=0.268  exact=0.739  ±1=0.993
+  TOTAL: MAE=1.058  exact=0.290  ±1=0.754
+  macro-MAE (mean of per-class MAE) = 0.312
+  reference: project baseline (real detections) Ridge macro-MAE 1.036, class±1 77.5%

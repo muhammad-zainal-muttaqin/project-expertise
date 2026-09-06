@@ -1,0 +1,11 @@
+  target acc | simulated 4-class mAP50 (perfect boxes)
+     0.661   ->   mAP50 = 0.5873
+     0.700   ->   mAP50 = 0.6343
+     0.750   ->   mAP50 = 0.6810
+     0.800   ->   mAP50 = 0.7352
+     0.850   ->   mAP50 = 0.7883
+     0.900   ->   mAP50 = 0.8471
+     0.950   ->   mAP50 = 0.9267
+     1.000   ->   mAP50 = 1.0000
+
+  observed per-view class accuracy of every backbone tried in this project: 0.62-0.70

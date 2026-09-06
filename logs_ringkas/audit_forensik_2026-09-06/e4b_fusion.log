@@ -1,0 +1,15 @@
+{'train': 14034, 'val': 1766, 'test': 2466}
+
+--- tala w di VAL ---
+   w=0    acc=0.6625 macroF1=0.6332
+   w=0.1  acc=0.6631 macroF1=0.6340
+   w=0.2  acc=0.6642 macroF1=0.6370
+   w=0.3  acc=0.6648 macroF1=0.6388
+   w=0.4  acc=0.6682 macroF1=0.6433
+   w=0.6  acc=0.6727 macroF1=0.6491
+   w=0.8  acc=0.6744 macroF1=0.6508
+   w=1.0  acc=0.6716 macroF1=0.6476
+  -> w terpilih = 0.8
+  penampilan saja                    acc=0.6951 macroF1=0.6470 ±1=0.9943
+  struktur saja                      acc=0.5669 macroF1=0.3973 ±1=0.9152
+  penampilan + struktur (w=0.8)      acc=0.6963 macroF1=0.6528 ±1=0.9935

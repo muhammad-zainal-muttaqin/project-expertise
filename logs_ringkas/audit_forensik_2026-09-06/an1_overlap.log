@@ -1,0 +1,50 @@
+953 trees: 953   763 trees: 763
+763 breakdown: DAMIMAS(July)=352  other(Aug)=411
+  Aug prefixes: Counter({'TOPAZ': 335, 'MARIHAT': 76})
+
+Trees present in BOTH 953(May) and 763(Jul): 352
+
+=== SAME 352 TREES: May(953) vs July(Depth) ===
+sides: May=1408  Jul=1408
+boxes: May=6523 (4.63/img)   Jul=2299 (1.63/img)   ratio=2.84x
+empty sides: May=16 (1.1%)   Jul=200 (14.2%)
+class              May    May%     Jul    Jul%     drop
+B1(ripe)           566    8.7%     829   36.1%     0.7x
+B2(trans)         1098   16.8%    1001   43.5%     1.1x
+B3(unripe)        3604   55.3%     321   14.0%    11.2x
+B4(v.unripe)      1255   19.2%     148    6.4%     8.5x
+
+per-tree box delta (May-Jul): mean=12.00 median=12.0 min=-13 max=28
+trees where Jul >= May: 19 / 352
+
+953 / SawitMVC-YOLO (May): 953 trees, 3992 images, 18540 boxes (4.64/img)
+   B1(ripe)=11.0%  B2(trans)=18.9%  B3(unripe)=52.3%  B4(v.unripe)=17.8%
+
+763 subset: July DAMIMAS: 352 trees, 1408 images, 2299 boxes (1.63/img)
+   B1(ripe)=36.1%  B2(trans)=43.5%  B3(unripe)=14.0%  B4(v.unripe)=6.4%
+
+763 subset: August MARIHAT/TOPAZ: 411 trees, 1644 images, 3573 boxes (2.17/img)
+   B1(ripe)=8.5%  B2(trans)=29.6%  B3(unripe)=54.0%  B4(v.unripe)=7.9%
+
+953 (portrait phone) (img 960x1280), n=18540
+  norm area   : p5=0.00262 p50=0.00975 p95=0.03434
+  sqrt(px)    : p5=56.8 p50=109.4 p95=205.4
+  aspect w/h  : p5=0.81 p50=1.25 p95=1.76
+  tiny (<16px): 0.04%   small(<32px): 0.19%
+
+763-July (Orbbec landscape) (img 1280x800), n=2299
+  norm area   : p5=0.00686 p50=0.01875 p95=0.04027
+  sqrt(px)    : p5=83.8 p50=138.6 p95=203.1
+  aspect w/h  : p5=0.37 p50=0.56 p95=0.76
+  tiny (<16px): 0.00%   small(<32px): 0.00%
+
+763-August (Orbbec landscape) (img 1280x800), n=3573
+  norm area   : p5=0.01015 p50=0.02853 p95=0.05859
+  sqrt(px)    : p5=101.9 p50=170.9 p95=244.9
+  aspect w/h  : p5=0.39 p50=0.57 p95=0.79
+  tiny (<16px): 0.00%   small(<32px): 0.00%
+
+=== per-class box size (sqrt px) ===
+  953: B1(ripe)=133  B2(trans)=120  B3(unripe)=107  B4(v.unripe)=93
+  Jul: B1(ripe)=154  B2(trans)=137  B3(unripe)=122  B4(v.unripe)=109
+  Aug: B1(ripe)=188  B2(trans)=182  B3(unripe)=166  B4(v.unripe)=140

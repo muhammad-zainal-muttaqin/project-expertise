@@ -1,0 +1,90 @@
+=== keduanya selesai, menjalankan pipeline ===
+pohon empat sisi: 901 dari 953
+=== deteksi ===
+  train: 714 pohon, 24844 deteksi
+  val: 96 pohon, 3395 deteksi
+  test: 140 pohon, 4704 deteksi
+=== melatih penaut tepi pada TRAIN ===
+  pasangan latih 220202, positif 10069
+  VAL tepi AUC=0.9064 AP=0.3609
+PIPELINE STAGE-1 DONE
+pohon empat sisi: 901 dari 953
+VAL 91 pohon · TEST 132 pohon
+  conf=0.2 link=0.3 size=2 single=0.3 -> J=3.4334 F1=0.7349 MAE=2.648 ±1=0.308 matang±1=0.681
+  conf=0.2 link=0.3 size=2 single=0.45 -> J=3.5469 F1=0.7574 MAE=2.132 ±1=0.374 matang±1=0.692
+  conf=0.2 link=0.3 size=2 single=0.6 -> J=3.3879 F1=0.7316 MAE=3.275 ±1=0.253 matang±1=0.681
+  conf=0.2 link=0.3 size=3 single=0.3 -> J=3.4531 F1=0.7367 MAE=2.516 ±1=0.308 matang±1=0.692
+  conf=0.2 link=0.3 size=3 single=0.45 -> J=3.5621 F1=0.7593 MAE=2.253 ±1=0.352 matang±1=0.714
+  conf=0.2 link=0.3 size=3 single=0.6 -> J=3.4097 F1=0.7289 MAE=3.330 ±1=0.242 matang±1=0.703
+  conf=0.2 link=0.45 size=2 single=0.3 -> J=3.2605 F1=0.7103 MAE=3.330 ±1=0.231 matang±1=0.637
+  conf=0.2 link=0.45 size=2 single=0.45 -> J=3.5847 F1=0.7355 MAE=2.264 ±1=0.440 matang±1=0.692
+  conf=0.2 link=0.45 size=2 single=0.6 -> J=3.2467 F1=0.6911 MAE=3.912 ±1=0.187 matang±1=0.659
+  conf=0.2 link=0.45 size=3 single=0.3 -> J=3.2510 F1=0.7121 MAE=3.231 ±1=0.220 matang±1=0.637
+  conf=0.2 link=0.45 size=3 single=0.45 -> J=3.5909 F1=0.7366 MAE=2.286 ±1=0.429 matang±1=0.703
+  conf=0.2 link=0.45 size=3 single=0.6 -> J=3.2509 F1=0.6903 MAE=3.956 ±1=0.176 matang±1=0.670
+  conf=0.2 link=0.6 size=2 single=0.3 -> J=3.1418 F1=0.6828 MAE=4.209 ±1=0.187 matang±1=0.604
+  conf=0.2 link=0.6 size=2 single=0.45 -> J=3.5290 F1=0.7137 MAE=2.187 ±1=0.440 matang±1=0.670
+  conf=0.2 link=0.6 size=2 single=0.6 -> J=3.2002 F1=0.6556 MAE=4.176 ±1=0.165 matang±1=0.670
+  conf=0.2 link=0.6 size=3 single=0.3 -> J=3.1412 F1=0.6825 MAE=4.176 ±1=0.187 matang±1=0.604
+  conf=0.2 link=0.6 size=3 single=0.45 -> J=3.5338 F1=0.7135 MAE=2.220 ±1=0.429 matang±1=0.681
+  conf=0.2 link=0.6 size=3 single=0.6 -> J=3.1873 F1=0.6542 MAE=4.209 ±1=0.154 matang±1=0.670
+  conf=0.3 link=0.3 size=2 single=0.3 -> J=3.4772 F1=0.7352 MAE=2.429 ±1=0.352 matang±1=0.681
+  conf=0.3 link=0.3 size=2 single=0.45 -> J=3.5482 F1=0.7480 MAE=2.330 ±1=0.385 matang±1=0.692
+  conf=0.3 link=0.3 size=2 single=0.6 -> J=3.3151 F1=0.7142 MAE=3.659 ±1=0.220 matang±1=0.670
+  conf=0.3 link=0.3 size=3 single=0.3 -> J=3.5311 F1=0.7381 MAE=2.308 ±1=0.352 matang±1=0.714
+  conf=0.3 link=0.3 size=3 single=0.45 -> J=3.5702 F1=0.7512 MAE=2.440 ±1=0.385 matang±1=0.703
+  conf=0.3 link=0.3 size=3 single=0.6 -> J=3.3355 F1=0.7148 MAE=3.736 ±1=0.220 matang±1=0.681
+  conf=0.3 link=0.45 size=2 single=0.3 -> J=3.2885 F1=0.7089 MAE=3.231 ±1=0.242 matang±1=0.648
+  conf=0.3 link=0.45 size=2 single=0.45 -> J=3.6001 F1=0.7323 MAE=2.264 ±1=0.440 matang±1=0.703
+  conf=0.3 link=0.45 size=2 single=0.6 -> J=3.2242 F1=0.6839 MAE=4.044 ±1=0.154 matang±1=0.670
+  conf=0.3 link=0.45 size=3 single=0.3 -> J=3.3229 F1=0.7107 MAE=3.132 ±1=0.242 matang±1=0.670
+  conf=0.3 link=0.45 size=3 single=0.45 -> J=3.6012 F1=0.7338 MAE=2.275 ±1=0.440 matang±1=0.703
+  conf=0.3 link=0.45 size=3 single=0.6 -> J=3.2120 F1=0.6830 MAE=4.088 ±1=0.143 matang±1=0.670
+  conf=0.3 link=0.6 size=2 single=0.3 -> J=3.1414 F1=0.6825 MAE=4.187 ±1=0.187 matang±1=0.604
+  conf=0.3 link=0.6 size=2 single=0.45 -> J=3.5280 F1=0.7130 MAE=2.198 ±1=0.440 matang±1=0.670
+  conf=0.3 link=0.6 size=2 single=0.6 -> J=3.1809 F1=0.6534 MAE=4.187 ±1=0.165 matang±1=0.659
+  conf=0.3 link=0.6 size=3 single=0.3 -> J=3.1682 F1=0.6822 MAE=4.154 ±1=0.198 matang±1=0.615
+  conf=0.3 link=0.6 size=3 single=0.45 -> J=3.5329 F1=0.7128 MAE=2.231 ±1=0.429 matang±1=0.681
+  conf=0.3 link=0.6 size=3 single=0.6 -> J=3.1681 F1=0.6520 MAE=4.220 ±1=0.154 matang±1=0.659
+  conf=0.4 link=0.3 size=2 single=0.3 -> J=3.5514 F1=0.7472 MAE=2.176 ±1=0.418 matang±1=0.681
+  conf=0.4 link=0.3 size=2 single=0.45 -> J=3.5018 F1=0.7347 MAE=2.527 ±1=0.341 matang±1=0.703
+  conf=0.4 link=0.3 size=2 single=0.6 -> J=3.1778 F1=0.6832 MAE=4.176 ±1=0.132 matang±1=0.659
+  conf=0.4 link=0.3 size=3 single=0.3 -> J=3.5636 F1=0.7479 MAE=2.253 ±1=0.396 matang±1=0.703
+  conf=0.4 link=0.3 size=3 single=0.45 -> J=3.5149 F1=0.7361 MAE=2.637 ±1=0.352 matang±1=0.703
+  conf=0.4 link=0.3 size=3 single=0.6 -> J=3.1942 F1=0.6819 MAE=4.242 ±1=0.132 matang±1=0.670
+  conf=0.4 link=0.45 size=2 single=0.3 -> J=3.5197 F1=0.7320 MAE=2.176 ±1=0.418 matang±1=0.670
+  conf=0.4 link=0.45 size=2 single=0.45 -> J=3.5526 F1=0.7257 MAE=2.385 ±1=0.385 matang±1=0.714
+  conf=0.4 link=0.45 size=2 single=0.6 -> J=3.1447 F1=0.6676 MAE=4.297 ±1=0.110 matang±1=0.659
+  conf=0.4 link=0.45 size=3 single=0.3 -> J=3.5364 F1=0.7326 MAE=2.187 ±1=0.418 matang±1=0.681
+  conf=0.4 link=0.45 size=3 single=0.45 -> J=3.5363 F1=0.7263 MAE=2.418 ±1=0.385 matang±1=0.703
+  conf=0.4 link=0.45 size=3 single=0.6 -> J=3.1433 F1=0.6667 MAE=4.341 ±1=0.110 matang±1=0.659
+  conf=0.4 link=0.6 size=2 single=0.3 -> J=3.4225 F1=0.7128 MAE=2.286 ±1=0.407 matang±1=0.626
+  conf=0.4 link=0.6 size=2 single=0.45 -> J=3.5215 F1=0.7124 MAE=2.220 ±1=0.418 matang±1=0.681
+  conf=0.4 link=0.6 size=2 single=0.6 -> J=3.1626 F1=0.6520 MAE=4.220 ±1=0.165 matang±1=0.648
+  conf=0.4 link=0.6 size=3 single=0.3 -> J=3.4160 F1=0.7122 MAE=2.308 ±1=0.385 matang±1=0.637
+  conf=0.4 link=0.6 size=3 single=0.45 -> J=3.5095 F1=0.7118 MAE=2.242 ±1=0.407 matang±1=0.681
+  conf=0.4 link=0.6 size=3 single=0.6 -> J=3.1497 F1=0.6506 MAE=4.253 ±1=0.154 matang±1=0.648
+
+topologi terpilih: conf=0.3 link=0.45 max_size=3 single=0.45
+ambang skor terpilih: kasar=1.3 B1|B2=0.45 B3|B4=2.3
+
+=== VALIDATION ===
+  F1 fisik      : 0.7338  (P 0.7904 / R 0.6848)
+  cacah total   : MAE 2.275  tepat 0.220  ±1 0.440
+  cacah MATANG  : MAE 1.154  tepat 0.396  ±1 0.725
+  cacah BELUM   : MAE 2.242  tepat 0.176  ±1 0.429
+  kelas 2       : akurasi 0.8830  F1 0.9168
+  kelas 4       : akurasi 0.7192  ±1 0.9984  makro-F1 0.6747   (n=641)
+
+=== TEST (dibuka satu kali) ===
+  F1 fisik      : 0.7406  (P 0.8031 / R 0.6870)
+  cacah total   : MAE 2.288  tepat 0.174  ±1 0.371
+  cacah MATANG  : MAE 1.114  tepat 0.356  ±1 0.765
+  cacah BELUM   : MAE 2.189  tepat 0.167  ±1 0.432
+  kelas 2       : akurasi 0.8644  F1 0.9042
+  kelas 4       : akurasi 0.7082  ±1 0.9957  makro-F1 0.6656   (n=922)
+
+--- pembanding hasil terkunci proyek pada test 953 ---
+  V2-E-045 : F1 0,8043 · MAE 1,393 · ±1 0,6148 · kelas4 0,7111
+  GSP      : F1 0,8387 · MAE 1,363 · ±1 0,6370 · kelas4 0,7442 · makro 0,6034
+PANEN EVAL DONE

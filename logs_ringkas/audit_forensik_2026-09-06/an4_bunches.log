@@ -1,0 +1,38 @@
+
+=== MAY 953 (the 352 shared trees): 352 trees ===
+  unique bunches/tree: mean=9.89 median=10 max=21  total=3481
+  raw boxes/tree     : mean=18.53   duplication factor k=1.874
+  trees with 0 bunches: 2
+  appearances/bunch: 1x:23.7%  2x:65.2%  3x:11.1%
+  class mix: B1=7.9%  B2=16.8%  B3=54.1%  B4=21.2%
+
+=== JULY Depth (same 352 trees): 352 trees ===
+  unique bunches/tree: mean=3.99 median=4 max=13  total=1403
+  raw boxes/tree     : mean=6.54   duplication factor k=1.641
+  trees with 0 bunches: 0
+  appearances/bunch: 1x:40.1%  2x:55.9%  3x:4.0%  4x:0.1%
+  class mix: B1=32.6%  B2=44.2%  B3=15.1%  B4=7.9%  U=0.2%
+
+=== AUGUST Depth (411 new trees): 411 trees ===
+  unique bunches/tree: mean=5.76 median=5 max=15  total=2368
+  raw boxes/tree     : mean=8.71   duplication factor k=1.512
+  trees with 0 bunches: 0
+  appearances/bunch: 1x:50.0%  2x:48.8%  3x:1.2%
+  class mix: B1=8.0%  B2=29.6%  B3=52.5%  B4=9.6%  U=0.3%
+
+=== MAY 953 (all 953 trees): 953 trees ===
+  unique bunches/tree: mean=10.31 median=10 max=22  total=9823
+  raw boxes/tree     : mean=19.45   duplication factor k=1.887
+  trees with 0 bunches: 7
+  appearances/bunch: 1x:25.4%  2x:63.8%  3x:8.5%  4x:1.5%  5x:0.7%  6x:0.1%
+  class mix: B1=9.7%  B2=18.2%  B3=51.6%  B4=20.5%
+
+=== paired per-tree bunch count, SAME 352 trees ===
+  May mean=9.89  July mean=3.99  ratio=2.48x
+  per-tree diff: median=6.0  IQR=[3;8]  trees where July>=May: 32/352
+
+  unique-bunch class counts (same trees):
+    B1: May=  275  July=  457  ratio=0.60x
+    B2: May=  584  July=  620  ratio=0.94x
+    B3: May= 1883  July=  212  ratio=8.88x
+    B4: May=  739  July=  111  ratio=6.66x

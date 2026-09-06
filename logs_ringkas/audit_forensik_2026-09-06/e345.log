@@ -1,0 +1,20 @@
+=== detectors done, starting E3-E5 ===
+=== E3 harvest counting (2-class detector -> Ridge F_all) ===
+  detected train: 3000 images
+  detected val: 404 images
+  detected test: 588 images
+  ripe_fit_on_train      MAE=0.369 exact=0.674 ±1=0.957 (rerata acuan 0.85/pohon)
+  ripe_fit_on_val        MAE=0.418 exact=0.624 ±1=0.965 (rerata acuan 0.85/pohon)
+  total_fit_on_train     MAE=1.383 exact=0.227 ±1=0.610 (rerata acuan 9.96/pohon)
+  total_fit_on_val       MAE=1.518 exact=0.213 ±1=0.553 (rerata acuan 9.96/pohon)
+
+=== E4 structure fusion on real detections (agnostic detector + crop head) ===
+  matched detections: val=1766 test=2466
+  w=1.3  appearance acc=0.6951 macroF1=0.6470
+        fused      acc=0.6468 macroF1=0.5934
+
+=== E5 UF side-constraint bug, measured on real proposals ===
+  buggy : 1191 klaster · 540 memuat >=2 deteksi dari sisi yang sama (45.3%)
+  fixed : 1249 klaster · 0 memuat >=2 deteksi dari sisi yang sama (0.0%)
+
+E345 DONE
