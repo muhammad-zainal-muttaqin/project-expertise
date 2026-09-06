@@ -553,3 +553,48 @@ penaut yang lebih baik dapat menggeser seluruh kurva. Pengukuran hanya pada
 VALIDATION 953. Batas `0,9156` bergantung pada cache kandidat `conf ≥ 0,10` dan
 bukan seluruh keluaran detektor sebelum NMS, sehingga merupakan batas atas untuk
 cache tersebut, bukan untuk detektor secara umum.
+
+---
+
+## AF-E-016 — Jangkar Hungarian A diperiksa: cacat `UF` tidak memengaruhinya
+
+**Konteks.** `AF-E-014` menyisakan satu butir terbuka: jangkar Hungarian A
+pada `GSP_LINKER` adalah satu-satunya profil test-locked yang memakai
+`max_size = 4`, yaitu wilayah tempat cacat `UF` berpotensi aktif (`7,95%`
+pelanggaran pada `pair_mode="all"`).
+
+**Penelusuran jalur kode.** Jalur terkunci Anchor A memang melewati `UF` yang
+cacat: `results/remote_eval_2026-08-28/scripts/rank_and_emit.py` →
+`scripts/evaluate_remote_class_head.evaluate_payload` → `sweep.clusters(...)` →
+`sweep_remote_pipeline.UF`. Modul `train_detection_edge_linker` hanya memakai
+`sweep.iou` dan `sweep.build_edges`, bukan `UF`. Jalur GSP tidak mewarisi cacat
+ini karena menjamin ≤ 1 proposal per sisi secara struktural pada
+`enumerate_candidates`.
+
+**Rancangan.** Kedua varian `UF` diberi daftar tepi yang identik pada profil
+Anchor A yang persis — proposal `0,125`, `pair_mode` bersebelahan, tautan
+`0,15`, *singleton* `0,15`, `max_size` `4` — memakai dump WBF `combined1716`
+softvote dan prior rotasi yang dilatih dari TRAIN.
+Skrip: `scripts/audit_forensik/anchor_a.py`.
+
+**Temuan empiris terukur.** Split TEST 953, 135 pohon empat sisi.
+
+| Varian | Klaster | Melanggar kendala sisi | Pohon dengan partisi berbeda |
+|---|---:|---:|---:|
+| Versi repositori (cacat) | 1.586 | 0 | — |
+| Versi diperbaiki | 1.586 | 0 | **0 dari 135** |
+
+**Keputusan metodologis.** Partisi klaster identik pohon demi pohon, sehingga
+seluruh metrik hilir Anchor A — F1 fisik `0,8387`, MAE `1,3630`, ±1 `0,6370`,
+akurasi kelas `0,7442`, makro-F1 `0,6034` — **tidak berubah** oleh perbaikan
+`AF-E-010`. Alasannya sesuai argumen `GSP_LINKER.md`: dengan hanya pasangan
+sisi bersebelahan, menutup siklus yang mengulang satu sisi memerlukan jalur
+0→1→2→3→0, yaitu lima anggota, sedangkan `max_size = 4` sudah memblokirnya.
+
+Dengan ini seluruh profil test-locked proyek telah diperiksa terhadap cacat
+`AF-E-010`, dan **tidak satu pun angka terkunci yang terpengaruh**.
+
+**Batasan validitas.** Pemeriksaan pada split VALIDATION menghasilkan nol
+klaster karena dump `fused_combined1716` yang tersimpan di repositori hanya
+memuat split TEST; baris VAL karena itu kosong, bukan lulus. Yang benar-benar
+terukur adalah TEST, yaitu split tempat angka Anchor A dikunci.
