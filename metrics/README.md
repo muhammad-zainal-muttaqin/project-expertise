@@ -33,10 +33,11 @@ Seluruh tabel di folder ini dibandingkan dengan artefak lokal yang tersedia dan,
 
 ## 2. Struktur Atlas & Navigasi Berkas Spesialisasi
 
-Untuk memudahkan penelaahan mendalam per domain tugas, atlas ini dipecah ke dalam 7 berkas spesialisasi berikut:
+Untuk memudahkan penelaahan mendalam per domain tugas, atlas ini dipecah ke dalam 7 berkas spesialisasi berikut, ditambah satu berkas rekapitulasi lintas-domain:
 
 | Berkas Spesialisasi | Cakupan Domain & Metrik Utama |
 |---|---|
+| **[recap.md](recap.md)** | Papan peringkat (*leaderboard*) per korpus untuk lima tugas (`detection`, `detection + classification`, `deduplication`, `classification`, `counting`), lengkap dengan arti tugas, satuan penyebut, definisi metrik, tabel bias pencacahan tingkat kohort per kelas B1–B4, dan peta artefak sumber. Berkas ini menyusun ulang angka dari ketujuh berkas di bawah; tidak ada angka baru yang diperkenalkan. |
 | **[01_deteksi_dan_lokalisasi.md](01_deteksi_dan_lokalisasi.md)** | Komparasi detektor 1-tahap (RGB vs RGB+D vs Mono), studi *encoding* kedalaman (Invers, Sobel `edge`), fusi WBF, TTA, *class-aware* ($mAP50$, $mAP50\text{--}95$, per kelas B1–B4) vs *class-agnostic* ($AP50_{agn}$). |
 | **[02_klasifikasi_kematangan.md](02_klasifikasi_kematangan.md)** | Model pengklasifikasi kematangan pada citra terpotong (*crop*), loss ordinal (CORAL, CORN), evaluasi multi-tampak (C1–C3), *mixture-of-experts*, aturan keputusan per tandan (R0–R4), akurasi, akurasi toleransi $\pm 1$, dan MAE ordinal. |
 | **[03_pencacahan_per_pohon.md](03_pencacahan_per_pohon.md)** | Pencacahan jumlah tandan per pohon via Ridge regression ($F_{all}$), penghitung pool fisik, model multi-bank, CatBoost regularized, meta-ensemble cacah, Macro MAE, Total MAE, Bias bertanda, dan akurasi $\pm 1$. |
