@@ -7,7 +7,7 @@ Dokumen ini memuat rangkuman terstruktur seluruh eksperimen deteksi objek kotak 
 ## 1. Panduan Pembacaan & Definisi Kolom
 
 1. **$mAP50$ & $mAP50\text{--}95$**: Rata-rata presisi rata-rata (*mean Average Precision*) pada ambang batas $IoU = 0,50$ dan $IoU = [0,50; 0,95]$ yang dihitung menggunakan evaluator standar `pycocotools.COCOeval`.
-2. **$AP_{B1}$ s.d. $AP_{B4}$**: Presisi rata-rata pada $IoU = 0,50$ untuk masing-masing kelas kematangan ordinal (**B1**: Mentah, **B2**: Mengkal/Matang Awal, **B3**: Matang, **B4**: Lewat Matang).
+2. **$AP_{B1}$ s.d. $AP_{B4}$**: Presisi rata-rata pada $IoU = 0,50$ untuk masing-masing kelas kematangan ordinal (**B1**: Lewat Matang / Siap Panen, **B2**: Matang Optimal, **B3**: Matang Awal / Mengkal, **B4**: Mentah / Muda).
 3. **$AP50_{agnostic}$**: Presisi rata-rata lokalisasi murni setelah seluruh kelas dilipat (*collapsed*) menjadi 1 kelas tunggal `tandan`. Metrik ini merepresentasikan batas atas (*oracle ceiling*) kemampuan melokalisasi posisi tandan tanpa dibebani konfusi kelas kematangan.
 4. **Presisi, Recall, F1**: Metrik titik operasi (*operating point*) detektor pada ambang batas keyakinan (*confidence threshold*) standar $\tau = 0,25$ dan $IoU = 0,50$.
 5. `N/A — tidak dilaporkan` berarti artefak sumber tidak memuat metrik tersebut; `N/A — bukan metrik uji` berarti barisnya memang bukan evaluasi deteksi. Tanda `−` hanya dipakai untuk kolom yang secara definisi tidak berlaku, misalnya AP per kelas pada evaluasi yang sejak awal hanya satu kelas.

@@ -67,7 +67,7 @@ Empat temuan empiris utama merangkum kesimpulan proyek:
 
 Evaluasi perbandingan pada **1.408 citra dengan nomor identitas pohon yang identik**:
 
-| Sumber Label Anotasi | Total Kotak | Mentah (B1) | Matang Awal (B2) | Matang (B3) | Lewat Matang (B4) |
+| Sumber Label Anotasi | Total Kotak | Lewat Matang / Siap Panen (B1) | Matang Optimal (B2) | Matang Awal / Mengkal (B3) | Mentah / Muda (B4) |
 |---|---|---|---|---|---|
 | SawitMVC-YOLO (Mei 2026) | 6.523 | 566 ($8,7\%$) | 1.098 ($16,8\%$) | **3.604 ($55,3\%$)** | 1.255 ($19,2\%$) |
 | SawitMVC-Depth (Juli 2026) | 2.299 | 829 ($36,1\%$) | 1.001 ($43,5\%$) | **321 ($14,0\%$)** | 148 ($6,4\%$) |

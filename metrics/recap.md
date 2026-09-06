@@ -256,14 +256,15 @@ Metrik penilaian akhir tugas pencacahan, dari profil penaut terkunci `Wave-V2`,
 dengan menjumlahkan seluruh pohon dalam satu partisi. Bias absolut bersatuan
 tandan; bias relatif adalah bias absolut dibagi total acuan kelasnya.
 
-> [!WARNING]
-> Arah definisi kelas B1–B4 belum diselaraskan. Pembuka
-> [`02_klasifikasi_kematangan.md`](02_klasifikasi_kematangan.md) menempatkan B1
-> sebagai mentah; kartu dataset `ULM-DS-Lab/SawitMVC-YOLO`,
-> [`docs/DATASET.md`](../docs/DATASET.md), ukuran kotak median ($133/120/107/93$
-> piksel pada 953), dan relief kedalaman ($+2,8$ cm untuk B1 berbanding $−5,1$ cm
-> untuk B4) menempatkan B1 sebagai tandan matang siap panen. Seluruh baris
-> `AF-E-###` memakai arah kartu dataset.
+Skala kelas menurun dari paling matang ke paling mentah
+([`docs/DATASET.md`](../docs/DATASET.md) §1).
+
+| Kelas | Tingkat kematangan | Ciri visual | Ukuran kotak median, 953 |
+|---|---|---|---:|
+| B1 | Lewat matang, siap panen | Jingga-kemerahan cerah, posisi terbawah | 133 px |
+| B2 | Matang optimal | Oranye kemerahan bersemburat ungu kehitaman | 120 px |
+| B3 | Matang awal, mengkal | Ungu kemerahan kehitaman | 107 px |
+| B4 | Mentah, muda | Hitam kehijauan pekat, tertanam di sela pelepah | 93 px |
 
 ### 8.1 Korpus 953, partisi uji (Hungarian *Anchor A*, 135 pohon)
 

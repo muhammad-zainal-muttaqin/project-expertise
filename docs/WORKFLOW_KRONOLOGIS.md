@@ -155,7 +155,7 @@ timeline
 - **Temuan Empiris Terukur**:
   1. RF-DETR-L konsisten sebagai detektor visual terbaik di semua dataset RGB.
   2. *Early fusion* naif depth 4-kanal tidak efektif dan mendegradasi deteksi transformer.
-  3. Kelas tandan lewat matang B4 paling rentan terhadap variasi derau depth pada fusi konvensional.
+  3. Kelas tandan mentah B4 paling rentan terhadap variasi derau depth pada fusi konvensional.
 - **Keputusan Metodologis**: Menutup Fase 4 dan menetapkan arah Fase 5 untuk mengeksplorasi representasi depth alternatif non-linier.
 - **Batasan Validitas & Audit**: [`results/matrix_compiled.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/matrix_compiled.json)
 
