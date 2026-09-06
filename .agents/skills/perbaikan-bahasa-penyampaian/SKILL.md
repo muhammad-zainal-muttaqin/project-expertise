@@ -67,6 +67,34 @@ Bahasa ilmiah baku mengutamakan **presisi makna**, **kebakuan istilah serapan**,
 | *inconclusive* | **belum konklusif / belum dapat diputuskan** | Bukti empiris belum cukup untuk menolak hipotesis nol. |
 | *falsified / dipalsukan* | **gugur secara empiris (*falsified*) / tertolak** | *"Dipalsukan"* berarti manipulasi curang (*fake*); gunakan *gugur/tertolak*. |
 
+#### D. Ranah Umum (Calque Non-Teknis, di Luar ML/CV/Statistika)
+| Bentuk Dilarang / Terjemahan Harfiah (Hindari) | Bentuk Ilmiah Baku EYD V (Wajib Digunakan) | Alasan & Rasional Pemilihan Kata |
+|---|---|---|
+| *secara praktis* | **dalam praktiknya** | Padanan alami, bukan terjemahan literal *practically*. |
+| *bekerja baik / bekerja ampuh* | **efektif / berfungsi dengan baik** | Hindari calque *works well*. |
+| *ada untuk / hadir untuk* | **dirancang untuk** | Calque *exists to*; nyatakan tujuan rancangannya. |
+| *secara independen* (non-statistik) | **secara mandiri** | Calque *independently* di luar konteks uji statistik. |
+| *menunjuk ke* (non-spasial) | **mengacu pada** | *Point to* diterjemahkan literal padahal maknanya rujukan. |
+| *deliverable* | **luaran** | Istilah manajemen proyek, ada padanan baku. |
+| *di-cover* | **dibahas / tercakup** | Hindari verba hibrida asing-Indonesia. |
+| *resource eksternal* | **sumber rujukan / sumber belajar** | *Resource* diterjemahkan sesuai konteks, bukan dipertahankan mentah. |
+| *aturan jempol* | **aturan praktis / kaidah umum** | Calque literal *rule of thumb*. |
+| *kerangka mental* | **kerangka berpikir** | Calque literal *mental framework*. |
+
+#### E. Ranah Metafora Teknis (Kiasan Fisik/Sosial untuk Konsep Abstrak)
+Kiasan fisik atau sosial untuk operasi komputasional terdengar naratif, bukan ilmiah. Sebut nama operasi atau objek teknisnya secara langsung.
+
+| Kiasan (Hindari) | Istilah Langsung (Wajib) |
+|---|---|
+| *"bahan baku"* untuk data/input | **data, dataset, atau masukan (*input*)** |
+| *"pabrik"* untuk model | **model atau arsitektur** |
+| *"gerbang"* untuk fungsi aktivasi | **fungsi aktivasi (mis. ReLU)** |
+| *"sinyal galat mengalir/merambat"* | **gradien dihitung pada lintasan mundur (*backward pass*)** |
+| *"data mengalir ke depan"* | **lintasan maju (*forward pass*) menghitung keluaran dari masukan** |
+| *"model menyepakati"* | **model memuat/menghasilkan** |
+
+Uji: "apakah ini istilah teknis baku yang dipakai di dokumentasi/paper, atau kiasan buatan sendiri?" Jika kiasan, ganti dengan istilah teknisnya.
+
 ---
 
 ## 2. Katalog Larangan Khusus (Negative Constraints / Hal yang Dilarang vs Wajib)
@@ -115,6 +143,73 @@ Jangan menyatakan klaim superioritas jika selang kepercayaan masih memuat nilai 
 
 ---
 
+### E. Larangan Pembenaran "Sudah Konvensi/Konsisten dengan Teks Lama"
+Pola tidak baku yang sudah terlanjur ada pada bagian lain dokumen bukan alasan sah untuk mengulanginya pada teks baru, atau untuk membiarkannya saat ditemukan pada audit berikutnya. Setiap kemunculan pola terlarang pada tabel Bagian 1 dan katalog Bagian 2 wajib diperbaiki secara independen, termasuk yang sudah "menjadi konvensi" pada dokumen yang sama.
+
+* ❌ **Dilarang**: Membiarkan *"CI95 mencakup nol"* pada baris tabel karena baris lain di dokumen yang sama sudah memakai bentuk itu lebih dulu.
+* ✅ **Wajib**: Memperbaiki seluruh kemunculan pola terlarang, termasuk yang sudah ada sebelum revisi berjalan. Argumen "supaya konsisten dengan yang lama" tidak menggugurkan kewajiban perbaikan pada Bagian 1/2; yang sah justru sebaliknya, memperbaiki semuanya agar konsisten dengan tabel, bukan mereplikasi kekeliruan yang sudah ada.
+
+---
+
+### F. Label Ringkas Berulang (Legenda, Lencana/*Pill*, Sel Tabel) vs Prosa Naratif
+Rumusan WAJIB pada tabel Bagian 1 dan Bagian 2 (mis. *"selang kepercayaan 95% mencakup nilai nol (tidak signifikan secara statistik)"*) disusun untuk prosa naratif, satu kali per klaim, di dalam paragraf atau Lembar Bukti Bagian 4. Rumusan itu tidak ditempel apa adanya secara berulang pada elemen ringkas yang berulang (legenda diagram, lencana status pada sel tabel, label sumbu): hasilnya jargon berulang yang tetap melanggar semangat "pembaca dipercaya, bukan diceramahi", meski setiap kata sudah lolos tabel anti-calque secara harfiah.
+
+* ❌ **Dilarang**: Menempel kalimat lengkap "selang kepercayaan 95% mencakup nilai nol (belum signifikan)" pada setiap lencana tabel dan setiap entri legenda diagram yang berulang.
+* ✅ **Wajib**: Pada elemen ringkas berulang, nyatakan kesimpulan langsung ("signifikan secara statistik" / "belum signifikan secara statistik"). Jelaskan mekanismenya (selang kepercayaan mencakup/tidak mencakup nilai nol) hanya sekali, pada keterangan gambar atau paragraf pengantar terdekat.
+
+---
+
+### G. Larangan Personifikasi Umum, Bahasa Moral, dan Bahasa Dramatis untuk Hal Teknis
+Bagian A membahas antropomorfisme khusus model AI ("model bingung", "model tahu"). Larangan berikut lebih luas: benda mati apa pun (bukan hanya model), termasuk tensor, keputusan, atau proses, tidak melakukan kata kerja manusia atau bertindak sendiri tanpa pelaku yang disebut.
+
+* ❌ **Dilarang**: *"Tensor mengalami transformasi."* / *"Keputusan itu muncul dengan sendirinya."*
+* ✅ **Wajib**: *"Tensor ditransformasi oleh lapisan konvolusi."* / *"Tim peneliti memutuskan ... berdasarkan ..."* (sebutkan pelakunya)
+
+Bahasa moral/administratif untuk fakta teknis dihindari karena menyiratkan penilaian etis, bukan deskripsi teknis:
+
+| Hindari | Pakai |
+|---|---|
+| *"jujur"* (maksud teknis) | **sesuai / konsisten dengan** |
+| *"dapat dipertanggungjawabkan"* | **dapat diverifikasi ulang / memiliki catatan lengkap** |
+| *"dengan alasan"* | **yang sesuai / yang menjelaskan pemilihan X** |
+
+Kata kerja dan kata sifat dramatis untuk fenomena teknis (termasuk kesalahan operasional) diganti bentuk deskriptif dan tenang:
+
+| Drama (Hindari) | Deskriptif (Wajib) |
+|---|---|
+| *"mematikan", "fatal"* (untuk galat) | **utama, signifikan, mendasar** |
+| *"liar", "brutal", "sembrono"* | **tidak terstruktur, acak, keliru** |
+| *"menabrak", "menginfeksi", "menjangkiti"* | **memengaruhi, mengubah, tercampur** |
+| *"jeblok", "anjlok", "ambruk"* (untuk metrik) | **menurun, lebih rendah dari** |
+
+---
+
+### H. Larangan Intensifier Kosong dan Pembuka Berbasa-basi (*Throat-Clearing*)
+Kata penegas generik yang tidak menambah makna, dan kalimat pembuka yang mengumumkan pentingnya sesuatu alih-alih langsung menyatakannya, keduanya melemahkan bobot argumen ilmiah.
+
+| Hindari | Pakai / Tindakan |
+|---|---|
+| *"benar-benar", "sungguhan", "sebenarnya"* (kosong) | hapus jika makna kalimat tidak berubah tanpanya |
+| *"dataset nyata", "kondisi nyata"* tanpa lawan eksplisit | hapus penegasnya, cukup "dataset", "kondisi" (pertahankan hanya bila ada kontras eksplisit dengan data sintetis/*toy*) |
+| *"kritis"* sebagai penegas umum | **penting, menentukan** |
+| *"intuitif"* untuk penjelasan | **mudah dipahami** |
+| *"Perlu ditekankan bahwa ..."*, *"Perlu dicatat bahwa ..."* di awal kalimat | hapus, langsung nyatakan isinya |
+| *"Ingat,"*, *"Perlu diingat,"* di awal kalimat | hapus; jika isinya penting, ia berdiri sendiri tanpa penanda itu |
+| *"inilah bagian paling krusial"* tanpa isi konkret | sebutkan bagian dan alasannya secara langsung |
+
+Uji cepat: hapus frasa itu dari kalimat. Jika makna kalimat tidak berubah, frasa itu filler dan wajib dibuang.
+
+---
+
+### I. Larangan Kontras Retoris sebagai Pemanis Kalimat
+Struktur "bukan X, melainkan Y" atau "bukan sekadar X" sering dipakai sebagai hiasan retoris, bukan untuk membedakan dua hal yang benar-benar perlu dibedakan.
+
+* ❌ **Dilarang**: *"Ini bukan sekadar penurunan performa, melainkan kegagalan mendasar arsitektur."*
+* ✅ **Wajib**: *"Penurunan performa ini menunjukkan kegagalan mendasar arsitektur."* (nyatakan poinnya langsung)
+* Pengecualian sah: kontras yang informatif dan spesifik, mis. *"logit mentah, bukan probabilitas"*, tetap dipertahankan karena membedakan dua besaran yang berbeda secara teknis.
+
+---
+
 ## 3. Standar Notasi Matematika, Statistika, & Tipografi Baku
 
 ```text
@@ -126,6 +221,12 @@ Jangan menyatakan klaim superioritas jika selang kepercayaan masih memuat nilai 
 5. Rentang Nilai/Waktu  : en dash (–)           -> B1–B4, 10–11 Agu 2026 (BUKAN B1-B4)
 6. Simbol Variabel      : cetak miring (italic) -> p-value, n sampel, IoU, Δ mAP, F1, mAP50
 ```
+
+### Tanda Baca Umum (Non-Numerik)
+* **Tidak ada tanda pisah panjang (*em dash*, `—`, U+2014)** di mana pun dalam prosa. Ganti dengan koma, titik dua, tanda kurung, atau spasi-hyphen-spasi (` - `). Pengecualian: simbol data untuk sel tabel kosong/tidak berlaku (mis. `&mdash;` sebagai isi sel tabel numerik) tetap sah karena itu notasi data, bukan tanda baca kalimat.
+* En dash (`–`) hanya untuk rentang numerik atau tanggal (`B1–B4`, `10–11 Agu 2026`), tidak untuk memisahkan klausa kalimat.
+* Tanda kutip ASCII lurus (`"..."`), bukan kutip melengkung tipografis.
+* Setiap kalimat memiliki subjek dan predikat eksplisit (SPOK), dapat dibaca lantang tanpa tersendat; tidak ada fragmen berlabel (`"Kekuatan: ..."`, `"Asumsi: tidak ada struktur khusus."`).
 
 ### Tabel Komparasi Notasi: Dilarang vs Wajib
 
@@ -157,7 +258,7 @@ graph TD
 > *"Kita coba train yolo 4ch pake depth mono di 953 pohon. Hasilnya mAP50 dapet 0.4960 dibanding rgb yang 0.5436, jadi loss -0.0476. CI95 memuat nol (-0.067, -0.027) dan model kalah telak. Jadi mono depth jelek banget dan gak guna, mending di drop aja."*
 
 #### ✅ Contoh Baku Sesuai Skill (Formal, Anti-Calque, Presisi Ilmiah):
-> **Simpul V2-E-027 — Evaluasi Pengaruh Estimasi Kedalaman Monokular pada Korpus 953 Pohon**
+> **Simpul V2-E-027: Evaluasi Pengaruh Estimasi Kedalaman Monokular pada Korpus 953 Pohon**
 > 1. **Rancangan Eksperimen**: Pengujian komparasi terkontrol mengevaluasi penambahan kanal kedalaman estimasi monokular (`yolo26l-depth.pt`) sebagai masukan 4-kanal pada arsitektur YOLO26l beresolusi 1.280 piksel (60 *epoch*, *cosine learning rate*) terhadap garis dasar pembanding RGB 3-kanal pada split uji SawitMVC (2.612 kotak anotasi).
 > 2. **Temuan Empiris Terukur**: Penambahan depth monokular menyebabkan **penurunan performa yang signifikan** sebesar $\Delta = \mathbf{\minus 0,0476}$ ($mAP50 = \mathbf{0,4960}$ berbanding kontrol RGB $\mathbf{0,5436}$). Evaluasi bootstrap 2.000 ulangan berpasangan menghasilkan selang kepercayaan 95% **$[\minus 0,0671; \minus 0,0274]$** ($P(\Delta > 0) = 0,000$, terbukti signifikan secara statistik).
 > 3. **Keputusan Metodologis**: Hipotesis keunggulan depth monokular dinyatakan **gugur secara empiris**. Jalur integrasi kedalaman monokular dihentikan dari pipeline utama.
@@ -176,3 +277,8 @@ Sebelum menyelesaikan penulisan dokumen markdown:
 - [ ] **Selang Kepercayaan**: Menggunakan format $[\text{min}; \text{max}]$ dengan pemisah titik koma.
 - [ ] **Keterlacakan Berkas**: Seluruh rujukan skrip (`.py`), log (`.log`), dan data (`.json`) memiliki tautan markdown aktif yang valid.
 - [ ] **Integritas Log**: Angka riil historis tetap dipertahankan tanpa manipulasi.
+- [ ] **Verifikasi tersistematis, bukan sampel**: setiap frasa yang memakai singkatan atau pola pada tabel Bagian 1 dan katalog Bagian 2 dicocokkan satu per satu lewat pencarian teks (bukan dibaca sekilas), termasuk teks yang sudah ada sebelum revisi berjalan pada dokumen yang sama. "Sudah konsisten dengan bagian lain" bukan alasan untuk melewati pengecekan (lihat Bagian 2.E).
+- [ ] **Label ringkas vs prosa**: rumusan lengkap dari tabel Bagian 1/2 dipakai satu kali dalam prosa/keterangan gambar; elemen ringkas berulang (legenda, lencana, sel tabel) memakai kesimpulan langsung, bukan kalimat lengkap yang ditempel berulang (lihat Bagian 2.F).
+- [ ] **Tanda baca umum**: tidak ada tanda pisah panjang (*em dash*) di luar sel tabel data kosong; kutip lurus, bukan kutip melengkung; setiap kalimat SPOK penuh tanpa fragmen berlabel (lihat Bagian 3).
+- [ ] **Bebas metafora teknis, personifikasi umum, bahasa dramatis/moral, dan intensifier kosong**: lihat Bagian 1.E dan Bagian 2.G/H.
+- [ ] **Bebas kontras retoris berlebihan**: "bukan X, melainkan Y" dan "bukan sekadar" hanya dipakai bila kontrasnya informatif dan spesifik, bukan hiasan (lihat Bagian 2.I).
