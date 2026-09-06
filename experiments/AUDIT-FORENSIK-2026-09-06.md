@@ -487,3 +487,69 @@ terbukti benar.
 memakai `max_size` 4; profil itu berada di wilayah tempat cacat aktif dan
 **belum** dijalankan ulang di sini karena dump serta jalur evaluasinya berbeda.
 Itu adalah satu-satunya profil terkunci yang masih perlu diperiksa ulang.
+
+---
+
+## AF-E-015 — Harga presisi untuk memulihkan tandan yang punya kandidat
+
+**Konteks.** `results/audit_2026-09-06/recovery_budget_val.json` (sesi lain,
+6 September 2026) menunjukkan bahwa 227 dari 287 tandan yang tidak terpasangkan
+sudah memiliki kandidat mentah, dan menyimpulkan adanya peluang pemulihan
+sebelum keputusan penyaringan menjadi permanen. Berkas tersebut menyatakan
+sendiri bahwa cakupan itu dibantu GT dan **belum** membuktikan pemulihan tanpa
+tambahan positif palsu. Entri ini mengukur biaya tersebut.
+
+**Rancangan.** Ambang detektor dan ambang *singleton* diturunkan bertahap pada
+91 pohon VALIDATION memakai cache kandidat, `edge_model_v2.pkl`, dan
+`link_thr`/`max_size` Pipeline Panen yang tetap. Yang dicatat adalah kurva
+operasi identitas fisik, bukan metrik citra. Batas atas dihitung dengan
+mempertahankan seluruh kandidat longgar dan membuang seluruh positif palsu
+secara *oracle*. Skrip: `scripts/audit_forensik/recovery_price.py`.
+
+**Temuan empiris terukur.** VAL, 91 pohon, 936 tandan acuan.
+
+| `det_conf` | *singleton* | Daya tangkap | Presisi | F1 | TP | FP |
+|---:|---:|---:|---:|---:|---:|---:|
+| 0,30 | 0,45 | 0,6934 | 0,8374 | 0,7586 | 649 | 126 |
+| **0,25** | **0,40** | 0,7361 | 0,8106 | **0,7716** | 689 | 161 |
+| 0,20 | 0,35 | 0,7714 | 0,7568 | 0,7640 | 722 | 232 |
+| 0,15 | 0,30 | 0,8141 | 0,6773 | 0,7394 | 762 | 363 |
+| 0,12 | 0,25 | 0,8526 | 0,6009 | 0,7049 | 798 | 530 |
+| 0,10 | 0,20 | 0,8803 | 0,5192 | 0,6532 | 824 | 763 |
+| 0,10 | 0,00 | **0,9156** | 0,3598 | 0,5166 | 857 | 1.525 |
+
+Memulihkan `+208` tandan menuntut `+1.399` positif palsu, yaitu **`6,7` positif
+palsu per tandan yang dipulihkan**. Batas atas daya tangkap dengan kandidat
+longgar adalah `0,9156`; **`79` tandan (`8,4%`) tetap tak terjangkau** oleh
+pengelompokan kandidat apa pun.
+
+**Keputusan metodologis — palang keputusan untuk decoder yang diusulkan.**
+Peluang pemulihan itu nyata, tetapi bukan daya tangkap gratis. Pada titik
+operasi longgar, penyaring terpelajar harus:
+
+- membuang **≥ 69%** dari `1.525` klaster palsu hanya untuk **impas** pada F1
+  terhadap profil sekarang (FP turun ke bawah `466`);
+- membuang **≈ 89%** untuk sekaligus mempertahankan presisi `0,8374`
+  (FP turun ke bawah `166`);
+- membuang hanya `50%` menghasilkan F1 `0,672`, yaitu **lebih buruk** daripada
+  profil sekarang.
+
+Angka-angka ini menjadi kriteria yang dapat diperiksa untuk usulan pada
+`docs/research_2026-09-06/USULAN-PERBAIKAN.md`, menggantikan penilaian kualitatif
+"peluang besar".
+
+**Dua konsekuensi praktis.**
+
+1. Garis dasar pembanding yang adil bukan `F1 0,7586`, melainkan **`0,7716`**
+   pada profil `det_conf 0,25` / *singleton* `0,40` — kenaikan yang diperoleh
+   tanpa model baru. Membandingkan decoder terhadap `0,7586` akan mengatributkan
+   hasil penalaan ambang sebagai kemajuan arsitektur.
+2. Tahap "pulihkan objek tanpa kandidat" memang layak ditunda: imbalannya
+   terbatas pada `8,4%` tandan sedangkan biayanya paling besar. Urutan tahap
+   pada usulan tersebut didukung data ini.
+
+**Batasan validitas.** Kurva ini memakai penaut dan `link_thr` yang tetap;
+penaut yang lebih baik dapat menggeser seluruh kurva. Pengukuran hanya pada
+VALIDATION 953. Batas `0,9156` bergantung pada cache kandidat `conf ≥ 0,10` dan
+bukan seluruh keluaran detektor sebelum NMS, sehingga merupakan batas atas untuk
+cache tersebut, bukan untuk detektor secara umum.
