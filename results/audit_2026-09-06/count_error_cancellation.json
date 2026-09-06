@@ -1,0 +1,28 @@
+{
+  "953": {
+    "n_trees": 135,
+    "count_exact_trees": 37,
+    "count_exact_but_fp_fn_cancel": 24,
+    "physical_set_perfect_under_legacy_matching": 13,
+    "mean_gt_bunches": 9.940740740740742,
+    "error_at_least_2": 49,
+    "under_count": 52,
+    "over_count": 46,
+    "bias": -0.13333333333333333,
+    "source": "results/remote_eval_2026-08-28/gsp_artifacts/953/results_test_locked.json",
+    "note": "Audit deskriptif artefak test historis; tanpa seleksi profil atau inferensi baru."
+  },
+  "depth": {
+    "n_trees": 110,
+    "count_exact_trees": 49,
+    "count_exact_but_fp_fn_cancel": 17,
+    "physical_set_perfect_under_legacy_matching": 32,
+    "mean_gt_bunches": 5.081818181818182,
+    "error_at_least_2": 16,
+    "under_count": 46,
+    "over_count": 15,
+    "bias": -0.42727272727272725,
+    "source": "results/remote_eval_2026-08-28/gsp_artifacts/depth/results_test_locked.json",
+    "note": "Audit deskriptif artefak test historis; tanpa seleksi profil atau inferensi baru."
+  }
+}

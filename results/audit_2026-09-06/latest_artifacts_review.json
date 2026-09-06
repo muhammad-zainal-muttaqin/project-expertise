@@ -1,0 +1,2141 @@
+{
+  "schema_version": 1,
+  "mode": "read-only diagnostic, frozen configuration, no GPU inference",
+  "constant_baselines": {
+    "B1": {
+      "train_selected_constant": 1,
+      "test_distribution": {
+        "0": 71,
+        "1": 33,
+        "2": 27,
+        "3": 9,
+        "6": 1
+      },
+      "test_mean": 0.851063829787234,
+      "constant_test": {
+        "n": 141,
+        "mae": 0.8581560283687943,
+        "exact": 0.23404255319148937,
+        "within1": 0.9290780141843972
+      },
+      "always_zero_test": {
+        "n": 141,
+        "mae": 0.851063829787234,
+        "exact": 0.5035460992907801,
+        "within1": 0.7375886524822695
+      }
+    },
+    "B1_B2": {
+      "train_selected_constant": 2,
+      "test_distribution": {
+        "0": 30,
+        "1": 16,
+        "2": 22,
+        "3": 26,
+        "4": 22,
+        "5": 13,
+        "6": 7,
+        "8": 3,
+        "9": 1,
+        "10": 1
+      },
+      "test_mean": 2.6666666666666665,
+      "constant_test": {
+        "n": 141,
+        "mae": 1.7446808510638299,
+        "exact": 0.15602836879432624,
+        "within1": 0.45390070921985815
+      },
+      "always_zero_test": {
+        "n": 141,
+        "mae": 2.6666666666666665,
+        "exact": 0.2127659574468085,
+        "within1": 0.3262411347517731
+      }
+    },
+    "total": {
+      "train_selected_constant": 10,
+      "test_distribution": {
+        "0": 3,
+        "1": 2,
+        "2": 2,
+        "3": 2,
+        "4": 5,
+        "5": 4,
+        "6": 7,
+        "7": 12,
+        "8": 18,
+        "9": 10,
+        "10": 7,
+        "11": 12,
+        "12": 14,
+        "13": 18,
+        "14": 9,
+        "15": 5,
+        "16": 5,
+        "17": 2,
+        "18": 3,
+        "19": 1
+      },
+      "test_mean": 9.957446808510639,
+      "constant_test": {
+        "n": 141,
+        "mae": 3.3333333333333335,
+        "exact": 0.04964539007092199,
+        "within1": 0.20567375886524822
+      },
+      "always_zero_test": {
+        "n": 141,
+        "mae": 9.957446808510639,
+        "exact": 0.02127659574468085,
+        "within1": 0.03546099290780142
+      }
+    }
+  },
+  "split_provenance": {
+    "shared_tree_ids": 352,
+    "depth_source_to_combined_split_for_shared_trees": {
+      "test->test": 8,
+      "test->train": 39,
+      "test->valid": 5,
+      "train->test": 38,
+      "train->train": 183,
+      "train->valid": 26,
+      "valid->test": 12,
+      "valid->train": 35,
+      "valid->valid": 6
+    },
+    "depth_test_trees_moved_to_combined_train_by_builder": [
+      "DAMIMAS_A21B_0012",
+      "DAMIMAS_A21B_0016",
+      "DAMIMAS_A21B_0019",
+      "DAMIMAS_A21B_0032",
+      "DAMIMAS_A21B_0034",
+      "DAMIMAS_A21B_0037",
+      "DAMIMAS_A21B_0039",
+      "DAMIMAS_A21B_0047",
+      "DAMIMAS_A21B_0049",
+      "DAMIMAS_A21B_0105",
+      "DAMIMAS_A21B_0118",
+      "DAMIMAS_A21B_0119",
+      "DAMIMAS_A21B_0125",
+      "DAMIMAS_A21B_0129",
+      "DAMIMAS_A21B_0149",
+      "DAMIMAS_A21B_0152",
+      "DAMIMAS_A21B_0164",
+      "DAMIMAS_A21B_0169",
+      "DAMIMAS_A21B_0170",
+      "DAMIMAS_A21B_0176",
+      "DAMIMAS_A21B_0179",
+      "DAMIMAS_A21B_0196",
+      "DAMIMAS_A21B_0199",
+      "DAMIMAS_A21B_0209",
+      "DAMIMAS_A21B_0211",
+      "DAMIMAS_A21B_0212",
+      "DAMIMAS_A21B_0229",
+      "DAMIMAS_A21B_0231",
+      "DAMIMAS_A21B_0233",
+      "DAMIMAS_A21B_0265",
+      "DAMIMAS_A21B_0284",
+      "DAMIMAS_A21B_0287",
+      "DAMIMAS_A21B_0303",
+      "DAMIMAS_A21B_0318",
+      "DAMIMAS_A21B_0323",
+      "DAMIMAS_A21B_0333",
+      "DAMIMAS_A21B_0340",
+      "DAMIMAS_A21B_0343",
+      "DAMIMAS_A21B_0350"
+    ],
+    "scope": "builder policy applied to current source manifests; historical checkpoint exposure requires its own manifest"
+  },
+  "panen": {
+    "original_test_n": 132,
+    "canonical_test_n": 135,
+    "excluded_trees": [
+      {
+        "tree": "DAMIMAS_A21B_0230",
+        "n_images": 4,
+        "gt_bunches": 0,
+        "present_in_detection_cache": true,
+        "legacy_eligible": false
+      },
+      {
+        "tree": "DAMIMAS_A21B_0421",
+        "n_images": 4,
+        "gt_bunches": 0,
+        "present_in_detection_cache": true,
+        "legacy_eligible": false
+      },
+      {
+        "tree": "DAMIMAS_A21B_0793",
+        "n_images": 4,
+        "gt_bunches": 0,
+        "present_in_detection_cache": false,
+        "legacy_eligible": false
+      }
+    ],
+    "noncanonical_in_original": [],
+    "reproduced_original": {
+      "physical_f1": 0.7405622489959839,
+      "precision": 0.8031358885017421,
+      "recall": 0.6870342771982116,
+      "n_matched": 922,
+      "count_total": {
+        "mae": 2.287878787878788,
+        "exact": 0.17424242424242425,
+        "within1": 0.3712121212121212
+      },
+      "count_matang": {
+        "mae": 1.1136363636363635,
+        "exact": 0.3560606060606061,
+        "within1": 0.7651515151515151
+      },
+      "count_belum": {
+        "mae": 2.1893939393939394,
+        "exact": 0.16666666666666666,
+        "within1": 0.4318181818181818
+      },
+      "class2_acc": 0.8644251626898047,
+      "class2_f1": 0.9042145593869731,
+      "class4_acc": 0.7082429501084598,
+      "class4_within1": 0.9956616052060737,
+      "class4_macro_f1": 0.6655968755057238,
+      "audit_cm_e2e": [
+        [
+          81,
+          24,
+          0,
+          0,
+          14
+        ],
+        [
+          18,
+          84,
+          43,
+          2,
+          36
+        ],
+        [
+          1,
+          78,
+          415,
+          63,
+          145
+        ],
+        [
+          0,
+          1,
+          39,
+          73,
+          31
+        ],
+        [
+          13,
+          59,
+          209,
+          139,
+          0
+        ]
+      ],
+      "audit_macro_f1_e2e": 0.5065415598024099
+    },
+    "canonical_frozen_profile": {
+      "physical_f1": 0.7399678972712681,
+      "precision": 0.8017391304347826,
+      "recall": 0.6870342771982116,
+      "n_matched": 922,
+      "count_total": {
+        "mae": 2.251851851851852,
+        "exact": 0.18518518518518517,
+        "within1": 0.37777777777777777
+      },
+      "count_matang": {
+        "mae": 1.0888888888888888,
+        "exact": 0.37037037037037035,
+        "within1": 0.7703703703703704
+      },
+      "count_belum": {
+        "mae": 2.1555555555555554,
+        "exact": 0.17777777777777778,
+        "within1": 0.43703703703703706
+      },
+      "class2_acc": 0.8644251626898047,
+      "class2_f1": 0.9042145593869731,
+      "class4_acc": 0.7082429501084598,
+      "class4_within1": 0.9956616052060737,
+      "class4_macro_f1": 0.6655968755057238,
+      "audit_cm_e2e": [
+        [
+          81,
+          24,
+          0,
+          0,
+          14
+        ],
+        [
+          18,
+          84,
+          43,
+          2,
+          36
+        ],
+        [
+          1,
+          78,
+          415,
+          63,
+          146
+        ],
+        [
+          0,
+          1,
+          39,
+          73,
+          32
+        ],
+        [
+          13,
+          59,
+          209,
+          139,
+          0
+        ]
+      ],
+      "audit_macro_f1_e2e": 0.5062315200639967
+    },
+    "canonical_per_tree": [
+      {
+        "tree": "DAMIMAS_A21B_0001",
+        "n_pred": 7,
+        "n_gt": 8,
+        "tp": 6,
+        "fp": 1,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 4,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0004",
+        "n_pred": 3,
+        "n_gt": 8,
+        "tp": 3,
+        "fp": 0,
+        "fn": 5,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0009",
+        "n_pred": 5,
+        "n_gt": 6,
+        "tp": 3,
+        "fp": 2,
+        "fn": 3,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 5,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0022",
+        "n_pred": 5,
+        "n_gt": 8,
+        "tp": 5,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 5,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0024",
+        "n_pred": 9,
+        "n_gt": 10,
+        "tp": 7,
+        "fp": 2,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 1,
+        "pred_belum": 7,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0028",
+        "n_pred": 6,
+        "n_gt": 12,
+        "tp": 6,
+        "fp": 0,
+        "fn": 6,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 6,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0038",
+        "n_pred": 15,
+        "n_gt": 12,
+        "tp": 11,
+        "fp": 4,
+        "fn": 1,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 13,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0062",
+        "n_pred": 11,
+        "n_gt": 7,
+        "tp": 7,
+        "fp": 4,
+        "fn": 0,
+        "pred_matang": 4,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0066",
+        "n_pred": 13,
+        "n_gt": 14,
+        "tp": 9,
+        "fp": 4,
+        "fn": 5,
+        "pred_matang": 6,
+        "gt_matang": 4,
+        "pred_belum": 7,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0067",
+        "n_pred": 13,
+        "n_gt": 12,
+        "tp": 11,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 9,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0070",
+        "n_pred": 10,
+        "n_gt": 8,
+        "tp": 7,
+        "fp": 3,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 10,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0074",
+        "n_pred": 0,
+        "n_gt": 4,
+        "tp": 0,
+        "fp": 0,
+        "fn": 4,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 0,
+        "gt_belum": 4
+      },
+      {
+        "tree": "DAMIMAS_A21B_0079",
+        "n_pred": 15,
+        "n_gt": 13,
+        "tp": 11,
+        "fp": 4,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 4,
+        "pred_belum": 12,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0081",
+        "n_pred": 10,
+        "n_gt": 13,
+        "tp": 7,
+        "fp": 3,
+        "fn": 6,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 6,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0084",
+        "n_pred": 6,
+        "n_gt": 5,
+        "tp": 4,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 5,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0092",
+        "n_pred": 11,
+        "n_gt": 12,
+        "tp": 11,
+        "fp": 0,
+        "fn": 1,
+        "pred_matang": 2,
+        "gt_matang": 4,
+        "pred_belum": 9,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0104",
+        "n_pred": 13,
+        "n_gt": 15,
+        "tp": 11,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 5,
+        "gt_matang": 5,
+        "pred_belum": 8,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0113",
+        "n_pred": 3,
+        "n_gt": 8,
+        "tp": 3,
+        "fp": 0,
+        "fn": 5,
+        "pred_matang": 1,
+        "gt_matang": 1,
+        "pred_belum": 2,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0116",
+        "n_pred": 11,
+        "n_gt": 12,
+        "tp": 10,
+        "fp": 1,
+        "fn": 2,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 10,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0117",
+        "n_pred": 1,
+        "n_gt": 4,
+        "tp": 1,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 1,
+        "gt_belum": 4
+      },
+      {
+        "tree": "DAMIMAS_A21B_0131",
+        "n_pred": 10,
+        "n_gt": 9,
+        "tp": 7,
+        "fp": 3,
+        "fn": 2,
+        "pred_matang": 1,
+        "gt_matang": 1,
+        "pred_belum": 9,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0139",
+        "n_pred": 7,
+        "n_gt": 8,
+        "tp": 5,
+        "fp": 2,
+        "fn": 3,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 6,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0143",
+        "n_pred": 9,
+        "n_gt": 8,
+        "tp": 6,
+        "fp": 3,
+        "fn": 2,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 9,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0150",
+        "n_pred": 16,
+        "n_gt": 14,
+        "tp": 13,
+        "fp": 3,
+        "fn": 1,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 13,
+        "gt_belum": 12
+      },
+      {
+        "tree": "DAMIMAS_A21B_0156",
+        "n_pred": 7,
+        "n_gt": 9,
+        "tp": 6,
+        "fp": 1,
+        "fn": 3,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 4,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0160",
+        "n_pred": 8,
+        "n_gt": 6,
+        "tp": 6,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 6,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0161",
+        "n_pred": 11,
+        "n_gt": 14,
+        "tp": 10,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 10,
+        "gt_belum": 14
+      },
+      {
+        "tree": "DAMIMAS_A21B_0165",
+        "n_pred": 10,
+        "n_gt": 11,
+        "tp": 7,
+        "fp": 3,
+        "fn": 4,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 7,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0187",
+        "n_pred": 2,
+        "n_gt": 4,
+        "tp": 2,
+        "fp": 0,
+        "fn": 2,
+        "pred_matang": 2,
+        "gt_matang": 1,
+        "pred_belum": 0,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0189",
+        "n_pred": 4,
+        "n_gt": 5,
+        "tp": 2,
+        "fp": 2,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 4,
+        "pred_belum": 2,
+        "gt_belum": 1
+      },
+      {
+        "tree": "DAMIMAS_A21B_0190",
+        "n_pred": 9,
+        "n_gt": 9,
+        "tp": 8,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 5,
+        "gt_matang": 4,
+        "pred_belum": 4,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0195",
+        "n_pred": 6,
+        "n_gt": 8,
+        "tp": 4,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 4,
+        "gt_matang": 3,
+        "pred_belum": 2,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0200",
+        "n_pred": 7,
+        "n_gt": 6,
+        "tp": 5,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 1,
+        "gt_matang": 1,
+        "pred_belum": 6,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0204",
+        "n_pred": 9,
+        "n_gt": 9,
+        "tp": 8,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 6,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0219",
+        "n_pred": 10,
+        "n_gt": 12,
+        "tp": 9,
+        "fp": 1,
+        "fn": 3,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 6,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0227",
+        "n_pred": 1,
+        "n_gt": 7,
+        "tp": 0,
+        "fp": 1,
+        "fn": 7,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 1,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0230",
+        "n_pred": 0,
+        "n_gt": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 0,
+        "gt_belum": 0
+      },
+      {
+        "tree": "DAMIMAS_A21B_0235",
+        "n_pred": 9,
+        "n_gt": 12,
+        "tp": 9,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 7,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0244",
+        "n_pred": 3,
+        "n_gt": 8,
+        "tp": 0,
+        "fp": 3,
+        "fn": 8,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0249",
+        "n_pred": 5,
+        "n_gt": 10,
+        "tp": 5,
+        "fp": 0,
+        "fn": 5,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 5,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0251",
+        "n_pred": 9,
+        "n_gt": 13,
+        "tp": 8,
+        "fp": 1,
+        "fn": 5,
+        "pred_matang": 3,
+        "gt_matang": 5,
+        "pred_belum": 6,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0259",
+        "n_pred": 9,
+        "n_gt": 12,
+        "tp": 8,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 9,
+        "pred_belum": 7,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0266",
+        "n_pred": 11,
+        "n_gt": 12,
+        "tp": 8,
+        "fp": 3,
+        "fn": 4,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 8,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0272",
+        "n_pred": 11,
+        "n_gt": 9,
+        "tp": 8,
+        "fp": 3,
+        "fn": 1,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 9,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0278",
+        "n_pred": 10,
+        "n_gt": 12,
+        "tp": 8,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 3,
+        "gt_matang": 6,
+        "pred_belum": 7,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0283",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 9,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 4,
+        "gt_matang": 3,
+        "pred_belum": 7,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0288",
+        "n_pred": 8,
+        "n_gt": 13,
+        "tp": 7,
+        "fp": 1,
+        "fn": 6,
+        "pred_matang": 1,
+        "gt_matang": 3,
+        "pred_belum": 7,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0289",
+        "n_pred": 7,
+        "n_gt": 10,
+        "tp": 5,
+        "fp": 2,
+        "fn": 5,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 5,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0291",
+        "n_pred": 18,
+        "n_gt": 16,
+        "tp": 10,
+        "fp": 8,
+        "fn": 6,
+        "pred_matang": 9,
+        "gt_matang": 8,
+        "pred_belum": 9,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0299",
+        "n_pred": 11,
+        "n_gt": 9,
+        "tp": 7,
+        "fp": 4,
+        "fn": 2,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 9,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0301",
+        "n_pred": 12,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 3,
+        "fn": 4,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 9,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0302",
+        "n_pred": 6,
+        "n_gt": 9,
+        "tp": 5,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 4,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0304",
+        "n_pred": 11,
+        "n_gt": 9,
+        "tp": 7,
+        "fp": 4,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 1,
+        "pred_belum": 8,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0309",
+        "n_pred": 11,
+        "n_gt": 10,
+        "tp": 9,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 4,
+        "gt_matang": 3,
+        "pred_belum": 7,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0327",
+        "n_pred": 4,
+        "n_gt": 7,
+        "tp": 4,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 3,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0329",
+        "n_pred": 5,
+        "n_gt": 5,
+        "tp": 4,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 3,
+        "gt_belum": 2
+      },
+      {
+        "tree": "DAMIMAS_A21B_0331",
+        "n_pred": 5,
+        "n_gt": 7,
+        "tp": 4,
+        "fp": 1,
+        "fn": 3,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 5,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0346",
+        "n_pred": 12,
+        "n_gt": 10,
+        "tp": 10,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 5,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0363",
+        "n_pred": 7,
+        "n_gt": 8,
+        "tp": 4,
+        "fp": 3,
+        "fn": 4,
+        "pred_matang": 0,
+        "gt_matang": 5,
+        "pred_belum": 7,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0366",
+        "n_pred": 5,
+        "n_gt": 8,
+        "tp": 4,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 5,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0371",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 7,
+        "fp": 4,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 4,
+        "pred_belum": 9,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0383",
+        "n_pred": 11,
+        "n_gt": 14,
+        "tp": 9,
+        "fp": 2,
+        "fn": 5,
+        "pred_matang": 4,
+        "gt_matang": 8,
+        "pred_belum": 7,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0385",
+        "n_pred": 10,
+        "n_gt": 16,
+        "tp": 9,
+        "fp": 1,
+        "fn": 7,
+        "pred_matang": 4,
+        "gt_matang": 3,
+        "pred_belum": 6,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0394",
+        "n_pred": 10,
+        "n_gt": 13,
+        "tp": 8,
+        "fp": 2,
+        "fn": 5,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0408",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 9,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 8,
+        "pred_belum": 8,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0412",
+        "n_pred": 6,
+        "n_gt": 8,
+        "tp": 6,
+        "fp": 0,
+        "fn": 2,
+        "pred_matang": 2,
+        "gt_matang": 6,
+        "pred_belum": 4,
+        "gt_belum": 2
+      },
+      {
+        "tree": "DAMIMAS_A21B_0413",
+        "n_pred": 11,
+        "n_gt": 15,
+        "tp": 7,
+        "fp": 4,
+        "fn": 8,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 8,
+        "gt_belum": 12
+      },
+      {
+        "tree": "DAMIMAS_A21B_0418",
+        "n_pred": 18,
+        "n_gt": 16,
+        "tp": 13,
+        "fp": 5,
+        "fn": 3,
+        "pred_matang": 3,
+        "gt_matang": 1,
+        "pred_belum": 15,
+        "gt_belum": 15
+      },
+      {
+        "tree": "DAMIMAS_A21B_0420",
+        "n_pred": 4,
+        "n_gt": 4,
+        "tp": 3,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 1,
+        "pred_belum": 4,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0421",
+        "n_pred": 2,
+        "n_gt": 0,
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 2,
+        "gt_belum": 0
+      },
+      {
+        "tree": "DAMIMAS_A21B_0424",
+        "n_pred": 11,
+        "n_gt": 8,
+        "tp": 8,
+        "fp": 3,
+        "fn": 0,
+        "pred_matang": 5,
+        "gt_matang": 5,
+        "pred_belum": 6,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0425",
+        "n_pred": 8,
+        "n_gt": 12,
+        "tp": 6,
+        "fp": 2,
+        "fn": 6,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 6,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0434",
+        "n_pred": 9,
+        "n_gt": 14,
+        "tp": 8,
+        "fp": 1,
+        "fn": 6,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 12
+      },
+      {
+        "tree": "DAMIMAS_A21B_0436",
+        "n_pred": 11,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 6,
+        "gt_matang": 5,
+        "pred_belum": 5,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0437",
+        "n_pred": 12,
+        "n_gt": 19,
+        "tp": 10,
+        "fp": 2,
+        "fn": 9,
+        "pred_matang": 4,
+        "gt_matang": 6,
+        "pred_belum": 8,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0461",
+        "n_pred": 12,
+        "n_gt": 11,
+        "tp": 8,
+        "fp": 4,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 10,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0463",
+        "n_pred": 8,
+        "n_gt": 11,
+        "tp": 8,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 6,
+        "pred_belum": 6,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0476",
+        "n_pred": 7,
+        "n_gt": 11,
+        "tp": 5,
+        "fp": 2,
+        "fn": 6,
+        "pred_matang": 2,
+        "gt_matang": 4,
+        "pred_belum": 5,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0482",
+        "n_pred": 8,
+        "n_gt": 13,
+        "tp": 8,
+        "fp": 0,
+        "fn": 5,
+        "pred_matang": 3,
+        "gt_matang": 4,
+        "pred_belum": 5,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0494",
+        "n_pred": 15,
+        "n_gt": 17,
+        "tp": 12,
+        "fp": 3,
+        "fn": 5,
+        "pred_matang": 5,
+        "gt_matang": 4,
+        "pred_belum": 10,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0497",
+        "n_pred": 12,
+        "n_gt": 18,
+        "tp": 9,
+        "fp": 3,
+        "fn": 9,
+        "pred_matang": 3,
+        "gt_matang": 5,
+        "pred_belum": 9,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0506",
+        "n_pred": 16,
+        "n_gt": 18,
+        "tp": 14,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 5,
+        "gt_matang": 5,
+        "pred_belum": 11,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0542",
+        "n_pred": 11,
+        "n_gt": 13,
+        "tp": 11,
+        "fp": 0,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 4,
+        "pred_belum": 8,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0554",
+        "n_pred": 14,
+        "n_gt": 18,
+        "tp": 12,
+        "fp": 2,
+        "fn": 6,
+        "pred_matang": 5,
+        "gt_matang": 5,
+        "pred_belum": 9,
+        "gt_belum": 13
+      },
+      {
+        "tree": "DAMIMAS_A21B_0562",
+        "n_pred": 10,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 4,
+        "gt_matang": 5,
+        "pred_belum": 6,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0566",
+        "n_pred": 11,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 2,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 6,
+        "pred_belum": 9,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0580",
+        "n_pred": 11,
+        "n_gt": 13,
+        "tp": 10,
+        "fp": 1,
+        "fn": 3,
+        "pred_matang": 5,
+        "gt_matang": 6,
+        "pred_belum": 6,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0596",
+        "n_pred": 10,
+        "n_gt": 14,
+        "tp": 10,
+        "fp": 0,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 8,
+        "gt_belum": 12
+      },
+      {
+        "tree": "DAMIMAS_A21B_0600",
+        "n_pred": 16,
+        "n_gt": 16,
+        "tp": 14,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 5,
+        "gt_matang": 5,
+        "pred_belum": 11,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0605",
+        "n_pred": 13,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 4,
+        "fn": 4,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 9,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0611",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 9,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 0,
+        "gt_matang": 6,
+        "pred_belum": 11,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0619",
+        "n_pred": 12,
+        "n_gt": 16,
+        "tp": 11,
+        "fp": 1,
+        "fn": 5,
+        "pred_matang": 5,
+        "gt_matang": 10,
+        "pred_belum": 7,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0631",
+        "n_pred": 4,
+        "n_gt": 6,
+        "tp": 4,
+        "fp": 0,
+        "fn": 2,
+        "pred_matang": 0,
+        "gt_matang": 3,
+        "pred_belum": 4,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0633",
+        "n_pred": 4,
+        "n_gt": 2,
+        "tp": 2,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 2,
+        "gt_matang": 0,
+        "pred_belum": 2,
+        "gt_belum": 2
+      },
+      {
+        "tree": "DAMIMAS_A21B_0639",
+        "n_pred": 10,
+        "n_gt": 14,
+        "tp": 10,
+        "fp": 0,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 8,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0655",
+        "n_pred": 12,
+        "n_gt": 12,
+        "tp": 10,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 9,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0661",
+        "n_pred": 11,
+        "n_gt": 14,
+        "tp": 8,
+        "fp": 3,
+        "fn": 6,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 8,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0662",
+        "n_pred": 3,
+        "n_gt": 3,
+        "tp": 2,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 3
+      },
+      {
+        "tree": "DAMIMAS_A21B_0664",
+        "n_pred": 15,
+        "n_gt": 15,
+        "tp": 14,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 2,
+        "gt_matang": 3,
+        "pred_belum": 13,
+        "gt_belum": 12
+      },
+      {
+        "tree": "DAMIMAS_A21B_0676",
+        "n_pred": 13,
+        "n_gt": 15,
+        "tp": 12,
+        "fp": 1,
+        "fn": 3,
+        "pred_matang": 3,
+        "gt_matang": 4,
+        "pred_belum": 10,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0680",
+        "n_pred": 16,
+        "n_gt": 17,
+        "tp": 13,
+        "fp": 3,
+        "fn": 4,
+        "pred_matang": 3,
+        "gt_matang": 3,
+        "pred_belum": 13,
+        "gt_belum": 14
+      },
+      {
+        "tree": "DAMIMAS_A21B_0694",
+        "n_pred": 5,
+        "n_gt": 8,
+        "tp": 5,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 4,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0702",
+        "n_pred": 8,
+        "n_gt": 8,
+        "tp": 7,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 1,
+        "gt_matang": 1,
+        "pred_belum": 7,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0709",
+        "n_pred": 15,
+        "n_gt": 15,
+        "tp": 14,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 7,
+        "gt_matang": 5,
+        "pred_belum": 8,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0712",
+        "n_pred": 13,
+        "n_gt": 12,
+        "tp": 10,
+        "fp": 3,
+        "fn": 2,
+        "pred_matang": 4,
+        "gt_matang": 3,
+        "pred_belum": 9,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0717",
+        "n_pred": 15,
+        "n_gt": 13,
+        "tp": 10,
+        "fp": 5,
+        "fn": 3,
+        "pred_matang": 6,
+        "gt_matang": 4,
+        "pred_belum": 9,
+        "gt_belum": 9
+      },
+      {
+        "tree": "DAMIMAS_A21B_0725",
+        "n_pred": 8,
+        "n_gt": 7,
+        "tp": 5,
+        "fp": 3,
+        "fn": 2,
+        "pred_matang": 3,
+        "gt_matang": 2,
+        "pred_belum": 5,
+        "gt_belum": 5
+      },
+      {
+        "tree": "DAMIMAS_A21B_0728",
+        "n_pred": 15,
+        "n_gt": 14,
+        "tp": 13,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 5,
+        "gt_matang": 4,
+        "pred_belum": 10,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0730",
+        "n_pred": 10,
+        "n_gt": 8,
+        "tp": 7,
+        "fp": 3,
+        "fn": 1,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 6,
+        "gt_belum": 4
+      },
+      {
+        "tree": "DAMIMAS_A21B_0731",
+        "n_pred": 3,
+        "n_gt": 6,
+        "tp": 3,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 6
+      },
+      {
+        "tree": "DAMIMAS_A21B_0734",
+        "n_pred": 9,
+        "n_gt": 9,
+        "tp": 6,
+        "fp": 3,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0737",
+        "n_pred": 7,
+        "n_gt": 7,
+        "tp": 6,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 7,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0748",
+        "n_pred": 10,
+        "n_gt": 13,
+        "tp": 9,
+        "fp": 1,
+        "fn": 4,
+        "pred_matang": 2,
+        "gt_matang": 2,
+        "pred_belum": 8,
+        "gt_belum": 11
+      },
+      {
+        "tree": "DAMIMAS_A21B_0751",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 9,
+        "fp": 2,
+        "fn": 2,
+        "pred_matang": 5,
+        "gt_matang": 4,
+        "pred_belum": 6,
+        "gt_belum": 7
+      },
+      {
+        "tree": "DAMIMAS_A21B_0763",
+        "n_pred": 1,
+        "n_gt": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 1,
+        "gt_belum": 1
+      },
+      {
+        "tree": "DAMIMAS_A21B_0778",
+        "n_pred": 0,
+        "n_gt": 8,
+        "tp": 0,
+        "fp": 0,
+        "fn": 8,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 0,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0781",
+        "n_pred": 12,
+        "n_gt": 12,
+        "tp": 9,
+        "fp": 3,
+        "fn": 3,
+        "pred_matang": 4,
+        "gt_matang": 4,
+        "pred_belum": 8,
+        "gt_belum": 8
+      },
+      {
+        "tree": "DAMIMAS_A21B_0788",
+        "n_pred": 10,
+        "n_gt": 11,
+        "tp": 10,
+        "fp": 0,
+        "fn": 1,
+        "pred_matang": 3,
+        "gt_matang": 1,
+        "pred_belum": 7,
+        "gt_belum": 10
+      },
+      {
+        "tree": "DAMIMAS_A21B_0793",
+        "n_pred": 0,
+        "n_gt": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 0,
+        "gt_belum": 0
+      },
+      {
+        "tree": "DAMIMAS_A21B_0797",
+        "n_pred": 4,
+        "n_gt": 7,
+        "tp": 4,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 2,
+        "gt_matang": 5,
+        "pred_belum": 2,
+        "gt_belum": 2
+      },
+      {
+        "tree": "DAMIMAS_A21B_0800",
+        "n_pred": 6,
+        "n_gt": 10,
+        "tp": 5,
+        "fp": 1,
+        "fn": 5,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 5,
+        "gt_belum": 8
+      },
+      {
+        "tree": "LONSUM_A21A_0018",
+        "n_pred": 6,
+        "n_gt": 6,
+        "tp": 5,
+        "fp": 1,
+        "fn": 1,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 5,
+        "gt_belum": 4
+      },
+      {
+        "tree": "LONSUM_A21A_0022",
+        "n_pred": 1,
+        "n_gt": 5,
+        "tp": 1,
+        "fp": 0,
+        "fn": 4,
+        "pred_matang": 0,
+        "gt_matang": 3,
+        "pred_belum": 1,
+        "gt_belum": 2
+      },
+      {
+        "tree": "LONSUM_A21A_0032",
+        "n_pred": 1,
+        "n_gt": 1,
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 1,
+        "gt_belum": 1
+      },
+      {
+        "tree": "LONSUM_A21A_0035",
+        "n_pred": 3,
+        "n_gt": 7,
+        "tp": 3,
+        "fp": 0,
+        "fn": 4,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 7
+      },
+      {
+        "tree": "LONSUM_A21A_0039",
+        "n_pred": 9,
+        "n_gt": 7,
+        "tp": 7,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 8,
+        "gt_belum": 7
+      },
+      {
+        "tree": "LONSUM_A21A_0045",
+        "n_pred": 8,
+        "n_gt": 6,
+        "tp": 6,
+        "fp": 2,
+        "fn": 0,
+        "pred_matang": 1,
+        "gt_matang": 2,
+        "pred_belum": 7,
+        "gt_belum": 4
+      },
+      {
+        "tree": "LONSUM_A21A_0046",
+        "n_pred": 1,
+        "n_gt": 2,
+        "tp": 1,
+        "fp": 0,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 1,
+        "gt_belum": 2
+      },
+      {
+        "tree": "LONSUM_A21A_0047",
+        "n_pred": 3,
+        "n_gt": 8,
+        "tp": 3,
+        "fp": 0,
+        "fn": 5,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 2,
+        "gt_belum": 8
+      },
+      {
+        "tree": "LONSUM_A21A_0058",
+        "n_pred": 11,
+        "n_gt": 11,
+        "tp": 8,
+        "fp": 3,
+        "fn": 3,
+        "pred_matang": 1,
+        "gt_matang": 3,
+        "pred_belum": 10,
+        "gt_belum": 8
+      },
+      {
+        "tree": "LONSUM_A21A_0069",
+        "n_pred": 7,
+        "n_gt": 4,
+        "tp": 4,
+        "fp": 3,
+        "fn": 0,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 6,
+        "gt_belum": 4
+      },
+      {
+        "tree": "LONSUM_A21A_0075",
+        "n_pred": 4,
+        "n_gt": 7,
+        "tp": 4,
+        "fp": 0,
+        "fn": 3,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 3,
+        "gt_belum": 7
+      },
+      {
+        "tree": "LONSUM_A21A_0082",
+        "n_pred": 4,
+        "n_gt": 3,
+        "tp": 2,
+        "fp": 2,
+        "fn": 1,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 4,
+        "gt_belum": 3
+      },
+      {
+        "tree": "LONSUM_A21A_0091",
+        "n_pred": 5,
+        "n_gt": 11,
+        "tp": 4,
+        "fp": 1,
+        "fn": 7,
+        "pred_matang": 1,
+        "gt_matang": 0,
+        "pred_belum": 4,
+        "gt_belum": 11
+      },
+      {
+        "tree": "LONSUM_A21A_0099",
+        "n_pred": 2,
+        "n_gt": 10,
+        "tp": 2,
+        "fp": 0,
+        "fn": 8,
+        "pred_matang": 0,
+        "gt_matang": 0,
+        "pred_belum": 2,
+        "gt_belum": 10
+      }
+    ]
+  },
+  "panen_final": {
+    "reproduced_original": {
+      "physical_f1": 0.7618654560462237,
+      "precision": 0.8538390379278445,
+      "recall": 0.687779433681073,
+      "n_matched": 923,
+      "count_total": {
+        "mae": 2.371212121212121,
+        "exact": 0.17424242424242425,
+        "within1": 0.4015151515151515
+      },
+      "count_matang": {
+        "mae": 1.0606060606060606,
+        "exact": 0.4015151515151515,
+        "within1": 0.7727272727272727
+      },
+      "count_belum": {
+        "mae": 2.371212121212121,
+        "exact": 0.13636363636363635,
+        "within1": 0.3560606060606061
+      },
+      "class2_acc": 0.8678223185265439,
+      "class2_f1": 0.9071537290715372,
+      "class4_acc": 0.7161430119176598,
+      "class4_within1": 0.9945828819068255,
+      "class4_macro_f1": 0.6692061179210598,
+      "audit_cm_e2e": [
+        [
+          84,
+          25,
+          1,
+          0,
+          11
+        ],
+        [
+          17,
+          79,
+          38,
+          2,
+          28
+        ],
+        [
+          1,
+          79,
+          424,
+          57,
+          94
+        ],
+        [
+          0,
+          1,
+          41,
+          74,
+          25
+        ],
+        [
+          11,
+          62,
+          202,
+          144,
+          0
+        ]
+      ],
+      "audit_macro_f1_e2e": 0.5201132070943402
+    },
+    "canonical_frozen_profile": {
+      "physical_f1": 0.7612371134020619,
+      "precision": 0.8522622345337026,
+      "recall": 0.687779433681073,
+      "n_matched": 923,
+      "count_total": {
+        "mae": 2.3333333333333335,
+        "exact": 0.18518518518518517,
+        "within1": 0.4074074074074074
+      },
+      "count_matang": {
+        "mae": 1.037037037037037,
+        "exact": 0.4148148148148148,
+        "within1": 0.7777777777777778
+      },
+      "count_belum": {
+        "mae": 2.3333333333333335,
+        "exact": 0.14814814814814814,
+        "within1": 0.362962962962963
+      },
+      "class2_acc": 0.8678223185265439,
+      "class2_f1": 0.9071537290715372,
+      "class4_acc": 0.7161430119176598,
+      "class4_within1": 0.9945828819068255,
+      "class4_macro_f1": 0.6692061179210598,
+      "audit_cm_e2e": [
+        [
+          84,
+          25,
+          1,
+          0,
+          11
+        ],
+        [
+          17,
+          79,
+          38,
+          2,
+          28
+        ],
+        [
+          1,
+          79,
+          424,
+          57,
+          95
+        ],
+        [
+          0,
+          1,
+          41,
+          74,
+          26
+        ],
+        [
+          11,
+          62,
+          202,
+          144,
+          0
+        ]
+      ],
+      "audit_macro_f1_e2e": 0.5197875829695926
+    },
+    "counting_source": {
+      "VALIDATION": {
+        "total": {
+          "mae": 1.3736263736263736,
+          "exact": 0.26373626373626374,
+          "within1": 0.6373626373626373,
+          "mean_true": 10.285714285714286
+        },
+        "B1 siap panen": {
+          "mae": 0.5604395604395604,
+          "exact": 0.5714285714285714,
+          "within1": 0.8791208791208791,
+          "mean_true": 0.945054945054945
+        },
+        "B1+B2 matang": {
+          "mae": 1.1538461538461537,
+          "exact": 0.3516483516483517,
+          "within1": 0.7032967032967034,
+          "mean_true": 2.989010989010989
+        },
+        "B3+B4 belum": {
+          "mae": 1.8021978021978022,
+          "exact": 0.15384615384615385,
+          "within1": 0.45054945054945056,
+          "mean_true": 7.2967032967032965
+        }
+      },
+      "TEST (sekali)": {
+        "total": {
+          "mae": 1.4015151515151516,
+          "exact": 0.22727272727272727,
+          "within1": 0.5681818181818182,
+          "mean_true": 10.166666666666666
+        },
+        "B1 siap panen": {
+          "mae": 0.4015151515151515,
+          "exact": 0.6287878787878788,
+          "within1": 0.9696969696969697,
+          "mean_true": 0.8560606060606061
+        },
+        "B1+B2 matang": {
+          "mae": 1.0681818181818181,
+          "exact": 0.3787878787878788,
+          "within1": 0.7651515151515151,
+          "mean_true": 2.7196969696969697
+        },
+        "B3+B4 belum": {
+          "mae": 1.6363636363636365,
+          "exact": 0.23484848484848486,
+          "within1": 0.5454545454545454,
+          "mean_true": 7.446969696969697
+        }
+      }
+    },
+    "counting_reproduced": false
+  },
+  "corn_cached_diagnostic": {
+    "val": {
+      "n": 1887,
+      "posterior_min": 5.467522896651644e-07,
+      "posterior_argmax_accuracy": 0.6661367249602543,
+      "rounded_expectation_accuracy": 0.6650768415474297,
+      "coarse_posterior_accuracy_at_half": 0.8606253312135665,
+      "coarse_expectation_accuracy_at_1_5": 0.8606253312135665,
+      "coarse_rule_disagreement": 0
+    },
+    "test": {
+      "n": 2612,
+      "posterior_min": 2.985321998494328e-07,
+      "posterior_argmax_accuracy": 0.6845329249617151,
+      "rounded_expectation_accuracy": 0.6841500765696784,
+      "coarse_posterior_accuracy_at_half": 0.8594946401225115,
+      "coarse_expectation_accuracy_at_1_5": 0.8594946401225115,
+      "coarse_rule_disagreement": 2
+    }
+  },
+  "source_sha256": {
+    "/workspace/project-expertise/scripts/audit_forensik/panen_pipeline.py": "516fbad11fbe2e47699a0ae9c4d0efb16d225fb62242082827291b4edc9be61d",
+    "/workspace/results_panen/panen_results.json": "59599caf9d57a494986c3062c467e928f83387ad0e8e2b8b357f3a35f57ac496",
+    "/workspace/results_panen/panen_final.json": "d153f2eafefa52c253dbcfa1bc70ca642f9de5f6c6bb2aa7d877e7c22b2d8da7",
+    "/workspace/project-expertise/scripts/audit_latest_artifacts.py": "538659eab33bc827c9fb26b27626c3f52c20c82f5e2bd76b682b654e71a16047",
+    "/workspace/SawitMVC-YOLO/split_manifest.csv": "1a1d3556631dbbddfea1c7bf376ad049c3dfdd7f18eec6dcc0bc1dcd31c26b40"
+  }
+}
