@@ -117,10 +117,19 @@ def build_edges(dets: list[dict], n: int,
 
 
 class UF:
-    def __init__(self, n: int, max_size: int):
+    """Union-find dengan kendala "maksimal satu proposal per sisi fisik".
+
+    `sides` wajib berisi sisi fisik tiap proposal (`dets[i]["side"]`). Versi
+    sebelumnya mengisinya dengan indeks larik proposal, sehingga uji irisan
+    sisi pada `union` tidak pernah aktif dan klaster dapat memuat dua deteksi
+    dari tampak yang sama. Rujukan: `AF-E-010`.
+    """
+
+    def __init__(self, sides: list[int], max_size: int):
+        n = len(sides)
         self.parent = list(range(n))
         self.size = [1] * n
-        self.sides = [{i} for i in range(n)]
+        self.sides = [{s} for s in sides]
         self.max_size = max_size
 
     def find(self, x: int) -> int:
@@ -142,7 +151,7 @@ class UF:
 
 def clusters(dets: list[dict], edges: list[tuple[float, int, int]],
              link_threshold: float, singleton_min: float, max_size: int):
-    uf = UF(len(dets), max_size)
+    uf = UF([det["side"] for det in dets], max_size)
     for score, i, j in edges:
         if score < link_threshold:
             break
