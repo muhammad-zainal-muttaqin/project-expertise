@@ -102,9 +102,7 @@ pipeline-pertandan/results/cache_linker_damimas_*.joblib
 # Probabilitas classifier pada proposal fusion; regenerable dari checkpoint.
 results/cache_relabel_damimas_*.joblib
 
-# Keluaran render Markdown -> PDF (.agents/skills/markdown-ke-pdf). Berkas .tex
-# adalah perantara dan .pdf dapat dibangun ulang kapan saja dari sumber .md-nya,
-# sehingga tidak dilacak agar riwayat tidak menyimpan biner yang berubah setiap
-# kali dokumen sumbernya disunting.
+# Berkas .tex perantara dari .agents/skills/markdown-ke-pdf. Hanya hasil antara;
+# PDF-nya sendiri TETAP DILACAK agar dapat langsung dibagikan tanpa perlu
+# menjalankan tectonic terlebih dahulu.
 metrics/*.tex
-metrics/*.pdf
