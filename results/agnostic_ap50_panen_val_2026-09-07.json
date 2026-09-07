@@ -1,0 +1,12 @@
+{
+  "node": "AF-E-012",
+  "model": "agnostik_m1280 (YOLO26m class-agnostic, Pipeline Panen)",
+  "dataset": "953",
+  "split": "val",
+  "weights": "audit_forensik_2026-09-06/runs_panen/agnostik_m1280/weights/best.pt (bucket)",
+  "protocol": "imgsz=1280, conf=0.001, iou=0.7, max_det=300 -- sebanding dengan standar conf=0.001 di seluruh kolom detection lain (beda dari dets.pkl yang terpotong conf>=0.10)",
+  "AP50_agnostic": 0.8125391145410636,
+  "AP50_95_agnostic": 0.37720976595478256,
+  "n_images": 404,
+  "predictions": "results/pred_panen_agnostik_953_val.npz"
+}
