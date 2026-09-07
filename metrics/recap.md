@@ -2,7 +2,7 @@
 
 Dokumen ini menyusun ulang seluruh hasil evaluasi dari [atlas metrik](README.md) menjadi satu papan peringkat (*leaderboard*) terpadu untuk setiap tahapan tugas pada sistem. Seluruh korpus data dan konfigurasi sistem dirangkum dalam tabel komparasi terstruktur yang diurutkan dari performa terbaik hingga terendah berdasarkan metrik evaluasi utama, lengkap dengan metrik pendukungnya.
 
-**Cakupan evaluasi:** Eksperimen `V2-E-001`–`V2-E-045`, `PT-E-000`–`PT-E-036`, sesi verifikasi *remote* Agustus 2026, serta rangkaian audit forensik `AF-E-001`–`AF-E-016`. Dokumen ini bersifat aditif (hanya mengonsolidasi data historis yang valid) tanpa mengubah angka metrik empiris maupun struktur berkas atlas terdahulu.
+**Cakupan evaluasi:** Eksperimen `V2-E-001`–`V2-E-048`, `PT-E-000`–`PT-E-036`, sesi verifikasi *remote* Agustus 2026, serta rangkaian audit forensik `AF-E-001`–`AF-E-016`. Dokumen ini bersifat aditif (hanya mengonsolidasi data historis yang valid) tanpa mengubah angka metrik empiris maupun struktur berkas atlas terdahulu.
 
 ---
 
@@ -164,8 +164,9 @@ Metrik utama: *F1 fisik* pada ambang pencocokan spasial $IoU \ge 0,5$; metrik pe
 | Konfigurasi Sistem | Partisi Evaluasi | $n$ Pohon | *F1 Fisik* | Presisi Fisik | Daya Tangkap Fisik | ID Simpul |
 |---|---|---:|---:|---:|---:|---|
 | WBF + penaut *greedy strict* | Uji | 110 | **0,8590** | 0,8799 | **0,8390** | `V2-E-043`⁴ |
+| WBF + penaut GSP MILP + komposisi lintas-lapis | Validasi | 117 | 0,8542 | **0,9091** | 0,8056 | `V2-E-047`⁷ |
 | WBF + penaut GSP MILP + pencacah Ridge | Uji | 110 | 0,8534 | 0,8926 | 0,8175 | `Wave-V2` |
-| WBF + penaut GSP MILP + pencacah Ridge | Validasi | 117 | 0,8526 | **0,9055** | 0,8056 | `Wave-V2` |
+| WBF + penaut GSP MILP + pencacah Ridge | Validasi | 117 | 0,8526 | 0,9055 | 0,8056 | `Wave-V2` |
 | WBF + penaut prior rotasi + pencacah Ridge | Validasi | 117 | 0,8257 | 0,8431 | 0,8091 | `V2-E-045` |
 | WBF + penaut prior rotasi + pencacah Ridge | Uji | 110 | 0,8069 | 0,8142 | 0,7996 | `V2-E-045` |
 
@@ -181,6 +182,7 @@ Metrik utama: *F1 fisik* pada ambang pencocokan spasial $IoU \ge 0,5$; metrik pe
 | YOLO26m + penaut terlatih (Pipeline Panen) | Uji | 132 | 0,7619 | **0,8538** | 0,6878 | `AF-E-012` |
 | YOLO26m + penaut terlatih (Pipeline Panen) | Validasi | 91 | 0,7586 | 0,8374 | 0,6934 | `AF-E-012` |
 
+⁷ Kandidat gelombang validasi 28 Agustus 2026. Dipilih dan dievaluasi hanya pada partisi validasi (*fit* TRAIN, seleksi VAL, tanpa menyentuh partisi uji), sehingga belum menggantikan angka partisi uji terkunci. Presisi dan daya tangkap fisik diturunkan dari rasio klaster terpasangkan terhadap prediksi dan nilai acuan pada artefak sumber.  
 ⁴ Parameter pada `V2-E-043` diperoleh dari penyapuan (*grid search*) langsung pada partisi uji sehingga mencerminkan optimasi lokal (*overfitting* uji) dan bukan tolok ukur generalisasi murni. Profil `Wave-V2` dikunci pada partisi uji; profil `V2-E-045` dikunci secara baku pada partisi validasi.
 
 > [!NOTE]
@@ -196,7 +198,8 @@ Metrik utama: Akurasi *matched-class* pada klaster yang terasosiasi secara tepat
 
 | Konfigurasi Sistem | Partisi Evaluasi | Akurasi *Matched-Class* | Makro-*F1* E2E | $F1_{B1}$ | $F1_{B2}$ | $F1_{B3}$ | $F1_{B4}$ | ID Simpul |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| WBF + GSP MILP | Validasi | **84,57%** | **0,6807** | **0,7778** | **0,7244** | **0,7500** | **0,4706** | `Wave-V2` |
+| WBF + GSP MILP + komposisi lintas-lapis | Validasi | **85,00%** | **0,6890** | **0,7853** | **0,7252** | **0,7572** | **0,4884** | `V2-E-047`⁷ |
+| WBF + GSP MILP | Validasi | 84,57% | 0,6807 | 0,7778 | 0,7244 | 0,7500 | 0,4706 | `Wave-V2` |
 | WBF + prior rotasi | Validasi | 83,55% | 0,6749 | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `V2-E-045` |
 | WBF + GSP MILP | Uji | 81,62% | 0,6519 | 0,7578 | 0,7230 | 0,7092 | 0,4176 | `Wave-V2` |
 | WBF + prior rotasi | Uji | 80,31% | 0,6047 | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `V2-E-045` |
@@ -205,14 +208,16 @@ Metrik utama: Akurasi *matched-class* pada klaster yang terasosiasi secara tepat
 
 | Konfigurasi Sistem | Partisi Evaluasi | Akurasi *Matched-Class* | Makro-*F1* E2E | $F1_{B1}$ | $F1_{B2}$ | $F1_{B3}$ | $F1_{B4}$ | ID Simpul |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| WBF + Hungarian *Anchor A* | Validasi | **75,42%** | 0,6014 | 0,7059 | 0,4698 | 0,6737 | **0,5561** | `Wave-V2` |
-| WBF + Hungarian *Anchor A* | Uji | 74,42% | **0,6034** | **0,7465** | **0,4706** | **0,6850** | 0,5114 | `Wave-V2` |
+| WBF + Hungarian *Anchor A* + *stacking* DINOv2-Large | Validasi | **76,84%** | **0,6164** | 0,7186 | **0,4886** | 0,6815 | **0,5768** | `V2-E-046`⁷ |
+| WBF + Hungarian *Anchor A* | Validasi | 75,42% | 0,6014 | 0,7059 | 0,4698 | 0,6737 | 0,5561 | `Wave-V2` |
+| WBF + Hungarian *Anchor A* | Uji | 74,42% | 0,6034 | **0,7465** | 0,4706 | **0,6850** | 0,5114 | `Wave-V2` |
 | YOLO26m + skor ordinal (Pipeline Panen) | Validasi | 71,65% | 0,6683⁵ | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `AF-E-012` |
 | YOLO26m + skor ordinal (Pipeline Panen) | Uji | 71,61% | 0,6692⁵ | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `AF-E-012` |
 | WBF + prior rotasi | Uji | 71,11% | 0,5384 | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `V2-E-045` |
 | WBF + prior rotasi | Validasi | 70,04% | 0,5462 | N/A¹ | N/A¹ | N/A¹ | N/A¹ | `V2-E-045` |
 
 ¹ `N/A: Artefak sumber tidak menyimpan rincian metrik per kelas.`  
+⁷ Kandidat gelombang validasi 28 Agustus 2026; dipilih dan dievaluasi hanya pada partisi validasi sehingga belum menggantikan angka partisi uji terkunci. `V2-E-046` terbukti signifikan secara statistik (*bootstrap* berpasangan 5.000 ulangan, 91 pohon: $\Delta$ akurasi *matched-class* $+0,0141$ dengan CI95 $[+0,0026; +0,0268]$; $\Delta$ makro-*F1* $+0,0149$ dengan CI95 $[+0,0007; +0,0303]$, keduanya tidak mencakup nilai nol). `V2-E-047` unggul pada seluruh estimasi titik, tetapi selang kepercayaannya masih mencakup nilai nol sehingga belum signifikan secara statistik.  
 ⁵ Nilai makro-*F1* pada Pipeline Panen hanya dihitung khusus pada subset klaster yang berhasil dipasangkan, sehingga tidak setara secara metodologis dengan kolom yang sama pada baris lainnya. Nilai makro-*F1* ujung ke ujung sesungguhnya adalah $0,5201$.
 
 ### Analisis Kinerja per Kelas:
@@ -233,6 +238,7 @@ Metrik utama: *Mean Absolute Error* (MAE) cacah tandan total per pohon; metrik p
 | WBF + GSP MILP + Ridge | Uji | 110 | 0,773 | **85,45%** | **44,55%** | `Wave-V2` |
 | WBF + *greedy strict*, cacah klaster mentah | Uji | 110 | 0,818 | 83,64% | 41,82% | `V2-E-043`⁴ |
 | WBF + prior rotasi + Ridge | Uji | 110 | 0,891 | 80,91% | 33,64% | `V2-E-045` |
+| WBF + GSP MILP + Ridge + komposisi lintas-lapis | Validasi | 117 | 0,915 | 78,63% | 36,75% | `V2-E-047`⁷ |
 | WBF + GSP MILP + Ridge | Validasi | 117 | 0,932 | 78,63% | 34,19% | `Wave-V2` |
 
 ### 7.2 Korpus 953
@@ -248,6 +254,7 @@ Metrik utama: *Mean Absolute Error* (MAE) cacah tandan total per pohon; metrik p
 | WBF + *greedy strict*, cacah klaster mentah | Uji | 135 | 1,644 | 54,07% | N/A² | `V2-E-043`⁴ |
 
 ² `N/A: Metrik tidak dicatat pada berkas artefak sumber.`  
+⁷ Kandidat gelombang validasi 28 Agustus 2026; hanya dievaluasi pada partisi validasi sehingga belum menggantikan angka partisi uji terkunci.  
 <sup>6</sup> Lapisan modul regresi Ridge beroperasi langsung pada vektor fitur proposal terlepas dari modul penaut, sehingga kedua profil menghasilkan nilai MAE yang identik pada partisi validasi 953.
 
 ### Analisis Batas Teoretis Pencacahan Pohon:
@@ -389,6 +396,7 @@ Simulasi proyeksi untuk mengetahui tingkat akurasi klasifikasi kematangan per ci
 | Pipeline Panen (`AF-E-012`, `AF-E-013`) | Menggunakan 132 pohon, detektor tunggal YOLO26m. Unggul pada estimasi B1 toleransi $\pm 1$ ($0,970$) dan akurasi ordinal ($0,9946$). | `AF-E-012`, `AF-E-013` |
 | Pelanggaran kendala fisik (`AF-E-010`) | Telah dikoreksi oleh `AF-E-014`: pada profil terkunci dengan `max_size` $\le 3$, tingkat pelanggaran adalah $0,00\%$. | `AF-E-014`, `AF-E-016` |
 | Status eksperimen `AF-E` | Eksperimen audit (`AF-E`) berfungsi sebagai diagnostik pelengkap, bukan pengganti angka acuan profil terkunci. | [Atlas 07](07_audit_forensik.md) |
+| Status gelombang validasi (`V2-E-046`, `V2-E-047`, `V2-E-048`) | Ketiganya dipilih pada partisi validasi tanpa menyentuh partisi uji, sehingga tidak menggantikan angka uji terkunci. `V2-E-048` (pelatihan ulang *head* sadar-komposisi) tidak memberi kenaikan: makro-*F1* turun $0,6890 \to 0,6850$ dan disimpan sebagai kontrol negatif. | `experiments/STATUS.md` §8–10 |
 | Kebocoran data (*leakage*) `combined1716` | Irisan identitas pohon (`tree_id`) antar-partisi belum diaudit tuntas. | [`ANALISIS_PIPELINE.md`](../docs/ANALISIS_PIPELINE_MENDALAM.md) |
 
 ---
@@ -400,6 +408,7 @@ Simulasi proyeksi untuk mengetahui tingkat akurasi klasifikasi kematangan per ci
 | Tabel 3 | [`combined1716`](../results/combined1716), [`new763`](../results/new763); [`detector_matrix.json`](../results/audit_forensik_2026-09-06/detector_matrix.json) |
 | Tabel 4 | [`class_agnostic_metrics_audit_2026-09-03.json`](../results/class_agnostic_metrics_audit_2026-09-03.json) |
 | Tabel 5, 6, 7 | [`pipeline_combined1716_generalization_locked.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json) |
+| Tabel 5, 6, 7 (gelombang validasi) | [`953_large_stacker_bias_val_bootstrap.json`](../results/remote_eval_2026-08-28/validation_wave/reports/953_large_stacker_bias_val_bootstrap.json), [`953_large_stack_class_bias_results_val.json`](../results/remote_eval_2026-08-28/validation_wave/reports/953_large_stack_class_bias_results_val.json), [`depth_topology_count_class_bootstrap_val.json`](../results/remote_eval_2026-08-28/validation_wave/reports/depth_topology_count_class_bootstrap_val.json), [`depth_composition_aware_head_results_val.json`](../results/remote_eval_2026-08-28/validation_wave/reports/depth_composition_aware_head_results_val.json) |
 | Tabel 8 | Diturunkan dari medan `metrics.classification.confusion_prediction_rows` pada artefak `Wave-V2` |
 | Tabel 9 | [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../experiments/AUDIT-FORENSIK-2026-09-06.md) |
 
