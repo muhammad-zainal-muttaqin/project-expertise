@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-09-07T01:33:09.607689+00:00",
+  "note": "AP50 class-agnostic (kolom 'detection' recap.md, tabel 763-depth, baris 'bank combined1716' V2-E-042) dihitung ulang dari dump .npz prediksi test yang sudah tersimpan (results/remote_eval_2026-08-27/predictions/), tanpa inferensi ulang. GT diunduh dari HF dataset ULM-DS-Lab/SawitMVC-Depth-YOLO (test split, 440 citra/110 pohon). GT dan prediksi dilipat jadi 1 kelas mengikuti scripts/eval_agnostic_from_npz.py.",
+  "runs": {
+    "combined1716_yolo26l_depth_test": {
+      "AP50_agnostic": 0.7812,
+      "AP50_95_agnostic": 0.3133,
+      "n_images": 440,
+      "npz_images_matched": 440,
+      "npz_images_missed": 0,
+      "predictions": "/workspace/project-expertise/results/remote_eval_2026-08-27/predictions/remote_combined1716_yolo26l_depth_test__test.npz",
+      "dataset": "/workspace/data/SawitMVC-Depth-YOLO (test split, HF dataset ULM-DS-Lab/SawitMVC-Depth-YOLO)"
+    },
+    "combined1716_rtdetr_l_depth_test": {
+      "AP50_agnostic": 0.8243,
+      "AP50_95_agnostic": 0.3171,
+      "n_images": 440,
+      "npz_images_matched": 440,
+      "npz_images_missed": 0,
+      "predictions": "/workspace/project-expertise/results/remote_eval_2026-08-27/predictions/remote_combined1716_rtdetr_l_depth_test__test.npz",
+      "dataset": "/workspace/data/SawitMVC-Depth-YOLO (test split, HF dataset ULM-DS-Lab/SawitMVC-Depth-YOLO)"
+    },
+    "combined1716_rfdetr_l_depth_test": {
+      "AP50_agnostic": 0.8329,
+      "AP50_95_agnostic": 0.3294,
+      "n_images": 440,
+      "npz_images_matched": 440,
+      "npz_images_missed": 0,
+      "predictions": "/workspace/project-expertise/results/remote_eval_2026-08-27/predictions/remote_combined1716_rfdetr_l_depth_test__test.npz",
+      "dataset": "/workspace/data/SawitMVC-Depth-YOLO (test split, HF dataset ULM-DS-Lab/SawitMVC-Depth-YOLO)"
+    }
+  }
+}

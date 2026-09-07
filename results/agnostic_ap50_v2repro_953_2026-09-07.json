@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-09-07T01:40:54.714175+00:00",
+  "note": "AP50 class-agnostic (kolom 'detection' recap.md, tabel 953, baris 'YOLO26l' node V2-E-001) dihitung dari inferensi baru bobot lokal models/yolo26l_e60_i1280_v2repro/best.pt (protokol identik V2-E-001/eval_all_pycoco_v2repro.py: imgsz=1280, conf=0.001, iou=0.7, max_det=300) pada test split SawitMVC-YOLO (HF dataset ULM-DS-Lab/SawitMVC-YOLO, images/test+labels/test, 588 citra/141 pohon). Dump prediksi mentah disimpan di results/pred_yolo26l_v2repro_953_test.npz. Sanity check: mAP50 class-aware dari dump yang sama = 0.5435 (acuan V2-E-001/perkelas_pycoco_v2repro.json test mAP50=0.5435).",
+  "class_aware_mAP50_sanity_check": 0.5435,
+  "reference_class_aware_mAP50": 0.5435,
+  "AP50_agnostic": 0.7388,
+  "AP50_95_agnostic": 0.3313,
+  "n_images": 588,
+  "predictions": "/workspace/project-expertise/results/pred_yolo26l_v2repro_953_test.npz",
+  "dataset": "/workspace/data/SawitMVC-YOLO (test split, HF dataset ULM-DS-Lab/SawitMVC-YOLO)",
+  "weights": "/workspace/project-expertise/models/yolo26l_e60_i1280_v2repro/best.pt"
+}

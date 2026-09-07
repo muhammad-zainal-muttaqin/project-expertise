@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-09-07T01:45:14.892542+00:00",
+  "note": "WBF[YOLO26l+RT-DETR-L+RF-DETR-L] bank combined1716, val split, kedua korpus (953=SawitMVC-YOLO images/val+labels/val 96 pohon; depth=SawitMVC-Depth-YOLO valid/ 117 pohon). Inferensi baru dari 3 bobot bucket (project-expertise/runs_combined1716/.../best.pt|checkpoint_best_ema.pth), protokol identik results/remote_eval_2026-08-27/README.md \u00a71: imgsz=1280, conf=0.001, NMS iou=0.7, max_det=300, batch YOLO26l=16 RT-DETR-L/RF-DETR-L=8; WBF iou_threshold=0.60, score_min=0.05, bobot model sama rata (fungsi fuse_groups/_fuse_one dari scripts/eval_remote_pipeline_postprocess.py, tidak diimplementasi ulang). mAP50_classaware -> kolom 'det+class' recap.md; AP50_agnostic -> kolom 'detection'. Berlaku untuk baris val node V2-E-045, Wave-V2, V2-E-046 (tabel 953) dan V2-E-045, Wave-V2, V2-E-047 (tabel 763-depth) -- proposal box level sama, hanya linker/classifier hilir yang berbeda.",
+  "results": {
+    "953": {
+      "n_images": 263,
+      "mAP50_classaware": 0.5613,
+      "mAP50_95_classaware": 0.2529,
+      "AP50_agnostic": 0.8373,
+      "AP50_95_agnostic": 0.3636,
+      "dataset_root": "/workspace/data/SawitMVC-YOLO",
+      "split": "val"
+    },
+    "depth": {
+      "n_images": 468,
+      "mAP50_classaware": 0.6595,
+      "mAP50_95_classaware": 0.2621,
+      "AP50_agnostic": 0.8648,
+      "AP50_95_agnostic": 0.34,
+      "dataset_root": "/workspace/data/SawitMVC-Depth-YOLO",
+      "split": "val"
+    }
+  }
+}

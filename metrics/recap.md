@@ -30,7 +30,7 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 
 | Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l | · | 0,5435 | — | — | — | uji | `V2-E-001` |
+| YOLO26l | 0,7388 | 0,5435 | — | — | — | uji | `V2-E-001` |
 | YOLO26s 960 px | 0,8057 | 0,5433 | — | — | — | uji | `AF-E-006` |
 | YOLO26m 1.280 px | 0,8104 | — | — | — | — | uji | `AF-E-011` |
 | RT-DETR-L | · | 0,5781 | — | — | — | uji | `V2-E-001` |
@@ -41,10 +41,10 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8350 | 0,5861 | 0,8296 | — | 1,644 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 1,363 | uji | `Wave-V2` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 0,8104 | — | 0,7619 | 71,6% | 1,402 | uji | `AF-E-012` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | · | · | 0,8087 | 70,0% | 1,253 | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | · | · | 0,8232 | 75,4% | **1,253** | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | · | · | 0,8232 | **76,8%** | 1,253 | val | `V2-E-046` |
-| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | · | 0,7586 | 71,7% | 1,374 | val | `AF-E-012` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8373 | 0,5613 | 0,8087 | 70,0% | 1,253 | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **1,253** | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 0,8373 | 0,5613 | 0,8232 | **76,8%** | 1,253 | val | `V2-E-046` |
+| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | 1,374 | val | `AF-E-012` |
 | Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | 1,058 | oracle | `AF-E-005` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
@@ -87,18 +87,18 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 |---|---:|---:|---:|---:|---:|:---:|---|
 | YOLO26l native | 0,7161 | 0,5163 | — | — | — | uji | `V2-E-034` |
 | RT-DETR-L native | 0,7712 | 0,5580 | — | — | — | uji | `V2-E-034` |
-| YOLO26l, bank `combined1716` | · | 0,5765 | — | — | — | uji | `V2-E-042` |
+| YOLO26l, bank `combined1716` | 0,7812 | 0,5765 | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L native | 0,7951 | 0,6129 | — | — | — | uji | `V2-E-034` |
-| RT-DETR-L, bank `combined1716` | · | 0,6309 | — | — | — | uji | `V2-E-042` |
+| RT-DETR-L, bank `combined1716` | 0,8243 | 0,6309 | — | — | — | uji | `V2-E-042` |
 | WBF + *re-ranker* | **0,8783** | 0,6552 | — | — | — | uji | `MAP_BOOST` |
 | WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 0,8764 | 0,6691 | — | — | — | uji | `V2-E-042` |
-| RF-DETR-L, bank `combined1716` | · | **0,6711** | — | — | — | uji | `V2-E-042` |
+| RF-DETR-L, bank `combined1716` | 0,8329 | **0,6711** | — | — | — | uji | `V2-E-042` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | 0,818 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | 0,891 | uji | `V2-E-045` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | **0,773** | uji | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | · | · | 0,8257 | 83,6% | **0,726** | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | · | · | 0,8526 | 84,6% | 0,932 | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | · | · | 0,8542 | **85,0%** | 0,915 | val | `V2-E-047` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8648 | 0,6595 | 0,8257 | 83,6% | **0,726** | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 0,932 | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 0,8648 | 0,6595 | 0,8542 | **85,0%** | 0,915 | val | `V2-E-047` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
@@ -184,6 +184,8 @@ Dihitung melalui simulasi *bootstrap* berpasangan sebanyak 2.000 ulangan (*rando
 | Status eksperimen `AF-E` | Eksperimen audit (`AF-E`) berfungsi sebagai diagnostik pelengkap, bukan pengganti angka acuan profil terkunci. | [Atlas 07](07_audit_forensik.md) |
 | Status gelombang validasi (`V2-E-046`, `V2-E-047`, `V2-E-048`) | Ketiganya dipilih pada partisi validasi tanpa menyentuh partisi uji, sehingga tidak menggantikan angka uji terkunci. `V2-E-048` (pelatihan ulang *head* sadar-komposisi) tidak memberi kenaikan: makro-*F1* turun $0,6890 \to 0,6850$ dan disimpan sebagai kontrol negatif. | `experiments/STATUS.md` §8–10 |
 | Kebocoran data (*leakage*) `combined1716` | Irisan identitas pohon (`tree_id`) antar-partisi belum diaudit tuntas. | [`ANALISIS_PIPELINE.md`](../docs/ANALISIS_PIPELINE_MENDALAM.md) |
+| Sel `detection` tak terisi, RT-DETR-L dan RF-DETR-L (`V2-E-001`, tabel 953) | Bobot `runs/rtdetr_l_e60_i1280_v2repro/` dan `runs/rfdetr_l_e60_i1280_v2repro/` tidak ada di repositori maupun bucket cadangan Hugging Face; tidak ada dump prediksi tersimpan. Tidak dapat diisi tanpa pelatihan ulang 60 *epoch* penuh — di luar cakupan audit ini. | Audit sesi 2026-09-07 |
+| Sel `detection` tak terisi, Pipeline Panen (`AF-E-012`, val, tabel 953) | Bobot detektor class-agnostic bespoke (`runs_panen/agnostik_m1280/`) tidak ada di repositori maupun bucket. Kolom `det+class` pada baris ini dikoreksi dari `·` menjadi `—` karena detektornya class-agnostic murni (setara baris uji), bukan sekadar belum dievaluasi. | Audit sesi 2026-09-07 |
 
 ---
 
@@ -196,3 +198,6 @@ Dihitung melalui simulasi *bootstrap* berpasangan sebanyak 2.000 ulangan (*rando
 | Gelombang validasi (`V2-E-046`, `V2-E-047`) | [`953_large_stacker_bias_val_bootstrap.json`](../results/remote_eval_2026-08-28/validation_wave/reports/953_large_stacker_bias_val_bootstrap.json), [`depth_composition_aware_head_results_val.json`](../results/remote_eval_2026-08-28/validation_wave/reports/depth_composition_aware_head_results_val.json) |
 | Counting kohort per kelas | Diturunkan dari medan `metrics.classification.confusion_prediction_rows` pada artefak `Wave-V2` |
 | Analisis audit dan plafon | [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../experiments/AUDIT-FORENSIK-2026-09-06.md) |
+| `detection` bank `combined1716` uji, 763-depth (baris YOLO26l/RT-DETR-L/RF-DETR-L) | Dihitung ulang dari dump prediksi tersimpan (`results/remote_eval_2026-08-27/predictions/`) terhadap GT `ULM-DS-Lab/SawitMVC-Depth-YOLO` (test); lihat [`agnostic_ap50_combined1716_depth_test_2026-09-07.json`](../results/agnostic_ap50_combined1716_depth_test_2026-09-07.json) |
+| `detection` YOLO26l uji, 953 (`V2-E-001`) | Inferensi baru bobot lokal `models/yolo26l_e60_i1280_v2repro/best.pt` terhadap GT `ULM-DS-Lab/SawitMVC-YOLO` (test); lihat [`agnostic_ap50_v2repro_953_2026-09-07.json`](../results/agnostic_ap50_v2repro_953_2026-09-07.json) |
+| `detection`/`det+class` gelombang validasi (`V2-E-045`, `Wave-V2`, `V2-E-046`, `V2-E-047`) | Inferensi baru tiga bobot bank `combined1716` pada partisi validasi kedua korpus, difusi WBF (protokol identik `results/remote_eval_2026-08-27/README.md` §1); lihat [`wbf_val_combined1716_2026-09-07.json`](../results/wbf_val_combined1716_2026-09-07.json) |
