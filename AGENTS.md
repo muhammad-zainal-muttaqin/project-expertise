@@ -38,7 +38,7 @@ dan komentar berbahasa Indonesia. Eksperimen memakai ID `V2-E-###` atau
 Seluruh dokumentasi narasi wajib mematuhi **EYD Edisi V / PUEBI**, prinsip **anti-*calque***
 (misal: "penurunan performa yang signifikan", "selang kepercayaan 95% mencakup nilai nol"),
 notasi matematika desimal koma (0,6012), simbol minus tipografis asli `−`, dan format
-selang kepercayaan `[min; max]`. Rujukan lengkap: `.agents/skills/perbaikan-bahasa-penyampaian/SKILL.md`.
+selang kepercayaan `[min; max]`. Rujukan lengkap: skill global `perbaikan-bahasa-penyampaian`.
 
 ### Standar Bahasa & Penulisan Ilmiah Baku
 

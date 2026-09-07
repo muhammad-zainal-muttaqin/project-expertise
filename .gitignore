@@ -102,7 +102,13 @@ pipeline-pertandan/results/cache_linker_damimas_*.joblib
 # Probabilitas classifier pada proposal fusion; regenerable dari checkpoint.
 results/cache_relabel_damimas_*.joblib
 
-# Berkas .tex perantara dari .agents/skills/markdown-ke-pdf. Hanya hasil antara;
+# Berkas .tex perantara dari skill markdown-ke-pdf. Hanya hasil antara;
 # PDF-nya sendiri TETAP DILACAK agar dapat langsung dibagikan tanpa perlu
 # menjalankan tectonic terlebih dahulu.
 metrics/*.tex
+
+# Konfigurasi agen. Skill kini dipasang global di ~/.claude/skills/ agar satu
+# salinan berlaku untuk seluruh proyek; substansi aturan bahasanya sudah
+# termuat penuh pada CLAUDE.md dan AGENTS.md yang tetap dilacak.
+.agents/
+.claude/
