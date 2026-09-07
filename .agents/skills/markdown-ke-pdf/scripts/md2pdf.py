@@ -22,6 +22,7 @@ from pathlib import Path
 BS = chr(92)
 SUPO, SUPC = chr(0xE000), chr(0xE001)      # penanda sementara <sup> ... </sup>
 SLOT = re.compile(r"@@S(\d+)@@")
+PIPE = re.compile(r"(?<!\\)\|")            # pemisah sel: pipa tanpa escape
 BLOCK = re.compile(r"^(\||>|#{1,6}\s|[-*+]\s|\d+[.)]\s|```|~~~|(-{3,}|\*{3,}|_{3,})$)")
 
 SUP = {"\u00b9": "1", "\u00b2": "2", "\u00b3": "3", "\u2070": "0",
@@ -146,6 +147,18 @@ def esc(t):
     return "".join(out)
 
 
+def esc_code(t):
+    """Escape isi \\texttt dan izinkan pemutusan baris pada pemisah lintasan.
+
+    LaTeX hanya memutus baris pada spasi dan tanda hubung eksplisit, sehingga
+    lintasan berkas panjang di dalam \\texttt akan meluber keluar kolom tabel.
+    """
+    t = t.replace(BS + "|", "|")        # pipa di-escape demi tabel Markdown
+    # lambda, bukan string pengganti: re.sub menafsirkan "\a" pada string
+    # pengganti sebagai karakter BEL
+    return re.sub(r"(/|\\_|\.|-)", lambda m: m.group(1) + BS + "allowbreak{}", esc(t))
+
+
 def inline(t, base=None):
     """Konversi span sebaris Markdown menjadi LaTeX."""
     slots = []
@@ -172,7 +185,9 @@ def inline(t, base=None):
         x = re.sub(r"\$([^$]+)\$",
                    lambda m: stash("$" + _decimal(m.group(1)) + "$"), x)
         x = re.sub(r"`([^`]+)`",
-                   lambda m: stash(BS + "texttt{" + esc(m.group(1)) + "}"), x)
+                   lambda m: stash(BS + "texttt{" + esc_code(m.group(1)) + "}"), x)
+        # pipa yang di-escape di dalam sel tabel
+        x = re.sub(r"\\\|", lambda m: stash(BS + "textbar{}"), x)
         x = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", lambda m: image(m.group(1), m.group(2)), x)
         x = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", lambda m: m.group(1), x)
         x = re.sub(r"~~(.+?)~~", lambda m: stash(BS + "sout{" + render(m.group(1)) + "}"), x)
@@ -208,22 +223,27 @@ def _tokens(cell):
             continue
         mono = part.startswith("`") and part.endswith("`") and len(part) > 1
         txt = re.sub(r"[^\w\s()/+-]", "", part)
-        for tok in re.split(r"[\s\-/]+", txt):
+        for tok in re.split(r"[\s\-/_.]+", txt):
             if tok:
                 yield len(tok) * (1.45 if mono else 1.0)
+
+
+def _cells(row):
+    """Pecah satu baris tabel pada pipa yang tidak di-escape."""
+    return [c.strip() for c in PIPE.split(row.strip().strip("|"))]
 
 
 def table(rows, base=None):
     """Tabel Markdown menjadi xltabular dengan lebar kolom terbobot."""
     head, align, body = rows[0], rows[1], rows[2:]
-    cols = [c.strip() for c in head.strip().strip("|").split("|")]
-    aligns = [c.strip() for c in align.strip().strip("|").split("|")]
+    cols = _cells(head)
+    aligns = _cells(align)
     nc = len(cols)
     aligns += ["---"] * (nc - len(aligns))
 
     grid = []
     for r in body:
-        cells = [c.strip() for c in r.strip().strip("|").split("|")]
+        cells = _cells(r)
         grid.append((cells + [""] * nc)[:nc])
 
     size_name = "scriptsize" if nc >= 9 else "footnotesize" if nc >= 7 else "small"

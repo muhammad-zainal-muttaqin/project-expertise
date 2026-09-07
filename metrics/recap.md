@@ -93,8 +93,8 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 | WBF + *re-ranker* | **0,8783** | 0,6552 | — | — | — | — | uji | `MAP_BOOST` |
 | WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 0,8764 | 0,6691 | — | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L, bank `combined1716` | 0,8329 | **0,6711** | — | — | — | — | uji | `V2-E-042` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | **18,65%** | 0,818 | uji | `V2-E-043` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | 13,93% | 0,891 | uji | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | 18,65% | 0,818 | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | **13,93%** | 0,891 | uji | `V2-E-045` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | 19,62% | 0,773 | uji | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8648 | 0,6595 | 0,8257 | 83,6% | 14,10% | **0,726** | val | `V2-E-045` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | 0,932 | val | `Wave-V2` |
