@@ -74,7 +74,7 @@ def preamble(opt):
 \usepackage{{array,booktabs,longtable,xltabular,ragged2e}}
 \usepackage{{graphicx}}
 \usepackage{{fancyvrb}}
-\usepackage[dvipsnames]{{xcolor}}
+\usepackage[dvipsnames,table]{{xcolor}}
 \usepackage[most]{{tcolorbox}}
 \usepackage{{enumitem}}
 \usepackage{{fancyhdr}}
@@ -276,13 +276,20 @@ def table(rows, base=None):
         spec = "".join("r" if aligns[i].endswith(":") else "Z{%.3f}" % w[i]
                        for i in range(nc))
 
-    out = ["{" + BS + size_name,
+    out = ["{" + BS + size_name + BS + "arrayrulecolor{black!30}",
            BS + "begin{xltabular}{" + BS + "linewidth}{@{}" + spec + "@{}}",
            BS + "toprule",
            " & ".join(BS + "textbf{" + inline(c, base) + "}" for c in cols) + " " + BS + BS,
            BS + "midrule" + BS + "endhead"]
-    for row in grid:
+    # Garis tipis antar-baris agar tabel lebar tetap mudah ditelusuri. Warna
+    # rule hanya boleh diubah tepat setelah penutup baris, sehingga saklarnya
+    # ditempelkan pada baris pertama dan dikembalikan setelah baris terakhir.
+    sep = BS + "hline"
+    last = len(grid) - 1
+    for k, row in enumerate(grid):
         out.append(" & ".join(inline(c, base) for c in row) + " " + BS + BS)
+        if k < last:
+            out.append(sep)
     out += [BS + "bottomrule", BS + "end{xltabular}}", ""]
     return out
 
