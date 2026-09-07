@@ -46,7 +46,8 @@ sehingga penomoran manual pada sumber tetap terjaga.
 
 | Konstruksi | Hasil |
 |---|---|
-| Tabel beralinea | `xltabular` dengan lebar kolom terbobot; kolom rata kanan berlebar tetap |
+| Tabel beralinea | `xltabular` dengan lebar kolom terbobot dan garis pembatas antar-baris; kolom rata kanan berlebar tetap |
+| Pipa ber-*escape* `\|` di dalam sel | Dirender sebagai `\|`, tidak dianggap pemisah kolom |
 | Matematika `$...$` | Diteruskan apa adanya |
 | `> [!NOTE]`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION` | Kotak sorot berwarna beserta labelnya |
 | Kutipan polos `>` | Kotak bergaris tepi kiri |
@@ -78,6 +79,29 @@ sebelahnya.
 `\footnotesize` pada 7–8 kolom, `\scriptsize` pada 9 kolom atau lebih. Dengan
 pembobotan tersebut, tabel berkolom banyak umumnya tetap muat pada halaman
 potret sehingga halaman melintang tidak diperlukan.
+
+**Garis pembatas antar-baris.** Gaya *booktabs* murni hanya memakai garis atas,
+tengah, dan bawah. Itu memadai untuk tabel sempit, tetapi menyulitkan
+penelusuran pada tabel sepuluh kolom yang sebagian barisnya membungkus ke baris
+kedua. Setiap baris karena itu dipisahkan `\hline`, dengan warna rule diredam
+menjadi `black!30` agar membantu tanpa mendominasi. Saklar `\arrayrulecolor`
+tidak dapat diletakkan di dalam `\noalign` setelah `\hline` pada `longtable`
+(galat `Misplaced \noalign`), sehingga warnanya ditetapkan sekali di dalam grup
+tabel dan berlaku untuk seluruh rule.
+
+**Pemutusan lintasan panjang.** LaTeX hanya memutus baris pada spasi dan tanda
+hubung eksplisit, sehingga lintasan seperti
+`results/remote_eval_2026-08-27/predictions/` meluber keluar kolom. Isi
+`\texttt` disisipi `\allowbreak` setelah garis miring, titik, tanda hubung, dan
+garis bawah. Perhatikan bahwa penyisipannya wajib memakai *lambda* pada
+`re.sub`, karena `\a` pada string pengganti ditafsirkan sebagai karakter BEL.
+
+**Pipa di dalam sel tabel.** Tabel Markdown menuntut pipa literal ditulis `\|`,
+termasuk di dalam span kode. Pemisahan sel memakai *lookbehind* agar pipa
+ber-*escape* tidak dianggap batas kolom; tanpa itu judul seperti
+`avg \|bias\|` terhitung tiga kolom dan seluruh baris bergeser terhadap
+judulnya. Pada teks biasa `\|` menjadi `\textbar`, sedangkan di dalam span kode
+*escape*-nya dilepas.
 
 ## 5. Batasan yang Perlu Disampaikan kepada Pengguna
 
