@@ -88,14 +88,14 @@ Jarak perekaman $Z$ relatif konstan ($1,20\text{--}1,36\text{ m}$) di seluruh ke
 *Catatan Validitas Sensor*: Validitas piksel kedalaman **di dalam kotak objek mencapai 95,1%**. Angka 29% piksel tak valid yang dilaporkan sebelumnya berasal dari latar belakang terbuka (langit dan vegetasi jauh), bukan pada permukaan tandan buah.
 
 ### Hipotesis B: Relief Kedalaman Lokal (Dikonfirmasi)
-Pengukuran kontras kedalaman lokal ($\text{Relief} = \text{Median } Z_{\text{cincin latar}} \minus \text{Median } Z_{\text{dalam kotak}}$):
+Pengukuran kontras kedalaman lokal ($\text{Relief} = \text{Median } Z_{\text{cincin latar}} − \text{Median } Z_{\text{dalam kotak}}$):
 
 | Parameter Relief | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|
-| Nilai Median Relief Lokal | **$+2,8\text{ cm}$** | $0,0\text{ cm}$ | $\minus 1,5\text{ cm}$ | **$\minus 5,1\text{ cm}$** |
+| Nilai Median Relief Lokal | **$+2,8\text{ cm}$** | $0,0\text{ cm}$ | $−1,5\text{ cm}$ | **$−5,1\text{ cm}$** |
 | Proporsi Objek Lebih Menonjol | 61,3% | 50,7% | 41,4% | 26,4% |
 
-Relief lokal terbukti **monoton sempurna terhadap tingkat kematangan buah** (Krusial: Uji Kruskal-Wallis menghasilkan **$H = 99,8$, $p = 1,7 \times 10^{\minus 21}$**). Sinyal kedalaman menyediakan informasi pembeda geometris (tandan muda tertanam di sela pelepah vs tandan lewat matang yang menonjol keluar).
+Relief lokal terbukti **monoton sempurna terhadap tingkat kematangan buah** (Krusial: Uji Kruskal-Wallis menghasilkan **$H = 99,8$, $p = 1,7 \times 10^{−21}$**). Sinyal kedalaman menyediakan informasi pembeda geometris (tandan muda tertanam di sela pelepah vs tandan lewat matang yang menonjol keluar).
 
 ---
 
@@ -103,7 +103,7 @@ Relief lokal terbukti **monoton sempurna terhadap tingkat kematangan buah** (Kru
 
 Kanal kedalaman berformat uint8 dengan pemetaan invers rentang $[0,8; 15,0]\text{ meter}$ menghasilkan resolusi kuantisasi:
 
-$$\frac{dZ}{dv} = \frac{Z^2 \cdot (1/Z_{\text{near}} \minus 1/Z_{\text{far}})}{254}$$
+$$\frac{dZ}{dv} = \frac{Z^2 \cdot (1/Z_{\text{near}} − 1/Z_{\text{far}})}{254}$$
 
 Pada median jarak adegan $Z = 2,49\text{ m}$, 1 level kuantisasi setara dengan **$2,9\text{ cm}$**. Amplitudo sinyal relief median ($0,8\text{ cm}$) hanya setara dengan **$0,27\text{ level kuantisasi}$**, sementara derau fisik sensor berkisar $\sim 2,5\text{ cm}$. Akibatnya, **rasio sinyal terhadap derau (*SNR*) per piksel berada pada kisaran rendah $\approx 0,3$**.
 

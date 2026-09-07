@@ -52,7 +52,7 @@ Rujukan: Indriani dkk., *Data in Brief* 67 (2026) 112990 (Tabel 3–4):
 ## 4. Evaluasi Eksperimen Gagal (Larangan Pengulangan)
 
 1. **Early Fusion Depth Konvensional (E-022, E-027)**:
-   Penambahan kanal kedalaman mentah langsung ke *stem* konvolusi mendegradasi performa deteksi sebesar $\minus 0,0230\text{ mAP}$. Penyatuan naif (*naive concatenation*) hanya menyuntikkan variasi derau kuantisasi.
+   Penambahan kanal kedalaman mentah langsung ke *stem* konvolusi mendegradasi performa deteksi sebesar $−0,0230\text{ mAP}$. Penyatuan naif (*naive concatenation*) hanya menyuntikkan variasi derau kuantisasi.
 2. **Fusi Menengah/Akhir dari Nol Tanpa Pretraining (E-032)**:
    Pelatihan 150 *epoch* dari bobot acak tidak menghasilkan signifikansi statistik (seluruh selang kepercayaan 95% memuat nilai nol).
 3. **Modul Gating Inisialisasi Nol ($\gamma = 0$, F-007)**:

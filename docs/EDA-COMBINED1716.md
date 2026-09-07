@@ -18,7 +18,7 @@ python scripts/build_combined_rgb_dataset.py \
 * **Sumber 1 (`sawitmvc`)**: 953 pohon ($3.992\text{ citra}$).
 * **Sumber 2 (`depth_rgb`)**: 763 pohon ($3.052\text{ citra}$).
 * **Irisan Pohon (*Re-photographed Trees*)**: 352 pohon difoto ulang pada kedua sesi akuisisi (dengan jeda waktu $\sim 80\text{ hari}$ / $\approx 5\text{ bulan}$).
-* **Jumlah Pohon Fisik Unik**: **1.364 pohon** ($953 + 763 \minus 352 = 1.364$; angka 1.716 merepresentasikan total entri pohon terindeks).
+* **Jumlah Pohon Fisik Unik**: **1.364 pohon** ($953 + 763 − 352 = 1.364$; angka 1.716 merepresentasikan total entri pohon terindeks).
 
 | Partisi Data | Jumlah Citra | Pohon Fisik Unik | Asal SawitMVC | Asal Depth-RGB |
 |---|---|---|---|---|

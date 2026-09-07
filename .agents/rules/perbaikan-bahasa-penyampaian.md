@@ -28,7 +28,7 @@ Seluruh teks narasi, judul, kesimpulan, temuan teknis node, dan dokumentasi mark
 
 ## 3. Notasi Matematika, Statistika, dan Angka
 - **Tanda Desimal & Ribuan**: Gunakan koma (`,`) untuk desimal (misal 0,6012, 74,39%) dan titik (`.`) untuk ribuan (misal 3.992 citra, 2.612 objek, 18.540 kotak).
-- **Tanda Minus Matematis**: Simbol minus asli `−` (`\u2212` atau `$\minus$`), bukan tanda hubung biasa `-` (contoh: $\minus 0,0476$).
+- **Tanda Minus Matematis**: Simbol minus asli `−` (*Unicode* `U+2212`), bukan tanda hubung biasa `-` (contoh: $−0,0476$).
 - **Selang Kepercayaan**: format `[min; max]` menggunakan kurung siku dan titik koma (contoh: $[−0,0671; −0,0274]$).
 - **Simbol Variabel**: Cetak miring simbol matematis/variabel seperti *$p$-value*, *$n$ sampel*, *IoU*, *$\Delta$ mAP*, *$M_{shuf}$*, *F1*, *ARI*, *MAE*, *mAP50*, *mAP50–95*, *AP50*.
 - **Rentang Satuan**: Gunakan en dash (`–`) untuk rentang: B1–B4, 10–11 Agu 2026.

@@ -58,10 +58,10 @@ Evaluasi audit dilakukan secara berpasangan pada subset 352 pohon fisik yang ide
 
 | Parameter Pengamatan | Korpus 953 (Mei 2026) | Korpus 763-depth (Juli–Agustus 2026) | Perubahan Relatif |
 |---|---:|---:|---:|
-| Rata-rata tandan unik per pohon | 9,89 tandan | 3,99 tandan | $\minus 59,7\%$ |
+| Rata-rata tandan unik per pohon | 9,89 tandan | 3,99 tandan | $−59,7\%$ |
 | Proporsi sudut pandang tanpa anotasi | $1,1\%$ | $14,2\%$ | $+13,1\text{ pp}$ |
 | Proporsi kemunculan kelas B1 (lewat matang) | Data acuan dasar | Meningkat | $+66\%$ |
-| Proporsi kemunculan kelas B4 (mentah) | Data acuan dasar | Menurun | $\minus 85\%$ |
+| Proporsi kemunculan kelas B4 (mentah) | Data acuan dasar | Menurun | $−85\%$ |
 
 > [!IMPORTANT]
 > Perbedaan performa model saat dievaluasi lintas korpus sebagian besar merefleksikan perbedaan protokol anotasi lapangan dan pergeseran fenologi musiman kebun, bukan kegagalan generalisasi representasi visual model.
@@ -240,11 +240,11 @@ Evaluasi akhir pencacahan kohort dari profil terkunci `Wave-V2`, dihitung dengan
 
 | Kelas | Total Prediksi | Total Acuan (*GT*) | Bias Absolut | Bias Relatif |
 |---|---:|---:|---:|---:|
-| B1 | 104 tandan | 113 tandan | $\minus 9$ | $\minus 7,96\%$ |
-| B2 | 145 tandan | 246 tandan | $\minus 101$ | $\minus 41,06\%$ |
+| B1 | 104 tandan | 113 tandan | $−9$ | $−7,96\%$ |
+| B2 | 145 tandan | 246 tandan | $−101$ | $−41,06\%$ |
 | B3 | 824 tandan | 706 tandan | $+118$ | $+16,71\%$ |
-| B4 | 251 tandan | 277 tandan | $\minus 26$ | $\minus 9,39\%$ |
-| **Total** | **1.324 tandan** | **1.342 tandan** | **$\minus 18$** | **$\minus 1,34\%$** |
+| B4 | 251 tandan | 277 tandan | $−26$ | $−9,39\%$ |
+| **Total** | **1.324 tandan** | **1.342 tandan** | **$−18$** | **$−1,34\%$** |
 
 Makro-rerata nilai mutlak bias relatif: $18,78\%$.
 
@@ -252,10 +252,10 @@ Makro-rerata nilai mutlak bias relatif: $18,78\%$.
 
 | Kelas | Total Prediksi | Total Acuan (*GT*) | Bias Absolut | Bias Relatif |
 |---|---:|---:|---:|---:|
-| B1 | 84 tandan | 86 tandan | $\minus 2$ | $\minus 2,33\%$ |
-| B2 | 112 tandan | 186 tandan | $\minus 74$ | $\minus 39,78\%$ |
+| B1 | 84 tandan | 86 tandan | $−2$ | $−2,33\%$ |
+| B2 | 112 tandan | 186 tandan | $−74$ | $−39,78\%$ |
 | B3 | 560 tandan | 476 tandan | $+84$ | $+17,65\%$ |
-| B4 | 186 tandan | 188 tandan | $\minus 2$ | $\minus 1,06\%$ |
+| B4 | 186 tandan | 188 tandan | $−2$ | $−1,06\%$ |
 | **Total** | **942 tandan** | **936 tandan** | **$+6$** | **$+0,64\%$** |
 
 Makro-rerata nilai mutlak bias relatif: $15,21\%$.
@@ -264,11 +264,11 @@ Makro-rerata nilai mutlak bias relatif: $15,21\%$.
 
 | Kelas | Total Prediksi | Total Acuan (*GT*) | Bias Absolut | Bias Relatif |
 |---|---:|---:|---:|---:|
-| B1 | 67 tandan | 94 tandan | $\minus 27$ | $\minus 28,72\%$ |
+| B1 | 67 tandan | 94 tandan | $−27$ | $−28,72\%$ |
 | B2 | 227 tandan | 199 tandan | $+28$ | $+14,07\%$ |
-| B3 | 177 tandan | 215 tandan | $\minus 38$ | $\minus 17,67\%$ |
-| B4 | 41 tandan | 50 tandan | $\minus 9$ | $\minus 18,00\%$ |
-| **Total** | **512 tandan** | **558 tandan** | **$\minus 46$** | **$\minus 8,24\%$** |
+| B3 | 177 tandan | 215 tandan | $−38$ | $−17,67\%$ |
+| B4 | 41 tandan | 50 tandan | $−9$ | $−18,00\%$ |
+| **Total** | **512 tandan** | **558 tandan** | **$−46$** | **$−8,24\%$** |
 
 Makro-rerata nilai mutlak bias relatif: $19,62\%$.
 
@@ -276,11 +276,11 @@ Makro-rerata nilai mutlak bias relatif: $19,62\%$.
 
 | Kelas | Total Prediksi | Total Acuan (*GT*) | Bias Absolut | Bias Relatif |
 |---|---:|---:|---:|---:|
-| B1 | 66 tandan | 96 tandan | $\minus 30$ | $\minus 31,25\%$ |
+| B1 | 66 tandan | 96 tandan | $−30$ | $−31,25\%$ |
 | B2 | 234 tandan | 205 tandan | $+29$ | $+14,15\%$ |
-| B3 | 176 tandan | 216 tandan | $\minus 40$ | $\minus 18,52\%$ |
-| B4 | 32 tandan | 53 tandan | $\minus 21$ | $\minus 39,62\%$ |
-| **Total** | **508 tandan** | **570 tandan** | **$\minus 62$** | **$\minus 10,88\%$** |
+| B3 | 176 tandan | 216 tandan | $−40$ | $−18,52\%$ |
+| B4 | 32 tandan | 53 tandan | $−21$ | $−39,62\%$ |
+| **Total** | **508 tandan** | **570 tandan** | **$−62$** | **$−10,88\%$** |
 
 Makro-rerata nilai mutlak bias relatif: $25,88\%$.
 
@@ -290,7 +290,7 @@ Makro-rerata nilai mutlak bias relatif: $25,88\%$.
    Pada korpus 953, kelas B2 mengalami estimasi kurang (*underestimation*) sekitar $40\%$, sedangkan kelas B3 mengalami estimasi berlebih (*overestimation*) sekitar $17\%$ secara konsisten di kedua partisi. Pola pergeseran massa prediksi yang saling berkebalikan ini menunjukkan terjadinya konfusi representasi visual antara kelas B2 dan B3. Bukti matriks konfusi (`AF-E-009`) mengonfirmasi hal ini: transisi batas B2 ke B3 menyumbang 195 galat klasifikasi, berbanding hanya 57 galat pada batas B1 ke B2. Hal ini selaras dengan nilai $F1_{B2}$ pada korpus 953 yang hanya mencapai $0,4706$.
 
 2. **Kompensasi Galat Antar-Pohon (*Error Cancellation*):**  
-   Metrik bias kohort tidak dapat diinterpretasikan secara terpisah tanpa meninjau MAE tingkat pohon. Pada partisi uji 953, bias kumulatif tampak sangat rendah ($\minus 18$ tandan dari $1.342$ acuan atau $\minus 1,34\%$), meskipun MAE per pohon bernilai $1,363$. Audit forensik ([`count_error_cancellation.json`](../results/audit_2026-09-06/count_error_cancellation.json)) membuktikan bahwa dari 37 pohon dengan hasil cacah tepat persis, 24 pohon di antaranya ($64,86\%$) tepat akibat galat positif dan negatif antar-sudut pandang yang saling meniadakan (*error cancellation*).
+   Metrik bias kohort tidak dapat diinterpretasikan secara terpisah tanpa meninjau MAE tingkat pohon. Pada partisi uji 953, bias kumulatif tampak sangat rendah ($−18$ tandan dari $1.342$ acuan atau $−1,34\%$), meskipun MAE per pohon bernilai $1,363$. Audit forensik ([`count_error_cancellation.json`](../results/audit_2026-09-06/count_error_cancellation.json)) membuktikan bahwa dari 37 pohon dengan hasil cacah tepat persis, 24 pohon di antaranya ($64,86\%$) tepat akibat galat positif dan negatif antar-sudut pandang yang saling meniadakan (*error cancellation*).
 
 3. **Integritas Derivasi Data:**  
    Angka diturunkan dari matriks konfusi `confusion_prediction_rows` berukuran $5 \times 5$ (baris 1–4 untuk kelas prediksi, baris ke-5 untuk acuan yang terlewat; kolom 1–4 untuk kelas acuan, kolom ke-5 untuk prediksi tanpa pasangan). Jumlah baris 1–4 konsisten dengan `pred_clusters`, dan jumlah kolom 1–4 konsisten dengan `gt_bunches` (terdapat selisih 1 tandan yang belum terpetakan pada 763-depth: 558 vs 559 pada uji, 570 vs 571 pada validasi).

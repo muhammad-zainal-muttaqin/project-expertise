@@ -216,7 +216,7 @@ Struktur "bukan X, melainkan Y" atau "bukan sekadar X" sering dipakai sebagai hi
 [Pedoman Cepat Notasi Angka & Simbol]
 1. Desimal              : koma (,)              -> 0,6012  (BUKAN 0.6012)
 2. Ribuan               : titik (.)             -> 3.992 citra (BUKAN 3,992 atau 3992)
-3. Tanda Minus          : simbol asli − / $\minus$ -> −0,0476 (BUKAN tanda hubung -0.0476)
+3. Tanda Minus          : simbol asli − (U+2212) -> −0,0476 (BUKAN tanda hubung -0.0476)
 4. Selang Kepercayaan   : [min; max]            -> CI95 [−0,0671; −0,0274] (BUKAN [-0.06, -0.02])
 5. Rentang Nilai/Waktu  : en dash (–)           -> B1–B4, 10–11 Agu 2026 (BUKAN B1-B4)
 6. Simbol Variabel      : cetak miring (italic) -> p-value, n sampel, IoU, Δ mAP, F1, mAP50
@@ -234,8 +234,8 @@ Struktur "bukan X, melainkan Y" atau "bukan sekadar X" sering dipakai sebagai hi
 |---|---|---|
 | **Nilai Desimal** | `mAP50 = 0.5435`, `acc = 74.39%` | **$mAP50 = 0,5435$**, **$\text{Akurasi} = 74,39\%$** |
 | **Kuantitas Ribuan** | `18,540 boxes`, `3992 images` | **$18.540\text{ kotak pembatas}$**, **$3.992\text{ citra}$** |
-| **Nilai Negatif / Selisih** | `-0.0476`, `delta = -2.3%` | **$\minus 0,0476$** atau **`−0,0476`**, **$\Delta = \minus 2,3\%$** |
-| **Selang Kepercayaan** | `95% CI: (-0.02, 0.07)`, `CI95 [-0.05 - 0.05]` | **CI95 $[\minus 0,0270; +0,0739]$** |
+| **Nilai Negatif / Selisih** | `-0.0476`, `delta = -2.3%` | **$−0,0476$** atau **`−0,0476`**, **$\Delta = −2,3\%$** |
+| **Selang Kepercayaan** | `95% CI: (-0.02, 0.07)`, `CI95 [-0.05 - 0.05]` | **CI95 $[−0,0270; +0,0739]$** |
 | **Simbol Statistik** | `p-value < 0.05`, `N=410`, `mAP50-95` | ***$p$-value* $< 0,05$**, **$n = 410$**, **$mAP50\text{--}95$** |
 | **Rentang Kategori** | `kelas B1-B4`, `tanggal 12-15 Agustus` | **kelas B1–B4**, **tanggal 12–15 Agustus 2026** |
 
@@ -260,7 +260,7 @@ graph TD
 #### ✅ Contoh Baku Sesuai Skill (Formal, Anti-Calque, Presisi Ilmiah):
 > **Simpul V2-E-027: Evaluasi Pengaruh Estimasi Kedalaman Monokular pada Korpus 953 Pohon**
 > 1. **Rancangan Eksperimen**: Pengujian komparasi terkontrol mengevaluasi penambahan kanal kedalaman estimasi monokular (`yolo26l-depth.pt`) sebagai masukan 4-kanal pada arsitektur YOLO26l beresolusi 1.280 piksel (60 *epoch*, *cosine learning rate*) terhadap garis dasar pembanding RGB 3-kanal pada split uji SawitMVC (2.612 kotak anotasi).
-> 2. **Temuan Empiris Terukur**: Penambahan depth monokular menyebabkan **penurunan performa yang signifikan** sebesar $\Delta = \mathbf{\minus 0,0476}$ ($mAP50 = \mathbf{0,4960}$ berbanding kontrol RGB $\mathbf{0,5436}$). Evaluasi bootstrap 2.000 ulangan berpasangan menghasilkan selang kepercayaan 95% **$[\minus 0,0671; \minus 0,0274]$** ($P(\Delta > 0) = 0,000$, terbukti signifikan secara statistik).
+> 2. **Temuan Empiris Terukur**: Penambahan depth monokular menyebabkan **penurunan performa yang signifikan** sebesar $\Delta = \mathbf{−0,0476}$ ($mAP50 = \mathbf{0,4960}$ berbanding kontrol RGB $\mathbf{0,5436}$). Evaluasi bootstrap 2.000 ulangan berpasangan menghasilkan selang kepercayaan 95% **$[−0,0671; −0,0274]$** ($P(\Delta > 0) = 0,000$, terbukti signifikan secara statistik).
 > 3. **Keputusan Metodologis**: Hipotesis keunggulan depth monokular dinyatakan **gugur secara empiris**. Jalur integrasi kedalaman monokular dihentikan dari pipeline utama.
 > 4. **Batasan Validitas & Audit**: Penurunan performa terjadi konsisten di seluruh kelas kematangan (B1–B4). Berkas log eksekusi tersimpan pada [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log).
 
@@ -273,7 +273,7 @@ Sebelum menyelesaikan penulisan dokumen markdown:
 - [ ] **Kepatuhan Anti-Calque**: Tidak ada kata *loss* (untuk penurunan performa), *appearance* mentah, *CI memuat nol*, *ground truth* mentah, dll.
 - [ ] **Bebas Antropomorfisme**: Tidak ada kalimat *model bingung*, *model tahu*, atau *model berpikir*.
 - [ ] **Format Angka**: Seluruh desimal menggunakan koma (`,`) dan ribuan menggunakan titik (`.`).
-- [ ] **Simbol Minus**: Seluruh bilangan negatif menggunakan minus asli `−` atau `$\minus$`.
+- [ ] **Simbol Minus**: Seluruh bilangan negatif menggunakan minus asli `−` (*Unicode* `U+2212`).
 - [ ] **Selang Kepercayaan**: Menggunakan format $[\text{min}; \text{max}]$ dengan pemisah titik koma.
 - [ ] **Keterlacakan Berkas**: Seluruh rujukan skrip (`.py`), log (`.log`), dan data (`.json`) memiliki tautan markdown aktif yang valid.
 - [ ] **Integritas Log**: Angka riil historis tetap dipertahankan tanpa manipulasi.

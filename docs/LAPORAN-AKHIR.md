@@ -129,7 +129,7 @@ Estimasi selang kepercayaan bootstrap 95% dijalankan pada tingkat citra dengan 5
 | YOLO26l-RGBD Sobel `edge` | 0,4270 | $[0,3771; 0,4938]$ | 0,1167 |
 | YOLO26l-RGB Murni | 0,3677 | $[0,3286; 0,4417]$ | 0,1130 |
 
-Selisih berpasangan `edge` minus RGB: **$+0,0593$** (CI95 $[\minus 0,0013; +0,1168]$, $P(\Delta > 0) = 0,972$). Karena selang kepercayaan mencakup nilai nol, peningkatan ini **belum mencapai signifikansi statistik formal pada taraf $\alpha = 0,05$**.
+Selisih berpasangan `edge` minus RGB: **$+0,0593$** (CI95 $[−0,0013; +0,1168]$, $P(\Delta > 0) = 0,972$). Karena selang kepercayaan mencakup nilai nol, peningkatan ini **belum mencapai signifikansi statistik formal pada taraf $\alpha = 0,05$**.
 
 ---
 
@@ -194,7 +194,7 @@ Konfigurasi terbaik untuk $mAP50$ deteksi (v4: $0,4500$) tidak identik dengan ko
 | `agn352_4ch` (RGB + Sobel `edge`) | **0,7893** | 33 | **0,7636** | $[0,7144; 0,8123]$ | 0,0979 |
 | `agn352_ft3` (RGB Murni) | 0,7473 | 42 | **0,7358** | $[0,6820; 0,7917]$ | 0,1097 |
 
-Selisih berpasangan: **$+0,0278$** (CI95 $[\minus 0,0121; +0,0648]$, $P(\Delta > 0) = \mathbf{0,921}$).
+Selisih berpasangan: **$+0,0278$** (CI95 $[−0,0121; +0,0648]$, $P(\Delta > 0) = \mathbf{0,921}$).
 
 Sinyal positif ini konsisten pada data validasi ($+0,0420$) dan data uji ($+0,0278$). Model 4-kanal menghasilkan volume deteksi yang lebih tinggi ($1.660$ vs $1.226$ prediksi), selaras dengan peningkatan daya tangkap (*recall*).
 

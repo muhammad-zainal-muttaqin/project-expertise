@@ -54,10 +54,10 @@ Protokol terkontrol pada 6 sel komparasi:
 |---|---|---|---|---|---|---|
 | 1 | 352 | RGB Murni | 3 | 0,3677 | 0,4111 | Garis Dasar Pembanding 352 |
 | 2 | 352 | RGB + Depth Fisik (`edge`) | 4 | **0,4270** | 0,3856 | **Kanal Masukan Terbaik 352** |
-| 3 | 352 | RGB + Depth Monokular | 4 | 0,3943 | 0,3888 | Tidak Signifikan ($\Delta = +0,0266$, CI95 $[\minus 0,0270; +0,0739]$) |
-| 4 | 352 | RGB + Depth Fisik + Depth Mono | 5 | 0,3766 | 0,4281 | **Penurunan Signifikan** ($\Delta = \minus 0,0504$, CI95 $[\minus 0,1038; \minus 0,0015]$) |
+| 3 | 352 | RGB + Depth Monokular | 4 | 0,3943 | 0,3888 | Tidak Signifikan ($\Delta = +0,0266$, CI95 $[−0,0270; +0,0739]$) |
+| 4 | 352 | RGB + Depth Fisik + Depth Mono | 5 | 0,3766 | 0,4281 | **Penurunan Signifikan** ($\Delta = −0,0504$, CI95 $[−0,1038; −0,0015]$) |
 | 5 | 953 | RGB Murni | 3 | **0,5436** | 0,5373 | Garis Dasar Pembanding 953 |
-| 6 | 953 | RGB + Depth Monokular | 4 | 0,4960 | 0,5012 | **Penurunan Signifikan** ($\Delta = \minus 0,0476$, CI95 $[\minus 0,0671; \minus 0,0274]$) |
+| 6 | 953 | RGB + Depth Monokular | 4 | 0,4960 | 0,5012 | **Penurunan Signifikan** ($\Delta = −0,0476$, CI95 $[−0,0671; −0,0274]$) |
 
 ---
 

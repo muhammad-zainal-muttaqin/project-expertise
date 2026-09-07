@@ -2,7 +2,7 @@
 
 Dokumen ini menyajikan rekonstruksi kronologis menyeluruh dari seluruh rangkaian eksperimen deteksi objek, estimasi kedalaman (*depth*), klasifikasi tingkat kematangan, asosiasi multi-tampak (*multi-view linking*), dan pencacahan (*counting*) tandan buah segar (TBS) kelapa sawit pada dataset **SawitMVC** dan **SawitMVC-Depth**.
 
-Seluruh simpul eksperimen disusun berurutan secara tanggal, dengan setiap simpul memiliki nomor identitas eksplisit (**`V2-E-###`** atau **`PT-E-###`**) agar mudah dicari dan ditelusuri. Seluruh teks narasi, metrik kuantitatif, dan sintesis metodologis mematuhi **Kaidah Bahasa Indonesia Ilmiah Baku (EYD Edisi V / PUEBI)**, prinsip anti-*calque*, notasi matematika baku (desimal koma, pemisah ribuan titik, minus tipografis $\minus$, selang kepercayaan $[\text{min}; \text{max}]$), serta struktur **Lembar Bukti Empiris Empat Bagian**:
+Seluruh simpul eksperimen disusun berurutan secara tanggal, dengan setiap simpul memiliki nomor identitas eksplisit (**`V2-E-###`** atau **`PT-E-###`**) agar mudah dicari dan ditelusuri. Seluruh teks narasi, metrik kuantitatif, dan sintesis metodologis mematuhi **Kaidah Bahasa Indonesia Ilmiah Baku (EYD Edisi V / PUEBI)**, prinsip anti-*calque*, notasi matematika baku (desimal koma, pemisah ribuan titik, minus tipografis `−`, selang kepercayaan $[\text{min}; \text{max}]$), serta struktur **Lembar Bukti Empiris Empat Bagian**:
 1. **Rancangan Eksperimen**: Desain komparasi, konfigurasi input/model, serta parameter pelatihan.
 2. **Temuan Empiris Terukur**: Kuantifikasi performa beserta signifikansi statistik ($p$-value, selang kepercayaan bootstrap 95%).
 3. **Keputusan Metodologis**: Dampak keputusan teknis terhadap kelanjutan arah riset.
@@ -91,8 +91,8 @@ timeline
   | Arsitektur Detektor | Parameter | $mAP50$ Uji | Target Historis | Selisih $\Delta$ | $mAP50\text{--}95$ |
   |---|---|---|---|---|---|
   | YOLO26l | 26,3 juta | 0,5435 | 0,5300 | $+0,0135$ | 0,2564 |
-  | RT-DETR-L | 33,0 juta | 0,5781 | 0,5784 | $\minus 0,0003$ | 0,2629 |
-  | RF-DETR-L | 35,7 juta | **0,6012** | 0,6038 | $\minus 0,0026$ | **0,2747** |
+  | RT-DETR-L | 33,0 juta | 0,5781 | 0,5784 | $−0,0003$ | 0,2629 |
+  | RF-DETR-L | 35,7 juta | **0,6012** | 0,6038 | $−0,0026$ | **0,2747** |
 
 - **Keputusan Metodologis**: Konfigurasi arsitektur divalidasi dan diresmikan sebagai *baseline* pembanding deteksi visual RGB untuk seluruh fase berikutnya.
 - **Batasan Validitas & Audit**: Bobot checkpoint disimpan di [`models/yolo26l_e60_i1280_v2repro/best.pt`](file:///D:/Work/Assisten-Dosen/project-expertise/models/yolo26l_e60_i1280_v2repro/best.pt).
@@ -133,7 +133,7 @@ timeline
 
 - **Rancangan Eksperimen**: Penggabungan awal (*early fusion*) kanal kedalaman invers 4-kanal (BGRD TIFF) pada 352 pohon SawitMVC-Depth.
 - **Temuan Empiris Terukur**:
-  Penambahan depth 4-kanal konvensional **mengalami penurunan performa** pada RT-DETR-L ($mAP50 = 0,3877$ vs $0,4343$, $\Delta = \mathbf{\minus 0,0466}$) dan RF-DETR-L ($mAP50 = 0,4186$ vs $0,4544$, $\Delta = \mathbf{\minus 0,0358}$). Hanya YOLO26l yang mengalami sedikit kenaikan ($mAP50 = 0,3919$ vs $0,3606$, $\Delta = +0,0313$).
+  Penambahan depth 4-kanal konvensional **mengalami penurunan performa** pada RT-DETR-L ($mAP50 = 0,3877$ vs $0,4343$, $\Delta = \mathbf{−0,0466}$) dan RF-DETR-L ($mAP50 = 0,4186$ vs $0,4544$, $\Delta = \mathbf{−0,0358}$). Hanya YOLO26l yang mengalami sedikit kenaikan ($mAP50 = 0,3919$ vs $0,3606$, $\Delta = +0,0313$).
 - **Keputusan Metodologis**: Metode *early fusion* invers konvensional dinyatakan **gugur**.
 - **Batasan Validitas & Audit**: [`results/perkelas_pycoco_rgbd352.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/perkelas_pycoco_rgbd352.json)
 
@@ -195,7 +195,7 @@ timeline
 
 - **Rancangan Eksperimen**: Pelatihan ulang *baseline* RGB 352 pohon dari nol untuk uji signifikansi statistik berpasangan terhadap representasi `edge` (10.000 ulangan).
 - **Temuan Empiris Terukur**:
-  Uji bootstrap menghasilkan selisih $\text{Class }\pm 1\text{ Acc}$ sebesar $+3,18\text{ pp}$ dengan selang kepercayaan 95% $[\minus 0,50; +7,30]$ ($P = 94,3\%$). Selang kepercayaan masih mencakup nilai nol, sehingga secara ketat disimpulkan **tidak signifikan secara statistik**.
+  Uji bootstrap menghasilkan selisih $\text{Class }\pm 1\text{ Acc}$ sebesar $+3,18\text{ pp}$ dengan selang kepercayaan 95% $[−0,50; +7,30]$ ($P = 94,3\%$). Selang kepercayaan masih mencakup nilai nol, sehingga secara ketat disimpulkan **tidak signifikan secara statistik**.
 - **Keputusan Metodologis**: Menegaskan bahwa perbaikan deteksi visual tidak serta merta memberikan keunggulan pasti pada pencacahan tanpa baseline yang stabil.
 - **Batasan Validitas & Audit**: [`results/bootstrap_ci_352.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/bootstrap_ci_352.json)
 
@@ -228,7 +228,7 @@ timeline
 - **Rancangan Eksperimen**: Pengukuran sifat fisik sinyal kedalaman sensor Orbbec pada 2.299 kotak pembatas SawitMVC-Depth.
 - **Temuan Empiris Terukur**:
   1. Skala metrik jarak absolut per kelas konstan ($1,20\text{--}1,36\text{ m}$), memalsukan hipotesis skala metrik.
-  2. **Relief lokal** (median kedalaman cincin latar minus median kotak objek) terbukti monoton sempurna terhadap tingkat kematangan: B1 ($+2,8\text{ cm}$), B2 ($0,0\text{ cm}$), B3 ($\minus 1,5\text{ cm}$), B4 ($\minus 5,1\text{ cm}$) dengan Kruskal-Wallis $H = 99,8$ ($p = 1,7 \times 10^{\minus 21}$).
+  2. **Relief lokal** (median kedalaman cincin latar minus median kotak objek) terbukti monoton sempurna terhadap tingkat kematangan: B1 ($+2,8\text{ cm}$), B2 ($0,0\text{ cm}$), B3 ($−1,5\text{ cm}$), B4 ($−5,1\text{ cm}$) dengan Kruskal-Wallis $H = 99,8$ ($p = 1,7 \times 10^{−21}$).
   3. Rasio sinyal terhadap derau (*SNR*) per piksel sangat rendah ($\approx 0,3$), sehingga sinyal relief hanya pulih setelah agregasi spasial (*spatial pooling*) tingkat wilayah objek ($AUC = 0,592 \to 0,730$).
 - **Keputusan Metodologis**: Menetapkan bahwa sinyal kedalaman harus diproses **setelah agregasi spasial pada jalur klasifikasi**, bukan melalui *early fusion* pada *stem* resolusi tinggi.
 - **Batasan Validitas & Audit**: [`results/probe_fitur_depth.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/probe_fitur_depth.json)
@@ -347,7 +347,7 @@ timeline
 
 - **Rancangan Eksperimen**: Pelatihan ulang dan evaluasi bootstrap 1.000 ulangan berpasangan untuk menguji signifikansi konfigurasi Dua-Tahap v4 terhadap YOLO26l-RGBD `edge`.
 - **Temuan Empiris Terukur**:
-  Dua-Tahap v4 mereplikasi performa persis $mAP50 = \mathbf{0,44999}$ (CI95 $[0,4054; 0,5188]$). Selisih terhadap model `edge` ($0,4270$) adalah $+0,0230$ (CI95 $[\minus 0,0286; +0,0663]$, $P = 0,789$, tidak signifikan secara statistik).
+  Dua-Tahap v4 mereplikasi performa persis $mAP50 = \mathbf{0,44999}$ (CI95 $[0,4054; 0,5188]$). Selisih terhadap model `edge` ($0,4270$) adalah $+0,0230$ (CI95 $[−0,0286; +0,0663]$, $P = 0,789$, tidak signifikan secara statistik).
 - **Keputusan Metodologis**: Mengonfirmasi kesimpulan akhir Fase 6 dan menutup pengumpulan metrik pada dataset 352.
 - **Batasan Validitas & Audit**: [`results/bootstrap_map.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/bootstrap_map.json)
 
@@ -358,7 +358,7 @@ timeline
 ### Simpul V2-E-027 — Evaluasi Sel 6 (953 RGB+Mono 4-Kanal) (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Menguji penambahan peta kedalaman estimasi monokular (`yolo26l-depth.pt`) sebagai kanal ke-4 pada dataset SawitMVC 953 pohon (split uji 2.612 kotak pembatas).
-- **Temuan Empiris Terukur**: Menambahkan depth monokular menyebabkan penurunan performa deteksi sebesar **$\minus 0,0475$** pada split uji ($mAP50 = \mathbf{0,4960}$ vs baseline RGB Sel 5 $\mathbf{0,5436}$). Penurunan terjadi konsisten di keempat kelas kematangan.
+- **Temuan Empiris Terukur**: Menambahkan depth monokular menyebabkan penurunan performa deteksi sebesar **$−0,0475$** pada split uji ($mAP50 = \mathbf{0,4960}$ vs baseline RGB Sel 5 $\mathbf{0,5436}$). Penurunan terjadi konsisten di keempat kelas kematangan.
 - **Keputusan Metodologis**: Menolak hipotesis keunggulan depth monokular pada dataset 953 pohon.
 - **Batasan Validitas & Audit**: [`logs_ringkas/latih_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/latih_sel6_953_rgbmono.log) · [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log)
 
@@ -377,7 +377,7 @@ timeline
 
 - **Rancangan Eksperimen**: Uji bootstrap berpasangan 2.000 ulangan pada 2.612 kotak uji untuk mengevaluasi signifikansi penurunan performa Sel 6 terhadap Sel 5.
 - **Temuan Empiris Terukur**:
-  Selisih performa $\Delta = \mathbf{\minus 0,0476}$ dengan selang kepercayaan 95% **$[\minus 0,0671; \minus 0,0274]$** ($P(\Delta > 0) = 0,000$). Penurunan performa terbukti **signifikan secara statistik**.
+  Selisih performa $\Delta = \mathbf{−0,0476}$ dengan selang kepercayaan 95% **$[−0,0671; −0,0274]$** ($P(\Delta > 0) = 0,000$). Penurunan performa terbukti **signifikan secara statistik**.
 - **Keputusan Metodologis**: Menolak secara tegas penggunaan estimasi depth monokular sebagai kanal *early fusion*.
 - **Batasan Validitas & Audit**: [`results/boot_sel6_vs_sel5.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/boot_sel6_vs_sel5.json)
 
@@ -387,7 +387,7 @@ timeline
 
 - **Rancangan Eksperimen**: Pelatihan model 4-kanal RGB+Mono pada SawitMVC-Depth 352 pohon.
 - **Temuan Empiris Terukur**:
-  Mencatat $mAP50$ uji $0,3943$ (vs baseline RGB $0,3677$, $\Delta = +0,0266$, CI95 $[\minus 0,0270; +0,0739]$, tidak signifikan). Peringkat data validasi ($1 > 3 > 2$) terbukti terbalik terhadap data uji ($2 > 3 > 1$).
+  Mencatat $mAP50$ uji $0,3943$ (vs baseline RGB $0,3677$, $\Delta = +0,0266$, CI95 $[−0,0270; +0,0739]$, tidak signifikan). Peringkat data validasi ($1 > 3 > 2$) terbukti terbalik terhadap data uji ($2 > 3 > 1$).
 - **Keputusan Metodologis**: Menetapkan larangan memeringkat model hanya berdasarkan skor validasi split kecil.
 - **Batasan Validitas & Audit**: [`logs_ringkas/latih_sel3_352_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/latih_sel3_352_rgbmono.log) · [`results/boot_sel3_vs_sel1.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/boot_sel3_vs_sel1.json)
 
@@ -397,7 +397,7 @@ timeline
 
 - **Rancangan Eksperimen**: Pelatihan model 5-kanal (RGB + Depth Fisik + Depth Monokular) pada 352 pohon tuntas 60 *epoch*.
 - **Temuan Empiris Terukur**:
-  Menambahkan depth monokular di atas depth fisik menurunkan performa sebesar **$\minus 0,0504$** ($mAP50 = 0,3766$ vs Sel 2 $\mathbf{0,4270}$, CI95 $[\minus 0,1038; \minus 0,0015]$, $P = 0,022$, **penurunan signifikan secara statistik**).
+  Menambahkan depth monokular di atas depth fisik menurunkan performa sebesar **$−0,0504$** ($mAP50 = 0,3766$ vs Sel 2 $\mathbf{0,4270}$, CI95 $[−0,1038; −0,0015]$, $P = 0,022$, **penurunan signifikan secara statistik**).
 - **Keputusan Metodologis**: Membuktikan bahwa kanal kelima mengencerkan sinyal diskriminatif yang sudah dibawa sensor kedalaman fisik.
 - **Batasan Validitas & Audit**: [`logs_ringkas/latih_sel4_352_rgbedgemono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/latih_sel4_352_rgbedgemono.log) · [`results/boot_sel4_vs_sel2.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/boot_sel4_vs_sel2.json)
 
@@ -454,7 +454,7 @@ timeline
   1. *Penaut di Ruang Deteksi (PT-E-017)*: Melatih penaut pada deteksi nyata melipatgandakan $F1$ dari $0,1492$ menjadi $\mathbf{0,3788}$ ($AUC = \mathbf{0,9422}$).
   2. *Propagasi Multi-View (PT-E-024)*: Mempropagasi bukti kelas antar-sudut pandang meningkatkan $mAP50$ dari $0,5881$ menjadi $\mathbf{0,5965}$ ($mAP50\text{--}95 = 0,2743$).
   3. *Keunggulan Loss CORN (PT-E-030)*: Loss ordinal CORN mencapai akurasi uji **$69,83\%$**, mengatasi keruntuhan model CORAL ($33,05\%$) sebesar $+36,8\text{ pp}$.
-  4. *Ensembel Terbobot (PT-E-029)*: Rata-rata terbobot mencapai akurasi uji **$74,39\%$** (CI95 $[\minus 0,15; +3,55]$). Batas teoretis penggabungan terbukti mentok pada $75,23\%$.
+  4. *Ensembel Terbobot (PT-E-029)*: Rata-rata terbobot mencapai akurasi uji **$74,39\%$** (CI95 $[−0,15; +3,55]$). Batas teoretis penggabungan terbukti mentok pada $75,23\%$.
 - **Keputusan Metodologis**: Mengunci pipeline produksi DAMIMAS menggunakan kombinasi Penaut Proposal Unik + Propagasi Multi-View + Ensembel ConvNeXt/Set-Transformer + Aturan $R4$.
 - **Batasan Validitas & Audit**: [`pipeline-pertandan/results/damimas_ensemble_classifier_all.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/damimas_ensemble_classifier_all.json) · [`pipeline-pertandan/logs_ringkas/pt_e_031_spesialis_batas.log`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/logs_ringkas/pt_e_031_spesialis_batas.log)
 
@@ -532,7 +532,7 @@ timeline
 
 - **Rancangan Eksperimen**: Uji transfer performa tanpa pelatihan ulang pada 12 kombinasi (6 model $\times$ 2 domain luar: SawitMVC 953 kamera HP dan SawitMVC-Depth 352).
 - **Temuan Empiris Terukur**:
-  Saat diuji pada domain kamera asing (SawitMVC 953), RT-DETR-L mengalami degradasi terparah ($\minus 80,1\%$, $mAP50$ anjlok dari $0,5580 \to 0,1110$), sedangkan YOLO26l terbukti paling tangguh (*robust*, retensi $45,1\%$, $mAP50 = 0,2331$). Model Combined-1716 mempertahankan performa $98,9\%\text{--}100,2\%$ karena data latihnya telah mencakup kedua domain kamera.
+  Saat diuji pada domain kamera asing (SawitMVC 953), RT-DETR-L mengalami degradasi terparah ($−80,1\%$, $mAP50$ anjlok dari $0,5580 \to 0,1110$), sedangkan YOLO26l terbukti paling tangguh (*robust*, retensi $45,1\%$, $mAP50 = 0,2331$). Model Combined-1716 mempertahankan performa $98,9\%\text{--}100,2\%$ karena data latihnya telah mencakup kedua domain kamera.
 - **Keputusan Metodologis**: Menetapkan pedoman deployment: arsitektur konvolusi murni (YOLO26l) wajib dipilih jika perangkat keras kamera di lapangan bersifat heterogen.
 - **Batasan Validitas & Audit**: [`results/cross_eval/`](file:///D:/Work/Assisten-Dosen/project-expertise/results/cross_eval/)
 
@@ -542,7 +542,7 @@ timeline
 
 - **Rancangan Eksperimen**: Replikasi independen menggunakan model yang dilatih pada platform Ultralytics HUB (YOLO26l, YOLO26x, RT-DETR-L) pada 996 citra uji Combined-1716 (mengeksklusikan subset LONSUM).
 - **Temuan Empiris Terukur**:
-  Mengonfirmasi temuan V2-E-040: RT-DETR-L unggul di dalam domain latih ($mAP50 = 0,6070$), namun anjlok $\minus 71\%$ di luar domain ($0,1463$). YOLO26x terbukti paling stabil pada evaluasi 4-kelas gabungan ($mAP50 = 0,2742$).
+  Mengonfirmasi temuan V2-E-040: RT-DETR-L unggul di dalam domain latih ($mAP50 = 0,6070$), namun anjlok $−71\%$ di luar domain ($0,1463$). YOLO26x terbukti paling stabil pada evaluasi 4-kelas gabungan ($mAP50 = 0,2742$).
 - **Keputusan Metodologis**: Memvalidasi ketangguhan arsitektur konvolusional terhadap pergeseran domain visual melalui *toolchain* independen.
 - **Batasan Validitas & Audit**: [`results/local_eval_combined1716_no_lonsum/summary.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/local_eval_combined1716_no_lonsum/summary.json)
 
@@ -613,16 +613,16 @@ graph TD
 | ID Simpul | Tanggal | Hipotesis Utama | Metrik Utama Terukur | Putusan Ilmiah | Tautan Log / Berkas Bukti |
 |---|---|---|---|---|---|
 | **V2-E-001** | 09 Agu 2026 | Replikasi 3 arsitektur pada SawitMVC 953 | RF-DETR-L $mAP50 = \mathbf{0,6012}$ | **Terkonfirmasi** | [`results/perkelas_pycoco_v2repro.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/perkelas_pycoco_v2repro.json) |
-| **V2-E-005** | 09 Agu 2026 | *Early fusion* depth 4ch menaikkan deteksi | RT-DETR-L $\Delta = \minus 0,0466$ | **Gugur** | [`results/matrix_compiled.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/matrix_compiled.json) |
+| **V2-E-005** | 09 Agu 2026 | *Early fusion* depth 4ch menaikkan deteksi | RT-DETR-L $\Delta = −0,0466$ | **Gugur** | [`results/matrix_compiled.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/matrix_compiled.json) |
 | **V2-E-010** | 11 Agu 2026 | Representasi depth Sobel `edge` unggul | YOLO26l $mAP50 = \mathbf{0,4316}$ ($+10,1\%$) | **Terkonfirmasi** | [`results/perkelas_pycoco_rgbd352.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/perkelas_pycoco_rgbd352.json) |
-| **V2-E-014** | 11 Agu 2026 | Sinyal depth = relief lokal ordinal | Kruskal-Wallis $H = 99,8$, $p = 1,7 \times 10^{\minus 21}$ | **Terkonfirmasi** | [`scripts/probe_depth_signal.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/probe_depth_signal.py) |
+| **V2-E-014** | 11 Agu 2026 | Sinyal depth = relief lokal ordinal | Kruskal-Wallis $H = 99,8$, $p = 1,7 \times 10^{−21}$ | **Terkonfirmasi** | [`scripts/probe_depth_signal.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/probe_depth_signal.py) |
 | **V2-E-016** | 11 Agu 2026 | Depth menambah informasi kematangan | Akurasi RGB = RGBD = $\mathbf{0,6415}$ | **Gugur (Redundan)** | [`results/probe_fitur_depth.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/probe_fitur_depth.json) |
 | **V2-E-017** | 12 Agu 2026 | Batas atas lokalisasi agnostik 1-kelas | `agn953_full` validasi $\mathbf{0,8101}$, uji $\mathbf{0,7330}$ | **Terkonfirmasi** | [`results/fase6_ringkas.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/fase6_ringkas.json) |
 | **V2-E-020** | 12 Agu 2026 | Pipeline dua-tahap mengungguli satu-tahap | Dua-Tahap v4 $mAP50 = \mathbf{0,4500}$ | **Terkonfirmasi** | [`results/twostage_final_v4.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/twostage_final_v4.json) |
 | **V2-E-022** | 12 Agu 2026 | Dataset 953 dan 352 sebanding | Jeda akuisisi $\mathbf{\sim 80\text{ hari}}$, B3 bergeser $55\% \to 14\%$ | **Gugur (Domain Shift)** | [`results/pergeseran_temporal.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/pergeseran_temporal.json) |
 | **V2-E-024** | 12 Agu 2026 | Depth menaikkan performa lokalisasi | `agn352_4ch` $AP50 = \mathbf{0,7636}$ ($+0,0278$) | **Positif (Belum Sig.)** | [`results/bootstrap_lokalisasi.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/bootstrap_lokalisasi.json) |
 | **V2-E-025** | 12 Agu 2026 | Audit partisi bersih lokalisasi agnostik | Partisi bersih $AP50 = \mathbf{0,7702}$ (ditarik $0,8090$) | **Terkonfirmasi** | [`results/test953_bersih.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/test953_bersih.json) |
-| **V2-E-027** | 15 Agu 2026 | Depth monokular menaikkan performa | Sel 6 $mAP50 = 0,4960$ vs $0,5436$ ($\minus 0,0476$) | **Gugur (Degradasi Sig.)** | [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log) |
+| **V2-E-027** | 15 Agu 2026 | Depth monokular menaikkan performa | Sel 6 $mAP50 = 0,4960$ vs $0,5436$ ($−0,0476$) | **Gugur (Degradasi Sig.)** | [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log) |
 | **PT-E-008** | 17 Agu 2026 | Prior arah putar kamera memangkas kandidat | Penaut $F1 = \mathbf{0,6486}$, G1 & G2 lolos | **Terkonfirmasi (Krusial)** | [`pipeline-pertandan/results/harapan_geser.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/harapan_geser.json) |
 | **PT-E-030** | 18 Agu 2026 | *Loss* ordinal CORN mengatasi CORAL | Akurasi uji CORN **69,83%** vs CORAL 33,05% | **Terkonfirmasi** | [`pipeline-pertandan/results/damimas_classifier_corn_s42.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/damimas_classifier_corn_s42.json) |
 | **V2-E-034** | 22 Agu 2026 | Evaluasi baseline SawitMVC-Depth v2.0.0 | RF-DETR-L $mAP50 = \mathbf{0,6129}$ (new763) | **Terkonfirmasi** | [`results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log) |

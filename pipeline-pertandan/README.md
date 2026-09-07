@@ -12,7 +12,7 @@ Proses kerja mencakup: pendeteksian per sisi pandang pohon, penautan asosiasi li
 |---|---|---|---|
 | **Gerbang G0** | Evaluasi Nilai Penggabungan (*Oracle Linking*) | **LOLOS** | Peningkatan akurasi $+4,36\text{ pp}$ (CI95 $[+2,33; +6,25]$). |
 | **Gerbang G1** | Evaluasi Kualitas Model Penaut (*Linker*) | **LOLOS** | Skor $F1 = \mathbf{0,6486}$ (setelah penemuan prior arah putar searah jarum jam / *clockwise*, PT-E-008). |
-| **Gerbang G2** | Evaluasi *End-to-End* Tanpa Data Acuan Kebenaran | **LOLOS** | Akurasi klasifikasi end-to-end $\minus 1,81\text{ pp}$ vs oracle (memenuhi toleransi $\le 2,0\text{ pp}$). |
+| **Gerbang G2** | Evaluasi *End-to-End* Tanpa Data Acuan Kebenaran | **LOLOS** | Akurasi klasifikasi end-to-end $−1,81\text{ pp}$ vs oracle (memenuhi toleransi $\le 2,0\text{ pp}$). |
 | **Gerbang G3** | Pencacahan Berbasis Klaster Graf Murni | **GUGUR** | Macro-$MAE = 3,4610$ vs $1,0542$ pada *Ridge +* $F_{\text{all}}$ (pencacahan klaster graf kalah presisi dari estimator regresi). |
 
 ---

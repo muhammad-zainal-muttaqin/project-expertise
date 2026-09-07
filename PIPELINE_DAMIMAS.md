@@ -48,9 +48,9 @@ graph TD
 | Klasifikasi per-Tandan (*Strict* DAMIMAS) | 0,7242 | **0,7378** (Macro-$F1 = 0,7166$) | **$+1,36\text{ pp}$** |
 | Akurasi Tandan Multi-Tampak ($\ge 2\text{ sisi}$) | — | **0,7753** | Agregasi ordinal $R4$ |
 | Akurasi Tandan Satu-Tampak ($1\text{ sisi}$) | — | 0,6329 | Hambatan utama klasifikasi |
-| Pencacahan Macro-$MAE$ | 1,0236 | **1,0039** | **$\minus 0,0197$** |
+| Pencacahan Macro-$MAE$ | 1,0236 | **1,0039** | **$−0,0197$** |
 | Pencacahan $\text{Class }\pm 1\text{ Acc}$ | 74,61% | **75,79%** | **$+1,18\text{ pp}$** |
-| Pencacahan Total $MAE$ (Regresor Langsung) | 1,5669 | **1,4882** | **$\minus 0,0787$** |
+| Pencacahan Total $MAE$ (Regresor Langsung) | 1,5669 | **1,4882** | **$−0,0787$** |
 | Model Penaut $F1$ di Ruang Deteksi | 0,4704 | **0,5171** | Proposal unik |
 | Cakupan Multi-Tampak atas Tandan Terdeteksi | 64,00% | **70,62%** | Target lolos |
 | Cakupan Multi-Tampak atas Seluruh Tandan | 47,84% | **51,55%** | Target global |

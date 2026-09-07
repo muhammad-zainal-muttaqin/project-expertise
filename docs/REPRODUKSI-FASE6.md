@@ -26,7 +26,7 @@ Eksekusi probe analitik *read-only* (tanpa beban GPU, durasi $\approx 5\text{ me
 .venv/bin/python scripts/probe_depth_signal.py --probe semua
 ```
 
-Menghasilkan kalkulasi distribusi frekuensi kelas, validitas spasial piksel kedalaman di dalam kotak objek, analisis relief lokal ordinal ($H = 99,8$, $p = 1,7 \times 10^{\minus 21}$), tabel resolusi kuantisasi, dan kurva efektivitas agregasi spasial (*pooling*).
+Menghasilkan kalkulasi distribusi frekuensi kelas, validitas spasial piksel kedalaman di dalam kotak objek, analisis relief lokal ordinal ($H = 99,8$, $p = 1,7 \times 10^{−21}$), tabel resolusi kuantisasi, dan kurva efektivitas agregasi spasial (*pooling*).
 
 ---
 
