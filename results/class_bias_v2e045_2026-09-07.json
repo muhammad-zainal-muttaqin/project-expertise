@@ -1,0 +1,50 @@
+{
+  "node": "V2-E-045",
+  "method": "WBF[YOLO26l+RT-DETR-L+RF-DETR-L] bank combined1716 + rotation-prior linker + Ridge counter",
+  "note": "avg |bias| (macro-avg |bias relatif| B1-B4) untuk 4 sel recap.md: 953 uji/val, 763-depth uji/val. Dihitung via scripts/evaluate_remote_count_reconciled.py (medan confusion_matrix baru ditambahkan, perubahan aditif) dengan profil validation-locked persis dari results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json: 953 (proposal_min=0.125, link_threshold=0.3, singleton_min=0.15, pair_mode=adjacent, max_cluster_size=3, rank_mode=max_member, class_prior_exponent=-0.25); depth (proposal_min=0.075, link_threshold=0.25, singleton_min=0.15, pair_mode=adjacent, max_cluster_size=3, rank_mode=support, class_prior_exponent=-0.25). Model count Ridge di-fit pada partisi train (inferensi GPU baru 3 detektor bank combined1716 pada train split kedua korpus, tidak ada di repo/bucket sebelumnya).",
+  "bug_found_and_fixed": "Selama proses ini ditemukan bug pada dump prediksi 953 val bank combined1716 yang dihasilkan sesi sebelumnya (results/pred_combined1716_*_953_val.npz, dipakai oleh wbf_val_combined1716_2026-09-07.json): hanya berisi 263/404 citra val (kehilangan seluruh 40 citra LONSUM_* dan 101 dari 364 citra DAMIMAS_*). Ini membuat detection/det+class baris WBF val 953 (V2-E-045, Wave-V2, V2-E-046) yang sudah dipublikasikan (0,8373 / 0,5613) SALAH -- dihitung dari data tidak lengkap. Diinferensi ulang penuh (404/404 citra terverifikasi) untuk ketiga detektor; nilai benar: 0,8313 / 0,5691. Dump lama diganti; provenance lama (wbf_val_combined1716_2026-09-07.json) TIDAK dihapus tetapi sudah tidak jadi rujukan sel manapun di recap.md untuk baris 953 val.",
+  "cross_checks": {
+    "953_uji": {"f1_computed": 0.800749063670412, "f1_published": 0.8043, "class_acc_computed": 0.7118802619270346, "class_acc_published": 0.711},
+    "953_val": {"f1_computed": 0.8059542796384902, "f1_published": 0.8087, "class_acc_computed": 0.6992084432717678, "class_acc_published": 0.700},
+    "depth_uji": {"f1_computed": 0.8069, "f1_published": 0.8069, "class_acc_computed": 0.8031, "class_acc_published": 0.803},
+    "depth_val": {"f1_computed": 0.8239, "f1_published": 0.8257, "class_acc_computed": 0.8351, "class_acc_published": 0.836},
+    "note": "Semua selisih F1/akurasi <0,004 (satu cocok presisi penuh), memvalidasi rekonstruksi pipeline sebelum angka avg |bias| dipercaya."
+  },
+  "results": {
+    "953_uji": {
+      "n_trees": 135,
+      "total_prediksi": {"B1": 157, "B2": 194, "B3": 716, "B4": 261},
+      "total_acuan": {"B1": 113, "B2": 246, "B3": 706, "B4": 277},
+      "bias_relatif": {"B1": 0.3894, "B2": -0.2114, "B3": 0.0142, "B4": -0.0578},
+      "macro_avg_bias": 0.1682
+    },
+    "953_val": {
+      "n_trees": 91,
+      "total_prediksi": {"B1": 121, "B2": 143, "B3": 485, "B4": 196},
+      "total_acuan": {"B1": 86, "B2": 186, "B3": 476, "B4": 188},
+      "bias_relatif": {"B1": 0.4070, "B2": -0.2312, "B3": 0.0189, "B4": 0.0426},
+      "macro_avg_bias": 0.1749
+    },
+    "depth_uji": {
+      "n_trees": 110,
+      "total_prediksi": {"B1": 87, "B2": 225, "B3": 178, "B4": 59},
+      "total_acuan": {"B1": 94, "B2": 199, "B3": 215, "B4": 50},
+      "bias_relatif": {"B1": -0.0745, "B2": 0.1307, "B3": -0.1721, "B4": 0.1800},
+      "macro_avg_bias": 0.1393
+    },
+    "depth_val": {
+      "n_trees": 117,
+      "total_prediksi": {"B1": 81, "B2": 237, "B3": 182, "B4": 48},
+      "total_acuan": {"B1": 96, "B2": 205, "B3": 216, "B4": 53},
+      "bias_relatif": {"B1": -0.1562, "B2": 0.1561, "B3": -0.1574, "B4": -0.0943},
+      "macro_avg_bias": 0.1410
+    }
+  },
+  "corrected_953_val_wbf": {
+    "detection_agnostic_mAP50": 0.8313,
+    "det_class_aware_mAP50": 0.5691,
+    "n_images": 404,
+    "applies_to_rows": ["V2-E-045 (953, val)", "Wave-V2 (953, val)", "V2-E-046 (953, val)"],
+    "note": "detection/det+class adalah properti tingkat-proposal (WBF box), sama untuk ketiga baris val 953 -- hanya classifier/linker hilir yang berbeda."
+  }
+}

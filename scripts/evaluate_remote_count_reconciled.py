@@ -322,6 +322,7 @@ def evaluate_payload(payload, target_counts: dict[str, int]) -> dict:
             "matched": matched, "macro_f1_end_to_end": float(np.mean(f1s)),
             "per_class_f1_end_to_end": dict(zip(base.NAMES, f1s)),
         },
+        "confusion_matrix": cm.tolist(),
         "per_tree": per_tree,
     }
 
