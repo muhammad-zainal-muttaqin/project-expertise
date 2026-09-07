@@ -1,0 +1,10 @@
+# Retrain V2-E-001 RT-DETR-L (2026-09-07) -- path absolut mengikuti konvensi configs/*.yaml lain.
+path: /workspace/SawitMVC-YOLO
+train: images/train
+val: images/val
+nc: 4
+names:
+  0: B1
+  1: B2
+  2: B3
+  3: B4

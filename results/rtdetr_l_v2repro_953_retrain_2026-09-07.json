@@ -1,0 +1,15 @@
+{
+  "node": "V2-E-001",
+  "model": "RT-DETR-L",
+  "dataset": "953",
+  "split": "test",
+  "n_images": 588,
+  "weights": "/workspace/project-expertise/runs/detect/runs/rtdetr_l_e60_i1280_v2repro_retrain/weights/best.pt",
+  "retrain_reason": "bobot v2repro asli hilang (tidak ada di repo maupun bucket cadangan HF); retrain 60 epoch mengikuti protokol persis experiments/EKSPERIMEN.md V2-E-001 (imgsz=1280, batch=4, seed=42, cos_lr=True, patience=60)",
+  "mAP50_classaware": 0.5718187682978999,
+  "mAP50_95_classaware": 0.2686358573896983,
+  "AP50_agnostic": 0.7437439540037731,
+  "AP50_95_agnostic": 0.33046383773160026,
+  "reference_class_aware_mAP50_original_2026-08-09": 0.5781,
+  "predictions": "/workspace/project-expertise/results/pred_rtdetr_l_v2repro_953_test.npz"
+}
