@@ -1,0 +1,105 @@
+{
+  "baseline": {
+    "physical_f1": 0.8059542796384902,
+    "precision": 0.8021164021164021,
+    "recall": 0.8098290598290598,
+    "matched": 758,
+    "matched_class_accuracy": 0.6992084432717678,
+    "confusion_matrix": [
+      [
+        62,
+        28,
+        11,
+        1,
+        19
+      ],
+      [
+        15,
+        75,
+        32,
+        1,
+        20
+      ],
+      [
+        1,
+        54,
+        297,
+        39,
+        94
+      ],
+      [
+        0,
+        1,
+        45,
+        96,
+        54
+      ],
+      [
+        8,
+        28,
+        91,
+        51,
+        0
+      ]
+    ]
+  },
+  "best": {
+    "model": "large_hist",
+    "pooling": "max",
+    "alpha": 0.05,
+    "matched_class_accuracy": 0.716358839050132,
+    "physical_f1": 0.8059542796384902,
+    "count_invariant": true,
+    "confusion_matrix": [
+      [
+        56,
+        22,
+        7,
+        0,
+        17
+      ],
+      [
+        18,
+        62,
+        12,
+        1,
+        17
+      ],
+      [
+        4,
+        73,
+        342,
+        53,
+        107
+      ],
+      [
+        0,
+        1,
+        24,
+        83,
+        46
+      ],
+      [
+        8,
+        28,
+        91,
+        51,
+        0
+      ]
+    ]
+  },
+  "n_candidates": 81,
+  "profile": {
+    "proposal_min": 0.125,
+    "link_threshold": 0.3,
+    "singleton_min": 0.15,
+    "max_size": 3,
+    "pair_mode": "adjacent",
+    "rank_mode": "max_member",
+    "class_prior_exponent": -0.25
+  },
+  "n_train_members": 12617,
+  "n_train_matched": 11006,
+  "n_val_members": 1731,
+  "n_val_groups": 945
+}
