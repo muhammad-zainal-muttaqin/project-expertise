@@ -1,0 +1,15 @@
+{
+  "node": "V2-E-001",
+  "model": "RF-DETR-L",
+  "dataset": "953",
+  "split": "test",
+  "n_images": 588,
+  "weights": "/workspace/project-expertise/runs/rfdetr_l_e60_i1280_v2repro_retrain/checkpoint_best_ema.pth",
+  "checkpoint_epoch": "best_ema (epoch 5, still training to 60 in background)",
+  "mAP50_classaware": 0.596470002851234,
+  "mAP50_95_classaware": 0.27565513388607127,
+  "AP50_agnostic": 0.7752305175897279,
+  "AP50_95_agnostic": 0.33855554590251186,
+  "reference_class_aware_mAP50_original_2026-08-09": 0.6012,
+  "predictions": "/workspace/project-expertise/results/pred_rfdetr_l_v2repro_953_test.npz"
+}
