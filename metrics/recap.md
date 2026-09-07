@@ -30,11 +30,11 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 
 | Metode/sistem | detection | det+class | dedup | classification | avg \|bias\| | MAE | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l | 0,7388 | 0,5435 | — | — | — | — | uji | `V2-E-001` |
+| YOLO26l 1.280 px | 0,7388 | 0,5435 | — | — | — | — | uji | `V2-E-001` |
 | YOLO26s 960 px | 0,8057 | 0,5433 | — | — | — | — | uji | `AF-E-006` |
 | YOLO26m 1.280 px | 0,8104 | — | — | — | — | — | uji | `AF-E-011` |
-| RT-DETR-L | 0,7437 | 0,5781 | — | — | — | — | uji | `V2-E-001` |
-| RF-DETR-L | · | **0,6012** | — | — | — | — | uji | `V2-E-001` |
+| RT-DETR-L 1.280 px | 0,7437 | 0,5781 | — | — | — | — | uji | `V2-E-001` |
+| RF-DETR-L 1.280 px | · | **0,6012** | — | — | — | — | uji | `V2-E-001` |
 | WBF [YOLO+RT+RF] | 0,8350 | 0,5861 | — | — | — | — | uji | `V2-E-042` |
 | WBF + *re-ranker* | **0,8419** | 0,5970 | — | — | — | — | uji | `MAP_BOOST` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8350 | 0,5861 | 0,8043 | 71,1% | 16,82% | 1,393 | uji | `V2-E-045` |
