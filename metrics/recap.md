@@ -47,7 +47,7 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | · | 1,374 | val | `AF-E-012` |
 | Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | — | **1,058** | oracle | `AF-E-005` |
 
-*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
 
 ### Counting kohort per kelas (sasaran BBC)
 
@@ -100,7 +100,7 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | 0,932 | val | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 0,8648 | 0,6595 | 0,8542 | **85,0%** | · | 0,915 | val | `V2-E-047` |
 
-*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
 
 ### Counting kohort per kelas (sasaran BBC)
 
@@ -145,7 +145,7 @@ Korpus gabungan berkapasitas terbesar (1.716 pohon, 1.052 citra uji) difungsikan
 | RT-DETR-L native | 0,7577 | 0,5745 | — | — | — | — | uji | `V2-E-035` |
 | RF-DETR-L native | 0,7850 | **0,5960** | — | — | — | — | uji | `V2-E-035` |
 
-*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
 
 ---
 
