@@ -45,7 +45,7 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **15,21%** | val | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 0,8373 | 0,5613 | 0,8232 | **76,8%** | · | val | `V2-E-046` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | · | val | `AF-E-012` |
-| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | · | oracle | `AF-E-005` |
+| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | — | oracle | `AF-E-005` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
@@ -186,6 +186,7 @@ Dihitung melalui simulasi *bootstrap* berpasangan sebanyak 2.000 ulangan (*rando
 | Kebocoran data (*leakage*) `combined1716` | Irisan identitas pohon (`tree_id`) antar-partisi belum diaudit tuntas. | [`ANALISIS_PIPELINE.md`](../docs/ANALISIS_PIPELINE_MENDALAM.md) |
 | Sel `detection` tak terisi, RT-DETR-L dan RF-DETR-L (`V2-E-001`, tabel 953) | Bobot `runs/rtdetr_l_e60_i1280_v2repro/` dan `runs/rfdetr_l_e60_i1280_v2repro/` tidak ada di repositori maupun bucket cadangan Hugging Face; tidak ada dump prediksi tersimpan. Tidak dapat diisi tanpa pelatihan ulang 60 *epoch* penuh — di luar cakupan audit ini. | Audit sesi 2026-09-07 |
 | Sel `detection` tak terisi, Pipeline Panen (`AF-E-012`, val, tabel 953) | Bobot detektor class-agnostic bespoke (`runs_panen/agnostik_m1280/`) tidak ada di repositori maupun bucket. Kolom `det+class` pada baris ini dikoreksi dari `·` menjadi `—` karena detektornya class-agnostic murni (setara baris uji), bukan sekadar belum dievaluasi. | Audit sesi 2026-09-07 |
+| Sel `avg \|bias\|` tak terisi (9 sel: `V2-E-045`, `V2-E-043`, `V2-E-046`, `V2-E-047`, `AF-E-012`, kedua korpus) | Formula (makro-rerata \|bias relatif\| B1–B4) diverifikasi persis terhadap keempat nilai `Wave-V2` yang sudah terisi (dari medan `gsp_best_by_class.metrics.classification.confusion_prediction_rows`), tetapi rincian hitung per kelas (prediksi vs acuan) tidak tersimpan pada berkas hasil masing-masing varian lain. `V2-E-045` memerlukan inferensi GPU pada partisi *train* (model *count* dilatih di sana). `V2-E-043` berpotensi diisi tanpa GPU dengan menambah satu medan pengembalian pada `multiview_metrics()` (`scripts/eval_remote_pipeline_postprocess.py`, matriks konfusi sudah dihitung internal tetapi tidak dikembalikan) lalu dijalankan ulang pada proposal WBF yang sudah tersimpan — kandidat tindak lanjut termurah. `V2-E-046`, `V2-E-047`, `AF-E-012` tidak memiliki rincian hitung per kelas B1–B4 pada berkas hasil manapun yang sudah ada. Baris oracle `AF-E-005` dikoreksi dari `·` menjadi `—`: studi ini murni plafon klasifikasi per-*crop*, tanpa tahapan penautan/pencacahan tingkat pohon, sejalan dengan kolom `dedup`/`classification` yang sudah `—`. | Audit sesi 2026-09-07 |
 
 ---
 
