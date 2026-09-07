@@ -622,6 +622,7 @@ def multiview_metrics(records: dict[str, dict], vote: dict[str, list[dict]],
             "matched": matched, "macro_f1_end_to_end": float(np.mean(macro_f1)),
             "per_class_f1_end_to_end": dict(zip(NAMES, macro_f1)),
         },
+        "confusion_matrix": cm.tolist(),
         "per_tree": per_tree,
     }
 

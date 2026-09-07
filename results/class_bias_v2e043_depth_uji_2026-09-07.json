@@ -1,0 +1,71 @@
+{
+  "node": "V2-E-043",
+  "dataset": "763-depth",
+  "split": "uji",
+  "n_trees": 110,
+  "f1": 0.858974358974359,
+  "f1_reference_check": 0.858974358974359,
+  "total_prediksi": {
+    "B1": 79,
+    "B2": 231,
+    "B3": 188,
+    "B4": 35
+  },
+  "total_acuan": {
+    "B1": 94,
+    "B2": 199,
+    "B3": 215,
+    "B4": 50
+  },
+  "bias_absolut": {
+    "B1": -15,
+    "B2": 32,
+    "B3": -27,
+    "B4": -15
+  },
+  "bias_relatif": {
+    "B1": -0.1595744680851064,
+    "B2": 0.16080402010050251,
+    "B3": -0.12558139534883722,
+    "B4": -0.3
+  },
+  "macro_avg_bias": 0.18648997088361152,
+  "confusion_matrix": [
+    [
+      58,
+      7,
+      2,
+      0,
+      12
+    ],
+    [
+      29,
+      152,
+      22,
+      2,
+      26
+    ],
+    [
+      0,
+      10,
+      145,
+      14,
+      19
+    ],
+    [
+      1,
+      2,
+      5,
+      20,
+      7
+    ],
+    [
+      6,
+      28,
+      41,
+      14,
+      0
+    ]
+  ],
+  "note": "avg |bias| (macro-avg |bias relatif| B1-B4) untuk node V2-E-043 (WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict, status uji), dihitung dari confusion_matrix baru yang diekspos di multiview_metrics() (scripts/eval_remote_pipeline_postprocess.py), dijalankan pada proposal WBF test-split yang sudah tersimpan (fusions_iou575_combined1716/SawitMVC_YOLO__wbf_c2blend025_softvote.npz untuk 953 iou=0.575 dgn C2-blend 25%; fused_combined1716/SawitMVC_Depth_YOLO__wbf_softvote.npz untuk depth iou=0.6), rotation_prior_train dan hyperparameter selection diambil persis dari results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json. F1 fisik dan Total_acuan hasil dicek sama persis dengan nilai yang sudah dipublikasikan di recap.md sebagai validasi pipeline."
+}
