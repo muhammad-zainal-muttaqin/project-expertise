@@ -42,10 +42,10 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 18,78% | 1,363 | uji | `Wave-V2` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 0,8104 | — | 0,7619 | 71,6% | · | 1,402 | uji | `AF-E-012` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8373 | 0,5613 | 0,8087 | 70,0% | · | 1,253 | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **15,21%** | **1,253** | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **15,21%** | 1,253 | val | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 0,8373 | 0,5613 | 0,8232 | **76,8%** | · | 1,253 | val | `V2-E-046` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | · | 1,374 | val | `AF-E-012` |
-| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | — | 1,058 | oracle | `AF-E-005` |
+| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | — | **1,058** | oracle | `AF-E-005` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
@@ -93,9 +93,9 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 | WBF + *re-ranker* | **0,8783** | 0,6552 | — | — | — | — | uji | `MAP_BOOST` |
 | WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 0,8764 | 0,6691 | — | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L, bank `combined1716` | 0,8329 | **0,6711** | — | — | — | — | uji | `V2-E-042` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | 18,65% | 0,818 | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | **18,65%** | 0,818 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | · | 0,891 | uji | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | **19,62%** | **0,773** | uji | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | 19,62% | 0,773 | uji | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8648 | 0,6595 | 0,8257 | 83,6% | · | **0,726** | val | `V2-E-045` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | 0,932 | val | `Wave-V2` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 0,8648 | 0,6595 | 0,8542 | **85,0%** | · | 0,915 | val | `V2-E-047` |
