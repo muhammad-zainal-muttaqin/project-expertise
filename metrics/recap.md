@@ -30,24 +30,24 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 
 | Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l | — | 0,5435 | — | — | — | uji | `V2-E-001` |
+| YOLO26l | · | 0,5435 | — | — | — | uji | `V2-E-001` |
 | YOLO26s 960 px | 0,8057 | 0,5433 | — | — | — | uji | `AF-E-006` |
 | YOLO26m 1.280 px | 0,8104 | — | — | — | — | uji | `AF-E-011` |
-| RT-DETR-L | — | 0,5781 | — | — | — | uji | `V2-E-001` |
-| RF-DETR-L | — | **0,6012** | — | — | — | uji | `V2-E-001` |
+| RT-DETR-L | · | 0,5781 | — | — | — | uji | `V2-E-001` |
+| RF-DETR-L | · | **0,6012** | — | — | — | uji | `V2-E-001` |
 | WBF [YOLO+RT+RF] | 0,8350 | 0,5861 | — | — | — | uji | `V2-E-042` |
 | WBF + *re-ranker* | **0,8419** | 0,5970 | — | — | — | uji | `MAP_BOOST` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8350 | 0,5861 | 0,8043 | 71,1% | 1,393 | uji | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | — | — | 0,8296 | — | 1,644 | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | · | · | 0,8296 | — | 1,644 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 1,363 | uji | `Wave-V2` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 0,8104 | — | 0,7619 | 71,6% | 1,402 | uji | `AF-E-012` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | — | — | 0,8087 | 70,0% | 1,253 | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | — | — | 0,8232 | 75,4% | **1,253** | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | — | — | — | **76,8%** | — | val | `V2-E-046` |
-| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | — | — | 0,7586 | 71,7% | 1,374 | val | `AF-E-012` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | · | · | 0,8087 | 70,0% | 1,253 | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | · | · | 0,8232 | 75,4% | **1,253** | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | · | · | 0,8232 | **76,8%** | 1,253 | val | `V2-E-046` |
+| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | · | 0,7586 | 71,7% | 1,374 | val | `AF-E-012` |
 | Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | 1,058 | oracle | `AF-E-005` |
 
-*Sel kosong berarti not applicable.*
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
 ### Counting kohort per kelas (sasaran BBC)
 
@@ -85,22 +85,22 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 
 | Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l native | — | 0,5163 | — | — | — | uji | `V2-E-034` |
-| RT-DETR-L native | — | 0,5580 | — | — | — | uji | `V2-E-034` |
-| YOLO26l, bank `combined1716` | — | 0,5765 | — | — | — | uji | `V2-E-042` |
+| YOLO26l native | · | 0,5163 | — | — | — | uji | `V2-E-034` |
+| RT-DETR-L native | · | 0,5580 | — | — | — | uji | `V2-E-034` |
+| YOLO26l, bank `combined1716` | · | 0,5765 | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L native | 0,7951 | 0,6129 | — | — | — | uji | `V2-E-034` |
-| RT-DETR-L, bank `combined1716` | — | 0,6309 | — | — | — | uji | `V2-E-042` |
+| RT-DETR-L, bank `combined1716` | · | 0,6309 | — | — | — | uji | `V2-E-042` |
 | WBF + *re-ranker* | **0,8783** | 0,6552 | — | — | — | uji | `MAP_BOOST` |
 | WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 0,8764 | 0,6691 | — | — | — | uji | `V2-E-042` |
-| RF-DETR-L, bank `combined1716` | — | **0,6711** | — | — | — | uji | `V2-E-042` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | — | — | **0,8590** | — | 0,818 | uji | `V2-E-043` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | — | — | 0,8069 | 80,3% | 0,891 | uji | `V2-E-045` |
+| RF-DETR-L, bank `combined1716` | · | **0,6711** | — | — | — | uji | `V2-E-042` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | · | · | **0,8590** | — | 0,818 | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | · | · | 0,8069 | 80,3% | 0,891 | uji | `V2-E-045` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | **0,773** | uji | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | — | — | 0,8257 | 83,6% | **0,726** | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | — | — | 0,8526 | 84,6% | 0,932 | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | — | — | 0,8542 | **85,0%** | 0,915 | val | `V2-E-047` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | · | · | 0,8257 | 83,6% | **0,726** | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | · | · | 0,8526 | 84,6% | 0,932 | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | · | · | 0,8542 | **85,0%** | 0,915 | val | `V2-E-047` |
 
-*Sel kosong berarti not applicable.*
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
 ### Counting kohort per kelas (sasaran BBC)
 
@@ -140,12 +140,12 @@ Korpus gabungan berkapasitas terbesar (1.716 pohon, 1.052 citra uji) difungsikan
 
 | Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l native | — | 0,5389 | — | — | — | uji | `V2-E-035` |
+| YOLO26l native | · | 0,5389 | — | — | — | uji | `V2-E-035` |
 | WBF native | **0,8104** | 0,5538 | — | — | — | uji | `V2-E-039` |
-| RT-DETR-L native | — | 0,5745 | — | — | — | uji | `V2-E-035` |
+| RT-DETR-L native | · | 0,5745 | — | — | — | uji | `V2-E-035` |
 | RF-DETR-L native | 0,7850 | **0,5960** | — | — | — | uji | `V2-E-035` |
 
-*Sel kosong berarti not applicable.*
+*Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
 ---
 
