@@ -30,21 +30,21 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 
 | Metode/sistem | imgsz | detection | det+class | dedup | classification | avg \|bias\| | MAE | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|---:|---:|:---:|---|
+| RF-DETR-L | 1.280 px | 0,7752 | **0,6012** | — | — | — | — | uji | `V2-E-001` |
+| WBF + *re-ranker* | 1.280 px | **0,8419** | 0,5970 | — | — | — | — | uji | `MAP_BOOST` |
+| WBF [YOLO+RT+RF] | 1.280 px | 0,8350 | 0,5861 | — | — | — | — | uji | `V2-E-042` |
+| RT-DETR-L | 1.280 px | 0,7437 | 0,5781 | — | — | — | — | uji | `V2-E-001` |
 | YOLO26l | 1.280 px | 0,7388 | 0,5435 | — | — | — | — | uji | `V2-E-001` |
 | YOLO26s | 960 px | 0,8057 | 0,5433 | — | — | — | — | uji | `AF-E-006` |
 | YOLO26m | 1.280 px | 0,8104 | — | — | — | — | — | uji | `AF-E-011` |
-| RT-DETR-L | 1.280 px | 0,7437 | 0,5781 | — | — | — | — | uji | `V2-E-001` |
-| RF-DETR-L | 1.280 px | 0,7752 | **0,6012** | — | — | — | — | uji | `V2-E-001` |
-| WBF [YOLO+RT+RF] | 1.280 px | 0,8350 | 0,5861 | — | — | — | — | uji | `V2-E-042` |
-| WBF + *re-ranker* | 1.280 px | **0,8419** | 0,5970 | — | — | — | — | uji | `MAP_BOOST` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8350 | 0,5861 | 0,8043 | 71,1% | 16,82% | 1,393 | uji | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 1.280 px | 0,8350 | 0,5861 | 0,8296 | — | 20,96% | 1,644 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 1.280 px | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 18,78% | 1,363 | uji | `Wave-V2` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 1.280 px | 0,8104 | — | 0,7619 | 71,6% | 23,22% | 1,402 | uji | `AF-E-012` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8313 | 0,5691 | 0,8087 | 70,0% | 17,49% | 1,253 | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 1.280 px | 0,8313 | 0,5691 | 0,8232 | 75,4% | **15,21%** | 1,253 | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8350 | 0,5861 | 0,8043 | 71,1% | 16,82% | 1,393 | uji | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 1.280 px | 0,8350 | 0,5861 | 0,8296 | — | 20,96% | 1,644 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 1.280 px | 0,8313 | 0,5691 | 0,8232 | **76,8%** | · | 1,253 | val | `V2-E-046` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 1.280 px | 0,8313 | 0,5691 | 0,8232 | 75,4% | **15,21%** | 1,253 | val | `Wave-V2` |
 | YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 1.280 px | 0,8125 | — | 0,7586 | 71,7% | 25,65% | 1,374 | val | `AF-E-012` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8313 | 0,5691 | 0,8087 | 70,0% | 17,49% | 1,253 | val | `V2-E-045` |
 | Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | — | 0,6569 | — | — | — | **1,058** | oracle | `AF-E-005` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
@@ -85,20 +85,20 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 
 | Metode/sistem | imgsz | detection | det+class | dedup | classification | avg \|bias\| | MAE | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l native | 1.280 px | 0,7161 | 0,5163 | — | — | — | — | uji | `V2-E-034` |
-| RT-DETR-L native | 1.280 px | 0,7712 | 0,5580 | — | — | — | — | uji | `V2-E-034` |
-| YOLO26l, bank `combined1716` | 1.280 px | 0,7812 | 0,5765 | — | — | — | — | uji | `V2-E-042` |
-| RF-DETR-L native | 1.280 px | 0,7951 | 0,6129 | — | — | — | — | uji | `V2-E-034` |
-| RT-DETR-L, bank `combined1716` | 1.280 px | 0,8243 | 0,6309 | — | — | — | — | uji | `V2-E-042` |
-| WBF + *re-ranker* | 1.280 px | **0,8783** | 0,6552 | — | — | — | — | uji | `MAP_BOOST` |
-| WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 1.280 px | 0,8764 | 0,6691 | — | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L, bank `combined1716` | 1.280 px | 0,8329 | **0,6711** | — | — | — | — | uji | `V2-E-042` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 1.280 px | 0,8764 | 0,6691 | **0,8590** | — | 18,65% | 0,818 | uji | `V2-E-043` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8764 | 0,6691 | 0,8069 | 80,3% | **13,93%** | 0,891 | uji | `V2-E-045` |
+| WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 1.280 px | 0,8764 | 0,6691 | — | — | — | — | uji | `V2-E-042` |
+| WBF + *re-ranker* | 1.280 px | **0,8783** | 0,6552 | — | — | — | — | uji | `MAP_BOOST` |
+| RT-DETR-L, bank `combined1716` | 1.280 px | 0,8243 | 0,6309 | — | — | — | — | uji | `V2-E-042` |
+| RF-DETR-L native | 1.280 px | 0,7951 | 0,6129 | — | — | — | — | uji | `V2-E-034` |
+| YOLO26l, bank `combined1716` | 1.280 px | 0,7812 | 0,5765 | — | — | — | — | uji | `V2-E-042` |
+| RT-DETR-L native | 1.280 px | 0,7712 | 0,5580 | — | — | — | — | uji | `V2-E-034` |
+| YOLO26l native | 1.280 px | 0,7161 | 0,5163 | — | — | — | — | uji | `V2-E-034` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 1.280 px | 0,8764 | 0,6691 | 0,8534 | **81,6%** | 19,62% | 0,773 | uji | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8648 | 0,6595 | 0,8257 | 83,6% | 14,10% | **0,726** | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 1.280 px | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | 0,932 | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8764 | 0,6691 | 0,8069 | 80,3% | **13,93%** | 0,891 | uji | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 1.280 px | 0,8764 | 0,6691 | **0,8590** | — | 18,65% | 0,818 | uji | `V2-E-043` |
 | WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 1.280 px | 0,8648 | 0,6595 | 0,8542 | **85,0%** | · | 0,915 | val | `V2-E-047` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 1.280 px | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | 0,932 | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 1.280 px | 0,8648 | 0,6595 | 0,8257 | 83,6% | 14,10% | **0,726** | val | `V2-E-045` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
 
@@ -140,10 +140,10 @@ Korpus gabungan berkapasitas terbesar (1.716 pohon, 1.052 citra uji) difungsikan
 
 | Metode/sistem | imgsz | detection | det+class | dedup | classification | avg \|bias\| | MAE | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|---:|---:|:---:|---|
-| YOLO26l native | 1.280 px | 0,7250 | 0,5389 | — | — | — | — | uji | `V2-E-035` |
-| WBF native | 1.280 px | **0,8104** | 0,5538 | — | — | — | — | uji | `V2-E-039` |
-| RT-DETR-L native | 1.280 px | 0,7577 | 0,5745 | — | — | — | — | uji | `V2-E-035` |
 | RF-DETR-L native | 1.280 px | 0,7850 | **0,5960** | — | — | — | — | uji | `V2-E-035` |
+| RT-DETR-L native | 1.280 px | 0,7577 | 0,5745 | — | — | — | — | uji | `V2-E-035` |
+| WBF native | 1.280 px | **0,8104** | 0,5538 | — | — | — | — | uji | `V2-E-039` |
+| YOLO26l native | 1.280 px | 0,7250 | 0,5389 | — | — | — | — | uji | `V2-E-035` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi. Alasan spesifik tiap sel `·` yang masih tersisa dirinci per node di [§6 Batasan Validitas dan Kaveat Audit](#6-batasan-validitas-dan-kaveat-audit).
 
