@@ -1,0 +1,34 @@
+{
+  "node": "AF-E-012",
+  "dataset": "953",
+  "pipeline": "Pipeline Panen (scripts/audit_forensik/panen_pipeline.py + panen_eval.py + panen_final.py)",
+  "note": "avg |bias| (macro-avg |bias relatif| B1-B4) untuk recap.md, tabel 953, baris AF-E-012 (uji dan val). Bobot detektor (runs_panen/agnostik_m1280) dan classifier (crops953/corn_best.pt) ditemukan di bucket cadangan HF di bawah prefix audit_forensik_2026-09-06/ (bukan di prefix top-level runs_panen/crops953 yang dicari sesi sebelumnya -- klaim 'tidak ada di bucket' pada sesi sebelumnya keliru). Pipeline diregenerasi penuh: stage 1 (deteksi + skor ordinal, GPU) -> panen_pipeline.py; stage 2 (grid search ambang VAL) -> panen_eval.py; stage 3 (penaut dilatih ulang pada ambang inferensi + lapisan cacah Ridge) -> panen_final.py. Medan pred_class4_counts/gt_class4_counts ditambahkan ke evaluate() (scripts/audit_forensik/panen_pipeline.py, perubahan aditif) untuk mengekspos rincian per kelas B1-B4 yang sebelumnya tidak tersimpan.",
+  "cross_check": {
+    "test_physical_f1_computed": 0.7579381443298969,
+    "test_physical_f1_published": 0.7619,
+    "test_class4_acc_computed": 0.7138193688792165,
+    "test_class4_acc_published": 0.7161,
+    "val_physical_f1_computed": 0.7578579743888242,
+    "val_physical_f1_published": 0.7586,
+    "val_class4_acc_computed": 0.7188940092165899,
+    "val_class4_acc_published": 0.7165,
+    "note": "Selisih kecil (<0.005) sejalan dengan variasi wajar pelatihan ulang (detektor + edge model), sebanding dengan selisih retrain RT-DETR-L V2-E-001 (0,0063)."
+  },
+  "uji": {
+    "n_trees": 132,
+    "total_prediksi": {"B1": 119, "B2": 168, "B3": 653, "B4": 143},
+    "total_acuan": {"B1": 113, "B2": 246, "B3": 706, "B4": 277},
+    "bias_absolut": {"B1": 6, "B2": -78, "B3": -53, "B4": -134},
+    "bias_relatif": {"B1": 0.0531, "B2": -0.3171, "B3": -0.0751, "B4": -0.4838},
+    "macro_avg_bias": 0.2322
+  },
+  "val": {
+    "n_trees": 91,
+    "total_prediksi": {"B1": 100, "B2": 98, "B3": 465, "B4": 119},
+    "total_acuan": {"B1": 86, "B2": 186, "B3": 476, "B4": 188},
+    "bias_absolut": {"B1": 14, "B2": -88, "B3": -11, "B4": -69},
+    "bias_relatif": {"B1": 0.1628, "B2": -0.4731, "B3": -0.0231, "B4": -0.3670},
+    "macro_avg_bias": 0.2565
+  },
+  "detection_cell_status": "TIDAK diisi. Satu-satunya dump deteksi mentah tersedia sesi ini (dets.pkl, hasil regenerasi stage-1) dibangun dengan detect(sp, conf=0.10) -- terpotong pada ambang 0,10, tidak sebanding dengan standar conf=0.001 yang dipakai di seluruh kolom detection lain pada dokumen ini. Uji coba: AP50_agnostic dari dets.pkl (test)=0,7487 vs. nilai detection baris AF-E-012/AF-E-011 yang sudah terpublikasi (0,8104, detektor identik) -- selisih 0,062, terlalu besar untuk derau pelatihan ulang biasa (bandingkan RT-DETR-L: 0,0063), mengonfirmasi ini artefak pemotongan ambang, bukan performa detektor yang berbeda. Perlu satu inferensi GPU tambahan conf=0.001 pada val split untuk mengisi sel ini dengan benar -- ditunda karena GPU sedang dipakai retrain RF-DETR-L."
+}

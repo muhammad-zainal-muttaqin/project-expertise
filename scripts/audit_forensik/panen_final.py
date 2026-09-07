@@ -8,7 +8,7 @@ Dua koreksi terhadap jalankan sebelumnya:
 """
 import json, pickle, sys, itertools
 import numpy as np
-sys.path.insert(0, "/tmp/claude-1001/-workspace/ebcbd941-6775-4113-b727-404085458263/scratchpad")
+sys.path.insert(0, "/workspace/project-expertise/scripts/audit_forensik")
 from panen_pipeline import (evaluate, GT, RES, EMPAT_SISI, build_pairs, cluster_tree)
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import RidgeCV

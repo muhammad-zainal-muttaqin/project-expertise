@@ -1,7 +1,7 @@
 """Tahap 2 Pipeline Panen: penalaan ambang pada VALIDATION, lalu TEST satu kali."""
 import json, pickle, itertools, sys
 import numpy as np
-sys.path.insert(0, "/tmp/claude-1001/-workspace/ebcbd941-6775-4113-b727-404085458263/scratchpad")
+sys.path.insert(0, "/workspace/project-expertise/scripts/audit_forensik")
 from panen_pipeline import evaluate, GT, split, RES, EMPAT_SISI
 
 D = pickle.load(open(f"{RES}/dets.pkl", "rb"))

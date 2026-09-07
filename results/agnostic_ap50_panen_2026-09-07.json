@@ -1,0 +1,21 @@
+{
+  "node": "AF-E-012",
+  "model": "agnostik_m1280 (YOLO26m class-agnostic, Pipeline Panen)",
+  "dataset": "953",
+  "weights": "audit_forensik_2026-09-06/runs_panen/agnostik_m1280/weights/best.pt (bucket)",
+  "note": "AP50 class-agnostic dihitung dari dets.pkl (dump deteksi mentah conf>=0.10, hasil regenerasi stage-1 panen_pipeline.py sesi 2026-09-07) terhadap GT standar (labels/{split} YOLO format, ULM-DS-Lab/SawitMVC-YOLO). Kolom 'detection' baris AF-E-012 val pada recap.md masih '.'; nilai test/uji (0,8104) sudah cocok dengan AF-E-011 (detektor yang sama).",
+  "results": {
+    "val": {
+      "AP50_agnostic": 0.7440117491204841,
+      "AP50_95_agnostic": 0.3359597399673123,
+      "n_images": 404,
+      "n_dets": 3394
+    },
+    "test": {
+      "AP50_agnostic": 0.7486703737091045,
+      "AP50_95_agnostic": 0.3418619750122004,
+      "n_images": 588,
+      "n_dets": 4701
+    }
+  }
+}

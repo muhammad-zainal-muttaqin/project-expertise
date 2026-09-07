@@ -268,16 +268,27 @@ def evaluate(det_by_tree, trees, edge_model, link_thr, max_size, single_thr,
             return (0 if s < t_b1b2 else 1) if s < t_coarse else (2 if s < t_b3b4 else 3)
         pred_c = np.array([coarse(c["score"]) for c in clus])
         gt_c = np.array([0 if b["c"] <= 1 else 1 for b in gt])
+        pred_c4 = [fine(c["score"]) for c in clus]
+        gt_c4 = [b["c"] for b in gt]
         per_tree.append(dict(
             tree=t, n_pred=len(clus), n_gt=len(gt), tp=tp, fp=fp, fn=fn,
             pred_matang=int((pred_c == 0).sum()), gt_matang=int((gt_c == 0).sum()),
-            pred_belum=int((pred_c == 1).sum()), gt_belum=int((gt_c == 1).sum())))
+            pred_belum=int((pred_c == 1).sum()), gt_belum=int((gt_c == 1).sum()),
+            pred_class4=pred_c4, gt_class4=gt_c4))
         for c, gi in match.items():
             rows.append(dict(y=gt[gi]["c"], s=clus[c]["score"],
                              p4=fine(clus[c]["score"]), p2=coarse(clus[c]["score"])))
     TP = sum(r["tp"] for r in per_tree); FP = sum(r["fp"] for r in per_tree)
     FN = sum(r["fn"] for r in per_tree)
     f1 = 2 * TP / max(2 * TP + FP + FN, 1)
+    pred_class_counts = [0, 0, 0, 0]
+    for r in per_tree:
+        for c in r["pred_class4"]:
+            pred_class_counts[c] += 1
+    gt_class_counts = [0, 0, 0, 0]
+    for r in per_tree:
+        for c in r["gt_class4"]:
+            gt_class_counts[c] += 1
     def cnt(a, b):
         e = np.array([abs(r[a] - r[b]) for r in per_tree], float)
         return dict(mae=float(e.mean()), exact=float((e == 0).mean()),
@@ -295,6 +306,8 @@ def evaluate(det_by_tree, trees, edge_model, link_thr, max_size, single_thr,
         class4_acc=float((p4 == y4).mean()) if len(rows) else 0.,
         class4_within1=float((np.abs(p4 - y4) <= 1).mean()) if len(rows) else 0.,
         class4_macro_f1=float(f1_score(y4, p4, average="macro")) if len(rows) else 0.,
+        pred_class4_counts=pred_class_counts, gt_class4_counts=gt_class_counts,
+        n_trees=len(trees),
     ), per_tree
 
 
