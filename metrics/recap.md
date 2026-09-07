@@ -22,6 +22,8 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 - **763-depth:** RGB+D
 - **953:** RGB
 
+Urutan baris: terbaik di atas. Karena satu tabel memuat tahapan yang berbeda, pengurutan dilakukan di dalam kelompok yang sebanding, yaitu detektor menurut `det+class`, lalu pipeline lengkap menurut `classification`, uji sebelum validasi, dan plafon *oracle* di baris terakhir.
+
 ---
 
 ## 1. 953 (RGB)
