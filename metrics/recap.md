@@ -28,7 +28,7 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 
 ### Leaderboard 953
 
-| Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
+| Metode/sistem | detection | det+class | dedup | classification | avg \|bias\| | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
 | YOLO26l | 0,7388 | 0,5435 | — | — | — | uji | `V2-E-001` |
 | YOLO26s 960 px | 0,8057 | 0,5433 | — | — | — | uji | `AF-E-006` |
@@ -37,15 +37,15 @@ Dokumen ini mengonsolidasi seluruh hasil evaluasi dari [atlas metrik](README.md)
 | RF-DETR-L | · | **0,6012** | — | — | — | uji | `V2-E-001` |
 | WBF [YOLO+RT+RF] | 0,8350 | 0,5861 | — | — | — | uji | `V2-E-042` |
 | WBF + *re-ranker* | **0,8419** | 0,5970 | — | — | — | uji | `MAP_BOOST` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8350 | 0,5861 | 0,8043 | 71,1% | 1,393 | uji | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8350 | 0,5861 | 0,8296 | — | 1,644 | uji | `V2-E-043` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 1,363 | uji | `Wave-V2` |
-| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 0,8104 | — | 0,7619 | 71,6% | 1,402 | uji | `AF-E-012` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8373 | 0,5613 | 0,8087 | 70,0% | 1,253 | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **1,253** | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 0,8373 | 0,5613 | 0,8232 | **76,8%** | 1,253 | val | `V2-E-046` |
-| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | 1,374 | val | `AF-E-012` |
-| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | 1,058 | oracle | `AF-E-005` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8350 | 0,5861 | 0,8043 | 71,1% | · | uji | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8350 | 0,5861 | 0,8296 | — | · | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8350 | 0,5861 | **0,8387** | **74,4%** | 18,78% | uji | `Wave-V2` |
+| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | 0,8104 | — | 0,7619 | 71,6% | · | uji | `AF-E-012` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8373 | 0,5613 | 0,8087 | 70,0% | · | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + Ridge counter | 0,8373 | 0,5613 | 0,8232 | 75,4% | **15,21%** | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + Hungarian *Anchor A* + *stacking* DINOv2-Large | 0,8373 | 0,5613 | 0,8232 | **76,8%** | · | val | `V2-E-046` |
+| YOLO26m + penaut terlatih + Ridge (Pipeline Panen) | · | — | 0,7586 | 71,7% | · | val | `AF-E-012` |
+| Plafon lokalisasi sempurna (*oracle*) + ConvNeXt-Tiny / Ridge | — | 0,6569 | — | — | · | oracle | `AF-E-005` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
@@ -83,7 +83,7 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 
 ### Leaderboard 763-depth
 
-| Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
+| Metode/sistem | detection | det+class | dedup | classification | avg \|bias\| | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
 | YOLO26l native | 0,7161 | 0,5163 | — | — | — | uji | `V2-E-034` |
 | RT-DETR-L native | 0,7712 | 0,5580 | — | — | — | uji | `V2-E-034` |
@@ -93,12 +93,12 @@ Tabel ini memuat satu-satunya metrik penilaian akhir tugas *counting*, yaitu bia
 | WBF + *re-ranker* | **0,8783** | 0,6552 | — | — | — | uji | `MAP_BOOST` |
 | WBF [YOLO26l+RT-DETR-L+RF-DETR-L], bank `combined1716` | 0,8764 | 0,6691 | — | — | — | uji | `V2-E-042` |
 | RF-DETR-L, bank `combined1716` | 0,8329 | **0,6711** | — | — | — | uji | `V2-E-042` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | 0,818 | uji | `V2-E-043` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | 0,891 | uji | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | **0,773** | uji | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8648 | 0,6595 | 0,8257 | 83,6% | **0,726** | val | `V2-E-045` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 0,932 | val | `Wave-V2` |
-| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 0,8648 | 0,6595 | 0,8542 | **85,0%** | 0,915 | val | `V2-E-047` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + greedy strict | 0,8764 | 0,6691 | **0,8590** | — | · | uji | `V2-E-043` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8764 | 0,6691 | 0,8069 | 80,3% | · | uji | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8764 | 0,6691 | 0,8534 | **81,6%** | **19,62%** | uji | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + rotation-prior linker + Ridge counter | 0,8648 | 0,6595 | 0,8257 | 83,6% | · | val | `V2-E-045` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + Ridge counter (Wave-V2) | 0,8648 | 0,6595 | 0,8526 | 84,6% | 25,88% | val | `Wave-V2` |
+| WBF[YOLO26l+RT-DETR-L+RF-DETR-L] + GSP MILP + komposisi lintas-lapis | 0,8648 | 0,6595 | 0,8542 | **85,0%** | · | val | `V2-E-047` |
 
 *Legenda sel:* **—** = tidak berlaku bagi konfigurasi tersebut (detektor tanpa penaut tidak memiliki metrik tingkat pohon; korpus `combined1716` tidak memiliki nilai acuan multi-sisi tingkat pohon). **·** = dapat dihitung dari dump prediksi yang tersimpan, tetapi belum pernah dievaluasi.
 
@@ -138,7 +138,7 @@ Korpus gabungan berkapasitas terbesar (1.716 pohon, 1.052 citra uji) difungsikan
 
 ### Leaderboard combined1716
 
-| Metode/sistem | detection | det+class | dedup | classification | counting (diagnostik) | Status | ID Simpul |
+| Metode/sistem | detection | det+class | dedup | classification | avg \|bias\| | Status | ID Simpul |
 |---|---:|---:|---:|---:|---:|:---:|---|
 | YOLO26l native | 0,7250 | 0,5389 | — | — | — | uji | `V2-E-035` |
 | WBF native | **0,8104** | 0,5538 | — | — | — | uji | `V2-E-039` |
@@ -194,7 +194,7 @@ Dihitung melalui simulasi *bootstrap* berpasangan sebanyak 2.000 ulangan (*rando
 | Rujukan Bagian | Berkas Artefak Sumber Data |
 |---|---|
 | detection, det+class | [`combined1716`](../results/combined1716), [`new763`](../results/new763); [`detector_matrix.json`](../results/audit_forensik_2026-09-06/detector_matrix.json), [`class_agnostic_metrics_audit_2026-09-03.json`](../results/class_agnostic_metrics_audit_2026-09-03.json), [`agnostic_ap50_sesi2026-08.json`](../results/agnostic_ap50_sesi2026-08.json) |
-| dedup, classification, counting (diagnostik) | [`pipeline_combined1716_generalization_locked.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json) |
+| dedup, classification | [`pipeline_combined1716_generalization_locked.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_generalization_locked.json) |
 | Gelombang validasi (`V2-E-046`, `V2-E-047`) | [`953_large_stacker_bias_val_bootstrap.json`](../results/remote_eval_2026-08-28/validation_wave/reports/953_large_stacker_bias_val_bootstrap.json), [`depth_composition_aware_head_results_val.json`](../results/remote_eval_2026-08-28/validation_wave/reports/depth_composition_aware_head_results_val.json) |
 | Counting kohort per kelas | Diturunkan dari medan `metrics.classification.confusion_prediction_rows` pada artefak `Wave-V2` |
 | Analisis audit dan plafon | [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../experiments/AUDIT-FORENSIK-2026-09-06.md) |
