@@ -2635,3 +2635,97 @@ eksternal baru.
 
 **Verdict:** CONFIRMED sebagai pipeline validation-locked yang lebih realistis;
 klaim test tetap dibatasi oleh caveat historis split.
+
+## V2-E-049 — Penyaringan recall tandan tertutup: ambang rendah menyelamatkan 68,5% miss, depth-edge proksi gugur sebagai penyeimbang ulang
+
+**Tanggal:** 2026-09-12
+
+### Pertanyaan
+
+Bottleneck recall pada tandan yang tertutup pelepah terletak di mana: proposal
+tidak ada sama sekali, atau kandidat ada tetapi tertekan ambang keyakinan?
+Jika kandidat low-conf sudah ada, dapatkah tepi depth artifisial dipakai
+sebagai penyeimbang ulang sebelum menjalankan depth generatif yang berat
+(Marigold V2)?
+
+### Protokol
+
+- Dataset publik `ULM-DS-Lab/SawitMVC` (953 pohon, 3.992 citra), split uji
+  kanonik 141 pohon / 588 citra / 2.612 kotak acuan (`test.txt`).
+- Bobot `models/yolo26l_e60_i1280_v2repro/best.pt`, `imgsz 1280`, IoU NMS
+  `0,60`, inferensi satu citra per forward (hemat VRAM A40).
+- Dump seluruh prediksi `conf >= 0,05` ke
+  [`pred_v2e049_test_conf005.npz`](../results/pred_v2e049_test_conf005.npz);
+  recall lokalisasi dihitung pada ambang operasi `0,25` dan IoU `>= 0,5`
+  tanpa memandang kelas.
+- Proksi depth murah `depth-anything/Depth-Anything-V2-Small-hf` (FP16,
+  batch 16) hanya pada 150 citra tersulit; fitur tepi Sobel dan variansi
+  depth di dalam box low-conf (`0,05–0,25`) diuji dengan AUC terhadap
+  kandidat benar (IoU `>= 0,5`) versus alarm palsu (IoU `< 0,2`).
+- Skrip: [`audit_recall_v2e049.py`](../scripts/audit_recall_v2e049.py),
+  [`probe_depth_v2e049.py`](../scripts/probe_depth_v2e049.py).
+
+### Hasil audit recall
+
+| Metrik | Nilai |
+|---|---:|
+| Recall lokalisasi @0,25 | 1.720/2.612 = **65,8%** (lolos 892 = 34,2%) |
+| Rerata recall per citra | **62,6%** |
+| Miss kecil (< 80×80) | 362/892 = **40,6%** |
+| Miss B4 | 231/892 = **25,9%** |
+| Median luas kena vs lolos | 14.070 vs **7.929** px² |
+
+### Sapuan ambang (test-tuned, batas atas engineering)
+
+| Ambang | Recall | Pred/citra | Proksi FP |
+|---|---:|---:|---:|
+| 0,25 | 65,8% | 3,7 | 454 |
+| 0,15 | 77,6% | 5,0 | 934 |
+| 0,10 | 82,9% | 6,3 | 1.549 |
+| 0,05 | 89,2% | 9,3 | 3.121 |
+
+Dari 892 miss, **611 (68,5%, median conf 0,15)** sudah memiliki kandidat
+low-conf yang lokasinya benar tetapi tertekan ambang; hanya 281 (31,5%)
+tanpa kandidat sama sekali. Bottleneck utama adalah ambang, bukan ketiadaan
+proposal.
+
+### Hasil penyaring depth proksi
+
+| Pembanding (150 citra sulit) | Nilai |
+|---|---:|
+| Kandidat benar vs palsu | 604 vs 132 |
+| Rerata tepi benar vs palsu | 0,0506 vs **0,0644** (palsu lebih tinggi) |
+| AUC tepi | **0,433** (≈ acak, terbalik) |
+| AUC variansi | **0,479** (≈ acak) |
+
+### Eksperimen tambahan dan keputusan
+
+1. **Depth-edge sebagai penyeimbang ulang — FALSIFIED.** Tepi depth
+   artifisial tidak membedakan kandidat benar dari alarm palsu (AUC di
+   bawah 0,5 karena tepi dedaunan justru memicu alarm palsu). Run Marigold
+   V2 mode depth penuh tidak dilanjutkan atas dasar ini.
+2. **Sapuan ambang — EXPLORATORY.** Kenaikan 65,8% → 89,2% dipilih langsung
+   dari test sehingga hanya batas atas engineering; FP naik 454 → 3.121 dan
+   wajib disaring linker/pencacah sebelum menjadi klaim.
+3. **Normals/albedo Marigold — BELUM DIUJI.** Masih masuk akal sebagai
+   penyeimbang (bentuk bulat vs planar, warna tanpa bayangan), tetapi hanya
+   pada subset sulit, bukan full korpus.
+
+### Kesimpulan
+
+Recall tandan tertutup sebagian dapat diselamatkan tanpa detektor baru:
+cukup turunkan ambang dan saring FP di hilir. Depth turunan RGB tidak membawa
+sinyal independen untuk tugas ini, konsisten dengan redundansi
+`I(Y; D | RGB) ≈ 0` pada V2-E-016. Satu-satunya jalur depth yang tersisa
+adalah normals/albedo sebagai penyeimbang, bukan depth sebagai penemu.
+
+**Artefak:**
+
+- [`v2e049_penyaringan_recall_depth.json`](../results/v2e049_penyaringan_recall_depth.json)
+- [`pred_v2e049_test_conf005.npz`](../results/pred_v2e049_test_conf005.npz)
+- [`../../scripts/audit_recall_v2e049.py`](../scripts/audit_recall_v2e049.py)
+- [`../../scripts/probe_depth_v2e049.py`](../scripts/probe_depth_v2e049.py)
+
+**Verdict:** CONFIRMED sebagai reproduksi baseline; FALSIFIED untuk depth-edge
+sebagai penyeimbang ulang; sapuan ambang EXPLORATORY dan tidak menggantikan
+angka uji terkunci.
