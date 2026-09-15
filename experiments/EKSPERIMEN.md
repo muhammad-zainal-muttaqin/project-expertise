@@ -2729,3 +2729,119 @@ adalah normals/albedo sebagai penyeimbang, bukan depth sebagai penemu.
 **Verdict:** CONFIRMED sebagai reproduksi baseline; FALSIFIED untuk depth-edge
 sebagai penyeimbang ulang; sapuan ambang EXPLORATORY dan tidak menggantikan
 angka uji terkunci.
+
+---
+
+## V2-E-048 — Ablasi anggaran piksel: klasifikasi kematangan jenuh pada 96 px, hipotesis resolusi tidak didukung
+
+### Rancangan Eksperimen
+
+Menguji apakah kesalahan klasifikasi B1–B4 menurun ketika informasi piksel per
+objek bertambah. Pemicunya dua titik data historis yang tercampur faktornya:
+`ftS` (crop 176 px) = 0,6837 dan `ftH` (crop 256 px @224) = 0,6569 — pada `ftH`
+resolusi crop dan resolusi masukan model berubah bersamaan, sehingga selisihnya
+tidak dapat diatribusikan.
+
+Dua percobaan memisahkan kedua faktor tersebut pada korpus SawitMVC-Depth-YOLO
+v2.0.0 (763 pohon, split kanonik 2026-08-21, irisan pohon antar split = 0):
+
+- **A** — anggaran piksel, masukan model dikunci 224 px: crop resolusi asli →
+  `INTER_AREA` ke S×S → `INTER_CUBIC` ke 224×224, S ∈ {32; 48; 64; 96; 128; 176; 224}.
+- **B** — resolusi masukan model, anggaran piksel penuh: crop resolusi asli →
+  R×R langsung, R ∈ {224; 288; 320}.
+
+Geometri crop identik dengan `build_crop_dataset.py` (sisi = 1,6 × max(w,h),
+padding tepi). Pengklasifikasi adalah probe linear (regresi logistik multinomial)
+di atas fitur ConvNeXt-Tiny ImageNet beku 768-dim; tetapan C dipilih via
+`GroupKFold` 5 lipatan dikelompokkan per pohon, murni di dalam TRAIN.
+Bootstrap 2.000 ulangan, resampling pada tingkat pohon. Seluruhnya CPU.
+
+**TEST tidak disentuh.** Pelaporan memakai VALID (894 objek / 117 pohon).
+
+### Geometri objek
+
+Sisi crop resolusi asli: median 277 px pada TRAIN maupun VALID (rerata 280 px,
+p5 = 157/163 px, p95 = 411/404 px). Fraksi objek di atas 176 px = 91,3%/92,4%;
+di atas 224 px = 74,8%/76,3%; di atas 288 px = 45,2%/44,4%. Median per kelas
+(VALID): B1 300 px, B2 278 px, B3 276,5 px, B4 205 px. Konfigurasi `ftS`
+historis dengan demikian membuang informasi pada lebih dari 9 dari 10 objek.
+
+### Temuan Empiris Terukur
+
+Selisih berpasangan terhadap acuan `A176` (meniru `ftS`):
+
+| Kondisi | Akurasi | Macro-F1 | MAE ord. | Δ akurasi vs A176 | P(lebih baik) |
+|---|---|---|---|---|---|
+| A32 | 0,6174 | 0,5537 | 0,4430 | **−0,0336 [−0,0676; −0,0011]** | 0,02 |
+| A48 | 0,6141 | 0,5363 | 0,4530 | **−0,0369 [−0,0674; −0,0070]** | 0,00 |
+| A64 | 0,6387 | 0,5635 | 0,4195 | −0,0123 [−0,0397; +0,0151] | 0,18 |
+| A96 | 0,6477 | 0,5837 | 0,4206 | −0,0034 [−0,0240; +0,0184] | 0,36 |
+| A128 | 0,6376 | 0,5650 | 0,4295 | −0,0134 [−0,0323; +0,0076] | 0,08 |
+| **A176** | **0,6510** | 0,5852 | **0,4072** | (acuan) | — |
+| A224 | 0,6488 | 0,5650 | 0,4150 | −0,0022 [−0,0248; +0,0191] | 0,41 |
+| B288 | 0,6510 | **0,6044** | 0,4105 | +0,0000 [−0,0270; +0,0246] | 0,48 |
+| B320 | 0,6421 | **0,6047** | 0,4116 | −0,0089 [−0,0359; +0,0189] | 0,25 |
+
+Δ macro-F1 vs A176: B288 = +0,0193 [−0,0197; +0,0642], P = 0,83; B320 = +0,0195
+[−0,0238; +0,0725], P = 0,79. Keduanya mencakup nol.
+
+`A224` dan `B224` identik hingga digit terakhir — pemeriksaan konsistensi
+internal berhasil (resize 224→224 bersifat identitas).
+
+Empat pembacaan:
+
+1. Kurva **jenuh pada sekitar 96 px**; A96 tidak terbedakan dari A176. Median
+   crop yang tersedia (277 px) berada 2,9× di atas titik jenuh.
+2. Penurunan signifikan **baru muncul di bawah 64 px** (A32 dan A48, CI95
+   seluruhnya negatif). Objek harus dipangkas di bawah seperempat ukuran asli
+   sebelum kerugiannya terukur.
+3. Menambah anggaran **di atas 176 px tidak menaikkan akurasi**; seluruh CI
+   mencakup nol dengan estimasi titik nol atau sedikit negatif.
+4. Satu-satunya sinyal positif adalah macro-F1 pada resolusi masukan 288/320 px,
+   konsisten di dua kondisi terpisah tetapi belum signifikan. Karena percobaan A
+   menunjukkan anggaran piksel sudah jenuh jauh sebelum titik ini, sumbernya
+   lebih mungkin granularitas spasial backbone (jumlah token sebelum agregasi
+   spasial), bukan informasi piksel tambahan.
+
+### Keputusan Metodologis
+
+Hipotesis anggaran piksel **tidak didukung**. Menambah resolusi crop bukan jalur
+perbaikan untuk klasifikasi kematangan pada korpus ini. Justifikasi fisik usulan
+pengklasifikasi tingkat butir pada resolusi asli melemah substansial: apabila
+detail permukaan tingkat butir membawa sinyal yang belum tereksploitasi, kurva A
+seharusnya masih menanjak antara 128 px dan 224 px, dan percobaan B seharusnya
+menunjukkan kenaikan akurasi yang jelas. Keduanya tidak terjadi.
+
+Arah yang layak diuji lanjut: masukan model 288 px dengan anggaran penuh, khusus
+untuk macro-F1 kelas minoritas. Murah (tanpa pelatihan ulang detektor), tetapi
+statusnya kandidat validation-selected, bukan temuan terkonfirmasi.
+
+### Batasan Validitas & Audit
+
+1. **Probe linear, bukan penyesuaian terarah penuh** — batasan paling
+   menentukan. Kesimpulan berlaku untuk informasi yang terpisah secara linear
+   pada representasi ConvNeXt-Tiny beku, bukan batas seluruh metode pembelajaran.
+2. *Patch stem* 4×4 ConvNeXt-Tiny: pada masukan 224 px satu token mewakili 4 px,
+   sehingga detail lebih halus dari 4 px hilang terlepas dari anggaran.
+   Percobaan B menguji sebagian keterbatasan ini, tidak menghapusnya.
+3. Daya statistik: 894 objek / 117 pohon, lebar CI selisih berpasangan ±0,025.
+   Efek di bawah ~0,025 tidak terpisahkan dari variasi acak.
+4. B4 hanya 66 dari 894 objek VALID; macro-F1 bervariasi lebar dan sinyal
+   positif percobaan B sebagian besar bergantung pada kelas ini.
+5. Crop RGB tanpa kanal mask footprint kotak (berbeda dari
+   `build_crop_dataset.py`). Ambiguitas multi-tandan pada kanopi padat seragam
+   di seluruh kondisi — tidak mengubah perbandingan relatif, tetapi menurunkan
+   ketinggian absolut seluruh kurva.
+6. **Bukan pembanding untuk 0,6837**: korpus berbeda (763 vs 352) dan protokol
+   berbeda (probe linear vs penyesuaian terarah).
+
+**Artefak:**
+
+- [`docs/ABLASI-ANGGARAN-PIKSEL.md`](../docs/ABLASI-ANGGARAN-PIKSEL.md)
+- [`scripts/ablasi_anggaran_piksel.py`](../scripts/ablasi_anggaran_piksel.py)
+- [`results/ablasi_piksel_2026-09-10/ablasi_anggaran_piksel.json`](../results/ablasi_piksel_2026-09-10/ablasi_anggaran_piksel.json)
+- [`results/ablasi_piksel_2026-09-10/sisi_crop_native.json`](../results/ablasi_piksel_2026-09-10/sisi_crop_native.json)
+- [`results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png`](../results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png)
+
+**Verdict:** FALSIFIED — hipotesis anggaran piksel tidak didukung; klasifikasi
+kematangan jenuh pada sekitar 96 px, jauh di bawah anggaran yang tersedia.

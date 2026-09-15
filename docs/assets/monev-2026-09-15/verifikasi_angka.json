@@ -1,0 +1,210 @@
+{
+  "tanggal": "2026-09-15",
+  "cakupan": "Pembacaan artefak dan pemeriksaan aritmetika; tanpa evaluasi model ulang",
+  "profil": {
+    "953": {
+      "sumber": "results/remote_eval_2026-08-28/gsp_artifacts/953/results_test_locked.json",
+      "sha256": "6d509a4cdded2c7d5b775e897781486fec03c8982c54883d4e5ab165137c7455",
+      "pohon": 135,
+      "metrik_asli": {
+        "physical_detection": {
+          "precision": 0.8444108761329305,
+          "recall": 0.8330849478390462,
+          "f1": 0.8387096774193548,
+          "tp": 1118,
+          "pred_clusters": 1324,
+          "gt_bunches": 1342
+        },
+        "counting": {
+          "mae": 1.362962962962963,
+          "exact_accuracy": 0.2740740740740741,
+          "plus_minus_1_accuracy": 0.6370370370370371,
+          "vector_exact_accuracy": 0.05185185185185185
+        },
+        "classification": {
+          "matched_class_accuracy": 0.7441860465116279,
+          "matched": 1118,
+          "macro_f1_end_to_end": 0.6033657426802588,
+          "per_class_f1_end_to_end": {
+            "B1": 0.7465437788018433,
+            "B2": 0.47058823529411764,
+            "B3": 0.6849673202614379,
+            "B4": 0.5113636363636364
+          },
+          "confusion_prediction_rows": [
+            [
+              81,
+              18,
+              0,
+              0,
+              5
+            ],
+            [
+              17,
+              92,
+              22,
+              0,
+              14
+            ],
+            [
+              2,
+              101,
+              524,
+              79,
+              118
+            ],
+            [
+              0,
+              0,
+              47,
+              135,
+              69
+            ],
+            [
+              13,
+              35,
+              113,
+              63,
+              0
+            ]
+          ]
+        }
+      },
+      "jumlah_pohon_memenuhi_kriteria": {
+        "exact_accuracy": 37,
+        "plus_minus_1_accuracy": 86,
+        "vector_exact_accuracy": 7
+      },
+      "kelas_benar_dari_akurasi": 832,
+      "prediksi_per_kelas_dari_matriks": [
+        104,
+        145,
+        824,
+        251
+      ],
+      "acuan_per_kelas_dari_matriks": [
+        113,
+        246,
+        706,
+        277
+      ],
+      "bias_relatif_dari_matriks": [
+        -0.07964601769911504,
+        -0.4105691056910569,
+        0.1671388101983003,
+        -0.09386281588447654
+      ],
+      "rerata_mutlak_bias": 0.1878041873682372,
+      "audit_konservasi": {
+        "prediksi_fisik": 1324,
+        "prediksi_matriks": 1324,
+        "acuan_fisik": 1342,
+        "acuan_matriks": 1342,
+        "pasangan_fisik": 1118,
+        "pasangan_matriks": 1118
+      }
+    },
+    "depth": {
+      "sumber": "results/remote_eval_2026-08-28/gsp_artifacts/depth/results_test_locked.json",
+      "sha256": "99164d00633b3afcdb24c78be4a6d8bb5622bf884b29d7758b296917dbaac58b",
+      "pohon": 110,
+      "metrik_asli": {
+        "physical_detection": {
+          "precision": 0.892578125,
+          "recall": 0.817531305903399,
+          "f1": 0.8534080298786182,
+          "tp": 457,
+          "pred_clusters": 512,
+          "gt_bunches": 559
+        },
+        "counting": {
+          "mae": 0.7727272727272727,
+          "exact_accuracy": 0.44545454545454544,
+          "plus_minus_1_accuracy": 0.8545454545454545,
+          "vector_exact_accuracy": 0.2727272727272727
+        },
+        "classification": {
+          "matched_class_accuracy": 0.8161925601750547,
+          "matched": 457,
+          "macro_f1_end_to_end": 0.6518836902606914,
+          "per_class_f1_end_to_end": {
+            "B1": 0.7577639751552795,
+            "B2": 0.7230046948356808,
+            "B3": 0.7091836734693877,
+            "B4": 0.4175824175824176
+          },
+          "confusion_prediction_rows": [
+            [
+              61,
+              4,
+              0,
+              0,
+              2
+            ],
+            [
+              27,
+              154,
+              21,
+              1,
+              24
+            ],
+            [
+              0,
+              8,
+              139,
+              14,
+              16
+            ],
+            [
+              0,
+              2,
+              7,
+              19,
+              13
+            ],
+            [
+              6,
+              31,
+              48,
+              16,
+              0
+            ]
+          ]
+        }
+      },
+      "jumlah_pohon_memenuhi_kriteria": {
+        "exact_accuracy": 49,
+        "plus_minus_1_accuracy": 94,
+        "vector_exact_accuracy": 30
+      },
+      "kelas_benar_dari_akurasi": 373,
+      "prediksi_per_kelas_dari_matriks": [
+        67,
+        227,
+        177,
+        41
+      ],
+      "acuan_per_kelas_dari_matriks": [
+        94,
+        199,
+        215,
+        50
+      ],
+      "bias_relatif_dari_matriks": [
+        -0.2872340425531915,
+        0.1407035175879397,
+        -0.17674418604651163,
+        -0.18
+      ],
+      "rerata_mutlak_bias": 0.19617043654691071,
+      "audit_konservasi": {
+        "prediksi_fisik": 512,
+        "prediksi_matriks": 512,
+        "acuan_fisik": 559,
+        "acuan_matriks": 558,
+        "pasangan_fisik": 457,
+        "pasangan_matriks": 457
+      }
+    }
+  }
+}

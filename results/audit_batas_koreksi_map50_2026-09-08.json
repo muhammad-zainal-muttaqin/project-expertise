@@ -1,0 +1,448 @@
+{
+  "generated_at": "2026-09-08T11:05:03.632503+00:00",
+  "status": "Diagnosis berbantuan anotasi; bukan pipeline inferensi.",
+  "synthetic_checks_passed": true,
+  "runtime": {
+    "python": "3.14.5",
+    "numpy": "2.4.2",
+    "scipy": "1.17.1"
+  },
+  "training": false,
+  "gpu_inference": false,
+  "model_selection": false,
+  "script_sha256": "cd2071e7d638912a499809681effab5685c3206bcfa6a3f65c82d05cd48b3332",
+  "ground_truth_root": "D:\\Work\\Assisten-Dosen\\Baseline-SawitMVC\\ground_truth",
+  "ground_truth_manifest_and_selected_json_sha256": "7a9a1cc6a1f667c96b8b217cb44094503c513aec11d32df1ff983d6617130889",
+  "protocol": {
+    "IoU": 0.5,
+    "recall_points": 101,
+    "max_predictions_per_image_per_class": 100,
+    "evaluator": "AP50 kotak tanpa crowd/ignore; acuan historis COCOeval diverifikasi.",
+    "category_policy": "ID kelas di luar 0--3 diabaikan sebelum evaluasi aktual maupun semua koreksi oracle; sama dengan cakupan empat kategori COCOeval.",
+    "class_correction": "Kelas setiap kotak dengan IoU >= 0.5 diganti kelas GT ber-IoU tertinggi. Kotak lainnya dipertahankan.",
+    "filter_correction": "Hanya TP yang ditemukan evaluator dipertahankan; operasi ini memakai GT.",
+    "upper_bound": "Pencocokan maksimum per kelas dengan geometri tetap; penggunaan proposal lintas kelas dilonggarkan. Bukan batas dataset atau batas semua algoritme.",
+    "test_usage": "TEST historis dibaca kembali hanya untuk diagnosis, tanpa memilih parameter."
+  },
+  "sufficient_conditions_examples": {
+    "each_class_precision_090_recall_085_AP_lower_bound": 0.7663366336633664,
+    "each_class_precision_095_recall_090_AP_lower_bound": 0.8559405940594059,
+    "note": "Syarat cukup pada keluaran yang telah dievaluasi; bukan syarat wajib, jaminan pelatihan, atau jaminan generalisasi."
+  },
+  "runs": [
+    {
+      "bank": "remote_rfdetr_val",
+      "split": "val",
+      "images": 404,
+      "prediction_path": "results/pred_combined1716_rfdetr_l_953_val.npz",
+      "prediction_sha256": "e2e9f60315d12a96eb464c3fb646a0cf0792570d14c61fb8b29802c1127db546",
+      "original_prediction_rows": 121200,
+      "evaluated_prediction_rows": 116147,
+      "ignored_category_row_counts": {
+        "4": 5053
+      },
+      "ignored_category_max_score": 0.02832884155213833,
+      "reference_path": null,
+      "reference_sha256": null,
+      "reference_mAP50": null,
+      "reference_reproduced": false,
+      "reference_max_absolute_error": null,
+      "actual": {
+        "mAP50": 0.5726733499362535,
+        "AP50_by_class": {
+          "B1": 0.7808523201133365,
+          "B2": 0.4493997807995946,
+          "B3": 0.6051495357029848,
+          "B4": 0.45529176312909847
+        },
+        "max_recall_by_class": {
+          "B1": 0.9950248756218906,
+          "B2": 0.979381443298969,
+          "B3": 0.9676746611053181,
+          "B4": 0.967551622418879
+        },
+        "GT_by_class": {
+          "B1": 201,
+          "B2": 388,
+          "B3": 959,
+          "B4": 339
+        },
+        "TP_by_class": {
+          "B1": 200,
+          "B2": 380,
+          "B3": 928,
+          "B4": 328
+        },
+        "precision_recall_rectangle_lower_bound": 0.36060785722385424
+      },
+      "oracle_filter_only_keep_original_classes_boxes_scores": {
+        "mAP50": 0.9702970297029703,
+        "AP50_by_class": {
+          "B1": 0.9900990099009901,
+          "B2": 0.9702970297029703,
+          "B3": 0.9603960396039604,
+          "B4": 0.9603960396039604
+        },
+        "max_recall_by_class": {
+          "B1": 0.9950248756218906,
+          "B2": 0.979381443298969,
+          "B3": 0.9676746611053181,
+          "B4": 0.967551622418879
+        },
+        "GT_by_class": {
+          "B1": 201,
+          "B2": 388,
+          "B3": 959,
+          "B4": 339
+        },
+        "TP_by_class": {
+          "B1": 200,
+          "B2": 380,
+          "B3": 928,
+          "B4": 328
+        },
+        "precision_recall_rectangle_lower_bound": 0.9702970297029703
+      },
+      "oracle_relabel_overlaps_keep_boxes_scores_and_all_predictions": {
+        "mAP50": 0.8016644442470604,
+        "AP50_by_class": {
+          "B1": 0.9042115136645544,
+          "B2": 0.838197736254947,
+          "B3": 0.7600685678755376,
+          "B4": 0.7041799591932024
+        },
+        "max_recall_by_class": {
+          "B1": 1.0,
+          "B2": 0.9819587628865979,
+          "B3": 0.9697601668404588,
+          "B4": 0.9705014749262537
+        },
+        "GT_by_class": {
+          "B1": 201,
+          "B2": 388,
+          "B3": 959,
+          "B4": 339
+        },
+        "TP_by_class": {
+          "B1": 201,
+          "B2": 381,
+          "B3": 930,
+          "B4": 329
+        },
+        "precision_recall_rectangle_lower_bound": 0.6274469744525139
+      },
+      "oracle_relabel_and_filter": {
+        "mAP50": 0.9777227722772277,
+        "AP50_by_class": {
+          "B1": 1.0,
+          "B2": 0.9801980198019802,
+          "B3": 0.9603960396039604,
+          "B4": 0.9702970297029703
+        },
+        "max_recall_by_class": {
+          "B1": 1.0,
+          "B2": 0.9819587628865979,
+          "B3": 0.9697601668404588,
+          "B4": 0.9705014749262537
+        },
+        "GT_by_class": {
+          "B1": 201,
+          "B2": 388,
+          "B3": 959,
+          "B4": 339
+        },
+        "TP_by_class": {
+          "B1": 201,
+          "B2": 381,
+          "B3": 930,
+          "B4": 329
+        },
+        "precision_recall_rectangle_lower_bound": 0.9777227722772277
+      },
+      "optimistic_fixed_geometry_AP_bound_by_class": {
+        "B1": 1.0,
+        "B2": 0.9801980198019802,
+        "B3": 0.9603960396039604,
+        "B4": 0.9702970297029703
+      },
+      "optimistic_fixed_geometry_mAP_bound": 0.9777227722772277,
+      "class_changes_before_evaluator_limit": 9323
+    },
+    {
+      "bank": "remote_rfdetr_test",
+      "split": "test",
+      "images": 588,
+      "prediction_path": "results/remote_eval_2026-08-27/predictions/remote_combined1716_rfdetr_l_953_test__test.npz",
+      "prediction_sha256": "a3f06ed3c33bad04a6809bd724368969efb8df8d9d76dce6c1c7e0c0502d83be",
+      "original_prediction_rows": 176400,
+      "evaluated_prediction_rows": 169045,
+      "ignored_category_row_counts": {
+        "4": 7355
+      },
+      "ignored_category_max_score": 0.033653195947408676,
+      "reference_path": "results/remote_eval_2026-08-27/metrics/remote_combined1716_rfdetr_l_953_test.json",
+      "reference_sha256": "c2ba8347974bddd3d3dd01a660e4979d06e8a9ea48cb981ccfb69f8f1fdafdbd",
+      "reference_mAP50": 0.588983,
+      "reference_reproduced": true,
+      "reference_max_absolute_error": 3.722159825914062e-07,
+      "actual": {
+        "mAP50": 0.5889830320633228,
+        "AP50_by_class": {
+          "B1": 0.8040860361082526,
+          "B2": 0.4839523722159826,
+          "B3": 0.6504348143076882,
+          "B4": 0.41745890562136784
+        },
+        "max_recall_by_class": {
+          "B1": 0.9880952380952381,
+          "B2": 0.9818548387096774,
+          "B3": 0.9751596877217885,
+          "B4": 0.9714285714285714
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 249,
+          "B2": 487,
+          "B3": 1374,
+          "B4": 442
+        },
+        "precision_recall_rectangle_lower_bound": 0.37721160136932136
+      },
+      "oracle_filter_only_keep_original_classes_boxes_scores": {
+        "mAP50": 0.9752475247524752,
+        "AP50_by_class": {
+          "B1": 0.9801980198019802,
+          "B2": 0.9801980198019802,
+          "B3": 0.9702970297029703,
+          "B4": 0.9702970297029703
+        },
+        "max_recall_by_class": {
+          "B1": 0.9880952380952381,
+          "B2": 0.9818548387096774,
+          "B3": 0.9751596877217885,
+          "B4": 0.9714285714285714
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 249,
+          "B2": 487,
+          "B3": 1374,
+          "B4": 442
+        },
+        "precision_recall_rectangle_lower_bound": 0.9752475247524752
+      },
+      "oracle_relabel_overlaps_keep_boxes_scores_and_all_predictions": {
+        "mAP50": 0.7943690046434247,
+        "AP50_by_class": {
+          "B1": 0.921093448910922,
+          "B2": 0.8429489766452807,
+          "B3": 0.7781130939036298,
+          "B4": 0.6353204991138663
+        },
+        "max_recall_by_class": {
+          "B1": 0.996031746031746,
+          "B2": 0.9838709677419355,
+          "B3": 0.9758694109297374,
+          "B4": 0.9758241758241758
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 251,
+          "B2": 488,
+          "B3": 1375,
+          "B4": 444
+        },
+        "precision_recall_rectangle_lower_bound": 0.6114267279136237
+      },
+      "oracle_relabel_and_filter": {
+        "mAP50": 0.9777227722772277,
+        "AP50_by_class": {
+          "B1": 0.9900990099009901,
+          "B2": 0.9801980198019802,
+          "B3": 0.9702970297029703,
+          "B4": 0.9702970297029703
+        },
+        "max_recall_by_class": {
+          "B1": 0.996031746031746,
+          "B2": 0.9838709677419355,
+          "B3": 0.9758694109297374,
+          "B4": 0.9758241758241758
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 251,
+          "B2": 488,
+          "B3": 1375,
+          "B4": 444
+        },
+        "precision_recall_rectangle_lower_bound": 0.9777227722772277
+      },
+      "optimistic_fixed_geometry_AP_bound_by_class": {
+        "B1": 0.9900990099009901,
+        "B2": 0.9801980198019802,
+        "B3": 0.9702970297029703,
+        "B4": 0.9702970297029703
+      },
+      "optimistic_fixed_geometry_mAP_bound": 0.9777227722772277,
+      "class_changes_before_evaluator_limit": 12961
+    },
+    {
+      "bank": "retrained_rfdetr_test",
+      "split": "test",
+      "images": 588,
+      "prediction_path": "results/pred_rfdetr_l_v2repro_953_test.npz",
+      "prediction_sha256": "4857d35888ff3bdcb37a11f119e8acb5ea2ec2744689e01e588d0f66ee1bfa0a",
+      "original_prediction_rows": 176400,
+      "evaluated_prediction_rows": 169158,
+      "ignored_category_row_counts": {
+        "4": 7242
+      },
+      "ignored_category_max_score": 0.03784189000725746,
+      "reference_path": "results/rfdetr_l_v2repro_953_retrain_2026-09-07.json",
+      "reference_sha256": "f13704a384e48d6eca95cad711a10157b9083f06b489251bd13953c58b3185f7",
+      "reference_mAP50": 0.596470002851234,
+      "reference_reproduced": true,
+      "reference_max_absolute_error": 0.0,
+      "actual": {
+        "mAP50": 0.596470002851234,
+        "AP50_by_class": {
+          "B1": 0.819636073802134,
+          "B2": 0.5009965101098539,
+          "B3": 0.6632360408780307,
+          "B4": 0.4020113866149171
+        },
+        "max_recall_by_class": {
+          "B1": 0.9920634920634921,
+          "B2": 0.9858870967741935,
+          "B3": 0.9808374733853797,
+          "B4": 0.9736263736263736
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 250,
+          "B2": 489,
+          "B3": 1382,
+          "B4": 443
+        },
+        "precision_recall_rectangle_lower_bound": 0.3743631279726245
+      },
+      "oracle_filter_only_keep_original_classes_boxes_scores": {
+        "mAP50": 0.9801980198019802,
+        "AP50_by_class": {
+          "B1": 0.9900990099009901,
+          "B2": 0.9801980198019802,
+          "B3": 0.9801980198019802,
+          "B4": 0.9702970297029703
+        },
+        "max_recall_by_class": {
+          "B1": 0.9920634920634921,
+          "B2": 0.9858870967741935,
+          "B3": 0.9808374733853797,
+          "B4": 0.9736263736263736
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 250,
+          "B2": 489,
+          "B3": 1382,
+          "B4": 443
+        },
+        "precision_recall_rectangle_lower_bound": 0.9801980198019802
+      },
+      "oracle_relabel_overlaps_keep_boxes_scores_and_all_predictions": {
+        "mAP50": 0.7836851933661624,
+        "AP50_by_class": {
+          "B1": 0.9273524417640358,
+          "B2": 0.8291656256617753,
+          "B3": 0.7736233561206612,
+          "B4": 0.6045993499181773
+        },
+        "max_recall_by_class": {
+          "B1": 1.0,
+          "B2": 0.9858870967741935,
+          "B3": 0.9843860894251242,
+          "B4": 0.9736263736263736
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 252,
+          "B2": 489,
+          "B3": 1387,
+          "B4": 443
+        },
+        "precision_recall_rectangle_lower_bound": 0.5752841240109278
+      },
+      "oracle_relabel_and_filter": {
+        "mAP50": 0.9826732673267327,
+        "AP50_by_class": {
+          "B1": 1.0,
+          "B2": 0.9801980198019802,
+          "B3": 0.9801980198019802,
+          "B4": 0.9702970297029703
+        },
+        "max_recall_by_class": {
+          "B1": 1.0,
+          "B2": 0.9858870967741935,
+          "B3": 0.9843860894251242,
+          "B4": 0.9736263736263736
+        },
+        "GT_by_class": {
+          "B1": 252,
+          "B2": 496,
+          "B3": 1409,
+          "B4": 455
+        },
+        "TP_by_class": {
+          "B1": 252,
+          "B2": 489,
+          "B3": 1387,
+          "B4": 443
+        },
+        "precision_recall_rectangle_lower_bound": 0.9826732673267327
+      },
+      "optimistic_fixed_geometry_AP_bound_by_class": {
+        "B1": 1.0,
+        "B2": 0.9801980198019802,
+        "B3": 0.9801980198019802,
+        "B4": 0.9702970297029703
+      },
+      "optimistic_fixed_geometry_mAP_bound": 0.9826732673267327,
+      "class_changes_before_evaluator_limit": 14569
+    }
+  ]
+}
