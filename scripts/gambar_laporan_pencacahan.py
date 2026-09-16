@@ -76,6 +76,7 @@ def batang_berkelompok(
     judul: str = "",
     label_y: str = "",
     label_nilai: bool | None = None,
+    batas_y: float | None = None,
 ) -> None:
     x = np.arange(len(kategori))
     if label_nilai is None:
@@ -90,7 +91,9 @@ def batang_berkelompok(
         if label_nilai:
             ax.bar_label(balok, labels=[koma(v, desimal) for v in nilai], fontsize=6.6, padding=1.5)
     ax.set_xticks(x, kategori, fontsize=7.5)
-    ax.set_ylim(0, max(max(v) for v in seri.values()) * (1.18 if label_nilai else 1.08))
+    puncak = batas_y if batas_y is not None else max(max(v) for v in seri.values())
+    ax.set_ylim(0, puncak * (1.18 if label_nilai else 1.08))
+    ax.tick_params(labelleft=True)
     if judul:
         ax.set_title(judul, fontsize=8.5, pad=6)
     if label_y:
@@ -144,14 +147,18 @@ def gambar_deteksi(deteksi: dict, keluaran: Path) -> None:
 
 def gambar_deteksi_perkelas(deteksi: dict, keluaran: Path) -> None:
     """F1 per kelas untuk tiga korpus dalam satu gambar."""
-    fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.7), sharey=True)
-    for kolom, korpus in enumerate(KORPUS):
-        seri = {}
+    kumpulan = {}
+    for korpus in KORPUS:
+        kumpulan[korpus] = {}
         for det in DETEKTOR:
             b = next(x for x in deteksi["baris"]
                      if x["korpus_latih"] == korpus and x.get("korpus_uji", korpus) == korpus and x["detektor"] == det)
-            seri[det] = [b["per_kelas"][c]["f1"] for c in KELAS]
-        batang_berkelompok(sumbu[kolom], KELAS, seri, desimal=3, judul=f"Korpus {korpus}")
+            kumpulan[korpus][det] = [b["per_kelas"][c]["f1"] for c in KELAS]
+    batas = max(v for korpus in kumpulan.values() for seri in korpus.values() for v in seri)
+    fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.7), sharey=True)
+    for kolom, korpus in enumerate(KORPUS):
+        batang_berkelompok(sumbu[kolom], KELAS, kumpulan[korpus], desimal=3,
+                           judul=f"Korpus {korpus}", batas_y=batas)
     sumbu[0].set_ylabel("F1", fontsize=7.5)
     sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.30))
     fig.tight_layout()
@@ -260,21 +267,25 @@ def gambar_efek_kalibrasi_penuh(pencacahan: dict, keluaran: Path) -> None:
             if x["korpus_latih"] == kor and x["detektor"] == det and x["metode"] == met
         )
 
-    fig, sumbu = plt.subplots(2, 3, figsize=(6.5, 4.15), sharey="row")
-    for kolom, kor in enumerate(KORPUS):
-        turun = {}
-        naik = {}
+    data_turun, data_naik = {}, {}
+    for kor in KORPUS:
+        data_turun[kor], data_naik[kor] = {}, {}
         for kunci, nama in metode:
-            turun[nama] = []
-            naik[nama] = []
+            data_turun[kor][nama] = []
+            data_naik[kor][nama] = []
             for det in DETEKTOR:
                 naif = ambil(kor, det, "naif")
                 kal = ambil(kor, det, kunci)
-                turun[nama].append((naif["mae_makro"] - kal["mae_makro"]) / naif["mae_makro"] * 100)
-                naik[nama].append((kal["acc_pm1_makro"] - naif["acc_pm1_makro"]) * 100)
+                data_turun[kor][nama].append((naif["mae_makro"] - kal["mae_makro"]) / naif["mae_makro"] * 100)
+                data_naik[kor][nama].append((kal["acc_pm1_makro"] - naif["acc_pm1_makro"]) * 100)
+    batas_turun = max(v for kor in data_turun.values() for seri in kor.values() for v in seri)
+    batas_naik = max(v for kor in data_naik.values() for seri in kor.values() for v in seri)
+    fig, sumbu = plt.subplots(2, 3, figsize=(6.5, 4.15), sharey="row")
+    for kolom, kor in enumerate(KORPUS):
         label = [SINGKAT[d] for d in DETEKTOR]
-        batang_berkelompok(sumbu[0][kolom], label, turun, desimal=1, judul=f"Korpus {kor}")
-        batang_berkelompok(sumbu[1][kolom], label, naik, desimal=1)
+        batang_berkelompok(sumbu[0][kolom], label, data_turun[kor], desimal=1,
+                           judul=f"Korpus {kor}", batas_y=batas_turun)
+        batang_berkelompok(sumbu[1][kolom], label, data_naik[kor], desimal=1, batas_y=batas_naik)
     sumbu[0][0].set_ylabel("penurunan MAE (%)", fontsize=7.5)
     sumbu[1][0].set_ylabel("kenaikan akurasi ±1 (pp)", fontsize=7.5)
     sumbu[0][1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.40))
@@ -303,11 +314,13 @@ def gambar_metode(pencacahan: dict, keluaran: Path) -> None:
             if x["korpus_latih"] == kor and x["detektor"] == det and x["metode"] == met
         )
 
+    kumpulan = {kor: {nama: [ambil(kor, det, kunci) for det in DETEKTOR] for kunci, nama in metode}
+                for kor in KORPUS}
+    batas = max(v for kor in kumpulan.values() for seri in kor.values() for v in seri)
     fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.53), sharey=True)
     for kolom, kor in enumerate(KORPUS):
-        seri = {nama: [ambil(kor, det, kunci) for det in DETEKTOR] for kunci, nama in metode}
-        batang_berkelompok(sumbu[kolom], [SINGKAT[d] for d in DETEKTOR], seri, desimal=3,
-                           judul=f"Korpus {kor}")
+        batang_berkelompok(sumbu[kolom], [SINGKAT[d] for d in DETEKTOR], kumpulan[kor], desimal=3,
+                           judul=f"Korpus {kor}", batas_y=batas)
     sumbu[0].set_ylabel("MAE makro", fontsize=7.5)
     sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32))
     fig.tight_layout()
