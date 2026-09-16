@@ -154,10 +154,10 @@ done
 
 ## 8. Katalog 9 Jebakan Operasional (*Silent Failures*)
 
-| No. | Jebakan Operasional | Dampak Kritis Jika Terabaikan |
+| No. | Jebakan Operasional | Dampak Utama Jika Terabaikan |
 |---|---|---|
 | 1 | **Pemotongan Jadwal Cosine Learning Rate di Tengah** | Fase peluruhan laju belajar tidak terjadi; kehilangan $\approx 5,0\text{ pp } AP50$. |
-| 2 | **Toleransi Penghentian Dini Terlalu Ketat pada Penyesuaian Terarah** | Puncak performa semu pada epoch 1 mematikan pelatihan sebelum konvergensi sejati dimulai ($0,6413$ vs $0,7473$). |
+| 2 | **Toleransi Penghentian Dini Terlalu Ketat pada Penyesuaian Terarah** | Puncak performa semu pada epoch 1 menghentikan pelatihan sebelum konvergensi sejati dimulai ($0,6413$ vs $0,7473$). |
 | 3 | **Penomoran Otomatis Direktori Ultralytics (`run`, `run2`)** | Skrip hilir membaca direktori lama secara diam-diam. Jalur direktori wajib di-resolve secara dinamis. |
 | 4 | **Pemuatan Checkpoint RT-DETR Menggunakan Kelas `YOLO`** | Model dibangun sebagai model konvolusi standar tanpa pesan galat, merusak integritas inferensi. Wajib menggunakan kelas `RTDETR()`. |
 | 5 | **Resolusi Citra Terpotong (*Crop*) Tidak Konsisten** | *Upscaling* citra kecil saat inferensi mengaburkan tekstur warna dan mereduksi akurasi klasifikasi. |

@@ -1,4 +1,4 @@
-# Laporan Akhir — Volume 2: Deteksi dan Pencacahan Tandan Kelapa Sawit RGB vs RGB+D
+# Laporan Akhir, Volume 2: Deteksi dan Pencacahan Tandan Kelapa Sawit RGB vs RGB+D
 
 **Tanggal Penyusunan:** 12 Agustus 2026  
 **Cakupan Fase:** Fase 0 s.d. Fase 6 (`V2-E-001` s.d. `V2-E-026`)  
@@ -7,7 +7,7 @@
 > **Pembaruan 27 Agustus 2026:** Verifikasi lanjutan terhadap bobot remote
 > `new763` dan `combined1716`, termasuk WBF serta pipeline empat sisi, dicatat
 > sebagai `V2-E-042` pada [laporan artefak remote](../results/remote_eval_2026-08-27/README.md).
-> Iterasi greedy linker dan uji classifier 5 epoch berikutnya dicatat sebagai
+> Iterasi greedy linker dan uji pengklasifikasi 5 epoch berikutnya dicatat sebagai
 > `V2-E-043` dan `V2-E-044` pada log eksperimen serta [laporan optimized
 > pipeline](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md).
 > Angka tersebut merupakan verifikasi engineering pada test lokal dan tidak
@@ -18,7 +18,7 @@
 
 ## 1. Ringkasan Eksekutif
 
-Volume 2 dari riset ini dirancang untuk menjawab satu pertanyaan inti: **apakah penambahan kanal kedalaman (*depth*) mampu meningkatkan metrik deteksi $mAP50$ pada tandan buah segar (TBS) kelapa sawit?** Melalui pelaksanaan 26 eksperimen terstruktur, diperoleh kesimpulan komprehensif bahwa **pertanyaan perbandingan tersebut tidak dapat dijawab secara valid menggunakan pasangan dataset awal yang tersedia** — dan penemuan ini merupakan hasil pengukuran ilmiah yang terukur, bukan kegagalan pengukuran.
+Volume 2 dari riset ini dirancang untuk menjawab satu pertanyaan inti: **apakah penambahan kanal kedalaman (*depth*) mampu meningkatkan metrik deteksi $mAP50$ pada tandan buah segar (TBS) kelapa sawit?** Melalui pelaksanaan 26 eksperimen terstruktur, diperoleh kesimpulan komprehensif bahwa **pertanyaan perbandingan tersebut tidak dapat dijawab secara valid menggunakan pasangan dataset awal yang tersedia**, dan penemuan ini merupakan hasil pengukuran ilmiah yang terukur, bukan kegagalan pengukuran.
 
 Empat temuan empiris utama merangkum kesimpulan proyek:
 
@@ -26,7 +26,7 @@ Empat temuan empiris utama merangkum kesimpulan proyek:
    Dataset SawitMVC-YOLO (953 pohon, modalitas RGB murni) direkam pada rentang 30 April – 16 Mei 2026, sedangkan dataset SawitMVC-Depth (352 pohon, modalitas RGB+D) direkam pada 28–29 Juli 2026 (terdapat jeda waktu **$\sim 80\text{ hari}$** pada kebun kelapa sawit yang sama). Jeda waktu ini setara dengan $5\text{--}11$ siklus rotasi panen. Distribusi kematangan buah mengalami pergeseran drastis: pada 1.408 citra ber-ID pohon identik, jumlah tandan kelas matang awal B3 berbanding **$3.604\text{ berbanding }321$ kotak** (penurunan $11,2\times$). Akibatnya, setiap perbandingan performa 4-kelas lintas-dataset mengukur dua populasi kematangan buah yang berbeda secara biologis, bukan mengukur efek kanal kedalaman.
 
 2. **Partisi Uji 352 Pohon Memiliki Keterbatasan Daya Statistik (V2-E-023)**:  
-   Dengan 410 kotak nilai acuan kebenaran (*ground truth*) pada 220 citra uji, selang kepercayaan (*confidence interval*) 95% untuk metrik $mAP50$ memiliki rentang selebar **$\pm 0,058$** ($0,1167$). Seluruh variasi konfigurasi model yang dikembangkan pada Fase 6 — dari $0,3606$ hingga $0,4544$ — berada di dalam selang ketidakpastian yang sama. Selisih $0,0044$ antara pipeline dua-tahap terbaik ($0,4500$) dan rekor RF-DETR-L ($0,4544$) berada jauh di bawah variasi derau acak data.
+   Dengan 410 kotak nilai acuan kebenaran (*ground truth*) pada 220 citra uji, selang kepercayaan (*confidence interval*) 95% untuk metrik $mAP50$ memiliki rentang selebar **$\pm 0,058$** ($0,1167$). Seluruh variasi konfigurasi model yang dikembangkan pada Fase 6, dari $0,3606$ hingga $0,4544$, berada di dalam selang ketidakpastian yang sama. Selisih $0,0044$ antara pipeline dua-tahap terbaik ($0,4500$) dan rekor RF-DETR-L ($0,4544$) berada jauh di bawah variasi derau acak data.
 
 3. **Sumber Degradasi Performa Terletak pada Klasifikasi, Bukan Lokalisasi (V2-E-013)**:  
    Evaluasi deteksi murni lokalisasi 1-kelas (*class-agnostic*) mencapai $AP50 = \mathbf{0,7330}$, berbanding jauh dengan deteksi *class-aware* 4-kelas yang berada di kisaran $\sim 0,45$. Hal ini membuktikan bahwa anotasi posisi fisik tandan bertahan melintasi jeda waktu 80 hari karena kanopi pohon relatif stabil, sedangkan label kematangan buah berubah total akibat proses pematangan dan pemanenan alami.
@@ -72,7 +72,7 @@ Evaluasi perbandingan pada **1.408 citra dengan nomor identitas pohon yang ident
 | SawitMVC-YOLO (Mei 2026) | 6.523 | 566 ($8,7\%$) | 1.098 ($16,8\%$) | **3.604 ($55,3\%$)** | 1.255 ($19,2\%$) |
 | SawitMVC-Depth (Juli 2026) | 2.299 | 829 ($36,1\%$) | 1.001 ($43,5\%$) | **321 ($14,0\%$)** | 148 ($6,4\%$) |
 
-Rotasi panen kebun sawit berlangsung secara berkala setiap 7–15 hari. Jeda waktu 80 hari mencakup $5\text{--}11$ putaran panen. Kohort buah yang dominan pada Mei telah matang menjadi B1/B2 pada Juli dan sebagian besar telah dipanen — konsisten dengan penurunan total kotak dari 6.523 menjadi 2.299 serta pergeseran populasi ke $79,6\%$ kelas B1+B2.
+Rotasi panen kebun sawit berlangsung secara berkala setiap 7–15 hari. Jeda waktu 80 hari mencakup $5\text{--}11$ putaran panen. Kohort buah yang dominan pada Mei telah matang menjadi B1/B2 pada Juli dan sebagian besar telah dipanen, konsisten dengan penurunan total kotak dari 6.523 menjadi 2.299 serta pergeseran populasi ke $79,6\%$ kelas B1+B2.
 
 Skrip Reproduksi: [`scripts/probe_pergeseran_temporal.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/probe_pergeseran_temporal.py) $\to$ [`results/pergeseran_temporal.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/pergeseran_temporal.json).
 
@@ -133,16 +133,16 @@ Selisih berpasangan `edge` minus RGB: **$+0,0593$** (CI95 $[−0,0013; +0,1168]$
 
 ---
 
-## 6. Klasifikasi Kematangan pada Citra Terpotong (Crop)
+## 6. Klasifikasi Kematangan pada Citra Terpotong (Citra terpotong)
 
 Evaluasi 4 skema pengklasifikasi kematangan (ConvNeXt-Small, head hybrid CE+CORAL, 3 seed replikasi):
 
 | Skema Pelatihan | Deskripsi Metode | Akurasi Uji (Rerata $\pm$ SD) | Macro-$F1$ |
 |---|---|---|---|
-| `ftS` | Prapelatihan 953 $\to$ Penyesuaian Terarah 352 (crop 176 px) | **$0,6837 \pm 0,0172$** | **0,6105** |
+| `ftS` | Prapelatihan 953 $\to$ Penyesuaian Terarah 352 (citra terpotong (*crop*) 176 px) | **$0,6837 \pm 0,0172$** | **0,6105** |
 | `ftJ` | Idem + perturbasi acak (*jitter*) kotak | $0,6829 \pm 0,0190$ | 0,6065 |
 | `ftG` | Pelatihan gabungan 953 + 352 | $0,6724 \pm 0,0161$ | 0,5318 |
-| `ftH` | Pelatihan gabungan (crop 256 px @ 224) | $0,6569 \pm 0,0252$ | 0,5391 |
+| `ftH` | Pelatihan gabungan (citra terpotong 256 px @ 224) | $0,6569 \pm 0,0252$ | 0,5391 |
 
 Sebaran performa antar-seed ($0,6293\text{--}0,7049$, rentang $0,0756$) adalah $2,8\times$ lebih lebar daripada sebaran antar-metode ($0,0268$), menunjukkan bahwa keempat skema klasifikasi secara statistik tidak terbedakan.
 
@@ -179,7 +179,7 @@ Konfigurasi terbaik untuk $mAP50$ deteksi (v4: $0,4500$) tidak identik dengan ko
 
 1. **Pergeseran Domain Temporal**: Perbandingan performa lintas-dataset 953 vs 352 tidak sah (§3).
 2. **Keterbatasan Daya Statistik**: Dengan 410 kotak acuan, efek di bawah $\Delta \approx 0,10\text{ mAP50}$ tidak dapat dipisahkan dari variasi acak (§5). Diperlukan $\approx 4.000\text{ kotak}$ untuk mendeteksi efek $\Delta = 0,03$ dengan daya $80\%$.
-3. **Ketiadaan Berkas Bobot Historis Volume 2**: Enam direktori bobot checkpoint RT-DETR-L dan RF-DETR-L Volume 2 hilang sebelum sempat dicadangkan ke repositori publik. Prosedur riset telah disempurnakan dengan kewajiban mengekspor dump prediksi `.npz` secara langsung saat evaluasi.
+3. **Ketiadaan Berkas Bobot Historis Volume 2**: Enam direktori bobot checkpoint RT-DETR-L dan RF-DETR-L Volume 2 hilang sebelum sempat dicadangkan ke repositori publik. Prosedur riset telah disempurnakan dengan kewajiban mengekspor *dump* prediksi `.npz` secara langsung saat evaluasi.
 4. **Audit Partisi Prapelatihan Agnostik (`agn953_full`)**: Ditemukan bahwa 122 dari 141 pohon pada partisi `test_penuh` ikut terpakai saat prapelatihan agnostik. Evaluasi yang sah mengacu pada partisi uji bersih (`test_bersih`, 19 pohon / 316 kotak) dengan skor $AP50 = \mathbf{0,7702}$ (§9.2).
 5. **Kesalahan Registrasi Sensor Kedalaman**: Citra kedalaman mentah memiliki pergeseran spasial fisik median 29 piksel terhadap kamera warna, yang diatasi melalui reproyeksi piksel-ke-piksel.
 

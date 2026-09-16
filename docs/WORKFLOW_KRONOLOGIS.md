@@ -24,65 +24,65 @@ timeline
 ```
 
 - [1. Fase 0–4: Fondasi Arsitektur Detektor & Matriks Sembilan-Sel (08–09 Agustus 2026)](#1-fase-04-fondasi-arsitektur-detektor--matriks-sembilan-sel-0809-agustus-2026)
-  - [Simpul V2-E-001 — Replikasi Deteksi Tiga Arsitektur pada SawitMVC 953 Pohon (09 Agu 2026)](#simpul-v2-e-001--replikasi-deteksi-tiga-arsitektur-pada-sawitmvc-953-pohon-09-agustus-2026)
-  - [Simpul V2-E-002 — Pencacahan Tiga Detektor pada SawitMVC 953 Pohon (09 Agu 2026)](#simpul-v2-e-002--pencacahan-tiga-detektor-pada-sawitmvc-953-pohon-09-agustus-2026)
-  - [Simpul V2-E-003 — Deteksi Tiga Arsitektur pada 352 Pohon SawitMVC-Depth RGB (09 Agu 2026)](#simpul-v2-e-003--deteksi-tiga-arsitektur-pada-352-pohon-sawitmvc-depth-rgb-09-agustus-2026)
-  - [Simpul V2-E-004 — Pencacahan Tiga Detektor RGB pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-004--pencacahan-tiga-detektor-rgb-pada-352-pohon-09-agustus-2026)
-  - [Simpul V2-E-005 — Deteksi Tiga Arsitektur RGBD 4-Kanal pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-005--deteksi-tiga-arsitektur-rgbd-4-kanal-pada-352-pohon-09-agustus-2026)
-  - [Simpul V2-E-006 — Pencacahan Tiga Detektor RGBD 4-Kanal pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-006--pencacahan-tiga-detektor-rgbd-4-kanal-pada-352-pohon-09-agustus-2026)
-  - [Simpul V2-E-007 — Analisis Sintesis Matriks 9-Sel Terstratifikasi (09 Agu 2026)](#simpul-v2-e-007--analisis-sintesis-matriks-9-sel-terstratifikasi-09-agustus-2026)
+  - [Simpul V2-E-001: Replikasi Deteksi Tiga Arsitektur pada SawitMVC 953 Pohon (09 Agu 2026)](#simpul-v2-e-001-replikasi-deteksi-tiga-arsitektur-pada-sawitmvc-953-pohon-09-agustus-2026)
+  - [Simpul V2-E-002: Pencacahan Tiga Detektor pada SawitMVC 953 Pohon (09 Agu 2026)](#simpul-v2-e-002-pencacahan-tiga-detektor-pada-sawitmvc-953-pohon-09-agustus-2026)
+  - [Simpul V2-E-003: Deteksi Tiga Arsitektur pada 352 Pohon SawitMVC-Depth RGB (09 Agu 2026)](#simpul-v2-e-003-deteksi-tiga-arsitektur-pada-352-pohon-sawitmvc-depth-rgb-09-agustus-2026)
+  - [Simpul V2-E-004: Pencacahan Tiga Detektor RGB pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-004-pencacahan-tiga-detektor-rgb-pada-352-pohon-09-agustus-2026)
+  - [Simpul V2-E-005: Deteksi Tiga Arsitektur RGBD 4-Kanal pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-005-deteksi-tiga-arsitektur-rgbd-4-kanal-pada-352-pohon-09-agustus-2026)
+  - [Simpul V2-E-006: Pencacahan Tiga Detektor RGBD 4-Kanal pada 352 Pohon (09 Agu 2026)](#simpul-v2-e-006-pencacahan-tiga-detektor-rgbd-4-kanal-pada-352-pohon-09-agustus-2026)
+  - [Simpul V2-E-007: Analisis Sintesis Matriks 9-Sel Terstratifikasi (09 Agu 2026)](#simpul-v2-e-007-analisis-sintesis-matriks-9-sel-terstratifikasi-09-agustus-2026)
 - [2. Fase 5: Penelusuran Representasi Depth Alternatif (10–11 Agustus 2026)](#2-fase-5-penelusuran-representasi-depth-alternatif-1011-agustus-2026)
-  - [Simpul V2-E-008 — Penyaringan Awal Representasi Depth pada YOLO26l (10–11 Agu 2026)](#simpul-v2-e-008--penyaringan-awal-representasi-depth-pada-yolo26l-1011-agustus-2026)
-  - [Simpul V2-E-009 — Penyaringan Awal Arsitektur Mid-Fusion Ber-Gerbang (11 Agu 2026)](#simpul-v2-e-009--penyaringan-awal-arsitektur-mid-fusion-ber-gerbang-11-agustus-2026)
-  - [Simpul V2-E-010 — Pelatihan Penuh 60 Epoch Encoding Sobel Edge pada YOLO26l (11 Agu 2026)](#simpul-v2-e-010--pelatihan-penuh-60-epoch-encoding-sobel-edge-pada-yolo26l-11-agustus-2026)
-  - [Simpul V2-E-011 — Pelatihan Ulang Baseline RGB & Bootstrap CI Berpasangan (11 Agu 2026)](#simpul-v2-e-011--pelatihan-ulang-baseline-rgb--bootstrap-ci-berpasangan-11-agustus-2026)
+  - [Simpul V2-E-008: Penyaringan Awal Representasi Depth pada YOLO26l (10–11 Agu 2026)](#simpul-v2-e-008-penyaringan-awal-representasi-depth-pada-yolo26l-1011-agustus-2026)
+  - [Simpul V2-E-009: Penyaringan Awal Arsitektur Mid-Fusion Ber-Gerbang (11 Agu 2026)](#simpul-v2-e-009-penyaringan-awal-arsitektur-mid-fusion-ber-gerbang-11-agustus-2026)
+  - [Simpul V2-E-010: Pelatihan Penuh 60 Epoch Encoding Sobel Edge pada YOLO26l (11 Agu 2026)](#simpul-v2-e-010-pelatihan-penuh-60-epoch-encoding-sobel-edge-pada-yolo26l-11-agustus-2026)
+  - [Simpul V2-E-011: Pelatihan Ulang Baseline RGB & Bootstrap CI Berpasangan (11 Agu 2026)](#simpul-v2-e-011-pelatihan-ulang-garis-dasar-pembanding-rgb--bootstrap-ci-berpasangan-11-agustus-2026)
 - [3. Fase 6: Diagnostik Sinyal Depth & Desain Pipeline Dua-Tahap (11–12 Agustus 2026)](#3-fase-6-diagnostik-sinyal-depth--desain-pipeline-dua-tahap-1112-agustus-2026)
-  - [Simpul V2-E-012 — Analisis Kesenjangan mAP50 Akibat Kelangkaan Kelas B3/B4 (11 Agu 2026)](#simpul-v2-e-012--analisis-kesenjangan-map50-akibat-kelangkaan-kelas-b3b4-11-agustus-2026)
-  - [Simpul V2-E-013 — Dekomposisi Galat Lokalisasi vs Kesalahan Kelas (11 Agu 2026)](#simpul-v2-e-013--dekomposisi-galat-lokalisasi-vs-kesalahan-kelas-11-agustus-2026)
-  - [Simpul V2-E-014 — Sifat Sinyal Kedalaman: Relief Lokal Ordinal vs Skala Metrik (11 Agu 2026)](#simpul-v2-e-014--sifat-sinyal-kedalaman-relief-lokal-ordinal-vs-skala-metrik-11-agustus-2026)
-  - [Simpul V2-E-015 — Model Pengklasifikasi Kematangan pada Citra Terpotong (11 Agu 2026)](#simpul-v2-e-015--model-pengklasifikasi-kematangan-pada-citra-terpotong-11-agustus-2026)
-  - [Simpul V2-E-016 — Pembuktian Redundansi Sinyal Kematangan Depth terhadap RGB (11 Agu 2026)](#simpul-v2-e-016--pembuktian-redundansi-sinyal-kematangan-depth-terhadap-rgb-11-agustus-2026)
-  - [Simpul V2-E-017 — Batas Atas Teoretis Lokalisasi Class-Agnostic 1-Kelas (12 Agu 2026)](#simpul-v2-e-017--batas-atas-teoretis-lokalisasi-class-agnostic-1-kelas-12-agustus-2026)
-  - [Simpul V2-E-018 — Evaluasi Transfer Prapelatihan 953 ke 352 & Patience (12 Agu 2026)](#simpul-v2-e-018--evaluasi-transfer-prapelatihan-953-ke-352--patience-12-agustus-2026)
-  - [Simpul V2-E-019 — Ensembel WBF Lokalisasi Agnostik & Penelusuran Inferensi (12 Agu 2026)](#simpul-v2-e-019--ensembel-wbf-lokalisasi-agnostik--penelusuran-inferensi-12-agustus-2026)
-  - [Simpul V2-E-020 — Integrasi Pipeline Dua-Tahap v1 s.d. v4 (12 Agu 2026)](#simpul-v2-e-020--integrasi-pipeline-dua-tahap-v1-sd-v4-12-agustus-2026)
-  - [Simpul V2-E-021 — Pelatihan Gabungan 953+352 pada Pengklasifikasi Crop (12 Agu 2026)](#simpul-v2-e-021--pelatihan-gabungan-953352-pada-pengklasifikasi-crop-12-agustus-2026)
-  - [Simpul V2-E-022 — Penemuan Pergeseran Temporal 80 Hari Antar-Dataset (12 Agu 2026)](#simpul-v2-e-022--penemuan-pergeseran-temporal-80-hari-antar-dataset-12-agustus-2026)
-  - [Simpul V2-E-023 — Evaluasi Daya Statistik & Selang Kepercayaan Split 352 (12 Agu 2026)](#simpul-v2-e-023--evaluasi-daya-statistik--selang-kepercayaan-split-352-12-agustus-2026)
-  - [Simpul V2-E-024 — Uji Lokalisasi Murni Modalitas Depth (12 Agu 2026)](#simpul-v2-e-024--uji-lokalisasi-murni-modalitas-depth-12-agustus-2026)
-  - [Simpul V2-E-025 — Audit Partisi Bersih agn953_full vs Kebocoran Pretrain (12 Agu 2026)](#simpul-v2-e-025--audit-partisi-bersih-agn953_full-vs-kebocoran-pretrain-12-agustus-2026)
-  - [Simpul V2-E-026 — Replikasi Bootstrap CI Angka Utama Dua-Tahap v4 (12 Agu 2026)](#simpul-v2-e-026--replikasi-bootstrap-ci-angka-utama-dua-tahap-v4-12-agustus-2026)
+  - [Simpul V2-E-012: Analisis Kesenjangan mAP50 Akibat Kelangkaan Kelas B3/B4 (11 Agu 2026)](#simpul-v2-e-012-analisis-kesenjangan-map50-akibat-kelangkaan-kelas-b3b4-11-agustus-2026)
+  - [Simpul V2-E-013: Dekomposisi Galat Lokalisasi vs Kesalahan Kelas (11 Agu 2026)](#simpul-v2-e-013-dekomposisi-galat-lokalisasi-vs-kesalahan-kelas-11-agustus-2026)
+  - [Simpul V2-E-014: Sifat Sinyal Kedalaman: Relief Lokal Ordinal vs Skala Metrik (11 Agu 2026)](#simpul-v2-e-014-sifat-sinyal-kedalaman-relief-lokal-ordinal-vs-skala-metrik-11-agustus-2026)
+  - [Simpul V2-E-015: Model Pengklasifikasi Kematangan pada Citra Terpotong (11 Agu 2026)](#simpul-v2-e-015-model-pengklasifikasi-kematangan-pada-citra-terpotong-11-agustus-2026)
+  - [Simpul V2-E-016: Pembuktian Redundansi Sinyal Kematangan Depth terhadap RGB (11 Agu 2026)](#simpul-v2-e-016-pembuktian-redundansi-sinyal-kematangan-depth-terhadap-rgb-11-agustus-2026)
+  - [Simpul V2-E-017: Batas Atas Teoretis Lokalisasi Class-Agnostic 1-Kelas (12 Agu 2026)](#simpul-v2-e-017-batas-atas-teoretis-lokalisasi-class-agnostic-1-kelas-12-agustus-2026)
+  - [Simpul V2-E-018: Evaluasi Transfer Prapelatihan 953 ke 352 & Patience (12 Agu 2026)](#simpul-v2-e-018-evaluasi-transfer-prapelatihan-953-ke-352--patience-12-agustus-2026)
+  - [Simpul V2-E-019: Ensembel WBF Lokalisasi Agnostik & Penelusuran Inferensi (12 Agu 2026)](#simpul-v2-e-019-ensembel-wbf-lokalisasi-agnostik--penelusuran-inferensi-12-agustus-2026)
+  - [Simpul V2-E-020: Integrasi Pipeline Dua-Tahap v1 s.d. v4 (12 Agu 2026)](#simpul-v2-e-020-integrasi-pipeline-dua-tahap-v1-sd-v4-12-agustus-2026)
+  - [Simpul V2-E-021: Pelatihan Gabungan 953+352 pada Pengklasifikasi Crop (12 Agu 2026)](#simpul-v2-e-021-pelatihan-gabungan-953352-pada-pengklasifikasi-citra-terpotong-12-agustus-2026)
+  - [Simpul V2-E-022: Penemuan Pergeseran Temporal 80 Hari Antar-Dataset (12 Agu 2026)](#simpul-v2-e-022-penemuan-pergeseran-temporal-80-hari-antar-dataset-12-agustus-2026)
+  - [Simpul V2-E-023: Evaluasi Daya Statistik & Selang Kepercayaan Split 352 (12 Agu 2026)](#simpul-v2-e-023-evaluasi-daya-statistik--selang-kepercayaan-split-352-12-agustus-2026)
+  - [Simpul V2-E-024: Uji Lokalisasi Murni Modalitas Depth (12 Agu 2026)](#simpul-v2-e-024-uji-lokalisasi-murni-modalitas-depth-12-agustus-2026)
+  - [Simpul V2-E-025: Audit Partisi Bersih agn953_full vs Kebocoran Pretrain (12 Agu 2026)](#simpul-v2-e-025-audit-partisi-bersih-agn953full-vs-kebocoran-pretrain-12-agustus-2026)
+  - [Simpul V2-E-026: Replikasi Bootstrap CI Angka Utama Dua-Tahap v4 (12 Agu 2026)](#simpul-v2-e-026-replikasi-bootstrap-ci-angka-utama-dua-tahap-v4-12-agustus-2026)
 - [4. Fase 7: Matriks Depth Monokular & Audit Partisi Bebas Bocor (15 Agustus 2026)](#4-fase-7-matriks-depth-monokular--audit-partisi-bebas-bocor-15-agustus-2026)
-  - [Simpul V2-E-027 — Evaluasi Sel 6 (953 RGB+Mono 4-Kanal) (15 Agu 2026)](#simpul-v2-e-027--evaluasi-sel-6-953-rgbmono-4-kanal-15-agustus-2026)
-  - [Simpul V2-E-028 — Audit 39 Citra TIFF Korup pada Dataset Turunan (15 Agu 2026)](#simpul-v2-e-028--audit-39-citra-tiff-korup-pada-dataset-turunan-15-agustus-2026)
-  - [Simpul V2-E-029 — Bootstrap CI Berpasangan Sel 6 vs Sel 5 (15 Agu 2026)](#simpul-v2-e-029--bootstrap-ci-berpasangan-sel-6-vs-sel-5-15-agustus-2026)
-  - [Simpul V2-E-030 — Evaluasi Sel 3 (352 RGB+Mono 4-Kanal) (15 Agu 2026)](#simpul-v2-e-030--evaluasi-sel-3-352-rgbmono-4-kanal-15-agustus-2026)
-  - [Simpul V2-E-031 — Evaluasi Sel 4 (352 5-Kanal RGB+Depth+Mono) (15 Agu 2026)](#simpul-v2-e-031--evaluasi-sel-4-352-5-kanal-rgbdepthmono-15-agustus-2026)
-  - [Simpul V2-E-032 — Sintesis Matriks 6-Sel Depth Monokular (15 Agu 2026)](#simpul-v2-e-032--sintesis-matriks-6-sel-depth-monokular-15-agustus-2026)
-  - [Simpul V2-E-033 — Audit Pembatas Silsilah Partisi 953 ke 352 (15 Agu 2026)](#simpul-v2-e-033--audit-pembatas-silsilah-partisi-953-ke-352-15-agustus-2026)
+  - [Simpul V2-E-027: Evaluasi Sel 6 (953 RGB+Mono 4-Kanal) (15 Agu 2026)](#simpul-v2-e-027-evaluasi-sel-6-953-rgbmono-4-kanal-15-agustus-2026)
+  - [Simpul V2-E-028: Audit 39 Citra TIFF Korup pada Dataset Turunan (15 Agu 2026)](#simpul-v2-e-028-audit-39-citra-tiff-korup-pada-dataset-turunan-15-agustus-2026)
+  - [Simpul V2-E-029: Bootstrap CI Berpasangan Sel 6 vs Sel 5 (15 Agu 2026)](#simpul-v2-e-029-bootstrap-ci-berpasangan-sel-6-vs-sel-5-15-agustus-2026)
+  - [Simpul V2-E-030: Evaluasi Sel 3 (352 RGB+Mono 4-Kanal) (15 Agu 2026)](#simpul-v2-e-030-evaluasi-sel-3-352-rgbmono-4-kanal-15-agustus-2026)
+  - [Simpul V2-E-031: Evaluasi Sel 4 (352 5-Kanal RGB+Depth+Mono) (15 Agu 2026)](#simpul-v2-e-031-evaluasi-sel-4-352-5-kanal-rgbdepthmono-15-agustus-2026)
+  - [Simpul V2-E-032: Sintesis Matriks 6-Sel Depth Monokular (15 Agu 2026)](#simpul-v2-e-032-sintesis-matriks-6-sel-depth-monokular-15-agustus-2026)
+  - [Simpul V2-E-033: Audit Pembatas Silsilah Partisi 953 ke 352 (15 Agu 2026)](#simpul-v2-e-033-audit-pembatas-silsilah-partisi-953-ke-352-15-agustus-2026)
 - [5. Subproyek Pipeline Per-Tandan: Asosiasi Multi-Tampak & Prior Rotasi (17–18 Agustus 2026)](#5-subproyek-pipeline-per-tandan-asosiasi-multi-tampak--prior-rotasi-1718-agustus-2026)
-  - [Simpul PT-E-000 s.d. PT-E-008 — Penemuan Prior Arah Putar Pengambilan Foto (17 Agu 2026)](#simpul-pt-e-000-sd-pt-e-008--penemuan-prior-arah-putar-pengambilan-foto-17-agustus-2026)
-  - [Simpul PT-E-009 s.d. PT-E-013 — Analisis Kepadatan Adegan & Pemalsuan Rekonstruksi 3D (17 Agu 2026)](#simpul-pt-e-009-sd-pt-e-013--analisis-kepadatan-adegan--pemalsuan-rekonstruksi-3d-17-agustus-2026)
-  - [Simpul PT-E-014 s.d. PT-E-036 — Ensembel Klasifikasi, Loss CORN, & Plafon Teoretis DAMIMAS (18 Agu 2026)](#simpul-pt-e-014-sd-pt-e-036--ensembel-klasifikasi-loss-corn--plafon-teoretis-damimas-18-agustus-2026)
+  - [Simpul PT-E-000 s.d. PT-E-008: Penemuan Prior Arah Putar Pengambilan Foto (17 Agu 2026)](#simpul-pt-e-000-sd-pt-e-008-penemuan-prior-arah-putar-pengambilan-foto-17-agustus-2026)
+  - [Simpul PT-E-009 s.d. PT-E-013: Analisis Kepadatan Adegan & Pemalsuan Rekonstruksi 3D (17 Agu 2026)](#simpul-pt-e-009-sd-pt-e-013-analisis-kepadatan-adegan--pemalsuan-rekonstruksi-3d-17-agustus-2026)
+  - [Simpul PT-E-014 s.d. PT-E-036: Ensembel Klasifikasi, Loss CORN, & Plafon Teoretis DAMIMAS (18 Agu 2026)](#simpul-pt-e-014-sd-pt-e-036-ensembel-klasifikasi-fungsi-rugi-corn--plafon-teoretis-damimas-18-agustus-2026)
 - [6. Fase Ekspansi Korpus: SawitMVC-Depth v2.0.0 (763 Pohon) & Combined-1716 (22–24 Agustus 2026)](#6-fase-ekspansi-korpus-sawitmvc-depth-v200-763-pohon--combined-1716-2224-agustus-2026)
-  - [Simpul V2-E-034 — Evaluasi Baseline SawitMVC-Depth-YOLO v2.0.0 (763 Pohon) (22 Agu 2026)](#simpul-v2-e-034--evaluasi-baseline-sawitmvc-depth-yolo-v200-763-pohon-22-agustus-2026)
-  - [Simpul V2-E-035 — Pelatihan Baseline Korpus Gabungan Combined-1716 (23 Agu 2026)](#simpul-v2-e-035--pelatihan-baseline-korpus-gabungan-combined-1716-23-agustus-2026)
-  - [Simpul V2-E-036 — Rekor Plafon Lokalisasi Agnostik Model Tunggal (0,7951) (23 Agu 2026)](#simpul-v2-e-036--rekor-plafon-lokalisasi-agnostik-model-tunggal-07951-23-agustus-2026)
-  - [Simpul V2-E-037 — Analisis Matriks Konfusi & Retensi Lokalisasi (23 Agu 2026)](#simpul-v2-e-037--analisis-matriks-konfusi--retensi-lokalisasi-23-agustus-2026)
-  - [Simpul V2-E-038 — Bootstrap CI Signifikansi Peringkat Arsitektur di Kedua Korpus (23 Agu 2026)](#simpul-v2-e-038--bootstrap-ci-signifikansi-peringkat-arsitektur-di-kedua-korpus-23-agustus-2026)
-  - [Simpul V2-E-039 — Rekor Plafon Lokalisasi Agnostik WBF Ensembel 81,06% (23 Agu 2026)](#simpul-v2-e-039--rekor-plafon-lokalisasi-agnostik-wbf-ensembel-8106-23-agustus-2026)
-  - [Simpul V2-E-040 — Evaluasi Generalisasi Lintas-Domain (23 Agu 2026)](#simpul-v2-e-040--evaluasi-generalisasi-lintas-domain-23-agustus-2026)
-  - [Simpul V2-E-041 — Replikasi Independen Platform HUB & Evaluasi Domain Shift (24 Agu 2026)](#simpul-v2-e-041--replikasi-independen-platform-hub--evaluasi-domain-shift-24-agustus-2026)
-  - [Simpul V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agu 2026)](#simpul-v2-e-042--verifikasi-bobot-remote-hugging-face-dan-pipeline-empat-sisi-27-agustus-2026)
-  - [Simpul V2-E-043 — Iterasi Greedy Pengurangan Duplikasi Cluster (27 Agu 2026)](#simpul-v2-e-043--iterasi-greedy-pengurangan-duplikasi-cluster-27-agustus-2026)
-  - [Simpul V2-E-044 — Uji Classifier Crop RGB 5 Epoch pada Proposal Remote (27 Agu 2026)](#simpul-v2-e-044--uji-classifier-crop-rgb-5-epoch-pada-proposal-remote-27-agustus-2026)
+  - [Simpul V2-E-034: Evaluasi Baseline SawitMVC-Depth-YOLO v2.0.0 (763 Pohon) (22 Agu 2026)](#simpul-v2-e-034-evaluasi-garis-dasar-pembanding-sawitmvc-depth-yolo-v200-763-pohon-22-agustus-2026)
+  - [Simpul V2-E-035: Pelatihan Baseline Korpus Gabungan Combined-1716 (23 Agu 2026)](#simpul-v2-e-035-pelatihan-garis-dasar-pembanding-korpus-gabungan-combined-1716-23-agustus-2026)
+  - [Simpul V2-E-036: Rekor Plafon Lokalisasi Agnostik Model Tunggal (0,7951) (23 Agu 2026)](#simpul-v2-e-036-rekor-plafon-lokalisasi-agnostik-model-tunggal-07951-23-agustus-2026)
+  - [Simpul V2-E-037: Analisis Matriks Konfusi & Retensi Lokalisasi (23 Agu 2026)](#simpul-v2-e-037-analisis-matriks-konfusi--retensi-lokalisasi-23-agustus-2026)
+  - [Simpul V2-E-038: Bootstrap CI Signifikansi Peringkat Arsitektur di Kedua Korpus (23 Agu 2026)](#simpul-v2-e-038-bootstrap-ci-signifikansi-peringkat-arsitektur-di-kedua-korpus-23-agustus-2026)
+  - [Simpul V2-E-039: Rekor Plafon Lokalisasi Agnostik WBF Ensembel 81,06% (23 Agu 2026)](#simpul-v2-e-039-rekor-plafon-lokalisasi-agnostik-wbf-ensembel-8106-23-agustus-2026)
+  - [Simpul V2-E-040: Evaluasi Generalisasi Lintas-Domain (23 Agu 2026)](#simpul-v2-e-040-evaluasi-generalisasi-lintas-domain-23-agustus-2026)
+  - [Simpul V2-E-041: Replikasi Independen Platform HUB & Evaluasi Domain Shift (24 Agu 2026)](#simpul-v2-e-041-replikasi-independen-platform-hub--evaluasi-domain-shift-24-agustus-2026)
+  - [Simpul V2-E-042: Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agu 2026)](#simpul-v2-e-042-verifikasi-bobot-remote-hugging-face-dan-pipeline-empat-sisi-27-agustus-2026)
+  - [Simpul V2-E-043: Iterasi Greedy Pengurangan Duplikasi Cluster (27 Agu 2026)](#simpul-v2-e-043-iterasi-greedy-pengurangan-duplikasi-cluster-27-agustus-2026)
+  - [Simpul V2-E-044: Uji Classifier Crop RGB 5 Epoch pada Proposal Remote (27 Agu 2026)](#simpul-v2-e-044-uji-pengklasifikasi-citra-terpotong-rgb-5-epoch-pada-proposal-remote-27-agustus-2026)
 - [7. Ringkasan Eksekutif Temuan Ilmiah & Rekomendasi Deployment](#7-ringkasan-eksekutif-temuan-ilmiah--rekomendasi-deployment)
 
 ---
 
 ## 1. Fase 0–4: Fondasi Arsitektur Detektor & Matriks Sembilan-Sel (08–09 Agustus 2026)
 
-### Simpul V2-E-001 — Replikasi Deteksi Tiga Arsitektur pada SawitMVC 953 Pohon (09 Agustus 2026)
+### Simpul V2-E-001: Replikasi Deteksi Tiga Arsitektur pada SawitMVC 953 Pohon (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan ulang tiga arsitektur detektor (YOLO26l, RT-DETR-L, dan RF-DETR-L) pada dataset SawitMVC-YOLO (953 pohon: 716 latih / 96 validasi / 141 uji; 3.992 citra; 18.540 kotak pembatas) dengan resolusi 1.280 piksel, *batch size* 4, dan jadwal *cosine learning rate* 60 *epoch*. Evaluasi menggunakan protokol `pycocotools`.
 - **Temuan Empiris Terukur**:
@@ -100,7 +100,7 @@ timeline
 
 ---
 
-### Simpul V2-E-002 — Pencacahan Tiga Detektor pada SawitMVC 953 Pohon (09 Agustus 2026)
+### Simpul V2-E-002: Pencacahan Tiga Detektor pada SawitMVC 953 Pohon (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi pencacahan (*counting*) tandan per pohon menggunakan metode *Ridge Regression* dengan 67 fitur gabungan ($F_{all}$) pada split uji 141 pohon SawitMVC.
 - **Temuan Empiris Terukur**:
@@ -111,7 +111,7 @@ timeline
 
 ---
 
-### Simpul V2-E-003 — Deteksi Tiga Arsitektur pada 352 Pohon SawitMVC-Depth RGB (09 Agustus 2026)
+### Simpul V2-E-003: Deteksi Tiga Arsitektur pada 352 Pohon SawitMVC-Depth RGB (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan 3 arsitektur detektor pada dataset SawitMVC-Depth (352 pohon: 245 latih / 52 validasi / 55 uji; 1.408 citra, resolusi $1.280 \times 800$) modalitas RGB murni.
 - **Temuan Empiris Terukur**: Urutan performa relatif konsisten: RF-DETR-L ($mAP50 = \mathbf{0,4544}$) > RT-DETR-L ($0,4343$) > YOLO26l ($0,3606$). Nilai absolut lebih rendah akibat ukuran dataset yang lebih kecil.
@@ -120,7 +120,7 @@ timeline
 
 ---
 
-### Simpul V2-E-004 — Pencacahan Tiga Detektor RGB pada 352 Pohon (09 Agustus 2026)
+### Simpul V2-E-004: Pencacahan Tiga Detektor RGB pada 352 Pohon (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi pencacahan *Ridge +* $F_{all}$ pada split uji 55 pohon SawitMVC-Depth RGB.
 - **Temuan Empiris Terukur**: RT-DETR-L mencatat $\text{Class }\pm 1\text{ Acc}$ tertinggi (**90,91%**) dan *Macro MAE* terendah (**0,532**), mengungguli YOLO26l ($89,55\%$) dan RF-DETR-L ($88,18\%$).
@@ -129,7 +129,7 @@ timeline
 
 ---
 
-### Simpul V2-E-005 — Deteksi Tiga Arsitektur RGBD 4-Kanal pada 352 Pohon (09 Agustus 2026)
+### Simpul V2-E-005: Deteksi Tiga Arsitektur RGBD 4-Kanal pada 352 Pohon (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Penggabungan awal (*early fusion*) kanal kedalaman invers 4-kanal (BGRD TIFF) pada 352 pohon SawitMVC-Depth.
 - **Temuan Empiris Terukur**:
@@ -139,7 +139,7 @@ timeline
 
 ---
 
-### Simpul V2-E-006 — Pencacahan Tiga Detektor RGBD 4-Kanal pada 352 Pohon (09 Agustus 2026)
+### Simpul V2-E-006: Pencacahan Tiga Detektor RGBD 4-Kanal pada 352 Pohon (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi pencacahan model 4-kanal RGBD pada 55 pohon uji beserta bootstrap berpasangan 10.000 ulangan.
 - **Temuan Empiris Terukur**:
@@ -149,7 +149,7 @@ timeline
 
 ---
 
-### Simpul V2-E-007 — Analisis Sintesis Matriks 9-Sel Terstratifikasi (09 Agustus 2026)
+### Simpul V2-E-007: Analisis Sintesis Matriks 9-Sel Terstratifikasi (09 Agustus 2026)
 
 - **Rancangan Eksperimen**: Sintesis menyeluruh 9 kombinasi (3 arsitektur $\times$ 3 dataset) untuk memetakan dampak arsitektur dan kanal kedalaman.
 - **Temuan Empiris Terukur**:
@@ -163,7 +163,7 @@ timeline
 
 ## 2. Fase 5: Penelusuran Representasi Depth Alternatif (10–11 Agustus 2026)
 
-### Simpul V2-E-008 — Penyaringan Awal Representasi Depth pada YOLO26l (10–11 Agustus 2026)
+### Simpul V2-E-008: Penyaringan Awal Representasi Depth pada YOLO26l (10–11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Penyaringan awal cepat ($\le 15$ *epoch*, *patience* 3) membandingkan 4 representasi: `dropout`, `edge` (Sobel), `clipped`, dan `valid_mask` pada YOLO26l 352 pohon.
 - **Temuan Empiris Terukur**: Kandidat `edge` mencapai $mAP50$ validasi tertinggi (**0,3777**), mengungguli `valid_mask` (0,3321), `clipped` (0,3221), dan `dropout` (0,3168).
@@ -172,7 +172,7 @@ timeline
 
 ---
 
-### Simpul V2-E-009 — Penyaringan Awal Arsitektur Mid-Fusion Ber-Gerbang (11 Agustus 2026)
+### Simpul V2-E-009: Penyaringan Awal Arsitektur Mid-Fusion Ber-Gerbang (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Memindahkan kanal depth ke cabang konvolusi terpisah dengan fusi aditif ber-gerbang skalar $\gamma$ (inisialisasi taknol $0,02$) pada layer 4 YOLO26l.
 - **Temuan Empiris Terukur**: Performa mengalami stagnasi dan penurunan setelah *epoch* 3 ($mAP50$ validasi terbaik hanya **0,2087**; penghentian dini pada *epoch* 6).
@@ -181,29 +181,29 @@ timeline
 
 ---
 
-### Simpul V2-E-010 — Pelatihan Penuh 60 Epoch Encoding Sobel Edge pada YOLO26l (11 Agustus 2026)
+### Simpul V2-E-010: Pelatihan Penuh 60 Epoch Encoding Sobel Edge pada YOLO26l (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan penuh 60 *epoch* YOLO26l-RGBD dengan representasi `edge` (Sobel gradient magnitude) pada 352 pohon.
 - **Temuan Empiris Terukur**:
-  Mencatat $mAP50$ uji **0,4316** ($mAP50\text{--}95 = 0,1441$), menghasilkan peningkatan relatif **$+10,1\%$** atas representasi `inverse` ($0,3919$) dan $+19,7\%$ atas baseline RGB ($0,3606$). Kenaikan terbesar terjadi pada kelas B4 ($\Delta = +0,1139$).
+  Mencatat $mAP50$ uji **0,4316** ($mAP50\text{--}95 = 0,1441$), menghasilkan peningkatan relatif **$+10,1\%$** atas representasi `inverse` ($0,3919$) dan $+19,7\%$ atas garis dasar pembanding (*baseline*) RGB ($0,3606$). Kenaikan terbesar terjadi pada kelas B4 ($\Delta = +0,1139$).
 - **Keputusan Metodologis**: Representasi `edge` ditetapkan sebagai format masukan multimodal standar proyek.
 - **Batasan Validitas & Audit**: [`results/perkelas_pycoco_rgbd352.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/perkelas_pycoco_rgbd352.json)
 
 ---
 
-### Simpul V2-E-011 — Pelatihan Ulang Baseline RGB & Bootstrap CI Berpasangan (11 Agustus 2026)
+### Simpul V2-E-011: Pelatihan Ulang Garis dasar pembanding RGB & Bootstrap CI Berpasangan (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan ulang *baseline* RGB 352 pohon dari nol untuk uji signifikansi statistik berpasangan terhadap representasi `edge` (10.000 ulangan).
 - **Temuan Empiris Terukur**:
   Uji bootstrap menghasilkan selisih $\text{Class }\pm 1\text{ Acc}$ sebesar $+3,18\text{ pp}$ dengan selang kepercayaan 95% $[−0,50; +7,30]$ ($P = 94,3\%$). Selang kepercayaan masih mencakup nilai nol, sehingga secara ketat disimpulkan **tidak signifikan secara statistik**.
-- **Keputusan Metodologis**: Menegaskan bahwa perbaikan deteksi visual tidak serta merta memberikan keunggulan pasti pada pencacahan tanpa baseline yang stabil.
+- **Keputusan Metodologis**: Menegaskan bahwa perbaikan deteksi visual tidak serta merta memberikan keunggulan pasti pada pencacahan tanpa garis dasar pembanding yang stabil.
 - **Batasan Validitas & Audit**: [`results/bootstrap_ci_352.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/bootstrap_ci_352.json)
 
 ---
 
 ## 3. Fase 6: Diagnostik Sinyal Depth & Desain Pipeline Dua-Tahap (11–12 Agustus 2026)
 
-### Simpul V2-E-012 — Analisis Kesenjangan mAP50 Akibat Kelangkaan Kelas B3/B4 (11 Agustus 2026)
+### Simpul V2-E-012: Analisis Kesenjangan mAP50 Akibat Kelangkaan Kelas B3/B4 (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Investigasi kesenjangan $mAP50$ antara dataset 953 pohon ($0,5435$) dan 352 pohon ($0,3606$) melalui analisis distribusi label.
 - **Temuan Empiris Terukur**:
@@ -213,7 +213,7 @@ timeline
 
 ---
 
-### Simpul V2-E-013 — Dekomposisi Galat Lokalisasi vs Kesalahan Kelas (11 Agustus 2026)
+### Simpul V2-E-013: Dekomposisi Galat Lokalisasi vs Kesalahan Kelas (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi performa lokalisasi murni 1-kelas (*class-agnostic*) dibandingkan performa deteksi 4-kelas (*class-aware*) pada split uji 352 pohon.
 - **Temuan Empiris Terukur**:
@@ -223,7 +223,7 @@ timeline
 
 ---
 
-### Simpul V2-E-014 — Sifat Sinyal Kedalaman: Relief Lokal Ordinal vs Skala Metrik (11 Agustus 2026)
+### Simpul V2-E-014, Sifat Sinyal Kedalaman: Relief Lokal Ordinal vs Skala Metrik (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pengukuran sifat fisik sinyal kedalaman sensor Orbbec pada 2.299 kotak pembatas SawitMVC-Depth.
 - **Temuan Empiris Terukur**:
@@ -235,16 +235,16 @@ timeline
 
 ---
 
-### Simpul V2-E-015 — Model Pengklasifikasi Kematangan pada Citra Terpotong (11 Agustus 2026)
+### Simpul V2-E-015: Model Pengklasifikasi Kematangan pada Citra Terpotong (11 Agustus 2026)
 
-- **Rancangan Eksperimen**: Melatih model pengklasifikasi kematangan ConvNeXt-Tiny hybrid (CE + CORAL ordinal loss) dengan input 4-kanal (RGB + mask kotak pembatas) pada 1.517 citra terpotong (*crop*) SawitMVC-Depth, didahului prapelatihan pada 846 pohon 953 bebas bocor.
+- **Rancangan Eksperimen**: Melatih model pengklasifikasi kematangan ConvNeXt-Tiny hybrid (CE + fungsi rugi ordinal CORAL) dengan input 4-kanal (RGB + mask kotak pembatas) pada 1.517 citra terpotong (*crop*) SawitMVC-Depth, didahului prapelatihan pada 846 pohon 953 bebas bocor.
 - **Temuan Empiris Terukur**: Model pengklasifikasi *crop* mencapai akurasi uji **$63,09\% \pm 2,03\%$**, mengungguli klasifikasi detektor satu-tahap ($46,59\%$) sebesar $+16,5\text{ pp}$ absolut.
 - **Keputusan Metodologis**: Mengadopsi arsitektur ConvNeXt *crop classifier* sebagai kepala klasifikasi Tahap 2.
 - **Batasan Validitas & Audit**: [`scripts/train_crop_classifier.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/train_crop_classifier.py)
 
 ---
 
-### Simpul V2-E-016 — Pembuktian Redundansi Sinyal Kematangan Depth terhadap RGB (11 Agustus 2026)
+### Simpul V2-E-016: Pembuktian Redundansi Sinyal Kematangan Depth terhadap RGB (11 Agustus 2026)
 
 - **Rancangan Eksperimen**: Menguji kontribusi fitur relief kedalaman terhadap akurasi pengklasifikasi kematangan (studi ablasi 3 seed dan statistik terpool).
 - **Temuan Empiris Terukur**:
@@ -254,7 +254,7 @@ timeline
 
 ---
 
-### Simpul V2-E-017 — Batas Atas Teoretis Lokalisasi Class-Agnostic 1-Kelas (12 Agustus 2026)
+### Simpul V2-E-017: Batas Atas Teoretis Lokalisasi Class-Agnostic 1-Kelas (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pengukuran plafon performa lokalisasi murni 1-kelas ("tandan") pada detektor YOLO26l dan RT-DETR-L.
 - **Temuan Empiris Terukur**:
@@ -264,7 +264,7 @@ timeline
 
 ---
 
-### Simpul V2-E-018 — Evaluasi Transfer Prapelatihan 953 ke 352 & Patience (12 Agustus 2026)
+### Simpul V2-E-018: Evaluasi Transfer Prapelatihan 953 ke 352 & Patience (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Menguji apakah prapelatihan agnostik 953 yang lebih tinggi ($0,8101$ vs $0,7604$) bertransfer ke penyesuaian terarah (*fine-tuning*) 352, serta menganalisis efek *early stopping patience*.
 - **Temuan Empiris Terukur**:
@@ -274,7 +274,7 @@ timeline
 
 ---
 
-### Simpul V2-E-019 — Ensembel WBF Lokalisasi Agnostik & Penelusuran Inferensi (12 Agustus 2026)
+### Simpul V2-E-019: Ensembel WBF Lokalisasi Agnostik & Penelusuran Inferensi (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Menggabungkan keluaran detektor agnostik melalui *Weighted Box Fusion* (WBF) dan menyapu parameter ambang inferensi pada split validasi.
 - **Temuan Empiris Terukur**:
@@ -284,7 +284,7 @@ timeline
 
 ---
 
-### Simpul V2-E-020 — Integrasi Pipeline Dua-Tahap v1 s.d. v4 (12 Agustus 2026)
+### Simpul V2-E-020: Integrasi Pipeline Dua-Tahap v1 s.d. v4 (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Mengintegrasikan detektor lokalisasi Tahap 1 dengan ensembel pengklasifikasi kematangan Tahap 2 melalui penilaian probabilitas multi-kelas dan TTA.
 - **Temuan Empiris Terukur**:
@@ -294,16 +294,16 @@ timeline
 
 ---
 
-### Simpul V2-E-021 — Pelatihan Gabungan 953+352 pada Pengklasifikasi Crop (12 Agustus 2026)
+### Simpul V2-E-021: Pelatihan Gabungan 953+352 pada Pengklasifikasi Citra terpotong (12 Agustus 2026)
 
-- **Rancangan Eksperimen**: Melatih pengklasifikasi *crop* pada korpus gabungan 953+352 ($18.059\text{ crop}$) untuk mengatasi kelangkaan kelas B3/B4.
+- **Rancangan Eksperimen**: Melatih pengklasifikasi *crop* pada korpus gabungan 953+352 ($18.059\text{ citra terpotong (*crop*)}$) untuk mengatasi kelangkaan kelas B3/B4.
 - **Temuan Empiris Terukur**: Pelatihan gabungan mencatat akurasi validasi tinggi ($0,6953$) namun turun di data uji ($0,6724$). Pada evaluasi akhir, konfigurasi v4 unggul di $mAP50$ ($0,4500$), sedangkan v3 unggul di pencacahan ($\text{Class }\pm 1\text{ Acc} = 88,18\%$).
 - **Keputusan Metodologis**: Menegaskan divergensi objektif: optimasi $mAP50$ (pemeringkatan probabilitas) tidak identik dengan optimasi pencacahan (keputusan tegas argmax).
 - **Batasan Validitas & Audit**: [`results/counting_twostage.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/counting_twostage.json)
 
 ---
 
-### Simpul V2-E-022 — Penemuan Pergeseran Temporal 80 Hari Antar-Dataset (12 Agustus 2026)
+### Simpul V2-E-022: Penemuan Pergeseran Temporal 80 Hari Antar-Dataset (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Audit silsilah metadata tanggal perekaman pada citra dengan nomor identitas pohon yang sama antara dataset 953 dan 352 pohon.
 - **Temuan Empiris Terukur**:
@@ -313,7 +313,7 @@ timeline
 
 ---
 
-### Simpul V2-E-023 — Evaluasi Daya Statistik & Selang Kepercayaan Split 352 (12 Agustus 2026)
+### Simpul V2-E-023: Evaluasi Daya Statistik & Selang Kepercayaan Split 352 (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi selang kepercayaan bootstrap 95% tingkat citra (500 ulangan berpasangan) pada split uji SawitMVC-Depth (220 citra, 410 kotak).
 - **Temuan Empiris Terukur**:
@@ -323,7 +323,7 @@ timeline
 
 ---
 
-### Simpul V2-E-024 — Uji Lokalisasi Murni Modalitas Depth (12 Agustus 2026)
+### Simpul V2-E-024: Uji Lokalisasi Murni Modalitas Depth (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Uji komparasi berpasangan terkontrol ketat (resep, bobot inisialisasi, dan jadwal identik) antara model 4-kanal `agn352_4ch` (RGB + Sobel `edge`) vs kontrol RGB 3-kanal `agn352_ft3` pada tugas lokalisasi murni 1-kelas.
 - **Temuan Empiris Terukur**:
@@ -333,9 +333,9 @@ timeline
 
 ---
 
-### Simpul V2-E-025 — Audit Partisi Bersih agn953_full vs Kebocoran Pretrain (12 Agustus 2026)
+### Simpul V2-E-025: Audit Partisi Bersih agn953_full vs Kebocoran Pretrain (12 Agustus 2026)
 
-- **Rancangan Eksperimen**: Audit evaluasi model `agn953_full` pada partisi uji yang benar-benar bersih vs partisi uji penuh yang beririsan dengan data prapelatihan.
+- **Rancangan Eksperimen**: Audit evaluasi model `agn953_full` pada partisi uji yang bersih vs partisi uji penuh yang beririsan dengan data prapelatihan.
 - **Temuan Empiris Terukur**:
   Partisi `test_penuh` (141 pohon) ternyata memuat **122 pohon ($87\%$) yang ikut terpakai saat prapelatihan** ($AP50 = 0,8090$, *train-on-test*). Evaluasi pada partisi uji bersih (`test_bersih`, 19 pohon / 316 kotak tak tersentuh) menghasilkan skor riil **$AP50 = \mathbf{0,7702}$**.
 - **Keputusan Metodologis**: Menarik angka $0,8090$ dari klaim generalisasi dan menetapkan $0,7702$ sebagai nilai acuan valid.
@@ -343,7 +343,7 @@ timeline
 
 ---
 
-### Simpul V2-E-026 — Replikasi Bootstrap CI Angka Utama Dua-Tahap v4 (12 Agustus 2026)
+### Simpul V2-E-026: Replikasi Bootstrap CI Angka Utama Dua-Tahap v4 (12 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan ulang dan evaluasi bootstrap 1.000 ulangan berpasangan untuk menguji signifikansi konfigurasi Dua-Tahap v4 terhadap YOLO26l-RGBD `edge`.
 - **Temuan Empiris Terukur**:
@@ -355,16 +355,16 @@ timeline
 
 ## 4. Fase 7: Matriks Depth Monokular & Audit Partisi Bebas Bocor (15 Agustus 2026)
 
-### Simpul V2-E-027 — Evaluasi Sel 6 (953 RGB+Mono 4-Kanal) (15 Agustus 2026)
+### Simpul V2-E-027: Evaluasi Sel 6 (953 RGB+Mono 4-Kanal) (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Menguji penambahan peta kedalaman estimasi monokular (`yolo26l-depth.pt`) sebagai kanal ke-4 pada dataset SawitMVC 953 pohon (split uji 2.612 kotak pembatas).
-- **Temuan Empiris Terukur**: Menambahkan depth monokular menyebabkan penurunan performa deteksi sebesar **$−0,0475$** pada split uji ($mAP50 = \mathbf{0,4960}$ vs baseline RGB Sel 5 $\mathbf{0,5436}$). Penurunan terjadi konsisten di keempat kelas kematangan.
+- **Temuan Empiris Terukur**: Menambahkan depth monokular menyebabkan penurunan performa deteksi sebesar **$−0,0475$** pada split uji ($mAP50 = \mathbf{0,4960}$ vs garis dasar pembanding RGB Sel 5 $\mathbf{0,5436}$). Penurunan terjadi konsisten di keempat kelas kematangan.
 - **Keputusan Metodologis**: Menolak hipotesis keunggulan depth monokular pada dataset 953 pohon.
 - **Batasan Validitas & Audit**: [`logs_ringkas/latih_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/latih_sel6_953_rgbmono.log) · [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log)
 
 ---
 
-### Simpul V2-E-028 — Audit 39 Citra TIFF Korup pada Dataset Turunan (15 Agustus 2026)
+### Simpul V2-E-028: Audit 39 Citra TIFF Korup pada Dataset Turunan (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pemindaian integritas data turunan multi-kanal menggunakan skrip [`scripts/perbaiki_tiff_korup.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/perbaiki_tiff_korup.py).
 - **Temuan Empiris Terukur**: Ditemukan 39 berkas TIFF korup pada partisi turunan yang terlewati diam-diam oleh *dataloader* Ultralytics. Berkas berhasil dibangun ulang dan diverifikasi nol korup.
@@ -373,7 +373,7 @@ timeline
 
 ---
 
-### Simpul V2-E-029 — Bootstrap CI Berpasangan Sel 6 vs Sel 5 (15 Agustus 2026)
+### Simpul V2-E-029: Bootstrap CI Berpasangan Sel 6 vs Sel 5 (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Uji bootstrap berpasangan 2.000 ulangan pada 2.612 kotak uji untuk mengevaluasi signifikansi penurunan performa Sel 6 terhadap Sel 5.
 - **Temuan Empiris Terukur**:
@@ -383,17 +383,17 @@ timeline
 
 ---
 
-### Simpul V2-E-030 — Evaluasi Sel 3 (352 RGB+Mono 4-Kanal) (15 Agustus 2026)
+### Simpul V2-E-030: Evaluasi Sel 3 (352 RGB+Mono 4-Kanal) (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan model 4-kanal RGB+Mono pada SawitMVC-Depth 352 pohon.
 - **Temuan Empiris Terukur**:
-  Mencatat $mAP50$ uji $0,3943$ (vs baseline RGB $0,3677$, $\Delta = +0,0266$, CI95 $[−0,0270; +0,0739]$, tidak signifikan). Peringkat data validasi ($1 > 3 > 2$) terbukti terbalik terhadap data uji ($2 > 3 > 1$).
+  Mencatat $mAP50$ uji $0,3943$ (vs garis dasar pembanding RGB $0,3677$, $\Delta = +0,0266$, CI95 $[−0,0270; +0,0739]$, tidak signifikan). Peringkat data validasi ($1 > 3 > 2$) terbukti terbalik terhadap data uji ($2 > 3 > 1$).
 - **Keputusan Metodologis**: Menetapkan larangan memeringkat model hanya berdasarkan skor validasi split kecil.
 - **Batasan Validitas & Audit**: [`logs_ringkas/latih_sel3_352_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/latih_sel3_352_rgbmono.log) · [`results/boot_sel3_vs_sel1.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/boot_sel3_vs_sel1.json)
 
 ---
 
-### Simpul V2-E-031 — Evaluasi Sel 4 (352 5-Kanal RGB+Depth+Mono) (15 Agustus 2026)
+### Simpul V2-E-031: Evaluasi Sel 4 (352 5-Kanal RGB+Depth+Mono) (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan model 5-kanal (RGB + Depth Fisik + Depth Monokular) pada 352 pohon tuntas 60 *epoch*.
 - **Temuan Empiris Terukur**:
@@ -403,7 +403,7 @@ timeline
 
 ---
 
-### Simpul V2-E-032 — Sintesis Matriks 6-Sel Depth Monokular (15 Agustus 2026)
+### Simpul V2-E-032: Sintesis Matriks 6-Sel Depth Monokular (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Kompilasi menyeluruh 6 sel matriks evaluasi depth monokular pada protokol deterministik yang sama.
 - **Temuan Empiris Terukur**:
@@ -413,7 +413,7 @@ timeline
 
 ---
 
-### Simpul V2-E-033 — Audit Pembatas Silsilah Partisi 953 ke 352 (15 Agustus 2026)
+### Simpul V2-E-033: Audit Pembatas Silsilah Partisi 953 ke 352 (15 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pemeriksaan silsilah irisan pohon antara split latih 953 dan split uji 352.
 - **Temuan Empiris Terukur**:
@@ -425,18 +425,18 @@ timeline
 
 ## 5. Subproyek Pipeline Per-Tandan: Asosiasi Multi-Tampak & Prior Rotasi (17–18 Agustus 2026)
 
-### Simpul PT-E-000 s.d. PT-E-008 — Penemuan Prior Arah Putar Pengambilan Foto (17 Agustus 2026)
+### Simpul PT-E-000 s.d. PT-E-008: Penemuan Prior Arah Putar Pengambilan Foto (17 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi bertingkat sistem asosiasi tandan lintas-sisi pohon melalui 4 gerbang verifikasi (G0: agregasi multi-tampak, G1: mutu penaut, G2: end-to-end tanpa GT, G3: pencacahan klaster).
 - **Temuan Empiris Terukur**:
-  1. *Lolos Gerbang G0 (PT-E-001)*: Agregasi multi-tampak oracle meningkatkan akurasi kematangan sebesar **$+4,36\text{ pp}$** (CI95 $[+2,33; +6,25]$) dengan aturan ordinal $R4$.
+  1. *Lolos Gerbang G0 (PT-E-001)*: Agregasi multi-tampak model batas atas teoretis (*oracle*) meningkatkan akurasi kematangan sebesar **$+4,36\text{ pp}$** (CI95 $[+2,33; +6,25]$) dengan aturan ordinal $R4$.
   2. *Terobosan Prior Arah Rotasi (PT-E-008)*: Fotografer merekam pohon secara memutar **searah jarum jam (*clockwise*)**. Pasangan tandan yang sama bergerak konsisten ke kanan pada sudut $+90^\circ$ ($98,6\%$) dan ke kiri pada sudut $+270^\circ$ ($99,7\%$). Menerapkan pergeseran posisi bertanda menaikkan skor $F1$ penaut dari $0,3979$ ke $\mathbf{0,6486}$ (**Gerbang G1 Lolos**) dan akurasi end-to-end menjadi $0,7179$ (**Gerbang G2 Lolos**).
 - **Keputusan Metodologis**: Mengadopsi prior arah putar topologis sebagai modul wajib penaut graf.
 - **Batasan Validitas & Audit**: [`pipeline-pertandan/results/harapan_geser.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/harapan_geser.json) · [`pipeline-pertandan/results/pt_e_001_oracle.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/pt_e_001_oracle.json)
 
 ---
 
-### Simpul PT-E-009 s.d. PT-E-013 — Analisis Kepadatan Adegan & Pemalsuan Rekonstruksi 3D (17 Agustus 2026)
+### Simpul PT-E-009 s.d. PT-E-013: Analisis Kepadatan Adegan & Pemalsuan Rekonstruksi 3D (17 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi sapuan ambang keyakinan deteksi, replikasi pada SawitMVC-Depth 352, analisis kepadatan objek, dan uji rekonstruksi 3D berbasis depth metrik.
 - **Temuan Empiris Terukur**:
@@ -447,14 +447,14 @@ timeline
 
 ---
 
-### Simpul PT-E-014 s.d. PT-E-036 — Ensembel Klasifikasi, Loss CORN, & Plafon Teoretis DAMIMAS (18 Agustus 2026)
+### Simpul PT-E-014 s.d. PT-E-036: Ensembel Klasifikasi, fungsi rugi CORN, & Plafon Teoretis DAMIMAS (18 Agustus 2026)
 
-- **Rancangan Eksperimen**: Evaluasi menyeluruh pada sub-populasi DAMIMAS mencakup pelatihan penaut pada deteksi riil (PT-E-017), propagasi keyakinan multi-tampak (PT-E-024), loss ordinal CORN vs CORAL (PT-E-030), dan analisis batas teoretis pemilihan model dinamis (PT-E-033 s.d. PT-E-036).
+- **Rancangan Eksperimen**: Evaluasi menyeluruh pada sub-populasi DAMIMAS mencakup pelatihan penaut pada deteksi riil (PT-E-017), propagasi keyakinan multi-tampak (PT-E-024), fungsi rugi ordinal CORN vs CORAL (PT-E-030), dan analisis batas teoretis pemilihan model dinamis (PT-E-033 s.d. PT-E-036).
 - **Temuan Empiris Terukur**:
   1. *Penaut di Ruang Deteksi (PT-E-017)*: Melatih penaut pada deteksi nyata melipatgandakan $F1$ dari $0,1492$ menjadi $\mathbf{0,3788}$ ($AUC = \mathbf{0,9422}$).
   2. *Propagasi Multi-View (PT-E-024)*: Mempropagasi bukti kelas antar-sudut pandang meningkatkan $mAP50$ dari $0,5881$ menjadi $\mathbf{0,5965}$ ($mAP50\text{--}95 = 0,2743$).
-  3. *Keunggulan Loss CORN (PT-E-030)*: Loss ordinal CORN mencapai akurasi uji **$69,83\%$**, mengatasi keruntuhan model CORAL ($33,05\%$) sebesar $+36,8\text{ pp}$.
-  4. *Ensembel Terbobot (PT-E-029)*: Rata-rata terbobot mencapai akurasi uji **$74,39\%$** (CI95 $[−0,15; +3,55]$). Batas teoretis penggabungan terbukti mentok pada $75,23\%$.
+  3. *Keunggulan fungsi rugi CORN (PT-E-030)*: fungsi rugi ordinal CORN mencapai akurasi uji **$69,83\%$**, mengatasi keruntuhan model CORAL ($33,05\%$) sebesar $+36,8\text{ pp}$.
+  4. *Ensembel Terbobot (PT-E-029)*: Rata-rata terbobot mencapai akurasi uji **$74,39\%$** (CI95 $[−0,15; +3,55]$). Batas teoretis penggabungan terbukti mencapai batas saturasi pada $75,23\%$.
 - **Keputusan Metodologis**: Mengunci pipeline produksi DAMIMAS menggunakan kombinasi Penaut Proposal Unik + Propagasi Multi-View + Ensembel ConvNeXt/Set-Transformer + Aturan $R4$.
 - **Batasan Validitas & Audit**: [`pipeline-pertandan/results/damimas_ensemble_classifier_all.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/damimas_ensemble_classifier_all.json) · [`pipeline-pertandan/logs_ringkas/pt_e_031_spesialis_batas.log`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/logs_ringkas/pt_e_031_spesialis_batas.log)
 
@@ -462,9 +462,9 @@ timeline
 
 ## 6. Fase Ekspansi Korpus: SawitMVC-Depth v2.0.0 (763 Pohon) & Combined-1716 (22–24 Agustus 2026)
 
-### Simpul V2-E-034 — Evaluasi Baseline SawitMVC-Depth-YOLO v2.0.0 (763 Pohon) (22 Agustus 2026)
+### Simpul V2-E-034: Evaluasi Garis dasar pembanding SawitMVC-Depth-YOLO v2.0.0 (763 Pohon) (22 Agustus 2026)
 
-- **Rancangan Eksperimen**: Pelatihan baseline deterministik seed 42 pada rilis `SawitMVC-Depth-YOLO` v2.0.0 (763 pohon multi-kampanye: DAMIMAS, MARIHAT, TOPAZ; 440 citra uji) pada YOLO26l, RT-DETR-L, dan RF-DETR-L.
+- **Rancangan Eksperimen**: Pelatihan garis dasar pembanding deterministik seed 42 pada rilis `SawitMVC-Depth-YOLO` v2.0.0 (763 pohon multi-kampanye: DAMIMAS, MARIHAT, TOPAZ; 440 citra uji) pada YOLO26l, RT-DETR-L, dan RF-DETR-L.
 - **Temuan Empiris Terukur**:
   RF-DETR-L mencapai $mAP50 = \mathbf{0,6129}$ ($mAP50\text{--}95 = 0,2335$), mengungguli RT-DETR-L ($0,5580$) dan YOLO26l ($0,5163$). Model paling unggul pada kampanye TOPAZ ($0,6369$) dan terlemah pada DAMIMAS ($0,4460$).
 - **Keputusan Metodologis**: Menetapkan RF-DETR-L sebagai detektor terbaik pada korpus 763 pohon.
@@ -472,7 +472,7 @@ timeline
 
 ---
 
-### Simpul V2-E-035 — Pelatihan Baseline Korpus Gabungan Combined-1716 (23 Agustus 2026)
+### Simpul V2-E-035: Pelatihan Garis dasar pembanding Korpus Gabungan Combined-1716 (23 Agustus 2026)
 
 - **Rancangan Eksperimen**: Pelatihan pada korpus gabungan skala penuh `SawitMVC-Combined-1716-RGB` (1.716 catatan pohon / 7.044 citra; split uji 1.052 citra, 3.513 kotak pembatas).
 - **Temuan Empiris Terukur**:
@@ -482,9 +482,9 @@ timeline
 
 ---
 
-### Simpul V2-E-036 — Rekor Plafon Lokalisasi Agnostik Model Tunggal (0,7951) (23 Agustus 2026)
+### Simpul V2-E-036: Rekor Plafon Lokalisasi Agnostik Model Tunggal (0,7951) (23 Agustus 2026)
 
-- **Rancangan Eksperimen**: Evaluasi performa lokalisasi murni 1-kelas (*class-agnostic*) pada dump prediksi uji keenam model baru tanpa pelatihan ulang melalui skrip [`scripts/eval_agnostic_from_npz.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/eval_agnostic_from_npz.py).
+- **Rancangan Eksperimen**: Evaluasi performa lokalisasi murni 1-kelas (*class-agnostic*) pada *dump* prediksi uji keenam model baru tanpa pelatihan ulang melalui skrip [`scripts/eval_agnostic_from_npz.py`](file:///D:/Work/Assisten-Dosen/project-expertise/scripts/eval_agnostic_from_npz.py).
 - **Temuan Empiris Terukur**:
   RF-DETR-L new763 mencetak rekor lokalisasi model tunggal tertinggi di seluruh proyek dengan **$AP50 = \mathbf{0,7951}$** ($AP50\text{--}95 = 0,3003$ pada 440 citra uji) dan $AP50 = 0,7850$ pada Combined-1716 (1.052 citra uji), mengungguli seluruh rekor terdahulu yang sah ($0,7702$ pada V2-E-025).
 - **Keputusan Metodologis**: Menetapkan RF-DETR-L sebagai model lokalisasi tunggal terkuat.
@@ -492,7 +492,7 @@ timeline
 
 ---
 
-### Simpul V2-E-037 — Analisis Matriks Konfusi & Retensi Lokalisasi (23 Agustus 2026)
+### Simpul V2-E-037: Analisis Matriks Konfusi & Retensi Lokalisasi (23 Agustus 2026)
 
 - **Rancangan Eksperimen**: Analisis matriks konfusi bersyarat pada kotak yang terdeteksi (*IoU* $\ge 0,5$, *confidence* $\ge 0,25$) pada keenam model baru.
 - **Temuan Empiris Terukur**:
@@ -502,7 +502,7 @@ timeline
 
 ---
 
-### Simpul V2-E-038 — Bootstrap CI Signifikansi Peringkat Arsitektur di Kedua Korpus (23 Agustus 2026)
+### Simpul V2-E-038: Bootstrap CI Signifikansi Peringkat Arsitektur di Kedua Korpus (23 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi bootstrap 500 ulangan berpasangan pada tingkat citra untuk menguji signifikansi perbedaan performa antar-arsitektur.
 - **Temuan Empiris Terukur**:
@@ -515,7 +515,7 @@ timeline
 
 ---
 
-### Simpul V2-E-039 — Rekor Plafon Lokalisasi Agnostik WBF Ensembel 81,06% (23 Agustus 2026)
+### Simpul V2-E-039: Rekor Plafon Lokalisasi Agnostik WBF Ensembel 81,06% (23 Agustus 2026)
 
 - **Rancangan Eksperimen**: Evaluasi metrik operasional presisi-recall, penelusuran ambang keyakinan, dan ensembel *Weighted Box Fusion* (WBF) 3 detektor.
 - **Temuan Empiris Terukur**:
@@ -528,27 +528,27 @@ timeline
 
 ---
 
-### Simpul V2-E-040 — Evaluasi Generalisasi Lintas-Domain (23 Agustus 2026)
+### Simpul V2-E-040: Evaluasi Generalisasi Lintas-Domain (23 Agustus 2026)
 
 - **Rancangan Eksperimen**: Uji transfer performa tanpa pelatihan ulang pada 12 kombinasi (6 model $\times$ 2 domain luar: SawitMVC 953 kamera HP dan SawitMVC-Depth 352).
 - **Temuan Empiris Terukur**:
-  Saat diuji pada domain kamera asing (SawitMVC 953), RT-DETR-L mengalami degradasi terparah ($−80,1\%$, $mAP50$ anjlok dari $0,5580 \to 0,1110$), sedangkan YOLO26l terbukti paling tangguh (*robust*, retensi $45,1\%$, $mAP50 = 0,2331$). Model Combined-1716 mempertahankan performa $98,9\%\text{--}100,2\%$ karena data latihnya telah mencakup kedua domain kamera.
+  Saat diuji pada domain kamera asing (SawitMVC 953), RT-DETR-L mengalami degradasi terparah ($−80,1\%$, $mAP50$ menurun drastis dari $0,5580 \to 0,1110$), sedangkan YOLO26l terbukti paling tangguh (*robust*, retensi $45,1\%$, $mAP50 = 0,2331$). Model Combined-1716 mempertahankan performa $98,9\%\text{--}100,2\%$ karena data latihnya telah mencakup kedua domain kamera.
 - **Keputusan Metodologis**: Menetapkan pedoman deployment: arsitektur konvolusi murni (YOLO26l) wajib dipilih jika perangkat keras kamera di lapangan bersifat heterogen.
 - **Batasan Validitas & Audit**: [`results/cross_eval/`](file:///D:/Work/Assisten-Dosen/project-expertise/results/cross_eval/)
 
 ---
 
-### Simpul V2-E-041 — Replikasi Independen Platform HUB & Evaluasi Domain Shift (24 Agustus 2026)
+### Simpul V2-E-041: Replikasi Independen Platform HUB & Evaluasi Domain Shift (24 Agustus 2026)
 
 - **Rancangan Eksperimen**: Replikasi independen menggunakan model yang dilatih pada platform Ultralytics HUB (YOLO26l, YOLO26x, RT-DETR-L) pada 996 citra uji Combined-1716 (mengeksklusikan subset LONSUM).
 - **Temuan Empiris Terukur**:
-  Mengonfirmasi temuan V2-E-040: RT-DETR-L unggul di dalam domain latih ($mAP50 = 0,6070$), namun anjlok $−71\%$ di luar domain ($0,1463$). YOLO26x terbukti paling stabil pada evaluasi 4-kelas gabungan ($mAP50 = 0,2742$).
+  Mengonfirmasi temuan V2-E-040: RT-DETR-L unggul di dalam domain latih ($mAP50 = 0,6070$), namun menurun drastis $−71\%$ di luar domain ($0,1463$). YOLO26x terbukti paling stabil pada evaluasi 4-kelas gabungan ($mAP50 = 0,2742$).
 - **Keputusan Metodologis**: Memvalidasi ketangguhan arsitektur konvolusional terhadap pergeseran domain visual melalui *toolchain* independen.
 - **Batasan Validitas & Audit**: [`results/local_eval_combined1716_no_lonsum/summary.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/local_eval_combined1716_no_lonsum/summary.json)
 
 ---
 
-### Simpul V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agustus 2026)
+### Simpul V2-E-042: Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi (27 Agustus 2026)
 
 - **Rancangan Eksperimen**: Mengambil hanya enam bobot detektor yang diperlukan dari bucket `ULM-DS-Lab/project-expertise-backup`, lalu menjalankan 12 evaluasi model tunggal pada test lokal SawitMVC-Depth-YOLO (440 citra, 110 pohon) dan SawitMVC-YOLO (588 citra, 141 pohon). Tiga model pada masing-masing bank (`new763` dan `combined1716`) digabungkan dengan WBF IoU 0,60 dan diproses melalui penaut empat sisi berbasis prior rotasi yang dikalibrasi dari data latih.
 - **Temuan Empiris Terukur**:
@@ -561,9 +561,9 @@ timeline
 
 ---
 
-### Simpul V2-E-043 — Iterasi greedy pengurangan duplikasi cluster (27 Agustus 2026)
+### Simpul V2-E-043: Iterasi greedy pengurangan duplikasi cluster (27 Agustus 2026)
 
-- **Rancangan Eksperimen**: Menyapu confidence proposal, confidence
+- **Rancangan Eksperimen**: Menyapu skor keyakinan (*confidence*) proposal, skor keyakinan
   singleton, threshold linker, pasangan sisi, ukuran cluster maksimum, dan
   probabilitas kelas penuh dari WBF pada dua test set lokal.
 - **Temuan Empiris**: Dengan bank `combined1716`, F1 fisik naik dari 0,6140
@@ -573,12 +573,12 @@ timeline
   batas atas engineering; belum merupakan estimasi hold-out produksi.
 - **Artefak**: [`results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md`](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md) · [`metrics/pipeline_combined1716_greedy_test_tuned.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json)
 
-### Simpul V2-E-044 — Uji classifier crop RGB 5 epoch pada proposal remote (27 Agustus 2026)
+### Simpul V2-E-044: Uji pengklasifikasi citra terpotong RGB 5 epoch pada proposal remote (27 Agustus 2026)
 
 - **Rancangan Eksperimen**: ConvNeXt-Tiny hybrid softmax+CORAL dilatih 5
-  epoch pada 16.542 crop/841 pohon, lalu probabilitasnya diuji sebagai
+  epoch pada 16.542 citra terpotong/841 pohon, lalu probabilitasnya diuji sebagai
   pengganti dan blend dengan soft-vote WBF pada 14.643 proposal test 953.
-- **Temuan Empiris**: C2-only sedikit menaikkan F1/counting tetapi menurunkan
+- **Temuan Empiris**: C2-only sedikit menaikkan F1/pencacahan (*counting*) tetapi menurunkan
   match class accuracy dari 70,71% menjadi 62,95% dan macro-F1 E2E dari 0,5410
   menjadi 0,5234. Blend WBF 75% + C2 25% menghasilkan macro-F1 E2E 0,5469
   dengan F1 fisik 0,8296 dan MAE 1,644.
@@ -625,8 +625,8 @@ graph TD
 | **V2-E-027** | 15 Agu 2026 | Depth monokular menaikkan performa | Sel 6 $mAP50 = 0,4960$ vs $0,5436$ ($−0,0476$) | **Gugur (Degradasi Sig.)** | [`logs_ringkas/eval_sel6_953_rgbmono.log`](file:///D:/Work/Assisten-Dosen/project-expertise/logs_ringkas/eval_sel6_953_rgbmono.log) |
 | **PT-E-008** | 17 Agu 2026 | Prior arah putar kamera memangkas kandidat | Penaut $F1 = \mathbf{0,6486}$, G1 & G2 lolos | **Terkonfirmasi (Krusial)** | [`pipeline-pertandan/results/harapan_geser.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/harapan_geser.json) |
 | **PT-E-030** | 18 Agu 2026 | *Loss* ordinal CORN mengatasi CORAL | Akurasi uji CORN **69,83%** vs CORAL 33,05% | **Terkonfirmasi** | [`pipeline-pertandan/results/damimas_classifier_corn_s42.json`](file:///D:/Work/Assisten-Dosen/project-expertise/pipeline-pertandan/results/damimas_classifier_corn_s42.json) |
-| **V2-E-034** | 22 Agu 2026 | Evaluasi baseline SawitMVC-Depth v2.0.0 | RF-DETR-L $mAP50 = \mathbf{0,6129}$ (new763) | **Terkonfirmasi** | [`results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log) |
-| **V2-E-035** | 23 Agu 2026 | Baseline korpus gabungan Combined-1716 | RF-DETR-L $mAP50 = \mathbf{0,5960}$ (1716) | **Terkonfirmasi** | [`results/combined1716/runner.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/combined1716/runner.log) |
+| **V2-E-034** | 22 Agu 2026 | Evaluasi garis dasar pembanding SawitMVC-Depth v2.0.0 | RF-DETR-L $mAP50 = \mathbf{0,6129}$ (new763) | **Terkonfirmasi** | [`results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/logs_ringkas/new763_rfdetr_l_rgb_s42_i1280.log) |
+| **V2-E-035** | 23 Agu 2026 | Garis dasar pembanding korpus gabungan Combined-1716 | RF-DETR-L $mAP50 = \mathbf{0,5960}$ (1716) | **Terkonfirmasi** | [`results/combined1716/runner.log`](file:///D:/Work/Assisten-Dosen/project-expertise/results/combined1716/runner.log) |
 | **V2-E-036** | 23 Agu 2026 | Rekor lokalisasi model tunggal | RF-DETR-L $AP50 = \mathbf{0,7951}$ (new763) | **Terkonfirmasi** | [`results/agnostic_ap50_sesi2026-08.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/agnostic_ap50_sesi2026-08.json) |
 | **V2-E-038** | 23 Agu 2026 | Signifikansi peringkat arsitektur | RF-DETR-L vs YOLO26l $P = 0,000$ di 763 & 1716 | **Terkonfirmasi Sig.** | [`results/bootstrap_map_sesi2026-08.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/bootstrap_map_sesi2026-08.json) |
 | **V2-E-039** | 23 Agu 2026 | Rekor lokalisasi agnostik WBF ensembel | WBF Combined-1716 $AP50 = \mathbf{0,8106}$ ($81,06\%$) | **Terkonfirmasi (Rekor)** | [`results/extra_metrics_sesi2026-08.json`](file:///D:/Work/Assisten-Dosen/project-expertise/results/extra_metrics_sesi2026-08.json) |

@@ -3,7 +3,7 @@
 | Butir | Isi |
 |---|---|
 | Penelitian | Pengembangan Perangkat Mobile dengan Teknologi Depth Sensor untuk Penghitungan dan Klasifikasi Tandan Kelapa Sawit Berbasis Deep Learning |
-| Monev | Rabu, 23 September 2026, pukul 10.00–11.00 WITA |
+| Monev | Rabu, 23 September 2026, pukul 10,00–11,00 WITA |
 | Penyaji | Bu Fatma |
 | Penyusun | Muhammad Zainal Muttaqin |
 | Tanggal | 15 September 2026 |

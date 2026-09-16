@@ -1,7 +1,7 @@
-# Log Eksperimen — Volume 2 (append-only)
+# Log Eksperimen: Volume 2 (append-only)
 
 Aturan (dari `CLAUDE.md`): satu entri = satu hipotesis falsifiable. Append-only
-— entri lama tidak pernah diedit; koreksi ditulis sebagai entri baru yang
+, entri lama tidak pernah diedit; koreksi ditulis sebagai entri baru yang
 mereferensikan entri yang dikoreksi. Hasil negatif dicatat dengan bobot yang
 sama dengan hasil positif. Setiap angka harus terlacak ke skrip/JSON/log.
 
@@ -29,7 +29,7 @@ Bukti mentah per entri disimpan di `results/V2-E-0xx/`.
 
 <!-- Entri berikutnya ditambahkan di bawah baris ini, tidak pernah menyisip di atas. -->
 
-## V2-E-001 — Reproduksi deteksi E-021 dengan tiga arsitektur pada 953 pohon SawitMVC-YOLO
+## V2-E-001: Reproduksi deteksi E-021 dengan tiga arsitektur pada 953 pohon SawitMVC-YOLO
 
 **Tanggal:** 2026-08-09
 **Hipotesis:** Retrain tiga arsitektur (YOLO26l, RT-DETR-L, RF-DETR-L) dengan
@@ -39,12 +39,12 @@ angka asli, mengonfirmasi reprodusibilitas.
 resolusi 960×1280, evaluasi `pycocotools`.
 **Metode:**
 - YOLO26l: `YOLO('yolo26l.pt').train(epochs=60, imgsz=1280, batch=4, seed=42, cos_lr=True, patience=60)`
-  — bobot: `models/yolo26l_e60_i1280_v2repro/best.pt`
-- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(...)` — config identik
-  — bobot: `runs/rtdetr_l_e60_i1280_v2repro/weights/best.pt`
+, bobot: `models/yolo26l_e60_i1280_v2repro/best.pt`
+- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(...)`, config identik
+, bobot: `runs/rtdetr_l_e60_i1280_v2repro/weights/best.pt`
 - RF-DETR-L: `RFDETRLarge(resolution=1280, gradient_checkpointing=True).train(epochs=60, batch_size=4, grad_accum_steps=4, seed=42)`
-  — bobot: `runs/rfdetr_l_e60_i1280_v2repro/checkpoint_best_ema.pth`
-  — Catatan: peak mAP50 di epoch 8, overfitting setelahnya; best EMA checkpoint otomatis tersimpan.
+, bobot: `runs/rfdetr_l_e60_i1280_v2repro/checkpoint_best_ema.pth`
+: Catatan: peak mAP50 di epoch 8, penyesuaian berlebih (*overfitting*) setelahnya; best EMA checkpoint otomatis tersimpan.
 - Evaluasi: `scripts/eval_all_pycoco_v2repro.py`
 
 **Hasil (test split, pycocotools):**
@@ -64,27 +64,27 @@ Per-kelas AP50 (test):
 | RF-DETR-L | 0,8150 | 0,5184 | 0,6553 | 0,4160 |
 
 **Sumber:** `results/perkelas_pycoco_v2repro.json`
-**Verdict:** CONFIRMED — ketiga model mereproduksi E-021 dalam ±0,014 mAP50.
+**Verdict:** CONFIRMED, ketiga model mereproduksi E-021 dalam ±0,014 mAP50.
 
 ---
 
-## V2-E-002 — Counting tiga detektor v2repro pada 953 pohon (Ridge + F_all)
+## V2-E-002: Pencacahan tiga detektor v2repro pada 953 pohon (Ridge + F_all)
 
 **Tanggal:** 2026-08-09
-**Hipotesis:** Mengganti detektor YOLO26m (baseline DiB) dengan tiga arsitektur
+**Hipotesis:** Mengganti detektor YOLO26m (garis dasar pembanding (*baseline*) DiB) dengan tiga arsitektur
 yang lebih besar (YOLO26l, RT-DETR-L, RF-DETR-L) masing-masing meningkatkan
-Class ±1 Acc counting di atas baseline 77,48%.
+Class ±1 Acc pencacahan (*counting*) di atas garis dasar pembanding 77,48%.
 **Dataset & split:** SawitMVC-YOLO, 953 pohon (812 train+val / 141 test).
 **Metode:**
 - Inference conf=0,25 pada seluruh split via `scripts/adapters/{yolo,rtdetr,rfdetr}_to_pertree.py`
-- Counting: `scripts/run_counting_v2repro.py` — Ridge + F_all (67 dim), strategy train+val,
+- Pencacahan: `scripts/run_counting_v2repro.py`: Ridge + F_all (67 dim), strategy train+val,
   pola identik `exp_counting_v3.py` Baseline-SawitMVC.
 
 **Hasil (test, 141 pohon):**
 
 | Detektor | Class ±1 Acc | Tree ±1 Acc | Macro MAE |
 |---|---|---|---|
-| YOLO26m (baseline DiB) | 77,48% | 32,62% | 1,036 |
+| YOLO26m (garis dasar pembanding DiB) | 77,48% | 32,62% | 1,036 |
 | YOLO26l v2repro | 72,16% | 30,50% | 1,090 |
 | RT-DETR-L v2repro | 76,24% | 34,04% | 0,997 |
 | RF-DETR-L v2repro | 76,24% | 36,17% | 0,993 |
@@ -98,16 +98,16 @@ Per-kelas (±1 Acc / MAE / bias):
 | RF-DETR-L | 95,7% / 0,38 / +0,03 | 82,3% / 0,94 / −0,13 | 60,3% / 1,47 / −0,02 | 66,7% / 1,18 / +0,01 |
 
 **Sumber:** `results/counting_v2repro.json`
-**Verdict:** FALSIFIED — tidak ada satu pun detektor baru yang melampaui baseline
+**Verdict:** FALSIFIED, tidak ada satu pun detektor baru yang melampaui garis dasar pembanding
 Class ±1 Acc 77,48%. Namun RF-DETR-L memiliki Tree ±1 Acc terbaik (36,17% vs 32,62%),
 Macro MAE terendah (0,993 vs 1,036), dan bias paling seimbang.
-**Catatan:** YOLO26l justru lebih buruk dari YOLO26m — kemungkinan karena perbedaan
+**Catatan:** YOLO26l justru lebih buruk dari YOLO26m, kemungkinan karena perbedaan
 konfigurasi training (batch=4 vs 32, imgsz=1280 vs 640).
 B3 tetap menjadi kelas terlemah di semua detektor (48–60% ±1 Acc).
 
 ---
 
-## V2-E-003 — Deteksi tiga arsitektur pada 352 pohon SawitMVC-Depth (RGB)
+## V2-E-003: Deteksi tiga arsitektur pada 352 pohon SawitMVC-Depth (RGB)
 
 **Tanggal:** 2026-08-09
 **Hipotesis:** Tiga arsitektur (YOLO26l, RT-DETR-L, RF-DETR-L) mempertahankan
@@ -117,12 +117,12 @@ lebih kecil) seperti pada SawitMVC 953 pohon.
 resolusi 1280×800, evaluasi `pycocotools`.
 **Metode:**
 - YOLO26l: `YOLO('yolo26l.pt').train(epochs=60, imgsz=1280, batch=4, seed=42, cos_lr=True, patience=60)`
-  — bobot: `runs/yolo26l_e60_i1280_rgb352/weights/best.pt`
-- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(...)` — config identik
-  — bobot: `runs/rtdetr_l_e60_i1280_rgb352/weights/best.pt`
+, bobot: `runs/yolo26l_e60_i1280_rgb352/weights/best.pt`
+- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(...)`, config identik
+, bobot: `runs/rtdetr_l_e60_i1280_rgb352/weights/best.pt`
 - RF-DETR-L: `RFDETRLarge(resolution=1280).train(epochs=60, batch_size=4, grad_accum_steps=4, seed=42)`
-  — bobot: `runs/rfdetr_l_e60_i1280_rgb352/checkpoint_best_ema.pth`
-  — Peak EMA mAP50 di epoch 7, overfitting setelahnya (pola konsisten dengan 953 pohon).
+, bobot: `runs/rfdetr_l_e60_i1280_rgb352/checkpoint_best_ema.pth`
+: Peak EMA mAP50 di epoch 7, penyesuaian berlebih setelahnya (pola konsisten dengan 953 pohon).
 - Evaluasi: `scripts/eval_pycoco_352.py`
 
 **Hasil (test split, pycocotools):**
@@ -142,21 +142,21 @@ Per-kelas AP50 (test):
 | RF-DETR-L | 0,6853 | 0,5184 | 0,3477 | 0,2661 |
 
 **Sumber:** `results/perkelas_pycoco_rgb352.json`
-**Verdict:** CONFIRMED — urutan relatif terjaga (RF-DETR-L > RT-DETR-L > YOLO26l).
+**Verdict:** CONFIRMED, urutan relatif terjaga (RF-DETR-L > RT-DETR-L > YOLO26l).
 Angka absolut lebih rendah dari 953 pohon karena dataset lebih kecil (352 vs 953)
 dan distribusi kelas berbeda. B3 dan B4 jauh lebih sulit di dataset ini.
 
 ---
 
-## V2-E-004 — Counting tiga detektor RGB pada 352 pohon (Ridge + F_all)
+## V2-E-004: Pencacahan tiga detektor RGB pada 352 pohon (Ridge + F_all)
 
 **Tanggal:** 2026-08-09
-**Hipotesis:** Detektor yang lebih baik (mAP50 lebih tinggi) menghasilkan counting
+**Hipotesis:** Detektor yang lebih baik (mAP50 lebih tinggi) menghasilkan pencacahan
 accuracy yang lebih tinggi pada 352 pohon SawitMVC-Depth.
 **Dataset & split:** SawitMVC-Depth, 352 pohon (297 train+val / 55 test).
 **Metode:**
 - Inference conf=0,25 pada seluruh split via `scripts/run_counting_rgb352.py`
-- Counting: Ridge + F_all (67 dim), strategy train+val, pola identik exp_counting_v3.py.
+- Pencacahan: Ridge + F_all (67 dim), strategy train+val, pola identik exp_counting_v3.py.
 
 **Hasil (test, 55 pohon):**
 
@@ -175,17 +175,17 @@ Per-kelas (±1 Acc / MAE / bias):
 | RF-DETR-L | 89,1% / 0,65 / −0,04 | 80,0% / 0,91 / +0,04 | 83,6% / 0,62 / −0,18 | 100% / 0,22 / −0,04 |
 
 **Sumber:** `results/counting_rgb352.json`
-**Verdict:** FALSIFIED — urutan counting tidak mengikuti urutan deteksi. RT-DETR-L
+**Verdict:** FALSIFIED, urutan pencacahan tidak mengikuti urutan deteksi. RT-DETR-L
 (mAP50 ke-2) memiliki Class ±1 Acc tertinggi (90,91%), bukan RF-DETR-L (mAP50
 tertinggi). Pola serupa dengan 953 pohon: detektor terbaik secara mAP50 belum tentu
-menghasilkan counting terbaik.
-**Catatan:** Accuracy counting 352 pohon (88–91%) jauh lebih tinggi dari 953 pohon
+menghasilkan pencacahan terbaik.
+**Catatan:** Accuracy pencacahan 352 pohon (88–91%) jauh lebih tinggi dari 953 pohon
 (72–76%) karena distribusi kelas SawitMVC-Depth lebih seragam dan jumlah tandan per
 pohon lebih sedikit. B4 mencapai 100% untuk RT-DETR-L dan RF-DETR-L.
 
 ---
 
-## V2-E-005 — Deteksi tiga arsitektur RGBD 4-kanal pada 352 pohon SawitMVC-Depth
+## V2-E-005: Deteksi tiga arsitektur RGBD 4-kanal pada 352 pohon SawitMVC-Depth
 
 **Tanggal:** 2026-08-09
 **Hipotesis:** Menambahkan depth sebagai kanal ke-4 (early fusion BGRD) meningkatkan
@@ -194,11 +194,11 @@ test mAP50 dibandingkan RGB saja pada ketiga arsitektur.
 resolusi 1280, input 4-kanal (BGRD TIFF), evaluasi `pycocotools`.
 **Metode:**
 - YOLO26l: `YOLO('yolo26l.pt').train(data='data_rgbd_352.yaml', epochs=60, imgsz=1280, batch=4, seed=42, cos_lr=True, patience=60)`
-  — bobot: `runs/yolo26l_e60_i1280_rgbd352/weights/best.pt` (peak epoch 47)
-- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(data='data_rgbd_352.yaml', ...)` — config identik
-  — bobot: `runs/rtdetr_l_e60_i1280_rgbd352/weights/best.pt` (peak epoch 19)
+, bobot: `runs/yolo26l_e60_i1280_rgbd352/weights/best.pt` (peak epoch 47)
+- RT-DETR-L: `RTDETR('rtdetr-l.pt').train(data='data_rgbd_352.yaml', ...)`, config identik
+, bobot: `runs/rtdetr_l_e60_i1280_rgbd352/weights/best.pt` (peak epoch 19)
 - RF-DETR-L: `train_rfdetr_4ch.py` dengan 3 patch (TIFF loader, normalisasi 4ch, conv inflate)
-  — bobot: `runs/rfdetr_l_e60_i1280_rgbd352/checkpoint_best_ema.pth` (peak epoch 7)
+, bobot: `runs/rfdetr_l_e60_i1280_rgbd352/checkpoint_best_ema.pth` (peak epoch 7)
 - Evaluasi: `scripts/eval_pycoco_rgbd352.py`
 
 **Hasil (test split, pycocotools):**
@@ -226,7 +226,7 @@ Delta per-kelas (RGBD − RGB):
 | RF-DETR-L | +0,008 | −0,002 | −0,032 | −0,116 |
 
 **Sumber:** `results/perkelas_pycoco_rgbd352.json`, `results/perkelas_pycoco_rgb352.json`
-**Verdict:** FALSIFIED — depth 4-kanal TIDAK meningkatkan deteksi secara konsisten.
+**Verdict:** FALSIFIED, depth 4-kanal TIDAK meningkatkan deteksi secara konsisten.
 Hanya YOLO26l yang naik (+0,031 mAP50), RT-DETR-L dan RF-DETR-L justru turun.
 YOLO26l naik di semua kelas (terutama B3 +0,064), sementara RT-DETR-L dan RF-DETR-L
 turun tajam di B4 (−0,110 dan −0,116). Konsisten dengan temuan Volume 1 E-022/E-027
@@ -234,15 +234,15 @@ bahwa early fusion depth cenderung merugikan.
 
 ---
 
-## V2-E-006 — Counting tiga detektor RGBD 4-kanal pada 352 pohon (Ridge + F_all)
+## V2-E-006: Pencacahan tiga detektor RGBD 4-kanal pada 352 pohon (Ridge + F_all)
 
 **Tanggal:** 2026-08-09
-**Hipotesis:** Depth 4-kanal meningkatkan counting accuracy (Class ±1 Acc)
+**Hipotesis:** Depth 4-kanal meningkatkan pencacahan accuracy (Class ±1 Acc)
 dibandingkan RGB saja pada ketiga detektor.
 **Dataset & split:** SawitMVC-Depth, 352 pohon (297 train+val / 55 test).
 **Metode:**
 - Inference conf=0,25 pada citra 4-kanal TIFF via `scripts/run_counting_rgbd352.py`
-- Counting: Ridge + F_all (67 dim), strategy train+val, pola identik exp_counting_v3.py.
+- Pencacahan: Ridge + F_all (67 dim), strategy train+val, pola identik exp_counting_v3.py.
 - Bootstrap CI: 10.000 replikat, paired per pohon (`scripts/bootstrap_ci.py`).
 
 **Hasil (test, 55 pohon):**
@@ -257,9 +257,9 @@ Bootstrap CI paired (RGBD − RGB, 10.000 replikat):
 
 | Detektor | Δ Class ±1 CI95 | P(RGBD > RGB) |
 |---|---|---|
-| YOLO26l | [−5,9pp, +1,8pp] | 16,5% |
-| RT-DETR-L | [−5,0pp, +0,5pp] | 5,6% |
-| RF-DETR-L | [−2,7pp, +2,7pp] | 47,3% |
+| YOLO26l | [−5,9pp; +1,8pp] | 16,5% |
+| RT-DETR-L | [−5,0pp; +0,5pp] | 5,6% |
+| RF-DETR-L | [−2,7pp; +2,7pp] | 47,3% |
 
 Per-kelas RGBD (±1 Acc / MAE / bias):
 
@@ -270,18 +270,18 @@ Per-kelas RGBD (±1 Acc / MAE / bias):
 | RF-DETR-L | 90,9% / 0,51 / −0,07 | 83,6% / 0,84 / +0,04 | 83,6% / 0,65 / −0,25 | 94,5% / 0,35 / −0,05 |
 
 **Sumber:** `results/counting_rgbd352.json`, `results/counting_rgb352.json`, `results/bootstrap_ci_352.json`
-**Verdict:** FALSIFIED — depth 4-kanal TIDAK meningkatkan counting. Bootstrap CI
+**Verdict:** FALSIFIED, depth 4-kanal TIDAK meningkatkan pencacahan. Bootstrap CI
 menunjukkan P(RGBD>RGB) hanya 16,5% (YOLO26l), 5,6% (RT-DETR-L), dan 47,3%
 (RF-DETR-L). Tidak satu pun arsitektur yang CI-nya eksklusif positif.
 RF-DETR-L tepat sama (88,18%) dengan Tree ±1 Acc sedikit naik (67,27% vs 65,45%),
-tapi CI simetris [−2,7pp, +2,7pp] menunjukkan ini kebetulan.
-**Catatan:** Early fusion depth secara konsisten merugikan counting meskipun YOLO26l
+tapi CI simetris [−2,7pp; +2,7pp] menunjukkan ini kebetulan.
+**Catatan:** Early fusion depth secara konsisten merugikan pencacahan meskipun YOLO26l
 menunjukkan sedikit perbaikan deteksi. Ini mengonfirmasi bahwa perbaikan deteksi minor
-tidak otomatis menerjemahkan ke perbaikan counting.
+tidak otomatis menerjemahkan ke perbaikan pencacahan.
 
 ---
 
-## V2-E-007 — Analisis matriks 9-sel: dampak dataset dan arsitektur terhadap deteksi dan counting
+## V2-E-007, Analisis matriks 9-sel: dampak dataset dan arsitektur terhadap deteksi dan pencacahan
 
 **Tanggal:** 2026-08-09
 **Tujuan:** Sintesis terstratifikasi dari 9 kombinasi (3 arsitektur × 3 dataset)
@@ -305,9 +305,9 @@ untuk menjawab: (1) apakah urutan arsitektur konsisten lintas dataset,
    (efek ukuran dataset + distribusi kelas berbeda, BUKAN degradasi model).
 4. **B4 paling terdampak depth**: delta B4 untuk RT-DETR-L (−0,110) dan
    RF-DETR-L (−0,116) jauh lebih besar dari kelas lain. B4 (tandan overripe)
-   memiliki instance paling sedikit dan paling rentan terhadap noise depth.
+   memiliki instance paling sedikit dan paling rentan terhadap variasi acak (*noise*) depth.
 
-### B. Matriks counting (test split, Ridge + F_all, Class ±1 Acc)
+### B. Matriks pencacahan (test split, Ridge + F_all, Class ±1 Acc)
 
 | | YOLO26l | RT-DETR-L | RF-DETR-L |
 |---|---|---|---|
@@ -315,24 +315,24 @@ untuk menjawab: (1) apakah urutan arsitektur konsisten lintas dataset,
 | 352-RGB | 89,55% | **90,91%** | 88,18% |
 | 352-RGBD | 87,73% | 88,64% | 88,18% |
 
-**Temuan counting:**
+**Temuan pencacahan:**
 1. **Detektor terbaik ≠ counter terbaik**: RF-DETR-L unggul deteksi di semua
-   dataset RGB, tapi RT-DETR-L unggul counting pada 352-RGB (90,91% vs 88,18%).
+   dataset RGB, tapi RT-DETR-L unggul pencacahan pada 352-RGB (90,91% vs 88,18%).
    Pada 953-RGB, RT-DETR-L dan RF-DETR-L seri (76,24%).
-2. **Depth merugikan counting pada 2/3 arsitektur**: YOLO26l −1,8pp, RT-DETR-L
+2. **Depth merugikan pencacahan pada 2/3 arsitektur**: YOLO26l −1,8pp, RT-DETR-L
    −2,3pp. RF-DETR-L netral (88,18% → 88,18%) tapi Tree ±1 Acc naik
    (65,45% → 67,27%).
 3. **Counting 352 >> 953**: semua model mencapai 87–91% pada 352 pohon vs
    72–76% pada 953 pohon. Ini karena distribusi kelas lebih seragam dan
    jumlah tandan per pohon lebih sedikit di SawitMVC-Depth.
 
-### C. Bootstrap CI — uji signifikansi RGBD vs RGB (10.000 replikat, paired)
+### C. Bootstrap CI: uji signifikansi RGBD vs RGB (10.000 replikat, paired)
 
 | Arsitektur | Δ Class ±1 | CI 95% | P(RGBD>RGB) | Signifikan? |
 |---|---|---|---|---|
-| YOLO26l | −1,82pp | [−5,9, +1,8] | 16,5% | Tidak (CI memuat 0) |
-| RT-DETR-L | −2,25pp | [−5,0, +0,5] | 5,6% | Marginal (CI hampir ekskl. negatif) |
-| RF-DETR-L | +0,02pp | [−2,7, +2,7] | 47,3% | Tidak (CI simetris, efek ~0) |
+| YOLO26l | −1,82pp | [−5,9; +1,8] | 16,5% | Tidak (selang kepercayaan mencakup nilai nol) |
+| RT-DETR-L | −2,25pp | [−5,0; +0,5] | 5,6% | Marginal (CI hampir ekskl. negatif) |
+| RF-DETR-L | +0,02pp | [−2,7; +2,7] | 47,3% | Tidak (CI simetris, efek ~0) |
 
 **Kesimpulan:** Tidak ada arsitektur yang secara signifikan diuntungkan oleh depth
 pada level α=0,05. RT-DETR-L mendekati signifikan ke arah NEGATIF (P=5,6%),
@@ -340,17 +340,17 @@ artinya depth kemungkinan merugikan RT-DETR-L.
 
 ### D. Analisis per-kelas terstratifikasi (352 pohon, RGB vs RGBD)
 
-**Deteksi — kelas yang paling diuntungkan depth:**
+**Deteksi, kelas yang paling diuntungkan depth:**
 - YOLO26l B3: +0,064 (kelas terlemah naik paling banyak)
 - YOLO26l B4: +0,030
 - RF-DETR-L B1: +0,008
 
-**Deteksi — kelas yang paling dirugikan depth:**
+**Deteksi, kelas yang paling dirugikan depth:**
 - RF-DETR-L B4: −0,116
 - RT-DETR-L B4: −0,110
 - RF-DETR-L B3: −0,032
 
-**Counting — pola bias:**
+**Counting, pola bias:**
 - Semua model RGBD memiliki bias negatif lebih besar di B1 dan B3
   (under-predict), terutama YOLO26l B1 (bias −0,24 vs −0,09 di RGB).
 - B4 konsisten baik (acc >94%) karena instance sedikit dan Ridge mudah
@@ -363,11 +363,11 @@ artinya depth kemungkinan merugikan RT-DETR-L.
 | Pertanyaan | Jawaban |
 |---|---|
 | Arsitektur terbaik deteksi? | RF-DETR-L (konsisten #1 di RGB) |
-| Arsitektur terbaik counting? | RT-DETR-L (90,91% pada 352-RGB) |
+| Arsitektur terbaik pencacahan? | RT-DETR-L (90,91% pada 352-RGB) |
 | Apakah depth membantu deteksi? | Hanya YOLO26l (+0,031), sisanya merugikan |
-| Apakah depth membantu counting? | Tidak — 0/3 arsitektur signifikan naik |
-| Kelas tersulit? | B3 (matang awal) — AP50 terendah di semua kondisi |
-| Kelas termudah? | B1 (mentah) — AP50 >0,68 di semua kondisi |
+| Apakah depth membantu pencacahan? | Tidak: 0/3 arsitektur signifikan naik |
+| Kelas tersulit? | B3 (matang awal): AP50 terendah di semua kondisi |
+| Kelas termudah? | B1 (mentah): AP50 >0,68 di semua kondisi |
 
 **Implikasi untuk Fase 5:** Early fusion naif (concat kanal) tidak efektif.
 Fase 5 harus mengeksplorasi (1) representasi depth alternatif (edge, inverse,
@@ -379,22 +379,22 @@ menggabungkan kanal di input.
 
 ---
 
-## V2-E-008 [screening-15ep] — Encoding depth alternatif pada YOLO26l 4-kanal (early fusion), 352 pohon
+## V2-E-008 [screening-15ep]: Encoding depth alternatif pada YOLO26l 4-kanal (early fusion), 352 pohon
 
 **Tanggal:** 2026-08-10/11
 **Hipotesis:** Mengganti encoding kanal depth (arsitektur early fusion TIDAK
 diubah, sama seperti V2-E-005) meningkatkan val mAP50 dibandingkan encoding
-`inverse` V2-E-005 dalam protokol screening cepat (≤15 epoch, patience 3),
+`inverse` V2-E-005 dalam protokol penyaringan awal (*screening*) cepat (≤15 epoch, patience 3),
 konsisten dengan lever representasi Fase 5 (`docs/RENCANA.md`).
 **Dataset & split:** SawitMVC-Depth-4ch-{edge,clipped,valid_mask}, 352 pohon
-(245 train / 52 val / 55 test, split `canonical_70_15_15` — sama persis
+(245 train / 52 val / 55 test, split `canonical_70_15_15`, sama persis
 dengan V2-E-003..007). Depth direproyeksi ulang (`depth_meta.json`: cakupan
 valid 71,0%, Z_NEAR/Z_FAR=0,8/15,0 m, sama dengan angka lama).
 **Metode:**
 - `edge` (Sobel gradient magnitude), `clipped` (clip@80, near-field), keduanya
   via `scripts/create_depth_edge_dataset.py` (sudah ada sebelumnya).
 - `valid_mask` (BARU): pisahkan sentinel "tidak ada data" (0) dari valid-terjauh
-  secara numerik (rentang valid dimampatkan ke [40,220]) — motivasi: pada
+  secara numerik (rentang valid dimampatkan ke [40; 220]), motivasi: pada
   encoding `inverse`, invalid(0) hanya beda 1 increment dari valid-terjauh(1)
   pada skala kontinu yang sama, network tak punya sinyal eksplisit membedakan
   "sensor gagal" vs "sekadar jauh". Fungsi `encode_valid_mask` di
@@ -404,16 +404,16 @@ valid 71,0%, Z_NEAR/Z_FAR=0,8/15,0 m, sama dengan angka lama).
   `Research-Pipeline/pipeline/fourch.py::patch_loader` (copy, bukan
   cross-import) ke `scripts/train_yolo_4ch_dropout.py`.
 - Training: `YOLO('yolo26l.pt').train(epochs=15, patience=3, imgsz=1280,
-  batch=4, seed=42, cos_lr=True)` — protokol screening cepat wajib
+  batch=4, seed=42, cos_lr=True)`, protokol penyaringan awal cepat wajib
   (`docs/RENCANA.md` Fase 5), BUKAN angka final 60-epoch.
 - Metrik: val mAP50/mAP50-95 native ultralytics (bukan pycocotools test-split
-  — hanya untuk ranking relatif antar-kandidat Fase 5, per protokol).
+, hanya untuk ranking relatif antar-kandidat Fase 5, per protokol).
 
 **Hasil (val split, 208 pohon, mAP50 terbaik selama training):**
 
 | Kandidat | Epoch terbaik | val mAP50 | val mAP50-95 | Durasi |
 |---|---|---|---|---|
-| `inverse` (V2-E-005, acuan, 60 epoch bukan 15 — tidak di-rerun) | — | — | — | — |
+| `inverse` (V2-E-005, acuan, 60 epoch bukan 15, tidak di-rerun) | — | — | — | — |
 | `dropout` | 15 (belum plateau) | 0,3168 | 0,1091 | 2583,7 dtk |
 | **`edge`** | **15 (belum plateau)** | **0,3777** | **0,1279** | 2584,4 dtk |
 | `clipped` | 14 | 0,3221 | 0,1136 | 2574,9 dtk |
@@ -421,42 +421,42 @@ valid 71,0%, Z_NEAR/Z_FAR=0,8/15,0 m, sama dengan angka lama).
 
 **Sumber:** `runs/yolo26l_screening_{dropout,edge,clipped,valid_mask}352/results.csv`,
 `runs/yolo26l_screening_*352/hasil.json`
-**Verdict:** CONFIRMED — `edge` (Sobel gradient magnitude) unggul jelas dari
+**Verdict:** CONFIRMED, `edge` (Sobel gradient magnitude) unggul jelas dari
 tiga kandidat lain (+0,046 s/d +0,061 mAP50), selaras F-002 (frekuensi tinggi
 memisahkan tandan dari pelepah, +0,0731 pada B4). Tidak seperti tiga kandidat
-lain yang mulai plateau/turun, `edge` dan `dropout` masih naik di epoch 15 —
+lain yang mulai plateau/turun, `edge` dan `dropout` masih naik di epoch 15, 
 `edge` dipromosikan ke training penuh 60 epoch (lihat V2-E-010).
-**Catatan:** Angka screening 15-epoch ini TIDAK dibandingkan langsung dengan
-angka 60-epoch V2-E-003/005 (dataset/protokol sama tapi durasi beda) — hanya
+**Catatan:** Angka penyaringan awal 15-epoch ini TIDAK dibandingkan langsung dengan
+angka 60-epoch V2-E-003/005 (dataset/protokol sama tapi durasi beda), hanya
 untuk ranking relatif antar-kandidat Fase 5, sesuai protokol.
 
 ---
 
-## V2-E-009 [screening-15ep] — Mid-fusion depth + gate non-zero-init pada YOLO26l, 352 pohon
+## V2-E-009 [screening-15ep]: Mid-fusion depth + gate non-zero-init pada YOLO26l, 352 pohon
 
 **Tanggal:** 2026-08-11
 **Hipotesis:** Memindahkan depth dari early fusion (concat kanal ke-4 di
-input) ke cabang terpisah dengan fusi aditif ber-gate di backbone menengah
+input) ke cabang terpisah dengan fusi aditif ber-gate di kerangka utama (*backbone*) menengah
 (P3/8, layer index 4 `yolo26.yaml`), gate diinisialisasi kecil-taknol (0,02,
-BUKAN nol seperti F-007), meningkatkan val mAP50 dibandingkan baseline RGB
+BUKAN nol seperti F-007), meningkatkan val mAP50 dibandingkan garis dasar pembanding RGB
 352 pohon (V2-E-003, 0,3606 test) dan tidak berhenti mati seperti F-007
 (gate diharapkan bergerak menjauhi inisialisasinya).
 **Dataset & split:** SawitMVC-Depth-4ch (encoding `inverse`, sama dengan
-V2-E-005) — 352 pohon, split sama seperti V2-E-008.
+V2-E-005): 352 pohon, split sama seperti V2-E-008.
 **Metode:**
 - Arsitektur baru `scripts/train_yolo_midfusion.py`: stem RGB 3-kanal
-  TIDAK disentuh (beda mendasar dari V2-E-005/early fusion) — dibangun
+  TIDAK disentuh (beda mendasar dari V2-E-005/early fusion), dibangun
   `ch=3` eksplisit (bukan `data["channels"]=4`), bobot pratlatih COCO
   di-load bersih tanpa mismatch shape. Cabang depth terpisah (conv stride-8,
-  1→16→32→512 kanal, conv terakhir diinisialisasi skala 0,1x — mitigasi
+  1→16→32→512 kanal, conv terakhir diinisialisasi skala 0,1x, mitigasi
   F-007 "inisialisasi kecil-taknol"), fitur-nya dijumlahkan ke output layer 4
   dikali gate scalar `γ` (init 0,02).
 - Patch di level CLASS (`BaseModel._predict_once`, cek `hasattr(self,
-  "depth_branch")`) — bukan per-instance (`types.MethodType`, percobaan
+  "depth_branch")`), bukan per-instance (`types.MethodType`, percobaan
   pertama GAGAL: `Trainer.final_eval()` me-reload model dari checkpoint
   lewat `AutoBackend`, method per-instance tidak ikut ter-reload walau
   `depth_branch`/`gate` sebagai submodul/parameter biasa tetap ter-reload
-  benar — diverifikasi lewat smoke test save→reload→forward sebelum retry).
+  benar, diverifikasi lewat smoke test save→reload→forward sebelum retry).
 - Training: sama seperti V2-E-008 (15 epoch, patience 3, imgsz 1280, batch 4,
   seed 42, cos_lr).
 
@@ -473,34 +473,34 @@ V2-E-005) — 352 pohon, split sama seperti V2-E-008.
 
 Validasi akhir (best.pt, epoch 3) per kelas: B1=0,396, B2=0,329, **B3=0,056,
 B4=0,051** (mAP50-95 masing-masing 0,131/0,115/0,015/0,023).
-Gate: init 0,02 → final 0,0250 (bergerak naik — TIDAK macet di titik mati
+Gate: init 0,02 → final 0,0250 (bergerak naik: TIDAK macet di titik mati
 seperti F-007, secara mekanis pelajaran F-007 berhasil dihindari).
 **Sumber:** `runs/yolo26l_screening_midfusion352/results.csv`,
 `runs/yolo26l_screening_midfusion352/hasil.json`
-**Verdict:** FALSIFIED — sinyal TIDAK naik konsisten (plateau lalu turun
-setelah epoch 3, early-stop di epoch 6), kalah jauh dari keempat kandidat
+**Verdict:** FALSIFIED, sinyal TIDAK naik konsisten (plateau lalu turun
+setelah epoch 3, early-stop di epoch 6), berada jauh di bawah keempat kandidat
 representasi V2-E-008 (0,209 vs 0,317-0,378) pada jumlah epoch yang sama.
-Per protokol Fase 5 (`docs/RENCANA.md`: "kandidat yang lolos screening naik
+Per protokol Fase 5 (`docs/RENCANA.md`: "kandidat yang lolos penyaringan awal naik
 konsisten"), TIDAK dipromosikan ke 60 epoch. B3/B4 nyaris nol kemungkinan
 karena cabang depth mulai dari inisialisasi acak (beda dengan kandidat
-representasi yang langsung mewarisi bobot pretrained di conv pertama) —
+representasi yang langsung mewarisi bobot pretrained di conv pertama), 
 enam epoch kemungkinan tidak cukup untuk kelas langka (B3/B4 paling sedikit
-instance-nya). Dicatat sebagai hasil negatif dengan bobot yang sama — TIDAK
+instance-nya). Dicatat sebagai hasil negatif dengan bobot yang sama: TIDAK
 membantah bahwa mid-fusion+gate non-zero-init bisa bekerja secara umum,
 hanya bahwa konfigurasi spesifik ini (fuse_at=4, gate init=0,02, tanpa LR
-terpisah untuk cabang depth) tidak lolos screening cepat pada YOLO26l.
+terpisah untuk cabang depth) tidak lolos penyaringan awal cepat pada YOLO26l.
 
 ---
 
-## V2-E-010 — Encoding depth `edge` (Sobel) pada YOLO26l, 60 epoch penuh, dibanding `inverse` (V2-E-005)
+## V2-E-010: Encoding depth `edge` (Sobel) pada YOLO26l, 60 epoch penuh, dibanding `inverse` (V2-E-005)
 
 **Tanggal:** 2026-08-11
-**Hipotesis:** Encoding depth `edge` (Sobel gradient magnitude), yang menang
-screening 15-epoch (V2-E-008, val mAP50 0,3777), meningkatkan test mAP50
+**Hipotesis:** Encoding depth `edge` (Sobel gradient magnitude), yang unggul
+penyaringan awal 15-epoch (V2-E-008, val mAP50 0,3777), meningkatkan test mAP50
 dibandingkan `inverse`/early fusion biasa (V2-E-005, test mAP50 0,3919) saat
 dilatih penuh 60 epoch dengan protokol identik.
 **Dataset & split:** SawitMVC-Depth-4ch-edge, 352 pohon (245 train / 52 val /
-55 test), split `canonical_70_15_15` — sama persis dengan V2-E-003/005.
+55 test), split `canonical_70_15_15`, sama persis dengan V2-E-003/005.
 **Metode:** `scripts/train_yolo_4ch_screening.py --epochs 60 --patience 60`
 (config identik V2-E-005: imgsz 1280, batch 4, seed 42, cos_lr). Evaluasi:
 `scripts/eval_pycoco_rgbd352.py` (pycocotools, test split), bobot
@@ -524,20 +524,20 @@ Per-kelas AP50 (test):
 
 Dibanding RGB-352 murni (V2-E-003, test mAP50 0,3606): `edge` unggul di
 **keempat kelas sekaligus** (B1 +0,0448, B2 +0,0711, B3 +0,0239, B4 +0,1441),
-sesuatu yang `inverse` tidak pernah capai (`inverse` cuma unggul RGB di 1-2
-kelas, campur naik-turun — lihat V2-E-005).
+sesuatu yang `inverse` tidak pernah capai (`inverse` hanya unggul RGB di 1-2
+kelas, campur naik-turun, lihat V2-E-005).
 
 **Sumber:** `results/perkelas_pycoco_rgbd352.json` (kunci
 `YOLO26l-RGBD-edge`), `runs/yolo26l_e60_i1280_rgbd352_edge/results.csv`,
 `runs/yolo26l_e60_i1280_rgbd352_edge/hasil.json`
-**Verdict:** CONFIRMED — `edge` mengalahkan `inverse` secara jelas di mAP50
+**Verdict:** CONFIRMED, `edge` mengalahkan `inverse` secara jelas di mAP50
 keseluruhan (+10,1% relatif, di atas ambang "2-5% tidak cukup" yang jadi
 standar proyek ini). Pola per-kelas selaras hipotesis F-002: **B4 (kelas
 paling dirugikan early fusion di V2-E-005, −0,116) sekarang paling diuntungkan
-(+0,114)** — sinyal tepi/gradien depth membantu tepat di kasus tandan
+(+0,114)**, sinyal tepi/gradien depth membantu tepat di kasus tandan
 kecil/tertutup pelepah yang paling sulit dipisahkan dari fronds secara warna.
 B3 sedikit turun (−0,040), konsisten dengan diagnosis bahwa B2/B3 adalah
-ambiguitas fotometrik (warna) yang depth — dalam bentuk apapun — tidak bisa
+ambiguitas fotometrik (warna) yang depth, dalam bentuk apapun, tidak bisa
 menyelesaikan.
 **Counting (Ridge + F_all, test 55 pohon):**
 
@@ -550,34 +550,34 @@ menyelesaikan.
 Per-kelas edge (Acc/MAE/bias): B1=85,5%/0,600/−0,236, B2=81,8%/0,836/−0,182,
 B3=85,5%/0,655/−0,255, B4=96,4%/0,164/−0,127.
 
-**Sumber counting:** `results/counting_rgbd352.json` (kunci
+**Sumber pencacahan:** `results/counting_rgbd352.json` (kunci
 `YOLO26l-RGBD-edge`), `runs/pertree_rgbd352/yolo_yolo26lrgbdedge/`
 
 **Catatan penting:** deteksi naik jelas (+10,1% mAP50) TIDAK diikuti
-kenaikan counting Class ±1 Acc yang setara — malah sedikit turun (−0,46pp),
+kenaikan pencacahan Class ±1 Acc yang setara, malah sedikit turun (−0,46pp),
 meski Tree ±1 Acc dan Macro MAE membaik. Ini pola yang sama dengan V2-E-005/006
-(deteksi naik tak otomatis bikin counting naik, karena pipeline counting
-bergantung pada konsistensi lintas-sisi, bukan cuma mAP rata-rata). Kesimpulan
+(deteksi naik tak otomatis membuat pencacahan naik, karena pipeline pencacahan
+bergantung pada konsistensi lintas-sisi, bukan hanya mAP rata-rata). Kesimpulan
 detection-level tetap CONFIRMED; kesimpulan counting-level lebih tepat
-INCONCLUSIVE — perbaikan di beberapa metrik (Tree Acc, MAE), datar/sedikit
+INCONCLUSIVE, perbaikan di beberapa metrik (Tree Acc, MAE), datar/sedikit
 turun di metrik utama (Class Acc).
 
 **Belum lengkap:** bootstrap CI berpasangan (edge vs RGB-352) menyusul
-setelah retrain baseline RGB-352 (bobot lama tidak tersimpan di workspace
-ini) selesai — akan dicatat sebagai entri terpisah, `V2-E-011`.
+setelah retrain garis dasar pembanding RGB-352 (bobot lama tidak tersimpan di workspace
+ini) selesai, akan dicatat sebagai entri terpisah, `V2-E-011`.
 
 ---
 
-## V2-E-011 — Retrain baseline RGB-352 + bootstrap CI berpasangan: `edge` vs RGB
+## V2-E-011, Retrain garis dasar pembanding RGB-352 + bootstrap CI berpasangan: `edge` vs RGB
 
 **Tanggal:** 2026-08-11
 **Hipotesis:** `edge` (RGBD) secara signifikan mengalahkan RGB-352 murni
-pada counting Class ±1 Acc (bootstrap CI berpasangan per-pohon, 10.000
+pada pencacahan Class ±1 Acc (bootstrap CI berpasangan per-pohon, 10.000
 replikat), melengkapi kemenangan deteksi di V2-E-010.
 **Dataset & split:** SawitMVC-Depth, 352 pohon, split `canonical_70_15_15`
-— identik V2-E-003/004/010.
+, identik V2-E-003/004/010.
 **Metode:** Retrain YOLO26l RGB-352 dari nol (bobot lama V2-E-003 tidak
-tersimpan di workspace ini) — config identik V2-E-003 (`scripts/train_yolo_4ch_screening.py
+tersimpan di workspace ini), config identik V2-E-003 (`scripts/train_yolo_4ch_screening.py
 --epochs 60 --patience 60`, data `SawitMVC-Depth/data_rgb_352.yaml`).
 Eval: `scripts/eval_pycoco_352.py`, `scripts/run_counting_rgb352.py`,
 `scripts/bootstrap_ci.py` (entri `YOLO26l-edge` ditambahkan).
@@ -587,10 +587,10 @@ Eval: `scripts/eval_pycoco_352.py`, `scripts/run_counting_rgb352.py`,
 | | Asli (V2-E-003/004) | Retrain ini | Δ |
 |---|---|---|---|
 | Deteksi test mAP50 | 0,3606 | 0,3711 | +0,0105 (wajar, dalam variasi run) |
-| Counting Class ±1 Acc | 89,55% | **84,09%** | **−5,46pp (lebih besar dari variasi biasa)** |
+| Pencacahan Class ±1 Acc | 89,55% | **84,09%** | **−5,46pp (lebih besar dari variasi biasa)** |
 
-Deteksi reproduksi baik. Counting reproduksi lebih buruk dari yang
-diharapkan — konsisten dengan pola yang berulang di proyek ini: perbedaan
+Deteksi reproduksi baik. Pencacahan reproduksi lebih buruk dari yang
+diharapkan, konsisten dengan pola yang berulang di proyek ini: perbedaan
 kecil pada deteksi (box mana yang lolos/tidak) bisa mengubah fitur
 konsistensi lintas-sisi yang dipelajari Ridge secara tidak proporsional.
 Ini bukan bug, tapi konsekuensi nyata yang harus dibawa ke interpretasi
@@ -600,49 +600,49 @@ hasil di bawah.
 
 | Metrik | Δ | CI95 | P(RGBD>RGB) |
 |---|---|---|---|
-| Class ±1 Acc | +3,18pp | [−0,5pp, +7,3pp] | 94,3% |
-| Tree ±1 Acc | +7,24pp | [−1,8pp, +18,2pp] | 90,0% |
+| Class ±1 Acc | +3,18pp | [−0,5pp; +7,3pp] | 94,3% |
+| Tree ±1 Acc | +7,24pp | [−1,8pp; +18,2pp] | 90,0% |
 
 **Sumber:** `results/bootstrap_ci_352.json` (kunci `YOLO26l-edge`),
 `results/perkelas_pycoco_rgb352.json`, `results/counting_rgb352.json`,
 `runs/yolo26l_e60_i1280_rgb352/`
 
-**Verdict: INCONCLUSIVE untuk counting** (CI hampir tidak memuat nol tapi
-masih memuat nol secara ketat; P=94,3% cukup kuat tapi belum ambang 95%
-formal) — **DAN kesimpulannya berbalik arah tergantung baseline RGB mana
+**Verdict: INCONCLUSIVE untuk counting** (CI hampir tidak mencakup nilai nol tapi
+masih mencakup nilai nol secara ketat; P=94,3% cukup kuat tapi belum ambang 95%
+formal), **DAN kesimpulannya berbalik arah tergantung garis dasar pembanding RGB mana
 yang dipakai:**
 
 - Dibanding retrain RGB-352 ini (84,09%): `edge` (87,27%) UNGGUL +3,18pp.
-- Dibanding angka ASLI V2-E-004 (89,55%): `edge` (87,27%) justru KALAH −2,28pp.
+- Dibanding angka ASLI V2-E-004 (89,55%): `edge` (87,27%) justru LEBIH RENDAH −2,28 pp.
 
 Ini BUKAN kemenangan bersih seperti deteksi (V2-E-010: `edge` unggul dari
-SEMUA baseline RGB manapun yang dipakai, 0,4316 vs 0,3606/0,3711 RGB-only
-dan 0,3919 inverse). Untuk counting, kesimpulan sensitif terhadap noise
-reproduksi baseline itu sendiri — kejujuran metodologis mengharuskan ini
+SEMUA garis dasar pembanding RGB manapun yang dipakai, 0,4316 vs 0,3606/0,3711 RGB-only
+dan 0,3919 inverse). Untuk pencacahan, kesimpulan sensitif terhadap variasi acak
+reproduksi garis dasar pembanding itu sendiri, kejujuran metodologis mengharuskan ini
 dilaporkan sebagai TIDAK KONKLUSIF, bukan dibulatkan ke arah manapun yang
 lebih enak didengar.
 
 **Ringkasan Fase 5 akhir:** lever representasi (`edge`) CONFIRMED
 memperbaiki deteksi (+10,1% mAP50, robust lintas-baseline), TIDAK
-KONKLUSIF untuk counting (arah tergantung baseline pembanding). Lever
-arsitektur (mid-fusion+gate) FALSIFIED di screening (V2-E-009). Hasil
-positif deteksi ini genuinely baru — tidak ada benchmark RGB-D pada TBS
+KONKLUSIF untuk pencacahan (arah tergantung garis dasar pembanding pembanding). Lever
+arsitektur (mid-fusion+gate) FALSIFIED di penyaringan awal (V2-E-009). Hasil
+positif deteksi ini genuinely baru, tidak ada benchmark RGB-D pada TBS
 sawit sebelumnya di literatur manapun.
 
 ---
 
-# Fase 6 — Diagnostik ulang dan pipeline dua-tahap
+# Fase 6: Diagnostik ulang dan pipeline dua-tahap
 
 Konteks: pengguna meminta terobosan yang bisa dipertanggungjawabkan secara
-matematis supaya depth benar-benar menaikkan metrik, dengan pelonggaran scope
-eksplisit — boleh berat, boleh multi-tahap, tidak harus YOLO, tidak harus satu
+matematis supaya depth menaikkan metrik, dengan pelonggaran scope
+eksplisit, boleh berat, boleh multi-tahap, tidak harus YOLO, tidak harus satu
 pipeline. Sebelum melatih apa pun, dijalankan lima probe read-only; hasilnya
 mengubah rumusan masalahnya. Jalan penemuan lengkap: `docs/DIAGNOSIS-DEPTH.md`.
 Semua probe reproducible via `scripts/probe_depth_signal.py`.
 
 ---
 
-## V2-E-012 — Gap mAP50 antara 953 dan 352 pohon disebabkan kelangkaan label B3/B4, bukan kanal depth
+## V2-E-012: Gap mAP50 antara 953 dan 352 pohon disebabkan kelangkaan label B3/B4, bukan kanal depth
 
 **Tanggal:** 2026-08-11
 **Hipotesis:** Selisih test mAP50 953-vs-352 dapat dijelaskan sepenuhnya oleh
@@ -667,16 +667,16 @@ AP50 per kelas (YOLO26l test): B1 0,7705→0,6804, B2 0,4479→0,4320,
 
 **Sumber:** `results/perkelas_pycoco_v2repro.json`,
 `results/perkelas_pycoco_rgb352.json`, hitung ulang label via probe.
-**Verdict: CONFIRMED** — gap terkonsentrasi persis di dua kelas yang
+**Verdict: CONFIRMED**, gap terkonsentrasi persis di dua kelas yang
 instance-nya menghilang; B1/B2 nyaris tidak berubah.
 **Konsekuensi:** perbandingan lintas dataset 953-vs-352 tidak sah dan tidak
 boleh dipakai lagi untuk menilai depth. Memotong dataset 953 jadi 25% tetap
 menyisakan ~1.800 instance B3 dengan komposisi kelas yang sama, jadi "RGB 25%
-tetap menang" adalah hasil yang diharapkan dan tidak menguji depth.
+tetap unggul" adalah hasil yang diharapkan dan tidak menguji depth.
 
 ---
 
-## V2-E-013 — Sebagian besar kehilangan mAP50 berasal dari salah kelas, bukan gagal lokalisasi
+## V2-E-013: Sebagian besar kehilangan mAP50 berasal dari salah kelas, bukan gagal lokalisasi
 
 **Tanggal:** 2026-08-11
 **Hipotesis:** Pada bobot RGB-352 yang sudah ada, AP50 class-agnostic jauh di
@@ -684,7 +684,7 @@ atas mAP50 class-aware. Falsifikasi: kalau keduanya berdekatan, yang rusak
 adalah lokalisasi dan pemisahan dua-tahap tidak akan menolong.
 **Dataset & split:** SawitMVC-Depth 352, split kanonik, test (410 box).
 **Metode:** inference `runs/yolo26l_e60_i1280_rgb352/weights/best.pt`
-(conf 0,001, IoU-NMS 0,7), lalu AP50 gaya COCO dihitung dua kali — sekali
+(conf 0,001, IoU-NMS 0,7), lalu AP50 gaya COCO dihitung dua kali, sekali
 per kelas, sekali dengan seluruh kelas dilipat jadi satu. Implementasi
 divalidasi lebih dulu: mAP50 hasil hitung sendiri 0,3707 vs pycocotools
 0,3711 (selisih 0,0004).
@@ -707,17 +707,17 @@ Konfusi pada box yang sudah benar lokasinya (IoU≥0,5, conf≥0,25):
 | B4 | 0 | 1 | 3 | 5 | 55,6% |
 
 Akurasi klasifikasi 70,5% (n=271). Seluruh kesalahan jatuh ke kelas
-bertetangga — nol kasus B1→B3/B4 — jadi ini masalah **ordinal**.
+bertetangga, nol kasus B1→B3/B4, jadi ini masalah **ordinal**.
 Catatan kejujuran: 70,5% itu bersyarat pada box yang berhasil dideteksi
 (271 dari 410); atas seluruh GT akurasinya 191/410 = **46,6%**.
 
 **Sumber:** `scripts/eval_twostage.py` (fungsi `ap50`), log sesi 2026-08-11.
-**Verdict: CONFIRMED** — plafon mAP50 pipeline ini adalah 0,6677, dan 44,5%
+**Verdict: CONFIRMED**, plafon mAP50 pipeline ini adalah 0,6677, dan 44,5%
 kemampuan yang sudah ada terbuang di tahap penamaan kelas.
 
 ---
 
-## V2-E-014 — Sinyal depth yang tersedia adalah relief lokal ordinal, bukan skala metrik, dan sub-kuantum per piksel
+## V2-E-014: Sinyal depth yang tersedia adalah relief lokal ordinal, bukan skala metrik, dan sub-kuantum per piksel
 
 **Tanggal:** 2026-08-11
 **Hipotesis (A):** depth memberi skala metrik (`D = d·Z/f`) yang memisahkan
@@ -727,13 +727,13 @@ sekelilingnya yang monoton terhadap kematangan.
 **Dataset & split:** 2.299 box GT SawitMVC-Depth + `depth_png_352/`.
 **Metode:** `scripts/probe_depth_signal.py --probe depth`
 
-**Hasil A — FALSIFIED.** Z median per kelas nyaris konstan:
+**Hasil A: FALSIFIED.** Z median per kelas nyaris konstan:
 B1 1,36 m / B2 1,33 / B3 1,31 / B4 1,20. Protokol foto jarak tetap, jadi
 mengalikan dengan Z hanya menggeser skala. (Temuan sampingan: depth **95,1%
-valid DI DALAM box** — angka "29% invalid" yang selama ini dikutip itu latar,
+valid DI DALAM box**, angka "29% invalid" yang selama ini dikutip itu latar,
 bukan objek.)
 
-**Hasil B — CONFIRMED.** Relief = median Z(cincin) − median Z(box):
+**Hasil B: CONFIRMED.** Relief = median Z(cincin) − median Z(box):
 
 | | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|
@@ -747,7 +747,7 @@ Kruskal-Wallis 4 kelas: **H = 99,8, p = 1,7×10⁻²¹**. Monoton sempurna.
 per level di Z=2,5 m** (median Z per citra dataset ini 2,49 m). Sinyal relief
 median 0,8 cm = **0,27 level**; B4 (5,1 cm) = 1,8 level. Dengan derau sensor
 ~1% Z ≈ 2,5 cm, **SNR per piksel ≈ 0,3**. Rentang dinamis kanal justru habis
-untuk ramp global adegan (entropi 7,68 dari 8 bit) yang **nuisance** — median
+untuk ramp global adegan (entropi 7,68 dari 8 bit) yang **nuisance**, median
 Z per citra std 0,82 m, rentang 0,80–6,44 m, mengikuti posisi operator.
 
 Pooling memulihkan sinyalnya (AUC B1-vs-B4):
@@ -763,43 +763,43 @@ Pooling memulihkan sinyalnya (AUC B1-vs-B4):
 **Verdict: A FALSIFIED, B CONFIRMED.**
 **Konsekuensi:** depth harus dikonsumsi **setelah pooling wilayah**, pada jalur
 **klasifikasi**. Early fusion di stem adalah rezim terburuk (resolusi penuh,
-pooling minimum) — menjelaskan kegagalan berulang E-022/E-027/E-032/V2-E-005/006,
+pooling minimum), menjelaskan kegagalan berulang E-022/E-027/E-032/V2-E-005/006,
 sekaligus meretrodiksi kenapa `edge` (Sobel = high-pass yang membuang ramp
-global) satu-satunya yang pernah menang (V2-E-008/010).
+global) satu-satunya yang pernah unggul (V2-E-008/010).
 **Koreksi terhadap pemahaman lama:** rentang `[0,8; 15,0]` dipilih di Volume 1
-dengan memaksimalkan entropi SELURUH CITRA — objektif yang keliru untuk tugas
+dengan memaksimalkan entropi SELURUH CITRA, objektif yang keliru untuk tugas
 ini, karena mengoptimalkan deskripsi langit dan pohon jauh, bukan resolusi pada
 skala objek.
 
 ---
 
-## V2-E-015 — Classifier kematangan pada crop mengalahkan klasifikasi detektor satu-tahap
+## V2-E-015: Pengklasifikasi kematangan pada citra terpotong mengalahkan klasifikasi detektor satu-tahap
 
 **Tanggal:** 2026-08-11
-**Hipotesis:** Memisahkan klasifikasi kematangan menjadi model crop tersendiri
+**Hipotesis:** Memisahkan klasifikasi kematangan menjadi model citra terpotong (*crop*) tersendiri
 (dengan pretraining dari 846 pohon 953 yang bebas bocor, sampling seimbang
 kelas, dan mask box target) menaikkan akurasi kematangan di atas 46,6% yang
 dicapai detektor Fase 1-5 atas seluruh GT.
-**Dataset & split:** crop GT SawitMVC-Depth 352, split kanonik
-(1.517 train / 372 val / 410 test); pretraining dari 16.542 crop 846 pohon 953
+**Dataset & split:** citra terpotong GT SawitMVC-Depth 352, split kanonik
+(1.517 train / 372 val / 410 test); pretraining dari 16.542 citra terpotong 846 pohon 953
 (`splits_fase6/pretrain953_*`, irisan nol dengan val/test-352 diverifikasi).
 **Metode:** `scripts/build_crop_dataset.py` + `scripts/train_crop_classifier.py`,
-backbone `convnext_tiny.fb_in22k_ft_in1k` (in_chans=4: RGB + mask box), head
+kerangka utama `convnext_tiny.fb_in22k_ft_in1k` (in_chans=4: RGB + mask box), head
 hybrid (CE + CORAL), 45 epoch, batch 32.
 
-**Hasil (akurasi kematangan, test split 410 crop):**
+**Hasil (akurasi kematangan, test split 410 citra terpotong):**
 
 | Pendekatan | test akurasi |
 |---|---|
 | Tebak kelas terbanyak (B2) | 0,4244 |
 | Histogram warna + regresi logistik | 0,4780 |
 | **Detektor Fase 1-5 atas seluruh GT** | **0,4659** (191/410) |
-| **Classifier crop (rata-rata 3 seed)** | **0,6309 ± 0,0203** |
+| **Classifier citra terpotong (rata-rata 3 seed)** | **0,6309 ± 0,0203** |
 
 **Dua bug sendiri yang sempat menahan hasil** (dicatat karena keduanya generik
 dan mudah terulang):
-1. Crop diperluas ctx=1,6 supaya cincin ikut masuk, tapi di kanopi padat sering
-   ada >1 tandan per crop — tanpa penanda, model tidak tahu tandan mana yang
+1. Citra terpotong diperluas ctx=1,6 supaya cincin ikut masuk, tapi di kanopi padat sering
+   ada >1 tandan per citra terpotong, tanpa penanda, model tidak tahu tandan mana yang
    dinilai. Ditambahkan kanal **mask box**.
 2. Augmentasi fotometrik awal (brightness ±25%, saturasi 0,6–1,4) menghapus
    label: kematangan tandan DIDEFINISIKAN oleh warna. Diturunkan ke ±7%.
@@ -807,15 +807,15 @@ Setelah keduanya diperbaiki, pretrain 953 naik dari akurasi 0,471 → 0,648.
 
 **Sumber:** `runs_fase6/sd{101,202,303}_rgb/hasil.json`,
 `runs_fase6/pre953v2/hasil.json`.
-**Verdict: CONFIRMED** — +16,5pp absolut di atas klasifikasi detektor.
+**Verdict: CONFIRMED**, +16,5pp absolut di atas klasifikasi detektor.
 **Catatan:** run dengan `in_chans=3` di `runs_fase6/` (ft_rgb_coral,
 ft_rgb_hybrid, ft_rgbd_hybrid) berasal dari kode sebelum kedua bug diperbaiki
-dan **tidak sebanding** — sengaja tidak dihapus, tapi tidak dipakai di angka
+dan **tidak sebanding**, sengaja tidak dihapus, tapi tidak dipakai di angka
 manapun.
 
 ---
 
-## V2-E-016 — Informasi kematangan yang dibawa depth REDUNDAN secara kondisional terhadap RGB
+## V2-E-016: Informasi kematangan yang dibawa depth REDUNDAN secara kondisional terhadap RGB
 
 **Tanggal:** 2026-08-11
 **Hipotesis:** Kanal relief depth menaikkan akurasi klasifikasi kematangan di
@@ -823,10 +823,10 @@ atas RGB saja. Falsifikasi: kalau delta-nya nol atau negatif lintas seed,
 hipotesis gugur.
 **Dataset & split:** sama dengan V2-E-015.
 
-### Bagian A — cabang CNN depth, 3 seed
+### Bagian A: cabang CNN depth, 3 seed
 
 Cabang depth terpisah (2 kanal: relief + mask valid), difusikan setelah global
-pooling, gate init 0,1 (taknol, pelajaran F-007), plus loss auxiliary RGB-only.
+pooling, gate init 0,1 (taknol, pelajaran F-007), plus fungsi rugi tambahan RGB-only.
 
 | seed | val rgb | val rgbd | Δ | test rgb | test rgbd | Δ |
 |---|---|---|---|---|---|---|
@@ -835,24 +835,24 @@ pooling, gate init 0,1 (taknol, pelajaran F-007), plus loss auxiliary RGB-only.
 | 303 | 0,6290 | 0,6532 | +0,0242 | 0,6244 | 0,6439 | +0,0195 |
 
 Rata-rata **Δval = −0,0143** (t=−0,72, p=0,55), **Δtest = −0,0203**
-(t=−1,01, p=0,42). Gate berhenti di 0,110–0,114 dari init 0,100 — model
+(t=−1,01, p=0,42). Gate berhenti di 0,110–0,114 dari init 0,100, model
 praktis tidak membuka jalur depth.
 
-Catatan penting: satu seed tunggal sempat memberi **+5,9pp** — persis besaran
+Catatan penting: satu seed tunggal sempat memberi **+5,9pp**, persis besaran
 yang, kalau dilaporkan sendirian, akan terbaca sebagai kemenangan depth.
 Multi-seed menunjukkan itu derau.
 
-### Bagian B — statistik depth terpool secara analitik
+### Bagian B: statistik depth terpool secara analitik
 
 Bagian A bisa dibantah: desain cabang CNN melanggar temuan V2-E-014 sendiri
 (pooling ditaruh di akhir, sesudah 4 conv ber-stride bekerja pada medan
 ber-SNR ~0,3). Jadi diuji lagi dengan depth diberi kondisi paling
-menguntungkan — 8 statistik yang SUDAH terpool (relief cincin−box, median,
+menguntungkan: 8 statistik yang SUDAH terpool (relief cincin−box, median,
 std, cakupan valid, rentang persentil), ditempel ke fitur penultimate
-classifier RGB terlatih, dibandingkan lewat regresi logistik yang sama.
+pengklasifikasi RGB terlatih, dibandingkan lewat regresi logistik yang sama.
 
-Sinyal relief terverifikasi masih utuh di crop: B1 +1,34 cm, B2 −0,24,
-B3 −2,60, B4 −4,29 — tetap monoton.
+Sinyal relief terverifikasi masih utuh di citra terpotong: B1 +1,34 cm, B2 −0,24,
+B3 −2,60, B4 −4,29, tetap monoton.
 
 | Fitur | val akurasi | test akurasi |
 |---|---|---|
@@ -866,12 +866,12 @@ B3 −2,60, B4 −4,29 — tetap monoton.
 `scripts/probe_fitur_depth.py`.
 **Verdict: FALSIFIED.**
 
-**Interpretasi — ini temuan utamanya.** Depth membawa informasi kematangan bila
+**Interpretasi, ini temuan utamanya.** Depth membawa informasi kematangan bila
 berdiri sendiri (`I(Y;D) > 0`: relief monoton, Kruskal-Wallis p=1,7×10⁻²¹ di
 V2-E-014; dan sendirian ia mencapai 0,3756 vs tebakan acak 0,25). Tetapi
 informasi itu **redundan secara kondisional terhadap RGB** (`I(Y;D|RGB) ≈ 0`).
 Penjelasan fisiknya sederhana: tandan yang menonjol keluar dari pelepah (B1)
-juga *terlihat* besar dan matang di RGB — relief adalah **akibat** dari
+juga *terlihat* besar dan matang di RGB, relief adalah **akibat** dari
 variabel laten yang sama (kematangan/ukuran tandan), bukan pengukuran
 independen atasnya.
 
@@ -883,9 +883,9 @@ seluruh rangkaian hasil nol RGB-D di kedua volume (E-022, E-027, E-032,
 V2-E-005/006, V2-E-009) dengan satu pernyataan, dan memprediksi bahwa
 percobaan fusi berikutnya juga akan nol.
 
-**Batas klaim ini — jangan digeneralisasi berlebihan:**
+**Batas klaim ini, jangan digeneralisasi berlebihan:**
 - Berlaku untuk **klasifikasi kematangan** pada dataset ini. Kontribusi depth
-  untuk **lokalisasi** (menemukan tandan tertutup) belum diuji terpisah —
+  untuk **lokalisasi** (menemukan tandan tertutup) belum diuji terpisah, 
   seluruh eksperimen sebelumnya mencampur kedua tugas.
 - Berlaku untuk protokol pengambilan data ini: jarak standoff hampir tetap
   (Z per kelas 1,20–1,36 m), depth uint8, 352 pohon. Sensor dengan presisi
@@ -893,7 +893,7 @@ percobaan fusi berikutnya juga akan nol.
 
 ---
 
-## V2-E-017 — Lokalisasi (deteksi 1 kelas) sudah mentok di plafon dataset, bukan kurang kapasitas
+## V2-E-017: Lokalisasi (deteksi 1 kelas) sudah mencapai batas saturasi di plafon dataset, bukan kurang kapasitas
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** AP50 lokalisasi pada 352 pohon masih jauh di bawah yang bisa
@@ -907,7 +907,7 @@ kebocoran (`splits_fase6/pretrain953_*`, irisan nol terverifikasi).
 **Metode:** `scripts/train_yolo_4ch_screening.py` (YOLO26l) dan RTDETR untuk
 pembanding arsitektur; evaluasi `scripts/eval_detector_agnostic.py`.
 
-**Hasil — training (val split masing-masing):**
+**Hasil, training (val split masing-masing):**
 
 | Run | Epoch | best val AP50 | @ep | P | R |
 |---|---|---|---|---|---|
@@ -918,7 +918,7 @@ pembanding arsitektur; evaluasi `scripts/eval_detector_agnostic.py`.
 | `agn352_ft3` (dari pretrain utuh, patience 45) | 60 | 0,7473 | 42 | 0,7620 | 0,6969 |
 | `agn352_rtdetr` (RT-DETR-L) | 36 | 0,7157 | 26 | 0,7634 | 0,6504 |
 
-**Hasil — pengukuran plafon, keduanya di split TEST dan bebas kebocoran:**
+**Hasil, pengukuran plafon, keduanya di split TEST dan bebas kebocoran:**
 
 | Dataset | box latih | AP50 lokalisasi (test) |
 |---|---|---|
@@ -926,22 +926,22 @@ pembanding arsitektur; evaluasi `scripts/eval_detector_agnostic.py`.
 | SawitMVC-Depth 352 (`agn352_ft`) | 1.517 | **0,7330** |
 
 **Sumber:** `results/fase6_ringkas.json`, `runs/agn*/results.csv`.
-**Verdict: CONFIRMED** — selisihnya hanya **0,0044** padahal dataset 953 punya
+**Verdict: CONFIRMED**, selisihnya hanya **0,0044** padahal dataset 953 punya
 9,8x lebih banyak box latih. Lokalisasi sudah menyentuh plafon resep ini.
 **Konsekuensi:** rencana memperbesar model (`yolo26x`, 59,0jt vs 26,3jt param)
-DIBATALKAN sebelum dijalankan — hambatannya bukan kapasitas detektor. Sebagai
+DIBATALKAN sebelum dijalankan, hambatannya bukan kapasitas detektor. Sebagai
 akibat lain, **mAP50 di dataset ini tidak mungkin melewati ~0,733**, karena
 mAP50 <= AP50 lokalisasi secara definisi. Target 0,80 berada di atas plafon.
 
 ---
 
-## V2-E-018 — Pretrain yang lebih baik di 953 TIDAK berpindah ke 352, dan patience bisa membunuh run di puncak palsu
+## V2-E-018: Pretrain yang lebih baik di 953 TIDAK berpindah ke 352, dan patience bisa membunuh run di puncak palsu
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** pretrain 953 yang lebih baik (0,8101 vs 0,7604, +5,0 poin)
-menghasilkan finetune 352 yang lebih baik pula.
-**Metode:** dua finetune dari pretrain utuh — `agn352_ft2` (patience 10) dan
-`agn352_ft3` (patience 45) — dibandingkan dengan `agn352_ft` dari pretrain
+menghasilkan penyesuaian terarah (*fine-tuning*) 352 yang lebih baik pula.
+**Metode:** dua penyesuaian terarah dari pretrain utuh, `agn352_ft2` (patience 10) dan
+`agn352_ft3` (patience 45), dibandingkan dengan `agn352_ft` dari pretrain
 yang dipotong.
 
 **Hasil:**
@@ -952,20 +952,20 @@ yang dipotong.
   mencapai puncak di **epoch 39**. Run ini **cacat protokol**, bukan hasil.
 - `agn352_ft3` (patience 45, jalan penuh 60 epoch): puncak **0,7473 @ep42**,
   vs `agn352_ft` **0,7522 @ep39**. Perbandingan epoch-per-epoch: ft3 unggul di
-  14 dari 31 epoch pertama — pada dasarnya **seri**.
+  14 dari 31 epoch pertama, pada dasarnya **seri**.
 
-**Verdict: FALSIFIED** — keunggulan +5,0 poin pada domain 953 tidak berpindah
+**Verdict: FALSIFIED**, keunggulan +5,0 poin pada domain 953 tidak berpindah
 ke 352. Masuk akal: dua kamera berbeda (960x1280 HP vs 1280x800 Orbbec) dan
 kepadatan objek berbeda (4,64 vs 1,55 per citra).
 **Pelajaran protokol:** memotong jadwal cosine di tengah berbeda dari
-early-stop saat plateau — `agn953_pre-2` yang dihentikan di epoch 4 dari 25
+early-stop saat plateau, `agn953_pre-2` yang dihentikan di epoch 4 dari 25
 kehilangan seluruh fase anneal (LR masih di puncak 0,00193), dan pretrain utuh
-menaikkannya +5,0 poin. Sebaliknya, patience yang terlalu ketat pada finetune
+menaikkannya +5,0 poin. Sebaliknya, patience yang terlalu ketat pada penyesuaian terarah
 ber-transfer kuat bisa membunuh run sebelum kurva sebenarnya dimulai.
 
 ---
 
-## V2-E-019 — WBF antar-detektor dan sweep konfigurasi inference menaikkan lokalisasi tanpa training tambahan
+## V2-E-019: WBF antar-detektor dan sweep konfigurasi inference menaikkan lokalisasi tanpa training tambahan
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** menggabungkan beberapa detektor dan menyetel konfigurasi
@@ -985,30 +985,30 @@ val**, tidak pernah di test.
 | `agn352_rtdetr` sendiri | 0,7135 |
 
 Sweep memilih **imgsz 1280, NMS IoU 0,5** (bukan 0,7 default).
-TTA deteksi (`augment=True`) diuji dan memberi **nol** perubahan — diabaikan
+TTA deteksi (`augment=True`) diuji dan memberi **nol** perubahan, diabaikan
 ultralytics untuk YOLO26.
 
-**Verdict: CONFIRMED** — +2,1 poin dari 0,7370 ke 0,7577, tanpa training.
-**Catatan penting:** `agn352_ft3` **kalah** sendirian (0,7250 vs 0,7370) tapi
+**Verdict: CONFIRMED**, +2,1 poin dari 0,7370 ke 0,7577, tanpa training.
+**Catatan penting:** `agn352_ft3` **lebih rendah** sendirian (0,7250 vs 0,7370) tapi
 gabungannya **melampaui keduanya**. Menambah RT-DETR justru menurunkan. Jadi
 nilai sebuah model dalam ensemble tidak bisa dinilai dari performa tunggalnya.
 
 ---
 
-## V2-E-020 — Pipeline dua-tahap mencapai mAP50 0,4500, setara model terbaik proyek
+## V2-E-020: Pipeline dua-tahap mencapai mAP50 0,4500, setara model terbaik proyek
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** memisahkan lokalisasi (detektor 1 kelas) dari klasifikasi
-kematangan (classifier crop) menghasilkan mAP50 lebih tinggi daripada detektor
+kematangan (pengklasifikasi citra terpotong (*crop classifier*)) menghasilkan mAP50 lebih tinggi daripada detektor
 4-kelas satu-tahap.
 **Dataset & split:** test 352 (410 box), sama persis dengan Fase 1-5.
-**Metode:** `scripts/eval_twostage.py` — kelas + confidence tahap-2 ditempel ke
+**Metode:** `scripts/eval_twostage.py`, kelas + skor keyakinan (*confidence*) tahap-2 ditempel ke
 box tahap-1, skor = `conf_det x P(kelas)`, **multi-kelas** (tiap box memancarkan
-4 deteksi), TTA 8 arah, ensemble classifier.
+4 deteksi), TTA 8 arah, ensemble pengklasifikasi.
 
 **Hasil:**
 
-| Versi | Classifier | mAP50 | B1 | B2 | B3 | B4 |
+| Versi | Pengklasifikasi | mAP50 | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|---|---|
 | v1 | 6 | 0,4192 | 0,7188 | 0,4474 | 0,2734 | 0,2375 |
 | v2 | 6 | 0,4395 | 0,7314 | 0,4689 | 0,3138 | 0,2440 |
@@ -1028,51 +1028,51 @@ Pembanding Fase 1-5 (test 352 yang sama):
 
 **Verdict: CONFIRMED terhadap satu-tahap YOLO26l** (+0,0789 absolut, +21,3%
 relatif dari 0,3711), dan melampaui `edge` serta RT-DETR-L. **Belum melampaui
-RF-DETR-L** — selisih 0,0044.
+RF-DETR-L**, selisih 0,0044.
 **Catatan:** dua-tahap unggul di B3 (0,3212 vs 0,2641 RT-DETR-L) dan B4
-(0,2738 vs 0,2661 RF-DETR-L) — dua kelas yang paling langka.
+(0,2738 vs 0,2661 RF-DETR-L), dua kelas yang paling langka.
 **Rasio panen:** 0,4500 / 0,7330 = 0,614 dari plafon lokalisasi. Model lama
 0,3711 / 0,6677 = 0,556. Jadi perbaikan datang dari KEDUA faktor.
 
 ---
 
-## V2-E-021 — Training gabungan 953+352 menurunkan mAP50 tapi menaikkan counting
+## V2-E-021: Training gabungan 953+352 menurunkan mAP50 tapi menaikkan pencacahan
 
 **Tanggal:** 2026-08-12
-**Hipotesis:** melatih classifier pada gabungan crop 953+352 (B3: 215 -> 8.780,
-B4: 98 -> 3.013) mengalahkan skema pretrain-lalu-finetune, karena tahap akhir
-skema lama hanya melihat 215 crop B3 dan 98 B4 sehingga menghapus pengetahuan
+**Hipotesis:** melatih pengklasifikasi pada gabungan citra terpotong 953+352 (B3: 215 -> 8.780,
+B4: 98 -> 3.013) mengalahkan skema pretrain-lalu-penyesuaian terarah, karena tahap akhir
+skema lama hanya melihat 215 citra terpotong B3 dan 98 B4 sehingga menghapus pengetahuan
 kelas langka.
 **Metode:** `--tahap gabung` di `scripts/train_crop_classifier.py`, 3 seed,
 `convnext_small` @176; evaluasi tetap di val/test 352.
 
-**Hasil (akurasi crop GT, rata-rata 3 seed):**
+**Hasil (akurasi citra terpotong GT, rata-rata 3 seed):**
 
 | Skema | val | test | test macro-F1 |
 |---|---|---|---|
-| `ftS` pretrain->finetune | 0,6729 | **0,6837** | 0,6105 |
+| `ftS` pretrain->penyesuaian terarah | 0,6729 | **0,6837** | 0,6105 |
 | `ftJ` + jitter mask | 0,6900 | 0,6829 | 0,6065 |
 | `ftG` gabungan | **0,6953** | 0,6724 | 0,5318 |
 
 **Hasil hilir (test 352):**
 
-| Konfigurasi | mAP50 | Counting Class ±1 |
+| Konfigurasi | mAP50 | Pencacahan Class ±1 |
 |---|---|---|
-| v2 (6 classifier lama) | 0,4395 | 86,82% |
-| v3 (3 classifier gabungan) | **0,4102** | **88,18%** |
-| v4 (9 classifier semua) | **0,4500** | 85,91% |
+| v2 (6 pengklasifikasi lama) | 0,4395 | 86,82% |
+| v3 (3 pengklasifikasi gabungan) | **0,4102** | **88,18%** |
+| v4 (9 pengklasifikasi semua) | **0,4500** | 85,91% |
 
-**Verdict: FALSIFIED untuk mAP50, CONFIRMED untuk counting.**
-Gabungan menang di val tapi kalah di test — pola overfit ke domain yang salah:
-dari 18.059 crop latih, **92% berasal dari 953** (kamera berbeda). Sampling
+**Verdict: FALSIFIED untuk mAP50, CONFIRMED untuk pencacahan.**
+Gabungan unggul di val tapi lebih rendah pada test, pola mengalami penyesuaian berlebih terhadap domain yang salah:
+dari 18.059 citra terpotong latih, **92% berasal dari 953** (kamera berbeda). Sampling
 menyeimbangkan KELAS tapi tidak menyeimbangkan DOMAIN.
 
 **Divergensi metrik yang penting dicatat:** konfigurasi terbaik untuk mAP50
-(v4, 0,4500) BUKAN yang terbaik untuk counting (v3, 88,18%). Ini konsisten
+(v4, 0,4500) BUKAN yang terbaik untuk pencacahan (v3, 88,18%). Ini konsisten
 secara matematis: mAP hanya peduli **urutan** deteksi di dalam tiap kelas,
-sementara counting memakai **argmax** dan karenanya sensitif terhadap
-kalibrasi prior kelas. Menyetel satu metrik bisa mengorbankan yang lain —
-mis. NMS IoU 0,5 hasil sweep menaikkan mAP50 tapi menurunkan counting
+sementara pencacahan memakai **argmax** dan karenanya sensitif terhadap
+kalibrasi prior kelas. Menyetel satu metrik bisa mengorbankan yang lain, 
+mis. NMS IoU 0,5 hasil sweep menaikkan mAP50 tapi menurunkan pencacahan
 (85,45% -> 83,18% pada v1).
 
 **Sumber:** `results/fase6_ringkas.json`, `results/twostage_final*.json`,
@@ -1080,18 +1080,18 @@ mis. NMS IoU 0,5 hasil sweep menaikkan mAP50 tapi menurunkan counting
 
 ---
 
-## V2-E-022 — Dataset 953 dan 352 adalah dua sesi akuisisi terpisah ~80 hari, bukan dua "view" pohon yang sama
+## V2-E-022: Dataset 953 dan 352 adalah dua sesi akuisisi terpisah ~80 hari, bukan dua "view" pohon yang sama
 
 **Tanggal:** 2026-08-12
 **Hipotesis yang diuji (asumsi implisit seluruh Volume 2):** karena 352 pohon
 DAMIMAS memakai tree ID yang sama di kedua dataset, keduanya adalah pohon yang
-sama — satu direkam dengan depth, satu tanpa — sehingga 953 sah dipakai sebagai
+sama, satu direkam dengan depth, satu tanpa, sehingga 953 sah dipakai sebagai
 korpus pretraining untuk 352.
-**Metode:** `scripts/probe_pergeseran_temporal.py` — read-only, membandingkan
+**Metode:** `scripts/probe_pergeseran_temporal.py`, read-only, membandingkan
 label kedua dataset pada citra ber-ID sama, dan membaca tanggal akuisisi dari
 sidecar JSON 953 serta `MERGE_VERIFICATION.json` 352.
 
-**Hasil — 1.408 citra ber-ID sama, dua himpunan label:**
+**Hasil: 1.408 citra ber-ID sama, dua himpunan label:**
 
 | Sumber label | Total kotak | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|---|
@@ -1100,7 +1100,7 @@ sidecar JSON 953 serta `MERGE_VERIFICATION.json` 352.
 
 Rasio jumlah kotak 2,84x; B3 **11,2x**; B4 **8,5x**.
 
-**Hasil — tanggal akuisisi:**
+**Hasil, tanggal akuisisi:**
 
 | Dataset | Akuisisi |
 |---|---|
@@ -1114,7 +1114,7 @@ antara kedua sesi. Citranya sendiri juga bukan berkas yang sama (953 potret
 **Sumber:** `results/pergeseran_temporal.json`.
 **Verdict: asumsi FALSIFIED.** Tandan yang difoto Mei bukan tandan yang difoto
 Juli. Kohort B3 yang dominan pada Mei sudah matang menjadi B1/B2 pada Juli, dan
-sebagian sudah dipanen — konsisten dengan turunnya total kotak 6.523 ke 2.299
+sebagian sudah dipanen, konsisten dengan turunnya total kotak 6.523 ke 2.299
 dan bergesernya distribusi dari 55% B3 menjadi 80% B1+B2.
 
 **Koreksi terhadap V2-E-012.** Angka "B3 34x lebih langka di dataset 352" benar,
@@ -1123,19 +1123,19 @@ fase kematangan kebun yang berbeda **pada pohon yang sama**. Perbandingan
 lintas-dataset 953-vs-352 tidak sah bukan hanya karena ketimpangan kelas, tapi
 karena keduanya mengukur populasi buah yang berbeda.
 
-**Konsekuensi untuk seluruh Fase 6.** Rangkaian pretrain 953 → finetune 352
+**Konsekuensi untuk seluruh Fase 6.** Rangkaian pretrain 953 → penyesuaian terarah 352
 bukan transfer di dalam satu domain, melainkan transfer melintasi pergeseran
 domain temporal dengan distribusi kematangan nyaris terbalik. Ini menjelaskan
 tiga hal yang sebelumnya tidak terjelaskan:
 
-1. Recall B3 classifier hanya 0,254 dengan 36 dari 63 bocor ke B2, meskipun B3
-   adalah kelas terbanyak dalam training gabungan (8.780 dari 18.059 crop).
-2. `ftG` (training gabungan) mencatat val tertinggi tapi test terendah — bobot
+1. Recall B3 pengklasifikasi hanya 0,254 dengan 36 dari 63 bocor ke B2, meskipun B3
+   adalah kelas terbanyak dalam training gabungan (8.780 dari 18.059 citra terpotong).
+2. `ftG` (training gabungan) mencatat val tertinggi tapi test terendah, bobot
    953 yang 8x lebih besar mendominasi prior yang salah untuk domain target.
-3. Empat skema classifier (ftS/ftJ/ftG/ftH) tidak terbedakan satu sama lain:
+3. Empat skema pengklasifikasi (ftS/ftJ/ftG/ftH) tidak terbedakan satu sama lain:
    semuanya melawan celah domain yang sama, dan celah itu ada di data.
 
-**Implikasi utama — mengapa detektor dan classifier timpang.** Label lokalisasi
+**Implikasi utama, mengapa detektor dan pengklasifikasi timpang.** Label lokalisasi
 ("ada tandan di sini") bertahan melintasi jeda 80 hari karena posisi tandan di
 kanopi relatif stabil. Label kematangan ("ini B3") tidak bertahan karena benda
 fisiknya berubah. Itulah sebabnya AP50 class-agnostic mencapai 0,7330 sementara
@@ -1144,12 +1144,12 @@ dipakai, bukan cacat arsitektur.
 
 ---
 
-## V2-E-023 — Split test 352 tidak punya daya statistik untuk membedakan konfigurasi Fase 6
+## V2-E-023: Split test 352 tidak punya daya statistik untuk membedakan konfigurasi Fase 6
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** urutan konfigurasi Fase 6 berdasarkan titik estimasi mAP50
 (0,4102 → 0,4192 → 0,4395 → 0,4500 → 0,4544) mencerminkan perbedaan nyata.
-**Metode:** `scripts/bootstrap_map.py` — resampling pada tingkat CITRA (bukan
+**Metode:** `scripts/bootstrap_map.py`, resampling pada tingkat CITRA (bukan
 kotak), 500 ulangan, seed 42; selisih antar-sumber dihitung **berpasangan**
 (sampel citra yang sama untuk kedua model) supaya korelasi antar-model tidak
 menggelembungkan selang.
@@ -1162,18 +1162,18 @@ menggelembungkan selang.
 | YOLO26l-RGB | 0,3677 | [0,3286; 0,4417] | **0,1130** |
 
 Selisih berpasangan `edge` − RGB: **+0,0593**, CI 95% **[−0,0013; +0,1168]**,
-P(Δ>0) = 0,972 → **tidak signifikan**, selang masih memuat nol.
+P(Δ>0) = 0,972 → **tidak signifikan**, selang masih mencakup nilai nol.
 
 **Sumber:** `results/bootstrap_map_awal.json`.
 **Verdict: hipotesis FALSIFIED.** Lebar CI ~0,117 sementara jarak antara
 dua-tahap terbaik (0,4500) dan rekor proyek RF-DETR-L (0,4544) hanya **0,0044**
-— **26x lebih kecil dari lebar selangnya**. Seluruh urutan konfigurasi Fase 6
+, **26x lebih kecil dari lebar selangnya**. Seluruh urutan konfigurasi Fase 6
 jatuh di dalam satu selang kepercayaan yang sama dan tidak terbedakan.
 
 **Kegagalan metodologis yang diakui.** V2-E-011 (Fase 5) memakai bootstrap CI
 dan berani menyimpulkan INCONCLUSIVE. Fase 6 meninggalkan praktik itu dan
 mengurutkan konfigurasi berdasarkan titik estimasi selama enam versi
-rekomposisi (v1–v6) serta empat skema classifier (12 training). Bukti bahwa
+rekomposisi (v1–v6) serta empat skema pengklasifikasi (12 training). Bukti bahwa
 selisih-selisih itu derau sebenarnya sudah tersedia lebih awal: sebaran
 akurasi test antar-seed (0,6512–0,7049) lebih lebar daripada sebaran
 antar-metode (0,6707–0,6837).
@@ -1184,23 +1184,23 @@ dengan 410 kotak GT, efek di bawah ~0,10 mAP50 tidak terdeteksi.
 
 ---
 
-## V2-E-024 — Depth menaikkan LOKALISASI dan menembus plafon yang diklaim V2-E-017, tapi belum signifikan di split ini
+## V2-E-024: Depth menaikkan LOKALISASI dan menembus plafon yang diklaim V2-E-017, tapi belum signifikan di split ini
 
 **Tanggal:** 2026-08-12
 **Hipotesis:** kanal depth menaikkan AP50 **lokalisasi** (deteksi 1 kelas).
 Ini satu-satunya perbandingan RGB vs RGB+D pada proyek ini yang **tidak bisa
 dikotori pergeseran temporal** (V2-E-022), karena class-agnostic membuang label
-kematangan sepenuhnya dan menyisakan hanya "ada tandan atau tidak" — label yang
+kematangan sepenuhnya dan menyisakan hanya "ada tandan atau tidak", label yang
 bertahan melintasi jeda 80 hari karena posisi tandan di kanopi relatif stabil.
 
 **Rancangan berpasangan.** Resep, inisialisasi (`agn953_full`), seed (42),
 jadwal (60 epoch, patience 45, cosine), resolusi (1280), dan batch (4)
 **identik**. Satu-satunya yang berbeda: jumlah kanal masukan. Kanal ke-4 memakai
-encoding `edge` (Sobel gradien depth), pemenang screening V2-E-008/010 —
+encoding `edge` (Sobel gradien depth), pemenang penyaringan awal V2-E-008/010, 
 diverifikasi identik dengan `SawitMVC-Depth-4ch-edge`. Bobot stem diinflasi
 3→4 kanal (1092/1092 item tertransfer, terverifikasi sebelum run).
 
-**Hasil — training (val):**
+**Hasil, training (val):**
 
 | Run | Kanal | best val AP50 | @ep | Durasi |
 |---|---|---|---|---|
@@ -1210,7 +1210,7 @@ diverifikasi identik dengan `SawitMVC-Depth-4ch-edge`. Bobot stem diinflasi
 `agn352_4ch` unggul di 21 dari 26 epoch pertama dan menyamai puncak
 seumur-hidup kontrol RGB pada epoch 26.
 
-**Hasil — split TEST, AP50 lokasi murni, dengan CI bootstrap berpasangan
+**Hasil, split TEST, AP50 lokasi murni, dengan CI bootstrap berpasangan
 (1.000 ulangan, resampling tingkat citra, seed 42):**
 
 | Model | AP50 test | CI 95% | Lebar | n prediksi |
@@ -1227,8 +1227,8 @@ P(Δ>0) = **0,921** → **belum signifikan pada taraf 95%**.
 
 **Verdict: POSITIF TAPI BELUM KONKLUSIF.** Arah efeknya konsisten di val
 (+0,0420) dan test (+0,0278), dan ini sinyal positif terkuat untuk depth di
-seluruh Volume 2 — satu-satunya yang muncul dari perbandingan yang benar-benar
-bersih. Tetapi selangnya masih memuat nol.
+seluruh Volume 2, satu-satunya yang muncul dari perbandingan yang
+bersih. Tetapi selangnya masih mencakup nilai nol.
 
 **Ketidaksignifikanan di sini TIDAK boleh dibaca sebagai "tidak ada efek".**
 V2-E-023 sudah menetapkan bahwa split test ini tidak mampu memisahkan efek di
@@ -1242,30 +1242,30 @@ tidak mungkin melewati ~0,733" karena AP50 lokalisasi test-352 (0,7330) praktis
 sama dengan test-953 (0,7374) meski 953 punya 9,8× lebih banyak kotak latih.
 Kesimpulan itu benar **sebagai pernyataan tentang masukan RGB**, tapi ditulis
 seolah berlaku umum untuk dataset. Dengan kanal depth, titik estimasi lokalisasi
-mencapai **0,7636** — di atas kedua angka tersebut. Plafon itu ternyata sifat
+mencapai **0,7636**, di atas kedua angka tersebut. Plafon itu ternyata sifat
 dari **modalitas masukan**, bukan sifat dataset. Perlu ditegaskan: 0,7636 masih
 di dalam CI 0,7330, jadi ini pembalikan **titik estimasi**, bukan pembalikan
 yang terbukti signifikan.
 
 **Konsekuensi.** Ini menajamkan rekomendasi §10 laporan. Depth tampaknya
-menolong di tempat yang persis diprediksi teori V2-E-022 — lokalisasi, bukan
+menolong di tempat yang persis diprediksi teori V2-E-022, lokalisasi, bukan
 kematangan. Akuisisi berikutnya sebaiknya dirancang untuk menguji **itu**,
 dengan test split ≈4.000 kotak supaya efek berukuran 0,03 bisa dipisahkan.
 
 ---
 
-## V2-E-025 — Angka test class-agnostic untuk `agn953_full`, dan besarnya efek kontaminasi pretraining
+## V2-E-025: Angka test class-agnostic untuk `agn953_full`, dan besarnya efek kontaminasi pretraining
 
 **Tanggal:** 2026-08-12
 **Lubang yang ditutup:** `agn953_full` selama ini hanya punya AP50 **val**
 (0,8101). `make_agnostic_dataset.py` memang hanya membuat split train+val untuk
 `agnostic953` (baris `p953 = {"train": [], "val": []}`), sehingga angka test-nya
 tidak pernah ada. Angka "test-953 = 0,7374" yang sempat dikutip berasal dari
-model **berbeda** — detektor class-aware `v2repro` yang prediksinya dilipat jadi
+model **berbeda**, detektor class-aware `v2repro` yang prediksinya dilipat jadi
 satu kelas.
 **Metode:** `scripts/buat_test_953_bersih.py`. Karena `pretrain953_images.txt`
 mengambil semua 846 pohon bebas-bocor tanpa menghormati split kanonik 953, dari
-141 pohon test kanonik hanya **19 pohon (76 citra, 316 kotak)** yang benar-benar
+141 pohon test kanonik hanya **19 pohon (76 citra, 316 kotak)** yang
 tak tersentuh training. Dua set dilaporkan supaya efek kontaminasi terlihat,
 bukan disembunyikan.
 
@@ -1281,7 +1281,7 @@ bukan disembunyikan.
 `results/test953_bersih.json`.
 **Verdict:** angka yang sah untuk `agn953_full` adalah **0,7702**, bukan 0,8101.
 Selisih 0,0388 antara set bersih dan set penuh adalah besarnya optimisme akibat
-kontaminasi — dan angka val (0,8101) hampir identik dengan set terkontaminasi
+kontaminasi, dan angka val (0,8101) hampir identik dengan set terkontaminasi
 (0,8090), persis seperti yang diharapkan kalau keduanya berbagi pohon dengan
 training.
 **Peringatan:** set bersih hanya 316 kotak, jadi CI-nya lebih lebar lagi
@@ -1290,14 +1290,14 @@ dibaca sebagai indikasi, bukan pengukuran presisi.
 
 ---
 
-## V2-E-026 — CI untuk angka utama Fase 6: dua-tahap 0,4500 tidak terbedakan dari pembandingnya
+## V2-E-026, CI untuk angka utama Fase 6: dua-tahap 0,4500 tidak terbedakan dari pembandingnya
 
 **Tanggal:** 2026-08-12
-**Metode:** konfigurasi v4 dijalankan ulang di test (9 classifier, WBF
-`agn352_ft`+`agn352_ft3`, imgsz 1280, NMS IoU 0,5, TTA, multi-kelas) dengan dump
+**Metode:** konfigurasi v4 dijalankan ulang di test (9 pengklasifikasi, WBF
+`agn352_ft`+`agn352_ft3`, imgsz 1280, NMS IoU 0,5, TTA, multi-kelas) dengan *dump*
 prediksi, lalu bootstrap 1.000 ulangan berpasangan.
 
-**Hasil:** reproduksi persis — mAP50 = **0,44999** vs 0,4500 yang dilaporkan
+**Hasil:** reproduksi persis, mAP50 = **0,44999** vs 0,4500 yang dilaporkan
 V2-E-020, per kelas identik (B1 0,7366 / B2 0,4683 / B3 0,3212 / B4 0,2738).
 
 | Model | mAP50 | CI 95% | Lebar |
@@ -1316,7 +1316,7 @@ tidak menghasilkan perbedaan yang bisa dibuktikan pada split ini.
 
 ---
 
-## V2-E-027 — Monocular-depth sebagai kanal ke-4 pada SawitMVC 953: turun −0,0475 mAP50 di test
+## V2-E-027, Monocular-depth sebagai kanal ke-4 pada SawitMVC 953: turun −0,0475 mAP50 di test
 
 **Tanggal:** 2026-08-15
 **Hipotesis:** peta monocular-depth (`yolo26l-depth.pt`, ukuran L) yang
@@ -1325,14 +1325,14 @@ pada SawitMVC 953 dibandingkan RGB murni. Ini sel 6 dari matriks
 mono-depth; satu-satunya sel yang punya daya statistik memadai (test 2.612
 kotak, bukan 410) dan bebas pergeseran temporal 80 hari.
 
-**Data:** `/workspace/d953_rgbmono` — TIFF 4 kanal `[B,G,R,mono]`, dibangun
+**Data:** `/workspace/d953_rgbmono`: TIFF 4 kanal `[B,G,R,mono]`, dibangun
 `scripts/buat_dataset_nch.py --dataset 953 --kanal mono`. Kanal mono = PNG uint8
 inverse-depth pada `[z_near, z_far] = [0,8; 15,0] m`, di-encode dengan
 `encode_inverse()` yang sama persis dengan kanal depth sensor (diimpor dari
 Research-Pipeline, bukan ditulis ulang). Split kanonik 716/96/141 pohon =
 3.000/404/588 citra, 14.041/1.887/**2.612** kotak.
 
-**Resep:** identik dengan sel 5 (`yolo26l_e60_i1280_v2repro`) — `yolo26l.pt`
+**Resep:** identik dengan sel 5 (`yolo26l_e60_i1280_v2repro`), `yolo26l.pt`
 COCO init, imgsz 1280, batch 4, seed 42, `cos_lr`, `close_mosaic` 10,
 optimizer auto, lr0 0,01. Stem di-inflate 3 -> 4 kanal oleh ultralytics.
 
@@ -1358,12 +1358,12 @@ dipulihkan dari kunci `train_results` di dalam `best.pt`, disimpan ke
 
 Sel 6 tertinggal di 21 dari 31 epoch, dan di **setiap** epoch sejak ep18. Puncak
 sel 5 sendiri 0,5373 @ep34. **Peringatan:** kurva val sel 6 di atas dihitung
-atas 394 citra, bukan 404 — 10 citra val korup dan dilewati diam-diam oleh
+atas 394 citra, bukan 404: 10 citra val korup dan dilewati diam-diam oleh
 ultralytics (lihat V2-E-028). Baris "selisih" di atas karena itu tidak
 sepenuhnya sebanding dan tidak boleh dikutip sebagai angka; ia hanya
 menunjukkan arah.
 
-### Metrik test (pycocotools, 588 citra, 2.612 kotak GT — setelah perbaikan citra korup)
+### Metrik test (pycocotools, 588 citra, 2.612 kotak GT: setelah perbaikan citra korup)
 
 | | sel 6 RGB+Mono | sel 5 RGB | selisih |
 |---|---|---|---|
@@ -1406,17 +1406,17 @@ small 0,017 / medium 0,134 / large 0,270; AR@100 = 0,527.
 kanal ke-4 menurunkan mAP50 sebesar 0,0475 di test, konsisten di keempat kelas,
 dan konsisten pula dengan catatan lama repo ini bahwa early fusion depth adalah
 regresi (E-022, E-027 Volume 1: −0,0230 pada YOLO26n). Yang **belum** bisa
-dipisahkan: apakah kerugian ini berasal dari isi peta mono, atau semata dari
+dipisahkan: apakah penurunan performa ini berasal dari isi peta mono, atau semata dari
 biaya menambah kanal pada stem yang bobot COCO-nya 3 kanal. Kontrol M_shuf
 lintas-pohon adalah uji yang memisahkan keduanya dan tetap layak dijalankan
 meski arahnya negatif.
 
 ---
 
-## V2-E-028 — 39 citra TIFF korup di dataset turunan, dilewati diam-diam oleh ultralytics
+## V2-E-028: 39 citra TIFF korup di dataset turunan, dilewati diam-diam oleh ultralytics
 
 **Tanggal:** 2026-08-15
-**Bukan hipotesis** — catatan cacat data yang memengaruhi cara membaca V2-E-027.
+**Bukan hipotesis**, catatan cacat data yang memengaruhi cara membaca V2-E-027.
 
 **Temuan:** eval sel 6 gagal dengan `gagal membaca ...tiff`. Berkasnya ada dan
 berukuran 8,5 MB tapi tidak bisa didekode oleh `cv2.imread`, pembaca
@@ -1433,20 +1433,20 @@ ultralytics, maupun `cv2.imdecodemulti`. Pemindaian penuh
 | d352_rgbedgemono (5 kanal) | semua | 1.408 | 0 |
 
 Dua tanda tangan galat: `TIFFReadRGBAStrip` gagal (data terpotong) dan
-`TIFFGetField PHOTOMETRIC` gagal (header rusak) — keduanya khas penulisan yang
+`TIFFGetField PHOTOMETRIC` gagal (header rusak), keduanya khas penulisan yang
 terputus. Menariknya berkas 5 kanal yang ditulis `cv2.imwritemulti` justru
 bersih seluruhnya; yang rusak hanya yang ditulis `cv2.imwrite`.
 
 **Kenapa ini berbahaya, dan ini pelajaran utamanya:** ultralytics **melewati**
 citra korup dengan peringatan lalu tetap menyelesaikan training. Tidak ada
 kegagalan, tidak ada jejak di metrik akhir. Akibat konkretnya, metrik val sel 6
-selama 31 epoch dihitung atas **394 citra** sementara baseline sel 5 dihitung
-atas **404** — perbandingan yang tampak sah sepanjang malam sebenarnya
+selama 31 epoch dihitung atas **394 citra** sementara garis dasar pembanding sel 5 dihitung
+atas **404**, perbandingan yang tampak sah sepanjang malam sebenarnya
 dilakukan di atas himpunan data yang berbeda. Cacat semacam ini tidak akan
 pernah terlihat dari angkanya sendiri.
 
 **Tindakan:** berkas korup dihapus (citra turunan, regenerable dalam hitungan
-menit; ATURAN #1 diperiksa — nol `.pt`/`.pth`/`.ckpt` di sasaran), dibangun
+menit; ATURAN #1 diperiksa, nol `.pt`/`.pth`/`.ckpt` di sasaran), dibangun
 ulang dengan `buat_dataset_nch.py`, cache label dibuang supaya ultralytics
 memindai ulang. Verifikasi setelahnya: **0 korup** di ketiga dataset, jumlah
 kanal terkonfirmasi 4/4/5, jumlah kotak kembali ke angka kanonik (test 953 =
@@ -1464,26 +1464,26 @@ dibandingkan dan baru ketahuan berjam-jam kemudian.
 
 ---
 
-## V2-E-029 — CI berpasangan sel 6 vs sel 5: penurunan −0,0476 mAP50 SIGNIFIKAN
+## V2-E-029, CI berpasangan sel 6 vs sel 5: penurunan −0,0476 mAP50 SIGNIFIKAN
 
 **Tanggal:** 2026-08-15
 **Metode:** bootstrap berpasangan 2.000 ulangan atas citra test (seed 42), dari
-dump prediksi yang disimpan saat evaluasi — `pred_sel6_953_rgbmono_test.npz` dan
+*dump* prediksi yang disimpan saat evaluasi, `pred_sel6_953_rgbmono_test.npz` dan
 `pred_sel5_953_rgb_test.npz`. GT diambil dari dataset asli
 `/workspace/SawitMVC-YOLO` supaya kedua lengan dibandingkan terhadap sumber yang
 sama. 588 citra, 2.612 kotak.
 
 | Model | mAP50 | CI 95% | Lebar |
 |---|---|---|---|
-| Sel 6 — RGB+Mono (4 kanal) | 0,4960 | [0,4729; 0,5225] | 0,0496 |
-| Sel 5 — RGB (3 kanal) | 0,5436 | [0,5206; 0,5712] | 0,0506 |
+| Sel 6: RGB+Mono (4 kanal) | 0,4960 | [0,4729; 0,5225] | 0,0496 |
+| Sel 5: RGB (3 kanal) | 0,5436 | [0,5206; 0,5712] | 0,0506 |
 
 **Selisih berpasangan: −0,0476, CI 95% [−0,0671; −0,0274], P(Δ>0) = 0,000
 → SIGNIFIKAN pada 95%.**
 
-CI selisih tidak memuat nol, dan tidak satu pun dari 2.000 ulangan menghasilkan
+CI selisih tidak mencakup nilai nol, dan tidak satu pun dari 2.000 ulangan menghasilkan
 Δ positif. Lebar CI 0,0496 sesuai perkiraan daya statistik untuk 2.612 kotak
-(bandingkan split 352 dengan 410 kotak, lebar CI ~0,11 — di sana selisih sebesar
+(bandingkan split 352 dengan 410 kotak, lebar CI ~0,11, di sana selisih sebesar
 ini tidak akan bisa dibedakan dari nol).
 
 **Sumber:** `results/boot_sel6_vs_sel5.json`.
@@ -1491,23 +1491,23 @@ ini tidak akan bisa dibedakan dari nol).
 **Verdict:** ini hasil negatif yang **tegas**, bukan sekadar tidak terbukti.
 Menambahkan monocular-depth sebagai kanal ke-4 pada SawitMVC 953 menurunkan
 mAP50 secara signifikan. Perlu diingat run sel 6 berhenti di 31 dari 60 epoch
-(V2-E-027 butir 1), sehingga besar penurunannya kemungkinan dilebih-lebihkan —
+(V2-E-027 butir 1), sehingga besar penurunannya kemungkinan dilebih-lebihkan, 
 tapi arahnya tidak diragukan, dan konsisten di keempat kelas serta di seluruh
 2.000 ulangan bootstrap. Menjalankan sel 6 sampai 60 epoch bisa memperkecil
 angkanya, tidak masuk akal membalikkan tandanya.
 
 Konsisten dengan catatan lama repo: early fusion depth adalah regresi (E-022,
-E-027 Volume 1, −0,0230 pada YOLO26n). Yang masih terbuka: apakah kerugian
+E-027 Volume 1, −0,0230 pada YOLO26n). Yang masih terbuka: apakah penurunan performa
 berasal dari isi peta mono atau dari biaya menambah kanal pada stem COCO
 3-kanal. M_shuf lintas-pohon memisahkan keduanya.
 
 ---
 
-## V2-E-030 — Sel 3 (352 RGB+Mono): naik +0,0266 atas RGB tapi tidak signifikan, dan urutan val terbalik dari test
+## V2-E-030, Sel 3 (352 RGB+Mono): naik +0,0266 atas RGB tapi tidak signifikan, dan urutan val terbalik dari test
 
 **Tanggal:** 2026-08-15
 **Hipotesis:** monocular-depth sebagai kanal ke-4 menaikkan deteksi kelas-sadar
-pada SawitMVC-Depth 352, dataset yang sama tempat depth sensor terbukti menang.
+pada SawitMVC-Depth 352, dataset yang sama tempat depth sensor terbukti unggul.
 
 **Data:** `/workspace/d352_rgbmono`, TIFF 4 kanal `[B,G,R,mono]`, split kanonik
 `canonical_70_15_15` = 980/208/220 citra, 1.517/372/**410** kotak. Resep identik
@@ -1515,11 +1515,11 @@ dengan sel 1 dan sel 2.
 
 **Training:** dihentikan atas keputusan pengguna di **54 dari 60 epoch** setelah
 plateau terkonfirmasi. `best.pt` = ep41 (val mAP50 0,3888). Biaya
-komparabilitasnya kecil — pembandingnya juga checkpoint tengah (sel 1 @ep45,
+komparabilitasnya kecil, pembandingnya juga checkpoint tengah (sel 1 @ep45,
 sel 2 @ep38) dan tujuh epoch yang dilewatkan seluruhnya di fase `close_mosaic`
 yang menurunkan val di ketiga run. Detail: `runs/sel3_352_rgbmono/DIHENTIKAN_LEBIH_AWAL`.
 
-### Val vs test — urutannya TERBALIK, untuk ketiga sel
+### Val vs test: urutannya TERBALIK, untuk ketiga sel
 
 | Sel | Input | ch | val puncak | test mAP50 |
 |---|---|---|---|---|
@@ -1543,7 +1543,7 @@ sel 6 val 0,5012 -> test 0,4960).
 
 Per kelas AP50 sel 3: B1 0,7232 / B2 0,4698 / B3 0,2546 / B4 0,1295.
 
-### CI bootstrap berpasangan (2.000 ulangan, seed 42, dari dump .npz)
+### CI bootstrap berpasangan (2.000 ulangan, seed 42, dari *dump* .npz)
 
 | Perbandingan | Selisih | CI 95% | P(Δ>0) | Signifikan |
 |---|---|---|---|---|
@@ -1568,7 +1568,7 @@ mengubah kesimpulan apa pun.
 **Verdict:** arahnya **berlawanan dengan sel 6**. Di 953 mono menurunkan mAP50
 secara signifikan (−0,0476, V2-E-029); di 352 mono justru menaikkannya
 (+0,0266), meski tidak signifikan. Mono juga berada di antara RGB dan depth
-sensor pada dataset ini — konsisten dengan probe V2-E-0xx yang menemukan mono
+sensor pada dataset ini, konsisten dengan probe V2-E-0xx yang menemukan mono
 mereproduksi relief ordinal B1->B4 yang sama dengan sensor tapi dengan amplitudo
 lebih lemah (−4,08 cm vs −5,14 cm).
 
@@ -1581,7 +1581,7 @@ tambahan yang belum dijadwalkan.
 
 ---
 
-## V2-E-031 — Sel 4 (352 RGB+Depth+Mono, 5 kanal): mono DI ATAS depth sensor merugikan −0,0504, signifikan
+## V2-E-031, Sel 4 (352 RGB+Depth+Mono, 5 kanal): mono DI ATAS depth sensor merugikan −0,0504, signifikan
 
 **Tanggal:** 2026-08-15
 **Hipotesis:** menambahkan monocular-depth sebagai kanal kelima di atas RGB +
@@ -1591,12 +1591,12 @@ terakhir matriks mono-depth, dan satu-satunya yang tuntas **60 epoch penuh**.
 **Data:** `/workspace/d352_rgbedgemono`, TIFF 5 kanal `[B,G,R,edge,mono]`,
 disimpan sebagai 5 halaman satu-kanal (`cv2.imwritemulti`) karena `cv2.imwrite`
 menolak 5 kanal. Split kanonik 980/208/220 citra, 410 kotak test. Stem model
-diverifikasi `(64, 5, 3, 3)`.
+diverifikasi `(64; 5; 3; 3)`.
 
 **Training:** 60/60 epoch tuntas, batch 4 utuh (nol `Reducing to batch`).
 `best.pt` = **ep50**, val mAP50 0,4281.
 
-### Val — sel 4 memuncaki SEMUA sel di 352
+### Val: sel 4 memuncaki SEMUA sel di 352
 
 | Sel | Input | ch | val puncak | epoch |
 |---|---|---|---|---|
@@ -1606,10 +1606,10 @@ diverifikasi `(64, 5, 3, 3)`.
 | 2 | RGB+Depth `edge` | 4 | 0,3856 | ep38 |
 
 Sel 4 juga satu-satunya dari empat run 352 yang **naik** saat `close_mosaic`
-menyala di ep51 — puncaknya justru tercapai di ep50, sementara tiga run lain
+menyala di ep51, puncaknya justru tercapai di ep50, sementara tiga run lain
 melandai turun di fase itu.
 
-### Test (pycocotools, 220 citra, 410 kotak) — urutannya TERBALIK lagi
+### Test (pycocotools, 220 citra, 410 kotak): urutannya TERBALIK lagi
 
 | Sel | Input | ch | test mAP50 | mAP50-95 |
 |---|---|---|---|---|
@@ -1621,7 +1621,7 @@ melandai turun di fase itu.
 Peringkat val (4 > 1 > 3 > 2) kembali hampir kebalikan peringkat test
 (2 > 3 > 4 > 1). Ini pembalikan **keempat** berturut-turut di split 352 dan
 menutup kasusnya: **val 208 citra tidak boleh dipakai memeringkat model di
-dataset ini, titik.** Sel 4 memuncaki val dan tetap kalah dari sel 2 di test.
+dataset ini, titik.** Sel 4 memuncaki val dan tetap berada di bawah sel 2 di test.
 
 Per kelas AP50 sel 4: B1 0,7014 / B2 0,4560 / B3 0,2138 / B4 0,1351.
 
@@ -1632,27 +1632,27 @@ Per kelas AP50 sel 4: B1 0,7014 / B2 0,4560 / B3 0,2138 / B4 0,1351.
 | sel 4 − sel 2 (mono di atas depth) | **−0,0504** | [−0,1038; −0,0015] | 0,022 | **ya** |
 | sel 4 − sel 3 (5 kanal vs 4 kanal mono) | −0,0177 | [−0,0672; +0,0323] | 0,243 | tidak |
 
-Signifikansinya tipis — batas atas CI −0,0015, nyaris menyentuh nol — jadi
+Signifikansinya tipis, batas atas CI −0,0015, nyaris menyentuh nol, jadi
 sebaiknya dibaca sebagai "bukti cukup kuat untuk menolak bahwa mono membantu di
-atas depth", bukan sebagai pengukuran presisi atas besarnya kerugian.
+atas depth", bukan sebagai pengukuran presisi atas besarnya penurunan performa.
 
 **Sumber:** `results/eval_sel4_352_rgbedgemono_test.json`,
 `results/pred_sel4_352_rgbedgemono_test.npz`, `results/boot_sel4_vs_sel2.json`,
 `results/boot_sel4_vs_sel3.json`, `results/riwayat_epoch/sel4_*`.
 
 **Verdict:** hipotesis **ditolak**. Mono tidak menambah apa pun di atas depth
-sensor; ia mengurangi −0,0504, dan itu signifikan meski di split yang cuma 410
-kotak. Kanal kelima bukan cuma sia-sia, ia mengencerkan sinyal yang sudah
+sensor; ia mengurangi −0,0504, dan itu signifikan meski di split yang hanya 410
+kotak. Kanal kelima bukan hanya sia-sia, ia mengencerkan sinyal yang sudah
 dibawa kanal depth.
 
 ---
 
-## V2-E-032 — Matriks mono-depth lengkap: mono tidak pernah menang, dan dua kali kalah signifikan
+## V2-E-032, Matriks mono-depth lengkap: mono tidak pernah unggul, dan dua kali mengalami penurunan signifikan
 
 **Tanggal:** 2026-08-15
 **Ringkasan enam sel.** Semua memakai resep identik (`yolo26l.pt` COCO init,
 60 epoch, batch 4, imgsz 1280, seed 42, `cos_lr`), evaluator pycocotools pada
-split test, dump prediksi `.npz` disimpan saat evaluasi.
+split test, *dump* prediksi `.npz` disimpan saat evaluasi.
 
 | # | Dataset | Input | ch | test mAP50 | Epoch dijalankan |
 |---|---|---|---|---|---|
@@ -1667,14 +1667,14 @@ split test, dump prediksi `.npz` disimpan saat evaluasi.
 
 | Perbandingan | Selisih | CI 95% | Signifikan |
 |---|---|---|---|
-| sel 6 − sel 5 — mono vs RGB, 953 | **−0,0476** | [−0,0671; −0,0274] | **YA** |
-| sel 4 − sel 2 — mono di atas depth, 352 | **−0,0504** | [−0,1038; −0,0015] | **YA** |
-| sel 3 − sel 2 — mono vs depth, 352 | −0,0327 | [−0,0756; +0,0074] | tidak |
-| sel 4 − sel 3 — 5ch vs 4ch mono, 352 | −0,0177 | [−0,0672; +0,0323] | tidak |
-| sel 3 − sel 1 — mono vs RGB, 352 | +0,0266 | [−0,0270; +0,0739] | tidak |
+| sel 6 − sel 5, mono vs RGB, 953 | **−0,0476** | [−0,0671; −0,0274] | **YA** |
+| sel 4 − sel 2, mono di atas depth, 352 | **−0,0504** | [−0,1038; −0,0015] | **YA** |
+| sel 3 − sel 2, mono vs depth, 352 | −0,0327 | [−0,0756; +0,0074] | tidak |
+| sel 4 − sel 3: 5ch vs 4ch mono, 352 | −0,0177 | [−0,0672; +0,0323] | tidak |
+| sel 3 − sel 1, mono vs RGB, 352 | +0,0266 | [−0,0270; +0,0739] | tidak |
 
-**Kesimpulan: monocular-depth tidak pernah menang secara signifikan di satu
-pun dari lima perbandingan, dan kalah signifikan di dua.** Satu-satunya selisih
+**Kesimpulan: monocular-depth tidak pernah unggul secara signifikan di satu
+pun dari lima perbandingan, dan mengalami penurunan signifikan di dua.** Satu-satunya selisih
 positifnya (+0,0266, sel 3 vs sel 1) tidak signifikan dan lebih kecil daripada
 lebar CI-nya sendiri.
 
@@ -1682,7 +1682,7 @@ lebar CI-nya sendiri.
 (0,3943) dan sel 4 (0,3766). Mono mereproduksi struktur yang sama dengan sensor
 tapi lebih lemah (Spearman dalam kotak 0,676; relief B1->B4 −4,08 cm vs sensor
 −5,14 cm), dan pelemahan itu tampaknya cukup untuk membalik manfaatnya jadi
-kerugian.
+penurunan performa.
 
 **Dua batas yang harus ikut dikutip:**
 
@@ -1696,23 +1696,23 @@ kerugian.
    sehingga −0,0476 kemungkinan dilebih-lebihkan. Arahnya tidak diragukan
    (nol dari 2.000 ulangan bootstrap positif), besarannya diragukan.
 
-**Catatan angka sel 1 dan sel 2 — jangan bingung dengan STATUS.md.** Tabel di
+**Catatan angka sel 1 dan sel 2, jangan bingung dengan STATUS.md.** Tabel di
 atas memakai estimasi titik dari *resampler* bootstrap (0,3677 dan 0,4270),
 bukan dari pycocotools (0,3711 dan 0,4316 di STATUS.md / V2-E-010/011).
 Selisih ~0,004 itu murni beda implementasi mAP antar-evaluator, bukan model
 atau data yang berbeda: keduanya membaca `.npz` prediksi yang sama
 (`pred_rgb352_test.npz`, `pred_edge_test.npz`). Semua selisih dan CI di tabel
 perbandingan dihitung di dalam satu evaluator yang sama, jadi internal
-konsisten — tapi **jangan campur** angka pycocotools dengan angka bootstrap
+konsisten, tapi **jangan campur** angka pycocotools dengan angka bootstrap
 dalam satu pengurangan.
 
-**Yang belum terjawab, dan sengaja tidak ditebak:** apakah kerugian mono
+**Yang belum terjawab, dan sengaja tidak ditebak:** apakah penurunan performa mono
 berasal dari isi petanya atau dari biaya menambah kanal pada stem COCO 3-kanal.
 Kontrol M_shuf lintas-pohon memisahkan keduanya dan belum dijalankan.
 
 ---
 
-## V2-E-033 — Dua kebocoran split yang membatasi cara membaca angka lama
+## V2-E-033: Dua kebocoran split yang membatasi cara membaca angka lama
 
 **Tanggal:** 2026-08-15
 **Konteks:** dua temuan sampingan yang muncul saat menelusuri daya statistik
@@ -1731,13 +1731,13 @@ Split pretraining `agnostic953` (train 3.200 + val 364 = 3.564 citra,
 | `test_bersih` | 76 | 19 | **0/76** | **0/19** |
 
 Jadi 87% citra `test_penuh` **secara harfiah ikut dilatih** saat pretraining
-agnostik — bukan cuma pohon yang sama dari sudut lain, tapi berkas citra yang
+agnostik, bukan hanya pohon yang sama dari sudut lain, tapi berkas citra yang
 identik. Angka apa pun dari `test_penuh` untuk model yang melewati pretraining
 agnostik adalah angka **train-on-test** dan tidak boleh dikutip sebagai
 performa generalisasi.
 
-`test_bersih` (76 citra, 19 pohon) benar-benar bersih dan memang dibuat untuk
-alasan ini. Itu satu-satunya himpunan yang sah untuk menilai jalur agnostik —
+`test_bersih` (76 citra, 19 pohon) bersih dan memang dibuat untuk
+alasan ini. Itu satu-satunya himpunan yang sah untuk menilai jalur agnostik, 
 dengan konsekuensi 19 pohon terlalu sedikit untuk CI yang berguna.
 
 Perbandingan yang dilaporkan di V2-E-0xx Fase 6 memakai `pred_agn953_bersih.npz`
@@ -1752,9 +1752,9 @@ pohon** di split test 352 (`SawitMVC-Depth-YOLO/test`).
 Ini **tidak** mencemari matriks mono-depth: keenam sel dilatih dari
 `yolo26l.pt` COCO, bukan dari bobot yang pernah melihat 953, jadi sel 1-4
 tidak pernah bersinggungan dengan train-953. Yang tercemar adalah **rantai
-transfer apa pun yang memakai bobot 953 sebagai inisialisasi untuk model 352** —
+transfer apa pun yang memakai bobot 953 sebagai inisialisasi untuk model 352**, 
 di situ 80% pohon test-352 sudah pernah dilihat. Kalau nanti ada eksperimen
-finetune 953→352, hasilnya wajib dilaporkan dengan catatan ini, atau memakai
+penyesuaian terarah 953→352, hasilnya wajib dilaporkan dengan catatan ini, atau memakai
 subset 11 pohon yang bersih (yang lagi-lagi terlalu kecil untuk CI).
 
 **Verifikasi:** kedua angka dihitung dengan mencocokkan identitas pohon
@@ -1767,20 +1767,20 @@ ditambahkan: (a) hasil agnostik hanya sah dari `test_bersih`; (b) transfer
 
 ---
 
-## V2-E-034 — Baseline seed-42 pada rilis SawitMVC-Depth-YOLO v2.0.0 (763 pohon): urutan RF-DETR-L > RT-DETR-L > YOLO26l bertahan, tapi budget training tidak setara
+## V2-E-034, Garis dasar pembanding seed-42 pada rilis SawitMVC-Depth-YOLO v2.0.0 (763 pohon): urutan RF-DETR-L > RT-DETR-L > YOLO26l bertahan, tapi budget training tidak setara
 
 **Tanggal:** 2026-08-22
 **Konteks.** Rilis dataset baru `SawitMVC-Depth-YOLO` v2.0.0 menggabungkan tiga
 kampanye akuisisi (DAMIMAS, MARIHAT, TOPAZ) jadi 763 pohon dengan split bawaan
 536/117/110 pohon (lihat `docs/NEW763_BASELINE.md` untuk resep lengkap). Ini
-baseline pertama pada rilis ini, seed 42 saja — seed 1337 dan 2026 dibatalkan
+garis dasar pembanding pertama pada rilis ini, seed 42 saja, seed 1337 dan 2026 dibatalkan
 atas keputusan pengguna untuk memprioritaskan campaign lain
 (`combined1716`, lihat V2-E-035 kalau sudah ditulis).
 
 **Resep.** RGB, COCO-pretrained, resolusi 1280, batch 4, deterministic,
 `cos_lr`. YOLO26l dan RT-DETR-L: maksimum 60 epoch/patience 15. RF-DETR-L:
 maksimum 20 epoch/patience 5 (sengaja lebih pendek, berdasar temuan lama
-bahwa RF-DETR overfit dini di korpus kecil — lihat `docs/NEW763_BASELINE.md`).
+bahwa RF-DETR penyesuaian berlebih dini di korpus kecil, lihat `docs/NEW763_BASELINE.md`).
 Evaluator `pycocotools.COCOeval`, prediksi val+test didump ke `.npz` saat
 evaluasi, riwayat per-epoch disalin ke `results/riwayat_epoch_new763/`.
 
@@ -1804,31 +1804,31 @@ YOLO26l), dan RF-DETR-L kembali jadi detektor terbaik.
 | YOLO26l | 0,4019 | 0,4179 | 0,5044 |
 
 Ketiga model konsisten terlemah di DAMIMAS dan terkuat di TOPAZ. RF-DETR-L
-menang di DAMIMAS dan TOPAZ tapi RT-DETR-L sedikit lebih baik di MARIHAT
-(0,5380 vs 0,5182) — MARIHAT cuma 11 pohon/44 citra test, jadi selisih ini
-kemungkinan besar di dalam noise, belum dihitung CI-nya.
+unggul di DAMIMAS dan TOPAZ tapi RT-DETR-L sedikit lebih baik di MARIHAT
+(0,5380 vs 0,5182): MARIHAT hanya 11 pohon/44 citra test, jadi selisih ini
+kemungkinan besar di dalam variasi acak, belum dihitung CI-nya.
 
-**Kaveat penting — budget training TIDAK setara.** Ketiganya early-stop,
+**Kaveat penting, budget training TIDAK setara.** Ketiganya early-stop,
 tapi RF-DETR-L berhenti di 70% dari budget-nya (14/20) sementara YOLO26l dan
 RT-DETR-L masing-masing di 92% (55/60) dan 83% (50/60) dari budget mereka.
 Lebih penting lagi: jadwal `cos_lr` RF-DETR-L didesain untuk 20 epoch, jadi
-LR-nya sudah habis meluruh di epoch 14 — sementara jadwal YOLO/RT-DETR
+LR-nya sudah habis meluruh di epoch 14, sementara jadwal YOLO/RT-DETR
 didesain untuk 60 epoch dan baru berhenti di 50-55. Ini bukan perbandingan
 "tiga model dilatih sama lama lalu dibandingkan"; ini "tiga model dilatih
 sampai konvergen menurut jadwal masing-masing yang sengaja beda". Urutan
 akhirnya kemungkinan tetap valid (konsisten dengan E-021 lama yang memakai
 resep berbeda pula), tapi keunggulan RF-DETR-L di atas tidak boleh dibaca
-sebagai "menang meski dilatih lebih singkat" tanpa catatan ini.
+sebagai "unggul meski dilatih lebih singkat" tanpa catatan ini.
 
 **Diagnosis performa infrastruktur (tidak mengubah angka, tapi menjelaskan
 kenapa training RF-DETR terasa lambat):** RF-DETR-L CPU-bound, bukan
-GPU-bound — lihat `CLAUDE.md` bagian "RF-DETR CPU-bound, YOLO/RT-DETR tidak"
+GPU-bound, lihat `CLAUDE.md` bagian "RF-DETR CPU-bound, YOLO/RT-DETR tidak"
 untuk bukti (GPU util 0-1% vs YOLO 19-100%, CPU proses utama 1613% vs 57%).
 Diukur langsung di RTX 4090 saat run RF-DETR-L seed 42 di atas sedang jalan.
 
 **Yang belum dikerjakan:** replikasi seed 1337/2026 (dibatalkan, lihat di
-atas), CI berpasangan antar-arsitektur, dan counting end-to-end untuk ketiga
-detektor pada rilis v2.0.0 ini (angka counting yang ada di `CLAUDE.md` masih
+atas), CI berpasangan antar-arsitektur, dan pencacahan end-to-end untuk ketiga
+detektor pada rilis v2.0.0 ini (angka pencacahan yang ada di `CLAUDE.md` masih
 dari YOLO26m rilis lama).
 
 **Sumber:** `results/new763/{rfdetr,rtdetr,yolo26l}_l?_rgb_s42_i1280.json`
@@ -1838,13 +1838,13 @@ dari YOLO26m rilis lama).
 
 ---
 
-## V2-E-035 — Baseline seed-42 pada korpus gabungan SawitMVC-Combined-1716-RGB: RF-DETR-L tetap terbaik
+## V2-E-035, Garis dasar pembanding seed-42 pada korpus gabungan SawitMVC-Combined-1716-RGB: RF-DETR-L tetap terbaik
 
 **Tanggal:** 2026-08-23
 **Konteks.** Korpus baru menggabungkan dataset lama 953 pohon (`SawitMVC-YOLO`)
 dan dataset Depth 763 pohon (`SawitMVC-Depth-YOLO`) jadi satu: **1.716 tree
 record / 7.044 gambar**, dengan **352 tree-ID yang sama di kedua sumber**
-sehingga group pohon unik cuma **1.364**. Nama file diberi prefix `SAWIT_`
+sehingga group pohon unik hanya **1.364**. Nama file diberi prefix `SAWIT_`
 dan `DEPTH_` untuk mencegah tabrakan; dataset asli tidak disentuh. Split
 group-safe: **train 5.184 / val 808 / test 1.052 citra**, tidak ada group
 pohon yang menyeberang split (mencegah kebocoran seperti yang didokumentasikan
@@ -1853,7 +1853,7 @@ di V2-E-033).
 **Resep.** Sama seperti V2-E-034: RGB, COCO-pretrained, resolusi 1280,
 batch 4, deterministic, `cos_lr`. Ketiga model kali ini **budget training
 disamakan**: 60 epoch/patience 15 untuk semua tiga arsitektur (RF-DETR-L
-sebelumnya dibatasi 20/5 di V2-E-034 — diperbaiki di sini atas permintaan
+sebelumnya dibatasi 20/5 di V2-E-034, diperbaiki di sini atas permintaan
 pengguna supaya perbandingan lebih adil).
 
 **Hasil (test), ketiganya selesai:**
@@ -1864,15 +1864,15 @@ pengguna supaya perbandingan lebih adil).
 | RT-DETR-L | 43/60 (dihentikan manual) | 0,5745 | 0,2458 |
 | YOLO26l | 51/60 (early-stop otomatis) | 0,5389 | 0,2395 |
 
-Urutan **RF-DETR-L > RT-DETR-L > YOLO26l** — identik dengan V2-E-034 (new763)
+Urutan **RF-DETR-L > RT-DETR-L > YOLO26l**, identik dengan V2-E-034 (new763)
 dan E-021 lama. Konsisten di dua korpus berbeda dengan protokol training yang
 kini setara (60 epoch/patience 15 untuk ketiganya).
 
-**Catatan penghentian RT-DETR-L.** Bukan early-stop otomatis Ultralytics —
+**Catatan penghentian RT-DETR-L.** Bukan early-stop otomatis Ultralytics, 
 dihentikan manual atas keputusan pengguna di epoch 43/60 setelah plateau
 14 epoch tanpa perbaikan sejak best di epoch 29 (patience terkonfigurasi 15,
-nyaris habis). `best.pt` Ultralytics sudah otomatis menunjuk ke checkpoint
-epoch 29 (val mAP50-95 0,2447) — checkpoint yang dievaluasi di sini identik
+nyaris habis). `best.pt` Ultralytics sudah otomatis mengacu pada checkpoint
+epoch 29 (val mAP50-95 0,2447), checkpoint yang dievaluasi di sini identik
 dengan yang akan tersimpan seandainya early-stop resmi terjadi di epoch ~44.
 Jadi angka di atas bukan hasil training yang dipotong prematur, hanya
 penghentian observasi lebih awal dari titik konvergensinya.
@@ -1885,34 +1885,34 @@ penghentian observasi lebih awal dari titik konvergensinya.
    finalisasi YOLO26l crash (exception tak tertangani saat menulis
    `baseline_args.json`) dan menyeret mati seluruh proses runner sebelum
    sempat menjadwalkan RT-DETR-L. **Training YOLO26l sendiri sukses penuh**
-   (val mAP50 0,548 di epoch 51) — hanya langkah finalisasi yang gagal.
+   (val mAP50 0,548 di epoch 51), hanya langkah finalisasi yang gagal.
    Diperbaiki dengan memindah direktori run secara manual dan menjalankan
    eval langsung; RT-DETR-L kemudian di-start manual dengan path absolut.
    **Pelajaran:** selalu pakai path absolut untuk `--project` saat
    menjalankan `train_baseline_new763.py` di luar skrip matrix bawaannya.
 2. **Runner otomatis (`run_combined1716_matrix.py`) tidak dipakai lagi**
-   setelah crash di atas — sesuai aturan repo (runner yang gagal sekali
+   setelah crash di atas, sesuai aturan repo (runner yang gagal sekali
    tidak diperbaiki lagi untuk langkah itu), sisa orkestrasi (start RT-DETR,
    eval RF-DETR setelah early-stop) dijalankan manual.
 
 **Sumber:** `results/combined1716/{combined1716_yolo26l,combined1716_rfdetr_l}_rgb_s42_i1280.json`
 (pycocotools), `results/combined1716/campaign_manifest.json`,
-`results/combined1716/predictions/` (dump `.npz` val+test), log training di
+`results/combined1716/predictions/` (*dump* `.npz` val+test), log training di
 `results/combined1716/logs/`.
 
 ---
 
-## V2-E-036 — Rekor AP50 class-agnostic baru (0,7951) dari model sesi ini, dihitung tanpa re-inferensi
+## V2-E-036: Rekor AP50 class-agnostic baru (0,7951) dari model sesi ini, dihitung tanpa re-inferensi
 
 **Tanggal:** 2026-08-23
 **Konteks.** V2-E-013/017/025 menunjukkan mAP50 tertinggi di project ini
 selalu datang dari deteksi **class-agnostic** (kelas dilipat jadi 1
-"tandan", murni lokalisasi), jauh di atas mAP50 4-kelas B1-B4. Pertanyaan:
+"tandan", murni lokalisasi), jauh di atas mAP50 4-kelas B1–B4. Pertanyaan:
 apakah pola itu bertahan pada enam model baru sesi ini (V2-E-034/035,
 new763 dan combined1716)?
 
 **Metode.** `scripts/eval_agnostic_from_npz.py`. **Tidak ada inferensi ulang
-dan tidak butuh GPU** — script memuat dump `.npz` prediksi test yang sudah
+dan tidak butuh GPU**, script memuat *dump* `.npz` prediksi test yang sudah
 disimpan saat eval V2-E-034/035, melipat kategori GT dan prediksi jadi satu
 kelas, lalu menghitung ulang AP50 lewat `pycocotools.COCOeval` dari nol.
 Reproduksi: `python3 scripts/eval_agnostic_from_npz.py` (hasil lengkap +
@@ -1931,16 +1931,16 @@ metadata tersimpan di `results/agnostic_ap50_sesi2026-08.json`).
 
 **Verdict: CONFIRMED, dan ini rekor AP50 tertinggi baru di seluruh project.**
 0,7951 (RF-DETR-L, new763) mengalahkan seluruh angka agnostik lama yang sah:
-- 0,7702 — V2-E-025, test bersih 953, tapi cuma N=19 pohon/316 kotak (CI
+- 0,7702: V2-E-025, test bersih 953, tapi hanya N=19 pohon/316 kotak (CI
   sangat lebar, "indikasi bukan pengukuran presisi").
-- 0,7374 — V2-E-017, plafon lama di split kanonik 953 (test lengkap 141
+- 0,7374: V2-E-017, plafon lama di split kanonik 953 (test lengkap 141
   pohon), model v2repro lama.
 - (0,8101 val / 0,8090 test-penuh dari V2-E-025 **BUKAN pembanding yang
-  sah** — sudah ditarik karena kebocoran pretraining, lihat V2-E-025/033.
+  sah**, sudah ditarik karena kebocoran pretraining, lihat V2-E-025/033.
   Jangan disandingkan dengan angka di entry ini.)
 
 Angka baru ini dievaluasi di split test kanonik **440 citra new763**
-(bukan subset kecil, bukan tercemar) — jadi lebih dipercaya daripada
+(bukan subset kecil, bukan tercemar), jadi lebih dipercaya daripada
 0,7702 sekaligus lebih tinggi.
 
 **Pola yang bertahan (konsisten dengan V2-E-013).** Urutan arsitektur di
@@ -1952,7 +1952,7 @@ kedua korpus, tapi jarak mengecil drastis: gap class-aware new763
 gagal mendeteksi.
 
 **Kaveat.** new763 (440 citra test) dan combined1716 (1.052 citra test)
-punya ukuran dan komposisi kampanye berbeda (lihat V2-E-034/035) — tabel di
+punya ukuran dan komposisi kampanye berbeda (lihat V2-E-034/035), tabel di
 atas bukan perbandingan langsung satu populasi, melainkan dua pengukuran
 plafon lokalisasi yang terpisah per korpus.
 
@@ -1962,7 +1962,7 @@ sudah ter-commit di V2-E-034/035.
 
 ---
 
-## V2-E-037 — Confusion analysis pada 6 model sesi ini: kehilangan ke salah-kelas jauh lebih kecil dari V2-E-013 (44,5%)
+## V2-E-037, Confusion analysis pada 6 model sesi ini: kehilangan ke salah-kelas jauh lebih kecil dari V2-E-013 (44,5%)
 
 **Tanggal:** 2026-08-23
 **Konteks.** V2-E-013 (2026-08-11, model lama RGB-352) menunjukkan 44,5% dari
@@ -1970,17 +1970,17 @@ kegagalan mAP50 class-aware berasal dari salah kelas pada kotak yang sudah
 benar lokasinya, bukan gagal deteksi. Pertanyaan: apakah proporsi ini
 bertahan pada enam model baru sesi ini?
 
-**Metode.** `scripts/eval_confusion_from_npz.py` — replikasi persis
+**Metode.** `scripts/eval_confusion_from_npz.py`, replikasi persis
 metodologi V2-E-013. Untuk tiap kotak GT, dicari prediksi dengan skor >=0,25
 yang IoU-nya >=0,5 terhadap kotak itu (pencocokan class-agnostic, greedy per
 skor tertinggi, satu prediksi dan satu GT hanya dipakai sekali). Kelas GT vs
-kelas prediksi ditabulasi jadi confusion matrix. **Tidak re-infer** — pakai
-dump `.npz` test yang sama dengan V2-E-034/035/036. Angka "hilang karena
+kelas prediksi ditabulasi jadi confusion matrix. **Tidak re-infer**, pakai
+*dump* `.npz` test yang sama dengan V2-E-034/035/036. Angka "hilang karena
 salah kelas" dihitung terpisah, murni aritmetika dari angka yang sudah
 tercatat (AP50 agnostik V2-E-036 dikurangi mAP50 class-aware V2-E-034/035),
 tanpa komputasi baru.
 
-**Hasil 1 — hilang karena salah kelas (aritmetika dari V2-E-034/035/036):**
+**Hasil 1, hilang karena salah kelas (aritmetika dari V2-E-034/035/036):**
 
 | Model | Korpus | mAP50 class-aware | AP50 agnostik | Hilang | % dari plafon |
 |---|---|---|---|---|---|
@@ -1991,15 +1991,15 @@ tanpa komputasi baru.
 | RT-DETR-L | combined1716 | 0,5745 | 0,7577 | 0,1832 | 24,2% |
 | RF-DETR-L | combined1716 | 0,5960 | 0,7850 | 0,1890 | 24,1% |
 
-**Semua enam model kehilangan 23-28% ke salah-kelas — jauh lebih rendah
+**Semua enam model kehilangan 23-28% ke salah-kelas, jauh lebih rendah
 dari 44,5% di V2-E-013.** Bukan perbandingan apel-ke-apel (dataset, model,
 protokol training berbeda), jadi ini bukan bukti "klasifikasi membaik 2x
-lipat" — kemungkinan besar dataset baru (new763/combined1716, campuran tiga
+lipat", kemungkinan besar dataset baru (new763/combined1716, campuran tiga
 kampanye) punya distribusi kematangan yang lebih mudah dipisahkan daripada
 RGB-352 tunggal yang dipakai V2-E-013. Perlu perbandingan langsung dengan
 protokol sama untuk klaim yang lebih kuat.
 
-**Hasil 2 — confusion matrix representatif (RF-DETR-L, new763, model
+**Hasil 2, confusion matrix representatif (RF-DETR-L, new763, model
 terbaik, IoU>=0,5, conf>=0,25):**
 
 | GT\\Pred | →B1 | →B2 | →B3 | →B4 |
@@ -2026,8 +2026,8 @@ tingkat), mayoritas kesalahan ke kelas bertetangga.
 | RF-DETR-L | combined1716 | 79,7% | 58,0% | 85,8% | 59,4% |
 
 **B4 konsisten paling lemah di new763** (34,6-56,8%) untuk semua tiga
-arsitektur — pola sistematis, bukan kebetulan satu model. Di combined1716
-B4 justru lebih baik (53-59%) tapi B2 yang melemah (56,9-58,6%) — arah
+arsitektur, pola sistematis, bukan kebetulan satu model. Di combined1716
+B4 justru lebih baik (53-59%) tapi B2 yang melemah (56,9-58,6%), arah
 kelemahan berbeda antar korpus, kemungkinan terkait komposisi kampanye yang
 berbeda (lihat stratifikasi kampanye di V2-E-034/035).
 
@@ -2042,7 +2042,7 @@ keenam model), angka pembanding dari V2-E-013/034/035/036.
 
 ---
 
-## V2-E-038 — Bootstrap CI mAP50: urutan RF-DETR-L > RT-DETR-L > YOLO26l SIGNIFIKAN di kedua korpus
+## V2-E-038, Bootstrap CI mAP50: urutan RF-DETR-L > RT-DETR-L > YOLO26l SIGNIFIKAN di kedua korpus
 
 **Tanggal:** 2026-08-23
 **Konteks.** V2-E-023 (2026-08-12) menunjukkan lebar CI bootstrap bisa jauh
@@ -2051,18 +2051,18 @@ Fase 6 tidak terbedakan secara statistik. Pertanyaan: apakah urutan
 RF-DETR-L > RT-DETR-L > YOLO26l di V2-E-034/035 juga sekadar derau, atau
 memang signifikan?
 
-**Metode.** `scripts/bootstrap_map_from_npz.py` — replikasi metodologi
+**Metode.** `scripts/bootstrap_map_from_npz.py`, replikasi metodologi
 V2-E-023: resampling **citra** (bukan kotak) dengan pengembalian, 500
 replikasi, seed 42, **berpasangan** (sampel citra yang sama dipakai untuk
 ketiga arsitektur dalam satu korpus, supaya korelasi antar-model tidak
 menggelembungkan selang selisihnya). mAP50 dihitung ulang dari nol tiap
 replikasi (rata-rata makro 4 kelas, AP50 gaya COCO interpolasi 101 titik).
-**Tidak re-infer** — dari dump `.npz` test V2-E-034/035. Titik estimasi dari
+**Tidak re-infer**, dari *dump* `.npz` test V2-E-034/035. Titik estimasi dari
 implementasi sendiri sedikit berbeda dari pycocotools (mis. 0,5163 vs 0,5163
-new763-yolo, 0,558 vs 0,5580 new763-rtdetr) — selisih <0,0004, sama seperti
+new763-yolo, 0,558 vs 0,5580 new763-rtdetr), selisih <0,0004, sama seperti
 yang sudah divalidasi di V2-E-013, bukan bug.
 
-**Hasil — CI95 per model:**
+**Hasil: CI95 per model:**
 
 | Korpus | Model | mAP50 | CI95 | Lebar CI |
 |---|---|---|---|---|
@@ -2073,7 +2073,7 @@ yang sudah divalidasi di V2-E-013, bukan bug.
 | combined1716 | RT-DETR-L | 0,5746 | [0,5558; 0,5984] | 0,0426 |
 | combined1716 | RF-DETR-L | 0,5960 | [0,5780; 0,6208] | 0,0428 |
 
-**Hasil — selisih berpasangan, keduanya korpus:**
+**Hasil, selisih berpasangan, keduanya korpus:**
 
 | Perbandingan | Δ titik | CI95 Δ | P(Δ>0) | Signifikan |
 |---|---|---|---|---|
@@ -2084,10 +2084,10 @@ yang sudah divalidasi di V2-E-013, bukan bug.
 | combined1716: YOLO − RF-DETR | −0,0571 | [−0,0721; −0,0420] | 0,000 | **YA** |
 | combined1716: RT-DETR − RF-DETR | −0,0214 | [−0,0377; −0,0064] | 0,004 | **YA** |
 
-**Verdict: CONFIRMED — SEMUA ENAM perbandingan berpasangan signifikan pada
+**Verdict: CONFIRMED: SEMUA ENAM perbandingan berpasangan signifikan pada
 α=0,05, di kedua korpus.** Berbeda dari V2-E-023 (Fase 6, semua konfigurasi
 TIDAK terbedakan): urutan tiga arsitektur di sini nyata, bukan derau. Lebar
-CI di combined1716 (~0,04) jauh lebih sempit dari new763 (~0,08) — konsisten
+CI di combined1716 (~0,04) jauh lebih sempit dari new763 (~0,08), konsisten
 dengan jumlah kotak GT yang 3,9x lebih banyak (3.513 vs 891), memberi daya
 statistik lebih tinggi.
 
@@ -2103,24 +2103,24 @@ Daya statistik dan besaran efek sama-sama mendukung signifikansi di sini.
 
 ---
 
-## V2-E-039 — Precision/Recall/F1 standar + sweep threshold + WBF ensemble: rekor AP50 agnostik baru (0,8106), tapi WBF menurunkan mAP50 class-aware
+## V2-E-039, Precision/Recall/F1 standar + sweep threshold + WBF ensemble: rekor AP50 agnostik baru (0,8106), tapi WBF menurunkan mAP50 class-aware
 
 **Tanggal:** 2026-08-23
 **Konteks.** Melengkapi V2-E-034/035/037 dengan metrik standar yang belum
-dihitung: Precision/Recall/F1 per kelas pada satu ambang confidence (bukan
+dihitung: Precision/Recall/F1 per kelas pada satu ambang skor keyakinan (bukan
 recall bersyarat V2-E-037), titik operasi optimal per model, dan replikasi
-WBF ensemble V2-E-019 (yang dulu cuma diuji pada detektor agnostik) ke
+WBF ensemble V2-E-019 (yang dulu hanya diuji pada detektor agnostik) ke
 skenario class-aware 4-kelas.
 
 **Metode.** `scripts/eval_extra_metrics_from_npz.py`, tiga bagian, semua dari
-dump `.npz` test V2-E-034/035, **tanpa re-infer**:
+*dump* `.npz` test V2-E-034/035, **tanpa re-infer**:
 1. P/R/F1 per kelas pada conf=0,25 (sama seperti ambang V2-E-013), pencocokan
    IoU≥0,5 **di dalam kelas yang sama** (beda dari V2-E-037 yang class-agnostic).
 2. Sweep conf 0,05–0,95 (step 0,05) untuk cari titik macro-F1 terbaik.
 3. WBF ensemble 3 detektor per korpus (fungsi `wbf` dari `eval_twostage.py`):
    fusi per-kelas untuk mAP50 class-aware, fusi lintas-kelas untuk AP50 agnostik.
 
-**Hasil 1 — P/R/F1 @ conf=0,25 (macro) vs titik optimal dari sweep:**
+**Hasil 1: P/R/F1 @ conf=0,25 (macro) vs titik optimal dari sweep:**
 
 | Model | Korpus | F1@0,25 | Conf optimal | F1 optimal |
 |---|---|---|---|---|
@@ -2131,37 +2131,37 @@ dump `.npz` test V2-E-034/035, **tanpa re-infer**:
 | RT-DETR-L | combined1716 | 0,4745 | 0,45 | 0,5888 |
 | RF-DETR-L | combined1716 | 0,5536 | 0,35 | 0,6028 |
 
-**Conf=0,25 BUKAN terlalu tinggi untuk RT-DETR/RF-DETR — titik optimalnya
+**Conf=0,25 BUKAN terlalu tinggi untuk RT-DETR/RF-DETR, titik optimalnya
 malah lebih tinggi (0,35-0,45).** Kurva sweep menunjukkan di conf rendah
-(0,05) recall tinggi (0,87-0,91) tapi precision hancur (0,10-0,13),
-menjatuhkan F1 ke 0,19-0,22 — jauh dari optimal. Hanya YOLO26l yang
+(0,05) recall tinggi (0,87-0,91) tapi presisi menurun drastis (0,10–0,13),
+menjatuhkan F1 ke 0,19-0,22, jauh dari optimal. Hanya YOLO26l yang
 optimalnya sedikit di bawah 0,25 (0,20), selisih tipis.
 
-**Hasil 2 — WBF ensemble (3 detektor digabung per korpus):**
+**Hasil 2: WBF ensemble (3 detektor digabung per korpus):**
 
 | Korpus | mAP50 class-aware (ensemble) | AP50 agnostik (ensemble) | AP50 agnostik terbaik tunggal |
 |---|---|---|---|
 | new763 | 0,5631 | 0,8039 | 0,7951 (RF-DETR) |
 | combined1716 | 0,5538 | **0,8106** | 0,7850 (RF-DETR) |
 
-**0,8106 adalah rekor AP50 tertinggi baru di seluruh project** — melampaui
+**0,8106 adalah rekor AP50 tertinggi baru di seluruh project**, melampaui
 V2-E-036 (0,7951, RF-DETR tunggal) dan seluruh angka lama yang sah (0,7702
 V2-E-025, 0,7374 V2-E-017). Diukur di split test kanonik penuh (1.052 citra
 combined1716, 440 citra new763), bukan subset kecil, bukan tercemar.
 
-**Temuan yang tidak terduga dan harus dicatat jujur: WBF MENURUNKAN mAP50
+**Temuan yang tidak terduga dan harus dicatat apa adanya: WBF MENURUNKAN mAP50
 class-aware dibanding detektor tunggal terbaik.** 0,5631/0,5538 (ensemble)
 lebih rendah dari RF-DETR sendirian (0,6129/0,5960). Ini **berlawanan** arah
-dengan V2-E-019 (ensemble AGNOSTIK menang atas semua anggota tunggal) karena
+dengan V2-E-019 (ensemble AGNOSTIK unggul atas semua anggota tunggal) karena
 skenarionya beda: V2-E-019 menggabung box tanpa peduli kelas; di sini fusi
 dilakukan **per-kelas**, jadi tiga detektor yang menebak kelas berbeda untuk
 objek fisik yang sama akan terpecah ke tiga kelompok kelas terpisah alih-alih
-saling menguatkan — WBF class-aware naif memecah suara, bukan memperkuatnya.
+saling menguatkan: WBF class-aware naif memecah suara, bukan memperkuatnya.
 Detektor terbaik (RF-DETR) tetap pilihan lebih baik daripada ensemble kalau
-tugasnya klasifikasi kematangan, bukan cuma lokalisasi.
+tugasnya klasifikasi kematangan, bukan hanya lokalisasi.
 
 **Verdict: CONFIRMED untuk plafon lokalisasi (rekor baru), FALSIFIED untuk
-manfaat WBF class-aware naif** — ensembling per-kelas butuh strategi lebih
+manfaat WBF class-aware naif**, ensembling per-kelas butuh strategi lebih
 cermat (mis. voting kelas terpisah dari fusi lokasi) kalau mau dipakai untuk
 tugas 4-kelas, bukan sekadar WBF per-kelas independen.
 
@@ -2170,15 +2170,15 @@ tugas 4-kelas, bukan sekadar WBF per-kelas independen.
 
 ---
 
-## V2-E-040 — Cross-dataset: model sesi ini gagal total ke domain 953 kalau tak pernah melihatnya, tapi urutan arsitektur ikut berubah
+## V2-E-040, Cross-dataset: model sesi ini gagal total ke domain 953 kalau tak pernah melihatnya, tapi urutan arsitektur ikut berubah
 
 **Tanggal:** 2026-08-23
 **Konteks.** Enam model sesi ini (V2-E-034/035) hanya pernah dievaluasi pada
 split test dari korpus tempat mereka dilatih. Pertanyaan: bagaimana mereka
 tampil di dua dataset lama yang tak pernah dilihat sama sekali saat
-training — SawitMVC-YOLO (953 pohon, kampanye DAMIMAS+LONSUM) dan
+training: SawitMVC-YOLO (953 pohon, kampanye DAMIMAS+LONSUM) dan
 SawitMVC-Depth v1.1.0 (352 pohon, DAMIMAS saja, diunduh dari revisi HF
-sebelum digabung jadi v2.0.0/763 pohon)? **Tidak ada training ulang** — cuma
+sebelum digabung jadi v2.0.0/763 pohon)? **Tidak ada training ulang**, hanya
 inferensi dengan bobot yang sudah ada.
 
 **Metode.** `scripts/eval_new763_pycoco.py` dijalankan langsung (tanpa
@@ -2186,7 +2186,7 @@ runner) untuk 12 kombinasi (6 model × 2 target), split test saja. Dataset
 352 diunduh dari commit HF `80dcbae` (v1.1.0, sebelum merge 763) karena
 rilis v2.0.0 sudah menimpa split kanonik lama di tempat.
 
-**Pemeriksaan kebocoran (WAJIB sebelum baca hasil) — dua dari empat
+**Pemeriksaan kebocoran (WAJIB sebelum baca hasil), dua dari empat
 pasangan TERKONTAMINASI:**
 
 | Pasangan | Pohon test | Tumpang tindih train+val | Status |
@@ -2198,22 +2198,22 @@ pasangan TERKONTAMINASI:**
 
 **Kenapa 352 tercemar:** dataset 352 versi mandiri (v1.1.0) adalah persis
 korpus DAMIMAS Juli 2026 yang **kemudian digabung mentah-mentah** jadi
-bagian dari `SawitMVC-Depth-YOLO` v2.0.0 (basis new763) — split v2.0.0
+bagian dari `SawitMVC-Depth-YOLO` v2.0.0 (basis new763), split v2.0.0
 dihitung ulang dari nol, jadi pohon yang masuk *test* di 352 lama bisa saja
 masuk *train* di new763. Ini rantai kontaminasi yang sama persis dengan
 yang diperingatkan V2-E-033 ("353→953: 44 dari 55 pohon test-352 ada di
-train-953") — cuma arahnya dibalik di sini. **Angka new763→352 dan
+train-953"), hanya arahnya dibalik di sini. **Angka new763→352 dan
 combined1716→352 di bawah TIDAK BOLEH dikutip sebagai bukti generalisasi.**
 
 **Kenapa 953 (untuk new763) tetap sah dipakai meski tree-ID tumpang
 tindih 35%:** V2-E-033 sudah membuktikan 953 dan 352 adalah **dua sesi
 akuisisi berbeda ~80 hari**, kamera/resolusi berbeda (953: HP RGB
-960×1280; sumber new763/352: sensor Depth 1280×800) — jadi pohon yang sama
+960×1280; sumber new763/352: sensor Depth 1280×800), jadi pohon yang sama
 difoto ulang dengan kondisi visual yang genuinely berbeda (buah matang
 berubah, sudut, pencahayaan, kamera). Tumpang tindih identitas pohon bukan
 tumpang tindih piksel.
 
-**Hasil — test mAP50, dibandingkan dengan in-domain (V2-E-034/035):**
+**Hasil, test mAP50, dibandingkan dengan in-domain (V2-E-034/035):**
 
 | Model | In-domain | → 953 (bersih) | → 352 (TERCEMAR, referensi saja) |
 |---|---|---|---|
@@ -2224,35 +2224,35 @@ tumpang tindih piksel.
 | combined1716 RT-DETR-L | 0,5745 | 0,5723 | ~~0,5729~~ |
 | combined1716 RF-DETR-L | 0,5960 | **0,5894** | ~~0,6621~~ |
 
-**Temuan 1 — combined1716 nyaris tidak kehilangan performa di 953, new763
-runtuh total.** combined1716 (0,54-0,59, turun cuma 0,001-0,007 dari
+**Temuan 1, combined1716 nyaris tidak kehilangan performa di 953, new763
+runtuh total.** combined1716 (0,54-0,59, turun hanya 0,001-0,007 dari
 in-domain) hampir tidak berbeda dari performa aslinya; new763 (0,11-0,23)
-kehilangan 0,39-0,45 poin mAP50 — **runtuh ke 20-38% dari performa
+kehilangan 0,39-0,45 poin mAP50, **runtuh ke 20-38% dari performa
 in-domain-nya**. Penjelasannya bukan misteri: `combined1716` memasukkan
 sebagian pohon 953 lain (bukan yang di split test-nya) ke training, jadi
 model ini sudah pernah melihat domain kamera/resolusi 953 walau bukan
 pohon spesifiknya. new763 tidak pernah sekalipun melihat domain itu.
 
-**Temuan 2 — di bawah pergeseran domain, urutan arsitektur new763
+**Temuan 2, di bawah pergeseran domain, urutan arsitektur new763
 TERBALIK dari in-domain.** In-domain: RF-DETR-L (0,6129) > RT-DETR-L
 (0,5580) > YOLO26l (0,5163). Ke domain 953: **YOLO26l (0,2331) > RF-DETR-L
-(0,1774) > RT-DETR-L (0,1110)** — RT-DETR-L, runner-up in-domain, jadi
+(0,1774) > RT-DETR-L (0,1110)**: RT-DETR-L, runner-up in-domain, jadi
 **paling buruk** menggeneralisasi; YOLO26l, yang terlemah in-domain, jadi
 **paling tangguh**. Untuk combined1716 urutan tetap sama (RF-DETR>RT-DETR>
 YOLO) karena ketiganya sudah pernah melihat domain 953 saat training, jadi
 bukan murni soal generalisasi arsitektur.
 **Bacaan yang benar: model terbaik in-domain BUKAN jaminan model paling
-robust ke domain baru** — kalau prioritasnya deployment ke kondisi capture
-yang belum diketahui, kemampuan generalisasi (bukan cuma mAP50 in-domain)
+robust ke domain baru**, kalau prioritasnya deployment ke kondisi capture
+yang belum diketahui, kemampuan generalisasi (bukan hanya mAP50 in-domain)
 harus diukur terpisah.
 
-**Verdict: CONFIRMED untuk keduanya** — (a) komposisi data training
+**Verdict: CONFIRMED untuk keduanya**, (a) komposisi data training
 menentukan robustness lintas-domain jauh lebih kuat daripada pilihan
 arsitektur; (b) ranking arsitektur in-domain tidak transitif ke ranking
 generalisasi domain-shift.
 
 **Sumber:** `results/cross_eval/*.json` (12 hasil), skrip pemeriksaan
-kebocoran dijalankan interaktif (tidak disimpan sebagai file terpisah —
+kebocoran dijalankan interaktif (tidak disimpan sebagai file terpisah, 
 logikanya didokumentasikan di sini: cocokkan `tree_id` = nama berkas tanpa
 suffix `_<nomor_sisi>`, prefix `SAWIT_`/`DEPTH_` dilucuti untuk
 combined1716). Dataset 352 (revisi pre-merge): HF `ULM-DS-Lab/SawitMVC-Depth`
@@ -2260,36 +2260,36 @@ commit `80dcbae6ca5521515db84038dabc2ead96fa007e`.
 
 ---
 
-## V2-E-041 — Replikasi independen (toolchain HUB) menguatkan V2-E-040: RT-DETR-L paling rapuh terhadap domain shift, LONSUM di-exclude
+## V2-E-041, Replikasi independen (toolchain HUB) menguatkan V2-E-040: RT-DETR-L paling rapuh terhadap domain shift, LONSUM di-exclude
 
 **Tanggal:** 2026-08-24
 **Konteks.** Pengguna melatih 6 model sendiri lewat **Ultralytics HUB**
 (`platform.ultralytics.com`, proyek "Sawit ULM"), bukan lewat
-`train_baseline_new763.py` proyek ini — toolchain, batch size, dan
+`train_baseline_new763.py` proyek ini, toolchain, batch size, dan
 kemungkinan seed berbeda dari resep resmi V2-E-034/035. Ketiganya
 (YOLO26l, YOLO26x, RT-DETR-L) dilatih 60 epoch di `new763`
 (`SawitMVC-Depth-YOLO` v2.0.0, 763 pohon, split train 2.144 gambar),
 masing-masing dalam dua varian: **agnostik** (HUB "single class override")
-dan **4-kelas**. **Bukan bagian angka kanonik proyek** — baseline eksplorasi
+dan **4-kelas**. **Bukan bagian angka kanonik proyek**, garis dasar pembanding eksplorasi
 terpisah, dicatat karena hasilnya menguatkan temuan V2-E-040 lewat jalur
 training yang sepenuhnya independen.
 
 **Catatan operasional saat training (dari log HUB, bukan dari sesi ini):**
 tiga varian agnostik (`_bs64_p15`/`_bs64`) minta `batch=64` tapi kena
 `CUDA out of memory`, auto-reduce ke `batch=32` (GPU training HUB: RTX PRO
-6000 Blackwell 97 GB — OOM ini terjadi meski VRAM sangat besar, konsisten
+6000 Blackwell 97 GB: OOM ini terjadi meski VRAM sangat besar, konsisten
 dengan temuan lama proyek bahwa deteksi resolusi tinggi boros VRAM per-gambar).
 Tiga varian 4-kelas (`_b16_4class`) diminta `batch=16` eksplisit, tidak OOM.
 
 **Metode.** Evaluasi lokal (CPU-only, tanpa GPU) memakai `pycocotools.COCOeval`
-(imgsz 1280, conf 0,001, NMS IoU 0,7, max_det 300 — metodologi sama dengan
+(imgsz 1280, conf 0,001, NMS IoU 0,7, max_det 300, metodologi sama dengan
 `eval_new763_pycoco.py`), pada **test split `SawitMVC-Combined-1716-RGB`
-(996 dari 1.052 gambar, 56 gambar LONSUM di-exclude atas keputusan pengguna** —
+(996 dari 1.052 gambar, 56 gambar LONSUM di-exclude atas keputusan pengguna**, 
 lihat `docs/EDA-COMBINED1716.md` §7, distribusi kelas LONSUM sangat timpang
 [B3 69,5%, B1 1,6%] dan dianggap kurang representatif). Prediksi didump ke
 `.npz` per model (`results/local_eval_combined1716_no_lonsum/predictions/`).
 Test set ini campuran dua domain: **532 gambar dari sumber `sawitmvc`**
-(953 pohon, kamera/resolusi 960×1280 — **domain yang TIDAK PERNAH dilihat
+(953 pohon, kamera/resolusi 960×1280, **domain yang TIDAK PERNAH dilihat
 model saat training**) dan **464 gambar dari sumber `depth_rgb`** (domain
 latihan asli, 1280×800).
 
@@ -2301,7 +2301,7 @@ latihan asli, 1280×800).
 | **YOLO26x** | **0,6416 / 0,2328** | 0,7856 / 0,3046 | 0,5877 / 0,2074 | −25% |
 | RT-DETR-L | 0,4956 / 0,1450 | **0,7911 / 0,2901** (terbaik in-domain) | 0,3764 / 0,0910 | **−52%** |
 
-**Hasil 4-kelas (mAP50 / mAP50-95 / per-kelas B1-B4), keseluruhan lalu per sumber:**
+**Hasil 4-kelas (mAP50 / mAP50-95 / per-kelas B1–B4), keseluruhan lalu per sumber:**
 
 | Model | Keseluruhan | In-domain `depth_rgb` | Luar-domain `sawitmvc` | Penurunan |
 |---|---|---|---|---|
@@ -2320,34 +2320,34 @@ asing, bukan bug metodologi evaluasi.
 **Verdict: CONFIRMED, replikasi independen V2-E-040 Temuan 2.** Toolchain
 sama sekali berbeda (HUB vs `train_baseline_new763.py`), dataset training
 sama (`new763`), target evaluasi berbeda (test split `combined1716` campuran
-domain vs test kanonik 953 murni di V2-E-040) — tapi polanya identik:
+domain vs test kanonik 953 murni di V2-E-040), tapi polanya identik:
 **RT-DETR-L, model terbaik in-domain, paling rapuh menggeneralisasi ke
-domain kamera/resolusi baru** (−52% agnostik, −71% 4-kelas — bahkan lebih
+domain kamera/resolusi baru** (−52% agnostik, −71% 4-kelas, bahkan lebih
 parah dari −80% yang dicatat V2-E-040 untuk mAP50 0,5580→0,1110 karena basis
 pembandingnya beda kelas metrik). YOLO26x paling tangguh lintas domain di
 sesi ini (YOLO26l di V2-E-040), tapi keduanya varian YOLO sama-sama jauh
 lebih stabil dari RT-DETR-L. **Model terbaik in-domain bukan jaminan model
-paling robust ke domain baru** — bacaan yang sama persis dengan V2-E-040,
+paling robust ke domain baru**, bacaan yang sama persis dengan V2-E-040,
 sekarang terverifikasi lewat training independen.
 
-**Konteks tambahan — perbandingan dengan V2-E-035 (train langsung di
+**Konteks tambahan, perbandingan dengan V2-E-035 (train langsung di
 combined1716):** pengguna sempat bertanya apakah melatih langsung di
-`combined1716` (bukan cuma `new763`) akan jauh lebih baik. Jawabannya:
+`combined1716` (bukan hanya `new763`) akan jauh lebih baik. Jawabannya:
 **tidak dramatis**. V2-E-035 (test mAP50, evaluasi in-domain di split test
 combined1716 sendiri): YOLO26l 0,5163→0,5389 (+0,0226), RT-DETR-L
 0,5580→0,5745 (+0,0165), RF-DETR-L 0,6129→0,5960 (**−0,0169**, justru turun).
-Data lebih banyak tidak otomatis berarti model jauh lebih baik — RF-DETR-L
+Data lebih banyak tidak otomatis berarti model jauh lebih baik: RF-DETR-L
 (model terbaik) malah sedikit menurun.
 
 **Sumber:** `results/local_eval_combined1716_no_lonsum/summary.json` (seluruh
 angka di atas + provenans lengkap), `results/local_eval_combined1716_no_lonsum/predictions/*.npz`
-(dump prediksi test per model), `results/local_eval_combined1716_no_lonsum/logs_ringkas/*.txt`
+(*dump* prediksi test per model), `results/local_eval_combined1716_no_lonsum/logs_ringkas/*.txt`
 (log training asli dari Ultralytics HUB), `docs/EDA-COMBINED1716.md` (EDA
 dataset combined1716 lengkap, termasuk subset LONSUM).
 
 ---
 
-## V2-E-042 — Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi pada Dua Test Set Lokal
+## V2-E-042: Verifikasi Bobot Remote Hugging Face dan Pipeline Empat Sisi pada Dua Test Set Lokal
 
 **Tanggal:** 2026-08-27
 
@@ -2357,13 +2357,13 @@ Enam bobot detektor yang diperlukan diambil dari bucket Hugging Face
 `ULM-DS-Lab/project-expertise-backup`: YOLO26l, RT-DETR-L, dan RF-DETR-L dari
 bank `new763`, serta tiga model yang sama dari bank `combined1716`. Seluruh
 bucket tidak diklon dan token akses tidak dicatat. Kedua bank diuji ulang pada
-dua test set lokal dengan `imgsz = 1.280`, `pycocotools.COCOeval`, confidence
+dua test set lokal dengan `imgsz = 1.280`, `pycocotools.COCOeval`, skor keyakinan
 inferensi `0,001`, NMS IoU `0,7`, dan maksimum 300 deteksi per citra.
 
 Sebanyak 12 evaluasi model tunggal dijalankan: 6 pada
 `SawitMVC-Depth-YOLO` (440 citra, 110 pohon, empat sisi) dan 6 pada
 `SawitMVC-YOLO` (588 citra, 141 pohon). Hasilnya kemudian diproses dengan
-WBF tiga detektor (IoU `0,60`, confidence masukan `0,05`) dan penaut empat
+WBF tiga detektor (IoU `0,60`, skor keyakinan masukan `0,05`) dan penaut empat
 sisi berbasis prior rotasi bertanda yang dikalibrasi hanya dari data latih.
 Metrik pencacahan hilir hanya memakai 135 pohon empat sisi pada test
 SawitMVC-YOLO; 6 pohon delapan sisi dikeluarkan dari evaluasi multi-tampak.
@@ -2434,7 +2434,7 @@ per sisi, dan audit threshold pada tingkat pohon.
    empat foto per pohon.
 4. Prior rotasi dan ambang penaut (`0,32` pada Depth, `0,43` pada
    SawitMVC-YOLO) dipelajari dari data latih; seluruh JSON menyimpan detail
-   kalibrasi, metrik per pohon, dan dump prediksi untuk audit.
+   kalibrasi, metrik per pohon, dan *dump* prediksi untuk audit.
 
 **Artefak utama:**
 [`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md),
@@ -2447,14 +2447,14 @@ per sisi, dan audit threshold pada tingkat pohon.
 
 ---
 
-## V2-E-043 — Pengetatan proposal dan linker mengurangi duplikasi cluster pada pipeline empat sisi
+## V2-E-043: Pengetatan proposal dan linker mengurangi duplikasi cluster pada pipeline empat sisi
 
 **Tanggal:** 2026-08-27
 
-**Hipotesis:** Confidence floor proposal, pembuangan singleton lemah, batas
+**Hipotesis:** Skor keyakinan floor proposal, pembuangan singleton lemah, batas
 maksimal dua anggota per cluster, dan pemilihan pasangan sisi yang sesuai
-akan meningkatkan F1 deteksi fisik sekaligus menurunkan MAE counting dibanding
-pipeline remote `combined1716` baseline.
+akan meningkatkan F1 deteksi fisik sekaligus menurunkan MAE pencacahan dibanding
+pipeline remote `combined1716` garis dasar pembanding.
 
 **Dataset & split:** Test lokal SawitMVC-Depth-YOLO (110 pohon, 440 citra,
 semua empat sisi) dan SawitMVC-YOLO (141 pohon, 588 citra; metrik multi-tampak
@@ -2463,7 +2463,7 @@ memakai 135 pohon empat sisi dan mengecualikan 6 pohon delapan sisi).
 **Metode:**
 
 - WBF tiga detektor `combined1716`; seluruh probabilitas kelas disimpan;
-- sweep CPU pada dump WBF melalui
+- sweep CPU pada *dump* WBF melalui
   `scripts/sweep_remote_pipeline.py`, mencakup proposal/link/singleton,
   mode pasangan `all|adjacent`, dan ukuran cluster `2|3`;
 - WBF IoU dan parameter dipilih greedy dari test untuk mencari batas atas
@@ -2475,9 +2475,9 @@ memakai 135 pohon empat sisi dan mengecualikan 6 pohon delapan sisi).
 
 | Test | Versi | P | R | F1 fisik | Cluster prediksi / GT | MAE | Tepat | ±1 | Macro-F1 E2E |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Depth | Baseline | 0,4705 | 0,8837 | 0,6140 | 1.050 / 559 | 4,518 | 8,18% | 18,18% | 0,4726 |
+| Depth | Garis dasar pembanding | 0,4705 | 0,8837 | 0,6140 | 1.050 / 559 | 4,518 | 8,18% | 18,18% | 0,4726 |
 | Depth | Optimized | 0,8799 | 0,8390 | 0,8590 | 533 / 559 | 0,818 | 41,82% | 83,64% | 0,6419 |
-| 953 | Baseline | 0,3725 | 0,9344 | 0,5327 | 3.366 / 1.342 | 14,993 | 0% | 0% | 0,3762 |
+| 953 | Garis dasar pembanding | 0,3725 | 0,9344 | 0,5327 | 3.366 / 1.342 | 14,993 | 0% | 0% | 0,3762 |
 | 953 | Optimized | 0,8247 | 0,8346 | 0,8296 | 1.358 / 1.342 | 1,644 | 24,44% | 54,07% | 0,5469 |
 
 Profil final Depth adalah WBF IoU 0,60, proposal 0,12, link 0,05,
@@ -2496,30 +2496,30 @@ bukan estimasi hold-out; threshold wajib dikunci ulang pada validation set.
 
 ---
 
-## V2-E-044 — Classifier crop RGB 5 epoch menggantikan soft-vote detector pada proposal remote
+## V2-E-044: Pengklasifikasi citra terpotong RGB 5 epoch menggantikan soft-vote detektor pada proposal remote
 
 **Tanggal:** 2026-08-27
 
-**Hipotesis:** Mengganti probabilitas kelas soft-vote WBF dengan classifier
-crop RGB yang dilatih 1–5 epoch akan meningkatkan klasifikasi end-to-end
-tanpa merusak counting.
+**Hipotesis:** Mengganti probabilitas kelas soft-vote WBF dengan pengklasifikasi
+citra terpotong RGB yang dilatih 1–5 epoch akan meningkatkan klasifikasi end-to-end
+tanpa merusak pencacahan.
 
 **Dataset & split:** Pretraining tree-disjoint dari SawitMVC-YOLO/953,
-16.542 crop dari 841 pohon, lalu aplikasi pada 14.643 proposal WBF test 953.
-Split validasi internal classifier dibuat per pohon dengan seed 42. Test
-classifier pada runner pretraining merupakan salinan validation internal dan
+16.542 citra terpotong dari 841 pohon, lalu aplikasi pada 14.643 proposal WBF test 953.
+Split validasi internal pengklasifikasi dibuat per pohon dengan seed 42. Test
+pengklasifikasi pada runner pretraining merupakan salinan validation internal dan
 tidak dianggap hold-out independen.
 
 **Metode:**
 
 - `scripts/build_crop_dataset.py --src 953 --workers 32 --sisi 176 --out /workspace/crops_remote953`;
-- `scripts/train_crop_classifier.py --tahap pretrain --mode rgb --epochs 5 --batch 128 --jitter 0.10 --crops /workspace/crops_remote953 --name remote953_c2_rgb_5ep_jitter10`;
+- `scripts/train_crop_classifier.py --tahap pretrain --mode rgb --epochs 5 --batch 128 --jitter 0,10 --crops /workspace/crops_remote953 --name remote953_c2_rgb_5ep_jitter10`;
 - ConvNeXt-Tiny, head hybrid softmax + CORAL, seed 42;
 - aplikasi batch GPU melalui `scripts/apply_remote_crop_classifier.py`;
 - sweep C2-only serta blend 10/25/50/75% melalui
   `scripts/sweep_remote_pipeline.py`.
 
-**Hasil classifier:** Epoch terbaik berdasarkan macro-F1 validasi internal
+**Hasil pengklasifikasi:** Epoch terbaik berdasarkan macro-F1 validasi internal
 adalah epoch 3: akurasi 62,17%, macro-F1 62,96%, akurasi ±1 99,32%, dan MAE
 kelas 0,385. Riwayat kelima epoch dan confusion matrix tersimpan pada
 [`classifier_c2/remote953_c2_rgb_5ep_jitter10.json`](../results/remote_eval_2026-08-27/classifier_c2/remote953_c2_rgb_5ep_jitter10.json).
@@ -2528,8 +2528,8 @@ kelas 0,385. Riwayat kelima epoch dan confusion matrix tersimpan pada
 
 | Probabilitas kelas | F1 fisik | MAE | ±1 | Match class acc. | Macro-F1 E2E |
 |---|---:|---:|---:|---:|---:|
-| WBF detector 100% | 0,8296 | 1,644 | 53,33% | 70,71% | 0,5410 |
-| C2 classifier 100% | 0,8299 | 1,637 | 54,07% | 62,95% | 0,5234 |
+| WBF detektor 100% | 0,8296 | 1,644 | 53,33% | 70,71% | 0,5410 |
+| C2 pengklasifikasi 100% | 0,8299 | 1,637 | 54,07% | 62,95% | 0,5234 |
 | WBF 75% + C2 25% | 0,8296 | 1,644 | 54,07% | 70,63% | 0,5469 |
 
 **Sumber:**
@@ -2539,14 +2539,14 @@ kelas 0,385. Riwayat kelima epoch dan confusion matrix tersimpan pada
 dan [`metrics/pipeline_combined1716_greedy_test_tuned.json`](../results/remote_eval_2026-08-27/metrics/pipeline_combined1716_greedy_test_tuned.json).
 
 **Verdict:** FALSIFIED untuk penggantian penuh: C2-only menaikkan sedikit
-F1/counting tetapi menurunkan match class accuracy 7,76 poin persentase dan
+F1/pencacahan tetapi menurunkan match class accuracy 7,76 poin persentase dan
 macro-F1 E2E 0,0176. Blend 25% dipertahankan sebagai kandidat engineering
 karena macro-F1 naik 0,0059 dan ±1 naik 0,74 poin persentase pada test yang
 sama, tetapi belum cukup untuk klaim produksi.
 
 ---
 
-## V2-E-045 — Layer count-aware validation-locked meningkatkan generalisasi pipeline empat sisi
+## V2-E-045: Layer count-aware validation-locked meningkatkan generalisasi pipeline empat sisi
 
 **Tanggal:** 2026-08-27
 
@@ -2591,30 +2591,30 @@ detektor tidak dilatih ulang.
 | 953 | val, 91 pohon 4 sisi | 80,87% | 1,253 | 28,57% | 67,03% | 70,04% | 0,5462 |
 | 953 | test, 135 pohon 4 sisi | 80,43% | 1,393 | 25,93% | 61,48% | 71,11% | 0,5384 |
 
-Sebagai sanity check terhadap overfit count head, MAE 5-fold train adalah
+Sebagai sanity check terhadap penyesuaian berlebih count head, MAE 5-fold train adalah
 `0,813` pada Depth dan `1,251` pada 953, sangat dekat dengan validation
 `0,726` dan `1,253`. Ini tidak membuktikan generalisasi sempurna, tetapi
 lebih informatif daripada memilih langsung dari test.
 
 ### Eksperimen tambahan dan keputusan
 
-1. **Weighted WBF `[0,75; 1; 1,5]` — ditolak.** Walaupun mAP image-level
+1. **Weighted WBF `[0,75; 1; 1,5]`, ditolak.** Walaupun mAP image-level
    tertentu naik, F1 hilir validation turun menjadi `0,7951` pada Depth dan
    `0,7736` pada 953 dibanding profil equal-weight.
-2. **Pair-linker logistic train-only — ditolak.** Model kecil berbasis fitur
+2. **Pair-linker logistic train-only, ditolak.** Model kecil berbasis fitur
    geometry/ukuran/class similarity menghasilkan F1 validation `0,7680` pada
    Depth dan `0,7374` pada 953, di bawah prior rotasi robust manual.
-3. **Blend predicted count dengan raw cluster count — ditolak.** Nonzero
+3. **Blend predicted count dengan raw cluster count, ditolak.** Nonzero
    blend menurunkan 953; blend `0,25` pada Depth tidak mempertahankan keuntungan
-   counting secara konsisten pada konfirmasi test. Profil final memakai blend
+   pencacahan secara konsisten pada konfirmasi test. Profil final memakai blend
    `0` (Ridge murni).
-4. **WBF IoU `0,50`–`0,70` — IoU `0,60` dipertahankan.** Titik ini memberi
-   trade-off validation terbaik pada profil tetap; IoU lebih tinggi sedikit
+4. **WBF IoU `0,50`–`0,70`: IoU `0,60` dipertahankan.** Titik ini memberi
+   kompromi performa (*trade-off*) validation terbaik pada profil tetap; IoU lebih tinggi sedikit
    menurunkan F1 fisik.
 
 ### Kesimpulan
 
-Training detektor tambahan tidak menjadi bottleneck yang paling murah untuk
+Training detektor tambahan tidak menjadi hambatan struktural (*bottleneck*) yang paling murah untuk
 perbaikan saat ini. Layer count-aware adalah tambahan yang paling relevan:
 angka generalisasi engineering yang realistis adalah sekitar **80% F1 fisik**,
 MAE count **0,9** pada Depth dan **1,4** pada 953, dengan class match sekitar
@@ -2636,13 +2636,13 @@ eksternal baru.
 **Verdict:** CONFIRMED sebagai pipeline validation-locked yang lebih realistis;
 klaim test tetap dibatasi oleh caveat historis split.
 
-## V2-E-049 — Penyaringan recall tandan tertutup: ambang rendah menyelamatkan 68,5% miss, depth-edge proksi gugur sebagai penyeimbang ulang
+## V2-E-049, Penyaringan recall tandan tertutup: ambang rendah menyelamatkan 68,5% miss, depth-edge proksi gugur sebagai penyeimbang ulang
 
 **Tanggal:** 2026-09-12
 
 ### Pertanyaan
 
-Bottleneck recall pada tandan yang tertutup pelepah terletak di mana: proposal
+Hambatan struktural recall pada tandan yang tertutup pelepah terletak di mana: proposal
 tidak ada sama sekali, atau kandidat ada tetapi tertekan ambang keyakinan?
 Jika kandidat low-conf sudah ada, dapatkah tepi depth artifisial dipakai
 sebagai penyeimbang ulang sebelum menjalankan depth generatif yang berat
@@ -2654,7 +2654,7 @@ sebagai penyeimbang ulang sebelum menjalankan depth generatif yang berat
   kanonik 141 pohon / 588 citra / 2.612 kotak acuan (`test.txt`).
 - Bobot `models/yolo26l_e60_i1280_v2repro/best.pt`, `imgsz 1280`, IoU NMS
   `0,60`, inferensi satu citra per forward (hemat VRAM A40).
-- Dump seluruh prediksi `conf >= 0,05` ke
+- *Dump* seluruh prediksi `conf >= 0,05` ke
   [`pred_v2e049_test_conf005.npz`](../results/pred_v2e049_test_conf005.npz);
   recall lokalisasi dihitung pada ambang operasi `0,25` dan IoU `>= 0,5`
   tanpa memandang kelas.
@@ -2686,7 +2686,7 @@ sebagai penyeimbang ulang sebelum menjalankan depth generatif yang berat
 
 Dari 892 miss, **611 (68,5%, median conf 0,15)** sudah memiliki kandidat
 low-conf yang lokasinya benar tetapi tertekan ambang; hanya 281 (31,5%)
-tanpa kandidat sama sekali. Bottleneck utama adalah ambang, bukan ketiadaan
+tanpa kandidat sama sekali. Hambatan struktural utama adalah ambang, bukan ketiadaan
 proposal.
 
 ### Hasil penyaring depth proksi
@@ -2700,14 +2700,14 @@ proposal.
 
 ### Eksperimen tambahan dan keputusan
 
-1. **Depth-edge sebagai penyeimbang ulang — FALSIFIED.** Tepi depth
+1. **Depth-edge sebagai penyeimbang ulang: FALSIFIED.** Tepi depth
    artifisial tidak membedakan kandidat benar dari alarm palsu (AUC di
    bawah 0,5 karena tepi dedaunan justru memicu alarm palsu). Run Marigold
    V2 mode depth penuh tidak dilanjutkan atas dasar ini.
-2. **Sapuan ambang — EXPLORATORY.** Kenaikan 65,8% → 89,2% dipilih langsung
+2. **Sapuan ambang: EXPLORATORY.** Kenaikan 65,8% → 89,2% dipilih langsung
    dari test sehingga hanya batas atas engineering; FP naik 454 → 3.121 dan
    wajib disaring linker/pencacah sebelum menjadi klaim.
-3. **Normals/albedo Marigold — BELUM DIUJI.** Masih masuk akal sebagai
+3. **Normals/albedo Marigold: BELUM DIUJI.** Masih masuk akal sebagai
    penyeimbang (bentuk bulat vs planar, warna tanpa bayangan), tetapi hanya
    pada subset sulit, bukan full korpus.
 
@@ -2726,31 +2726,31 @@ adalah normals/albedo sebagai penyeimbang, bukan depth sebagai penemu.
 - [`../../scripts/audit_recall_v2e049.py`](../scripts/audit_recall_v2e049.py)
 - [`../../scripts/probe_depth_v2e049.py`](../scripts/probe_depth_v2e049.py)
 
-**Verdict:** CONFIRMED sebagai reproduksi baseline; FALSIFIED untuk depth-edge
+**Verdict:** CONFIRMED sebagai reproduksi garis dasar pembanding; FALSIFIED untuk depth-edge
 sebagai penyeimbang ulang; sapuan ambang EXPLORATORY dan tidak menggantikan
 angka uji terkunci.
 
 ---
 
-## V2-E-048 — Ablasi anggaran piksel: klasifikasi kematangan jenuh pada 96 px, hipotesis resolusi tidak didukung
+## V2-E-048, Ablasi anggaran piksel: klasifikasi kematangan jenuh pada 96 px, hipotesis resolusi tidak didukung
 
 ### Rancangan Eksperimen
 
 Menguji apakah kesalahan klasifikasi B1–B4 menurun ketika informasi piksel per
 objek bertambah. Pemicunya dua titik data historis yang tercampur faktornya:
-`ftS` (crop 176 px) = 0,6837 dan `ftH` (crop 256 px @224) = 0,6569 — pada `ftH`
-resolusi crop dan resolusi masukan model berubah bersamaan, sehingga selisihnya
+`ftS` (citra terpotong 176 px) = 0,6837 dan `ftH` (citra terpotong 256 px @224) = 0,6569, pada `ftH`
+resolusi citra terpotong dan resolusi masukan model berubah bersamaan, sehingga selisihnya
 tidak dapat diatribusikan.
 
 Dua percobaan memisahkan kedua faktor tersebut pada korpus SawitMVC-Depth-YOLO
 v2.0.0 (763 pohon, split kanonik 2026-08-21, irisan pohon antar split = 0):
 
-- **A** — anggaran piksel, masukan model dikunci 224 px: crop resolusi asli →
+- **A**, anggaran piksel, masukan model dikunci 224 px: citra terpotong resolusi asli →
   `INTER_AREA` ke S×S → `INTER_CUBIC` ke 224×224, S ∈ {32; 48; 64; 96; 128; 176; 224}.
-- **B** — resolusi masukan model, anggaran piksel penuh: crop resolusi asli →
+- **B**, resolusi masukan model, anggaran piksel penuh: citra terpotong resolusi asli →
   R×R langsung, R ∈ {224; 288; 320}.
 
-Geometri crop identik dengan `build_crop_dataset.py` (sisi = 1,6 × max(w,h),
+Geometri citra terpotong identik dengan `build_crop_dataset.py` (sisi = 1,6 × max(w,h),
 padding tepi). Pengklasifikasi adalah probe linear (regresi logistik multinomial)
 di atas fitur ConvNeXt-Tiny ImageNet beku 768-dim; tetapan C dipilih via
 `GroupKFold` 5 lipatan dikelompokkan per pohon, murni di dalam TRAIN.
@@ -2760,7 +2760,7 @@ Bootstrap 2.000 ulangan, resampling pada tingkat pohon. Seluruhnya CPU.
 
 ### Geometri objek
 
-Sisi crop resolusi asli: median 277 px pada TRAIN maupun VALID (rerata 280 px,
+Sisi citra terpotong resolusi asli: median 277 px pada TRAIN maupun VALID (rerata 280 px,
 p5 = 157/163 px, p95 = 411/404 px). Fraksi objek di atas 176 px = 91,3%/92,4%;
 di atas 224 px = 74,8%/76,3%; di atas 288 px = 45,2%/44,4%. Median per kelas
 (VALID): B1 300 px, B2 278 px, B3 276,5 px, B4 205 px. Konfigurasi `ftS`
@@ -2785,13 +2785,13 @@ Selisih berpasangan terhadap acuan `A176` (meniru `ftS`):
 Δ macro-F1 vs A176: B288 = +0,0193 [−0,0197; +0,0642], P = 0,83; B320 = +0,0195
 [−0,0238; +0,0725], P = 0,79. Keduanya mencakup nol.
 
-`A224` dan `B224` identik hingga digit terakhir — pemeriksaan konsistensi
+`A224` dan `B224` identik hingga digit terakhir, pemeriksaan konsistensi
 internal berhasil (resize 224→224 bersifat identitas).
 
 Empat pembacaan:
 
 1. Kurva **jenuh pada sekitar 96 px**; A96 tidak terbedakan dari A176. Median
-   crop yang tersedia (277 px) berada 2,9× di atas titik jenuh.
+   citra terpotong yang tersedia (277 px) berada 2,9× di atas titik jenuh.
 2. Penurunan signifikan **baru muncul di bawah 64 px** (A32 dan A48, CI95
    seluruhnya negatif). Objek harus dipangkas di bawah seperempat ukuran asli
    sebelum kerugiannya terukur.
@@ -2800,12 +2800,12 @@ Empat pembacaan:
 4. Satu-satunya sinyal positif adalah macro-F1 pada resolusi masukan 288/320 px,
    konsisten di dua kondisi terpisah tetapi belum signifikan. Karena percobaan A
    menunjukkan anggaran piksel sudah jenuh jauh sebelum titik ini, sumbernya
-   lebih mungkin granularitas spasial backbone (jumlah token sebelum agregasi
+   lebih mungkin granularitas spasial kerangka utama (jumlah token sebelum agregasi
    spasial), bukan informasi piksel tambahan.
 
 ### Keputusan Metodologis
 
-Hipotesis anggaran piksel **tidak didukung**. Menambah resolusi crop bukan jalur
+Hipotesis anggaran piksel **tidak didukung**. Menambah resolusi citra terpotong bukan jalur
 perbaikan untuk klasifikasi kematangan pada korpus ini. Justifikasi fisik usulan
 pengklasifikasi tingkat butir pada resolusi asli melemah substansial: apabila
 detail permukaan tingkat butir membawa sinyal yang belum tereksploitasi, kurva A
@@ -2818,7 +2818,7 @@ statusnya kandidat validation-selected, bukan temuan terkonfirmasi.
 
 ### Batasan Validitas & Audit
 
-1. **Probe linear, bukan penyesuaian terarah penuh** — batasan paling
+1. **Probe linear, bukan penyesuaian terarah penuh**, batasan paling
    menentukan. Kesimpulan berlaku untuk informasi yang terpisah secara linear
    pada representasi ConvNeXt-Tiny beku, bukan batas seluruh metode pembelajaran.
 2. *Patch stem* 4×4 ConvNeXt-Tiny: pada masukan 224 px satu token mewakili 4 px,
@@ -2828,9 +2828,9 @@ statusnya kandidat validation-selected, bukan temuan terkonfirmasi.
    Efek di bawah ~0,025 tidak terpisahkan dari variasi acak.
 4. B4 hanya 66 dari 894 objek VALID; macro-F1 bervariasi lebar dan sinyal
    positif percobaan B sebagian besar bergantung pada kelas ini.
-5. Crop RGB tanpa kanal mask footprint kotak (berbeda dari
+5. Citra terpotong RGB tanpa kanal mask footprint kotak (berbeda dari
    `build_crop_dataset.py`). Ambiguitas multi-tandan pada kanopi padat seragam
-   di seluruh kondisi — tidak mengubah perbandingan relatif, tetapi menurunkan
+   di seluruh kondisi, tidak mengubah perbandingan relatif, tetapi menurunkan
    ketinggian absolut seluruh kurva.
 6. **Bukan pembanding untuk 0,6837**: korpus berbeda (763 vs 352) dan protokol
    berbeda (probe linear vs penyesuaian terarah).
@@ -2843,5 +2843,83 @@ statusnya kandidat validation-selected, bukan temuan terkonfirmasi.
 - [`results/ablasi_piksel_2026-09-10/sisi_crop_native.json`](../results/ablasi_piksel_2026-09-10/sisi_crop_native.json)
 - [`results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png`](../results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png)
 
-**Verdict:** FALSIFIED — hipotesis anggaran piksel tidak didukung; klasifikasi
+**Verdict:** FALSIFIED, hipotesis anggaran piksel tidak didukung; klasifikasi
 kematangan jenuh pada sekitar 96 px, jauh di bawah anggaran yang tersedia.
+
+---
+
+## V2-E-050: koefisien pengali per kelas menurunkan galat pencacahan hingga 88,5%; kalibrasi silang korpus menurunkan performa
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/kalibrasi_koefisien_pencacahan.py`](../scripts/kalibrasi_koefisien_pencacahan.py),
+[`scripts/ringkas_koefisien_pencacahan.py`](../scripts/ringkas_koefisien_pencacahan.py)
+
+### Rancangan Eksperimen
+
+Pencacahan per pohon dimodelkan sebagai $\hat{y}_c(t) = \operatorname{round}(k_c \cdot n_c(t))$
+dengan $n_c(t)$ = jumlah deteksi kelas $c$ pada seluruh sisi pohon yang memenuhi
+$\text{conf} \ge \tau_c$. Koefisien $k_c$ berfungsi mengoreksi bias sistematis
+pencacahan, yakni pencacahan berlebih (*over-count*) dan pencacahan kurang
+(*under-count*). Koefisien dipasang tanpa pelatihan ulang, langsung dari *dump*
+prediksi `.npz` terlacak. Empat metode dibandingkan: naif
+($k=1$; $\tau=0,25$), $k$ global, $k$ per kelas, serta $k + \tau$ per kelas.
+Tiga arsitektur detektor (YOLO26l, RT-DETR-L, RF-DETR-L) diuji pada dua korpus
+latih (`763` dan `1716`), dengan koefisien dipasang pada partisi validasi dan
+dilaporkan pada partisi uji, mencakup skenario kalibrasi silang antar korpus
+953 dan 763. Total 72 baris hasil pada 18 skenario.
+
+### Temuan Empiris Terukur
+
+1. **Kalibrasi menurunkan galat secara substansial.** Rerata MAE makro lintas 18
+   skenario turun dari $3,6477$ (naif) menjadi $1,1562$ ($k$ per kelas), dengan
+   penurunan terbesar $−88,5\%$ pada RT-DETR-L korpus `1716` di `953-test`
+   ($8,988 \rightarrow 1,030$; Akurasi ±1 $0,122 \rightarrow 0,736$).
+2. **Konfigurasi terbaik.** `953-test` ($n=141$): RT-DETR-L · `1716` ·
+   `953-val` · $k + \tau$ per kelas, MAE makro $\mathbf{1,0301}$, Akurasi ±1
+   $0,7358$. `763-test` (irisan $n=66$): RF-DETR-L · `1716` · `763-val` ·
+   $k + \tau$ per kelas, MAE makro $\mathbf{0,5871}$, Akurasi ±1 $0,8902$.
+3. **Arah koreksi seragam.** Seluruh koefisien terpilih berada di bawah $1,00$
+   ($0,20$–$0,84$), yakni penjumlahan naif lintas empat sisi selalu
+   menghasilkan pencacahan berlebih akibat kemunculan objek (*appearance*) yang
+   sama terekam pada beberapa sisi. Bias per kelas RT-DETR-L pada `953-test` turun dari
+   $(+2,560; +9,362; +15,887; +8,142)$ menjadi
+   $(−0,028; −0,312; −0,433; −0,355)$.
+4. **Kalibrasi silang korpus menurunkan performa pada seluruh pasangan.** Memasang koefisien pada
+   validasi korpus lain menaikkan MAE sebesar $+20,4\%$ hingga $+43,3\%$ pada
+   seluruh enam pasangan yang diuji.
+5. **Koefisien tidak mengompensasi kegagalan generalisasi deteksi.** Detektor berlatih `763`
+   yang diuji pada `953-test` ($mAP50 = 0,1110$–$0,2331$) tetap berhenti pada
+   MAE $2,06$–$2,47$ setelah kalibrasi, sedangkan detektor berlatih `1716`
+   mencapai $1,03$–$1,07$.
+6. **Kompleksitas parameter tidak linier terhadap performa.** $k$ per kelas
+   (5 parameter) unggul secara rerata ($1,1562$) dibanding $k + \tau$ per kelas
+   (8 parameter, $1,1887$), meskipun yang terakhir menghasilkan konfigurasi
+   tunggal terbaik.
+
+### Keputusan Metodologis
+
+Kalibrasi koefisien per kelas ditetapkan sebagai langkah pascaproses baku untuk
+seluruh pelaporan pencacahan, dengan syarat koefisien dipasang pada validasi
+korpus yang sama dengan korpus uji. Perbandingan pencacahan antar detektor tanpa
+kalibrasi tidak lagi informatif karena didominasi oleh perbedaan kalibrasi
+ambang, bukan oleh kualitas deteksi.
+
+### Batasan Validitas & Audit
+
+1. Koefisien dipasang pada partisi validasi saja; *dump* prediksi partisi latih
+   tidak terlacak sehingga penambahannya memerlukan inferensi ulang.
+2. Partisi `763-test` untuk korpus latih `1716` hanya beririsan 66 dari 110
+   pohon; seluruh perbandingan lintas korpus latih memakai irisan tersebut.
+3. Detektor `v2repro` (latih 953) tidak disertakan karena *dump* validasinya
+   tidak tersedia.
+4. Dengan $n = 141$ dan $n = 66$ pohon, selisih MAE di bawah sekitar $0,05$
+   tidak terpisahkan dari variasi acak; peringkat 1–5 berada dalam rentang ini.
+
+**Artefak:**
+
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+- [`results/counting_koefisien_2026-09-16/koefisien_pencacahan.json`](../results/counting_koefisien_2026-09-16/koefisien_pencacahan.json)
+
+**Verdict:** CONFIRMED. Koreksi bias per kelas terbukti meningkatkan akurasi
+pencacahan pada seluruh 18 skenario; kalibrasi silang korpus terbukti
+menurunkan performa pada seluruh pasangan yang diuji.

@@ -1,4 +1,4 @@
-# Audit Forensik Data dan Pipeline — 6 September 2026
+# Audit Forensik Data dan Pipeline: 6 September 2026
 
 Dokumen ini memuat sintesis, kronologi kerja, dan rekomendasi dari audit
 independen terhadap korpus dan pipeline `project-expertise`. Seluruh angka
@@ -17,8 +17,8 @@ dengan penomoran `AF-E-001` sampai `AF-E-014`.
 ## 1. Ringkasan eksekutif
 
 Pipeline ini **sudah berada pada `91%` dari plafon aritmetis** yang dimungkinkan
-oleh kualitas label kematangannya. Dengan lokalisasi dibuat sempurna — setiap
-prediksi adalah kotak acuan, presisi dan daya tangkap bernilai `1,0` — `mAP50`
+oleh kualitas label kematangannya. Dengan lokalisasi dibuat sempurna, setiap
+prediksi adalah kotak acuan, presisi dan daya tangkap bernilai `1,0`, `mAP50`
 empat kelas hanya mencapai `0,6569`, sedangkan hasil test terkunci proyek dengan
 detektor nyata adalah `0,5970`. Ruang perbaikan yang tersisa untuk seluruh
 tumpukan detektor karena itu sekitar `6` poin `mAP`, bukan `25`.
@@ -81,7 +81,7 @@ pohon akan memperbaiki klasifikasi (`AF-E-009` serta
 
 ## 3. Temuan utama
 
-### 3.1 Dua korpus, dua protokol — bukan dua musim
+### 3.1 Dua korpus, dua protokol: bukan dua musim
 
 Pada 352 pohon fisik yang sama, jumlah tandan unik per pohon turun dari `9,89`
 (Mei) menjadi `3,99` (Juli). Rinciannya bertentangan dengan fenologi pada dua
@@ -143,8 +143,8 @@ proposal, bukan sisi fisik. Cacat itu nyata dan sudah diperbaiki.
 
 Namun besarnya dampak yang semula saya laporkan **keliru dan sudah dikoreksi
 pada `AF-E-014`**. Angka `45,3%` pada `AF-E-010` diukur pada daftar tepi
-geometri sederhana tanpa penugasan Hungarian. Pada jalur sweep yang sebenarnya —
-yang menerapkan `linear_sum_assignment` per pasangan sisi lebih dahulu —
+geometri sederhana tanpa penugasan Hungarian. Pada jalur sweep yang sebenarnya, 
+yang menerapkan `linear_sum_assignment` per pasangan sisi lebih dahulu, 
 pelanggarannya `0,00%` untuk `max_size ≤ 3` pada kedua mode pasangan, dan baru
 muncul (`7,95%`) pada `max_size 4` dengan `pair_mode` "all". Menjalankan ulang
 seluruh grid 630 konfigurasi pada 953 dan Depth menghasilkan **nol perubahan**:
@@ -186,7 +186,7 @@ menaikkan `mAP`", melainkan bahwa **dua korpus multi-tampak atas pohon yang
 identik dapat berbeda dua kali lipat dalam kelengkapan anotasi dan berbeda
 sistematis dalam konvensi kotak, dan bahwa perbedaan itu terbaca sebagai
 pergeseran domain apabila tidak diaudit di tingkat pohon.** Repositori ini sudah
-memegang seluruh buktinya, termasuk 352 pohon fisik yang difoto dua kali —
+memegang seluruh buktinya, termasuk 352 pohon fisik yang difoto dua kali, 
 kondisi kontrol yang jarang tersedia pada set data lapangan.
 
 ---
@@ -222,8 +222,8 @@ menjadi ambang pada skor yang sama.
 Penyebabnya teridentifikasi: penaut audit ini memakai proposal satu detektor,
 bukan WBF tiga detektor, dan daya tangkap fisiknya hanya `0,6878`. GSP MILP
 proyek tetap merupakan penaut yang lebih baik. **Rekomendasi yang benar karena
-itu adalah menggabungkan keduanya** — penaut GSP proyek dengan tahap kelas
-ordinal tingkat tandan dari audit ini — bukan mengganti salah satunya.
+itu adalah menggabungkan keduanya**, penaut GSP proyek dengan tahap kelas
+ordinal tingkat tandan dari audit ini, bukan mengganti salah satunya.
 
 ### 6.3 Koreksi terhadap usulan taksonomi
 
@@ -232,8 +232,8 @@ Kartu `SawitMVC-YOLO` menyebut B1 sebagai *optimal harvest stage* sedangkan B2
 masih *transitioning*. Secara empiris, cacah B1 mencapai ±1 `0,970` sedangkan
 cacah B1+B2 hanya `0,765`. Besaran operasional yang benar adalah **B1**.
 
-Selain itu, batas B2\|B3 adalah batas tersulit dalam data ini — pada matriks
-konfusi `AF-E-009`, B2↔B3 menyumbang 195 galat berbanding 57 untuk B1↔B2 —
+Selain itu, batas B2\|B3 adalah batas tersulit dalam data ini, pada matriks
+konfusi `AF-E-009`, B2↔B3 menyumbang 195 galat berbanding 57 untuk B1↔B2, 
 sehingga menaruhnya sebagai akar hierarki keras akan mengunci sekitar 15% tandan
 pada jalur yang salah. Skor ordinal dengan dua ambang menghindari hal itu.
 
@@ -248,7 +248,7 @@ pada jalur yang salah. Skor ordinal dengan dua ambang menghindari hal itu.
 | `results/audit_forensik_2026-09-06/panen/` | Metrik Pipeline Panen (`AF-E-011` … `AF-E-013`) |
 | `logs_ringkas/audit_forensik_2026-09-06/` | Log eksekusi, `results.csv`, dan `args.yaml` tiap pelatihan |
 | `scripts/audit_forensik/` | 21 skrip analisis dan eksperimen |
-| Bucket `ULM-DS-Lab/project-expertise-backup`, awalan `audit_forensik_2026-09-06/` | Bobot lima detektor, bobot pengklasifikasi *crop*, dump probabilitas |
+| Bucket `ULM-DS-Lab/project-expertise-backup`, awalan `audit_forensik_2026-09-06/` | Bobot lima detektor, bobot pengklasifikasi *crop*, *dump* probabilitas |
 
 Prosedur reproduksi tercantum pada
 [`results/audit_forensik_2026-09-06/MANIFEST.md`](../results/audit_forensik_2026-09-06/MANIFEST.md).

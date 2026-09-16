@@ -10,7 +10,7 @@ tersebut tidak boleh dilaporkan sebagai hasil inferensi model.
 Audit memeriksa apakah kotak prediksi yang sudah tersedia masih memungkinkan
 mAP50 melampaui 0,75. Skrip
 [`audit_batas_koreksi_map50.py`](../scripts/audit_batas_koreksi_map50.py)
-membaca tiga dump RF-DETR tanpa pelatihan atau inferensi GPU. Angka lengkap,
+membaca tiga *dump* RF-DETR tanpa pelatihan atau inferensi GPU. Angka lengkap,
 versi perangkat lunak, lokasi masukan, dan hash SHA-256 disimpan dalam
 [`audit_batas_koreksi_map50_2026-09-08.json`](../results/audit_batas_koreksi_map50_2026-09-08.json).
 
@@ -20,7 +20,7 @@ berkas JSON per pohon pada direktori yang sama. Medan `split` lama dalam
 JSON tidak dipakai. VALIDATION mencakup 96 pohon, 404 citra, dan 1.887 kotak;
 TEST mencakup 141 pohon, 588 citra, dan 2.612 kotak. Semua tampak dalam
 manifest dipertahankan, termasuk pohon dengan delapan tampak dan citra tanpa
-objek. Audit menolak perbedaan himpunan identitas citra antara dump dan
+objek. Audit menolak perbedaan himpunan identitas citra antara *dump* dan
 anotasi. Dataset Depth tidak dicampurkan dalam perhitungan ini.
 
 Evaluator NumPy memakai pencocokan serakah satu-ke-satu pada *IoU* ≥ 0,50,
@@ -33,7 +33,7 @@ dihitung. Skrip juga memeriksa kasus deteksi sempurna, keluaran kosong,
 duplikat, pertukaran kelas, positif palsu berperingkat tinggi, *IoU* tepat
 0,50, pembatasan 100 prediksi, dan daya tangkap parsial.
 
-Dump memuat sejumlah baris dengan ID kelas 4, sedangkan B1–B4 memakai ID
+*Dump* memuat sejumlah baris dengan ID kelas 4, sedangkan B1–B4 memakai ID
 0–3. Baris di luar keempat kelas tersebut dikeluarkan **sebelum seluruh
 evaluasi aktual dan konstruksi koreksi**, sesuai cakupan kategori evaluator
 historis. Jumlahnya dicatat dalam JSON; baris tersebut tidak diubah menjadi
@@ -74,7 +74,7 @@ pada sesi ini menggunakan Python 3.14.5, NumPy 2.4.2, dan SciPy 1.17.1.
 Semua kolom metrik berikut adalah **mAP50 empat kelas per citra**, dengan
 populasi yang sama di dalam setiap baris.
 
-| Dump dan partisi | Aktual | Penggantian kelas dengan anotasi | Penyaringan TP dengan anotasi | Kelas dan penyaringan dengan anotasi |
+| *Dump* dan partisi | Aktual | Penggantian kelas dengan anotasi | Penyaringan TP dengan anotasi | Kelas dan penyaringan dengan anotasi |
 |---|---:|---:|---:|---:|
 | RF-DETR `combined1716`, VALIDATION | 0,5727 | 0,8017 | 0,9703 | 0,9777 |
 | RF-DETR `combined1716`, TEST | 0,5890 | 0,7944 | 0,9752 | 0,9777 |
@@ -86,10 +86,10 @@ dengan galat absolut di bawah 0,000001. Hasil aktual TEST kedua mereproduksi
 nilai 0,596470002851234 dalam
 [`rfdetr_l_v2repro_953_retrain_2026-09-07.json`](../results/rfdetr_l_v2repro_953_retrain_2026-09-07.json).
 Artefak kedua mencatat checkpoint `best_ema` epoch 5 saat pelatihan historis
-masih berjalan. Dump ini **bukan** dump asli yang menghasilkan angka
+masih berjalan. *Dump* ini **bukan** *dump* asli yang menghasilkan angka
 historis 0,6012. Sesi audit ini tidak melanjutkan pelatihan tersebut.
 
-Pada dump kedua, penyaringan TP mempertahankan 2.564 dari 2.612 objek acuan
+Pada *dump* kedua, penyaringan TP mempertahankan 2.564 dari 2.612 objek acuan
 yang sudah terdeteksi dengan kelas benar di antara banyak hipotesis mentah.
 Hal ini membuktikan keberadaan himpunan bagian prediksi dengan mAP50 0,9802
 ketika pemilihnya boleh membaca anotasi. Hal ini belum membuktikan bahwa
@@ -98,12 +98,12 @@ identitas himpunan bagian tersebut dapat dipelajari dari masukan inferensi.
 Sebagai pemeriksaan geometri, audit menghitung pencocokan bipartit maksimum
 antara kotak kandidat dan objek acuan per kelas pada *IoU* ≥ 0,50. Penggunaan
 proposal lintas kelas dilonggarkan sehingga hasilnya merupakan batas atas
-optimistis untuk keluarga keluaran dengan geometri tetap. Pada ketiga dump
+optimistis untuk keluarga keluaran dengan geometri tetap. Pada ketiga *dump*
 ini, konstruksi penggantian kelas dan penyaringan mencapai nilai batas
 optimistis tersebut. Batas ini tidak berlaku bagi seluruh algoritme yang
 bisa membuat kotak baru, dan bukan batas informasi dataset.
 
-Temuan merupakan perhitungan deterministik pada dump tetap. Tidak dilakukan
+Temuan merupakan perhitungan deterministik pada *dump* tetap. Tidak dilakukan
 bootstrap atau uji signifikansi karena belum ada perbandingan dua pipeline
 inferensi baru yang dapat digunakan untuk klaim peningkatan populasi.
 
@@ -141,7 +141,7 @@ Rancangan konkretnya sebagai berikut:
    menggantikan evaluasi tersebut. TEST historis tidak dipakai memilih
    parameter atau merancang aturan per citra.
 
-Perbedaan yang harus benar-benar diterapkan dapat ditelusuri pada kode lama.
+Perbedaan yang harus diterapkan dapat ditelusuri pada kode lama.
 [`train_proposal_crop_head.py`](../scripts/train_proposal_crop_head.py)
 menyaring sampel pelatihan dan validasi menjadi `label >= 0`, yaitu proposal
 yang cocok dengan objek acuan. Sementara itu, fitur pemeringkat untuk

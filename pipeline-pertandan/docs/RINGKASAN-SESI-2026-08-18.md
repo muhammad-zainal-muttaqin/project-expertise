@@ -34,7 +34,7 @@ Evaluasi strategi pemungutan suara pada wilayah berselisih:
 * **Tebakan Acak Proporsional**: Akurasi $54,35\%$.
 
 Untuk mencapai target akurasi $80,0\%$, akurasi pada wilayah berselisih wajib dinaikkan menjadi **$76,5\%$** ($+15,3\text{ pp}$). Tiga metode eksplorasi pemilihan model diuji dan menghasilkan kesimpulan:
-1. **Optimasi Bobot Global (PT-E-034)**: Plafon linier mentok pada $75,23\%$ (hanya $+0,84\text{ pp}$ di atas rata-rata sederhana).
+1. **Optimasi Bobot Global (PT-E-034)**: Plafon linier mencapai batas saturasi pada $75,23\%$ (hanya $+0,84\text{ pp}$ di atas rata-rata sederhana).
 2. **Seleksi Berbasis Keyakinan (PT-E-035)**: Korelasi antara tingkat keyakinan (*confidence*) dan kebenaran prediksi sangat lemah ($r = \mathbf{+0,1185}$).
 3. **Pola Perselisihan Graf (PT-E-036)**: Model *gradient boosting* mengalami penurunan performa $−3,59\text{ pp}$ pada validasi silang.
 
@@ -48,7 +48,7 @@ Model penaut (*linker*) yang dilatih pada pasangan kotak data acuan kebenaran (*
 ### 3.2 Sifat Komplementer Detektor dan Pengklasifikasi (PT-E-018 & PT-E-019)
 Penggabungan ensembel pengklasifikasi C1+C2 menghasilkan akurasi **$74,64\%$**, mematahkan asumsi batas lama $73,60\%$. Penaut multi-tampak dan pengklasifikasi ensembel bersifat saling melengkapi (*complementary*): ensembel memperbaiki tandan satu-tampak, sedangkan penaut memindahkan tandan ke wilayah multi-tampak yang ditangani oleh aturan ordinal $R4$.
 
-### 3.3 Superioritas Loss Ordinal CORN terhadap CORAL (PT-E-030)
+### 3.3 Superioritas fungsi rugi ordinal CORN terhadap CORAL (PT-E-030)
 Pada resep pelatihan yang identik, fungsi *loss* CORAL mengalami keruntuhan struktural ($33,05\%$) akibat keterbatasan pembagian bobot (*weight-sharing*), sementara **CORN mencapai akurasi uji $69,83\%$** ($+36,8\text{ pp}$).
 
 ### 3.4 Karakteristik Konvergensi RF-DETR-L DAMIMAS (PT-E-032)

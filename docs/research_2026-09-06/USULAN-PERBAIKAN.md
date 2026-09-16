@@ -42,15 +42,15 @@ Gunakan `bunch_id` dan anotasi kemunculan antartampak untuk pencocokan bipartit 
 
 ### Implementasi bertahap dalam satu eksperimen
 
-1. **Uji pemulihan dengan kandidat tetap.** Gunakan kandidat asli berkepercayaan ≥ 0,10, termasuk positif palsu; ekstrak fitur visual dari kotak prediksi. Decoder kecil melihat seluruh kandidat empat tampak sebelum menetapkan keanggotaan. Izinkan objek tampak pada satu hingga empat sisi dan sediakan keadaan tanpa objek. Jangan mensyaratkan pasangan kuat agar tandan satu-tampak dapat bertahan. Bekukan backbone dahulu untuk menguji apakah informasi yang ada cukup berguna.
+1. **Uji pemulihan dengan kandidat tetap.** Gunakan kandidat asli berkepercayaan ≥ 0,10, termasuk positif palsu; ekstrak fitur visual dari kotak prediksi. Decoder kecil melihat seluruh kandidat empat tampak sebelum menetapkan keanggotaan. Izinkan objek tampak pada satu hingga empat sisi dan sediakan keadaan tanpa objek. Jangan mensyaratkan pasangan kuat agar tandan satu-tampak dapat bertahan. Bekukan kerangka utama (*backbone*) dahulu untuk menguji apakah informasi yang ada cukup berguna.
 2. **Perbarui representasi jika tahap pertama layak.** Latih fitur visual dengan supervisi identitas fisik dan kelas, termasuk ketahanan terhadap tampak hilang serta perubahan urutan awal sisi. Pertahankan relasi siklik sisi; jangan mengandalkan nomor sisi absolut. Perubahan warna harus dibatasi karena warna merupakan sinyal kematangan, sehingga invariansi warna yang terlalu kuat dapat merusak tugas.
 3. **Pulihkan objek tanpa kandidat.** Tambahkan akses decoder ke peta fitur citra dan slot bebas yang dapat memprediksi kotak baru. Tahap ini diperlukan untuk menangani 60 identitas tanpa kandidat; pengelompokan kandidat saja tidak dapat menciptakan bukti citra yang hilang. Ukur deteksi per citra pada tahap ini, selain metrik tandan fisik.
 
-Tahap-tahap ini bukan tiga pencarian arsitektur yang terpisah. Tahap pertama menguji alasan melakukan investasi pada tahap berikutnya. Hindari melatih backbone besar dari awal pada dataset ini.
+Tahap-tahap ini bukan tiga pencarian arsitektur yang terpisah. Tahap pertama menguji alasan melakukan investasi pada tahap berikutnya. Hindari melatih kerangka utama besar dari awal pada dataset ini.
 
 ### Perbedaan dari percobaan terdahulu
 
-| Percobaan yang telah ditinjau | Perbedaan yang harus benar-benar diterapkan |
+| Percobaan yang telah ditinjau | Perbedaan yang harus diterapkan |
 |---|---|
 | C3/Set Transformer pada citra terpotong atau fitur dengan kelompok GT/tetap | Model baru menerima kandidat nyata beserta gangguannya, dan mempelajari keanggotaan sebelum kelompok dikunci. Sekadar mengganti agregator akan mengulang hipotesis lama. |
 | Re-ID dan pengklasifikasi pasangan | Supervisi mengutamakan tandan berbeda yang berdekatan dalam pohon dan kelas sama; keluaran pasangan turut dilatih bersama keberadaan dan kelas objek fisik. |
@@ -66,7 +66,7 @@ Prinsip kandidat dari detektor pralatih untuk membantu pembelajaran asosiasi mem
 - Ablasi minimal: fitur visual versus geometri/skor saja, serta keanggotaan terpelajar versus kelompok tetap. Ini menguji unsur baru, bukan melakukan sapuan puluhan model.
 - Catat mAP50 agnostik dan empat kelas **per citra**, presisi/recall/F1 identitas fisik, akurasi kelas pada objek terpasangkan, kesalahan jumlah total, akurasi tepat, toleransi ±1, dan ketepatan vektor empat kelas. Jangan menukar nama metrik tersebut.
 - Periksa kemurnian identitas kelompok, bukan hanya kecocokan maksimum satu anggota; catat pula pohon dengan hitungan tepat yang masih mempunyai positif palsu dan negatif palsu.
-- Gunakan selisih metrik berpasangan dan bootstrap per pohon. Lanjutkan ke backbone/peta fitur hanya jika pemulihan recall tidak diimbangi kerusakan presisi dan kelas, serta pencacahan membaik pada pohon yang sama. Laporkan hasil tidak signifikan sebagai demikian, tanpa memilih berdasarkan TEST.
+- Gunakan selisih metrik berpasangan dan bootstrap per pohon. Lanjutkan ke kerangka utama/peta fitur hanya jika pemulihan recall tidak diimbangi kerusakan presisi dan kelas, serta pencacahan membaik pada pohon yang sama. Laporkan hasil tidak signifikan sebagai demikian, tanpa memilih berdasarkan TEST.
 - Klaim generalisasi memerlukan pemisahan ID pohon fisik lintas sumber dan waktu. Pisahkan klaim perubahan waktu pada pohon yang sama dari klaim pohon atau kebun baru. TEST lama yang sudah sering dilihat merupakan pembanding historis; validasi konfirmatori membutuhkan kelompok yang belum dipakai memilih metode.
 
 ## Batasan validitas dan status

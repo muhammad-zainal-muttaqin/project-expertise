@@ -16,7 +16,7 @@ Data empiris awal yang mendasari premis tersebut:
 * YOLO26l pada SawitMVC-953 (RGB): $mAP50 = \mathbf{0,5435}$.
 * YOLO26l pada SawitMVC-Depth-352 (RGB+D *early fusion*): $mAP50 = \mathbf{0,3919}$.
 
-Tujuan investigasi diagnostik ini adalah membuktikan secara kausal apakah kesenjangan tersebut benar-benar disebabkan oleh karakteristik sinyal kedalaman atau akibat faktor perancangan data.
+Tujuan investigasi diagnostik ini adalah membuktikan secara kausal apakah kesenjangan tersebut disebabkan oleh karakteristik sinyal kedalaman atau akibat faktor perancangan data.
 
 ---
 

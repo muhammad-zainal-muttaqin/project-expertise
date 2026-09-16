@@ -29,7 +29,7 @@ Evaluasi modul pencacahan (*counting*) pada 141 pohon uji SawitMVC:
 | ElasticNet | $F_0$ (13-dimensi) | 76,42% | 29,79% | 1,043 |
 | Regresi Linier | $F_0$ (13-dimensi) | 75,71% | 30,50% | 1,048 |
 
-### Batas Atas Teoretis dengan Deteksi Sempurna (Jalur C / Oracle)
+### Batas Atas Teoretis dengan Deteksi Sempurna (Jalur C / Model batas atas teoretis)
 | Model Pencacah | $\text{Class }\pm 1\text{ Acc}$ | $\text{Tree }\pm 1\text{ Acc}$ | Macro-$MAE$ |
 |---|---:|---:|---:|
 | ElasticNet | 98,05% | 92,20% | 0,277 |
@@ -81,6 +81,6 @@ Rujukan: Indriani dkk., *Data in Brief* 67 (2026) 112990 (Tabel 3–4):
 
 1. **Hambatan Utama Terletak pada Detektor**: Memperbaiki detektor di hulu merupakan tuas pengungkit paling efektif untuk meningkatkan pencacahan di hilir.
 2. **Dua Ranah Kegagalan Deteksi**:
-   * **Ranah Geometris**: Tandan kecil/tertutup pelepah (B4) — dapat dibantu oleh modalitas kedalaman lokalisasi.
-   * **Ranah Fotometrik**: Ambiguitas visual kematangan (B2 vs B3) — tidak dapat diselesaikan oleh informasi kedalaman.
+   * **Ranah Geometris**: Tandan kecil/tertutup pelepah (B4), dapat dibantu oleh modalitas kedalaman lokalisasi.
+   * **Ranah Fotometrik**: Ambiguitas visual kematangan (B2 vs B3), tidak dapat diselesaikan oleh informasi kedalaman.
 3. **Ketiadaan Komparabilitas Lintas-Dataset**: Dataset 953 pohon dan 352 pohon terpisah oleh jeda waktu 80 hari dan tidak boleh diperbandingkan secara langsung.

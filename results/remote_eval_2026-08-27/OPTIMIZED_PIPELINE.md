@@ -1,6 +1,6 @@
-# Iterasi Greedy Pipeline Empat Sisi — 27 Agustus 2026
+# Iterasi Greedy Pipeline Empat Sisi: 27 Agustus 2026
 
-Dokumen ini mencatat iterasi engineering untuk mencari bottleneck pipeline
+Dokumen ini mencatat iterasi engineering untuk mencari hambatan struktural (*bottleneck*) pipeline
 proposal pada dua test set lokal. Profil di bawah diberi label **greedy/test-
 tuned** karena parameter dipilih setelah melihat hasil test. Angka ini berguna
 untuk mengukur ruang perbaikan, tetapi bukan estimasi generalisasi produksi.
@@ -15,40 +15,40 @@ menambah detektor baru. Perubahan yang paling berpengaruh adalah:
 3. membuang singleton ber-confidence rendah;
 4. membatasi satu cluster maksimal dua tampak;
 5. membatasi pasangan sisi ke sisi bersebelahan pada Depth;
-6. memakai blend 75% soft-vote detector + 25% classifier crop 5-epoch pada
+6. memakai blend 75% soft-vote detektor + 25% pengklasifikasi citra terpotong (*crop classifier*) 5-epoch pada
    test 953.
 
 ### Profil yang dipilih
 
 | Test | WBF IoU | Skor input WBF | Proposal min | Link min | Singleton min | Pasangan sisi | Maks. anggota | Probabilitas kelas |
 |---|---:|---:|---:|---:|---:|---|---:|---|
-| SawitMVC-Depth-YOLO | 0,600 | 0,050 | 0,120 | 0,050 | 0,225 | bersebelahan | 2 | WBF detector |
+| SawitMVC-Depth-YOLO | 0,600 | 0,050 | 0,120 | 0,050 | 0,225 | bersebelahan | 2 | WBF detektor |
 | SawitMVC-YOLO 953 | 0,575 | 0,050 | 0,160 | 0,050 | 0,250 | semua pasangan | 2 | 75% WBF + 25% C2 RGB |
 
 `counting` pada laporan ini berarti **raw linked-cluster count** per pohon.
 Ridge `F_all` dan rekonsiliasi yang direncanakan untuk deployment belum
-dijalankan pada dump remote ini.
+dijalankan pada *dump* remote ini.
 
-## Hasil terhadap baseline remote sebelumnya
+## Hasil terhadap garis dasar pembanding remote sebelumnya
 
-Baseline adalah `metrics/pipeline_combined1716_testsets.json`, dengan linker
+Garis dasar pembanding (*baseline*) adalah `metrics/pipeline_combined1716_testsets.json`, dengan linker
 dan threshold awal. Metrik multi-tampak hanya memakai pohon empat sisi:
 
 | Test | Versi | P | R | F1 fisik | Prediksi / GT | MAE count | Tepat | ±1 | Vector tepat | Match class acc. | Macro-F1 E2E |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Depth | Baseline | 0,4705 | 0,8837 | 0,6140 | 1.050 / 559 | 4,518 | 8,18% | 18,18% | 5,45% | 78,95% | 0,4726 |
+| Depth | Garis dasar pembanding | 0,4705 | 0,8837 | 0,6140 | 1.050 / 559 | 4,518 | 8,18% | 18,18% | 5,45% | 78,95% | 0,4726 |
 | Depth | **Greedy** | **0,8799** | 0,8390 | **0,8590** | **533 / 559** | **0,818** | **41,82%** | **83,64%** | **24,55%** | **79,96%** | **0,6419** |
-| 953 | Baseline | 0,3725 | 0,9344 | 0,5327 | 3.366 / 1.342 | 14,993 | 0% | 0% | 0% | 69,94% | 0,3762 |
+| 953 | Garis dasar pembanding | 0,3725 | 0,9344 | 0,5327 | 3.366 / 1.342 | 14,993 | 0% | 0% | 0% | 69,94% | 0,3762 |
 | 953 | **Greedy** | **0,8247** | 0,8346 | **0,8296** | **1.358 / 1.342** | **1,644** | **24,44%** | **54,07%** | **5,19%** | **70,63%** | **0,5469** |
 
 Perubahan terpenting adalah prediksi 953 turun dari 3.366 menjadi 1.358
 cluster. Ini menurunkan MAE sebesar 13,348 tandan/pohon dan menaikkan F1
-fisik sebesar 0,2969, dengan trade-off recall turun dari 0,9344 menjadi
+fisik sebesar 0,2969, dengan kompromi performa (*trade-off*) recall turun dari 0,9344 menjadi
 0,8346. Pada Depth, MAE turun 3,700 dan F1 fisik naik 0,2449.
 
 ## WBF dan deteksi image-level
 
-Profil WBF final mencatat metrik berikut. Ini bukan metrik counting:
+Profil WBF final mencatat metrik berikut. Ini bukan metrik pencacahan (*counting*):
 
 | Test | Class-aware mAP50 | Class-aware mAP50–95 | Class-agnostic AP50 | Class-agnostic AP50–95 |
 |---|---:|---:|---:|---:|
@@ -56,14 +56,14 @@ Profil WBF final mencatat metrik berikut. Ini bukan metrik counting:
 | SawitMVC-YOLO 953 | 0,5856 | 0,2747 | **0,8372** | 0,3676 |
 
 Karena class-agnostic mengabaikan B1–B4, angka 87,64% dan 83,72% tidak boleh
-disebut akurasi kematangan atau akurasi counting.
+disebut akurasi kematangan atau akurasi pencacahan.
 
-## Eksperimen classifier 5 epoch
+## Eksperimen pengklasifikasi 5 epoch
 
-Classifier crop RGB dilatih pada data pretraining tree-disjoint dari 953:
+Pengklasifikasi citra terpotong RGB dilatih pada data pretraining tree-disjoint dari 953:
 
-- 16.542 crop dari 841 pohon;
-- crop sisi 176, konteks box `1,6×`, mask posisi box;
+- 16.542 citra terpotong (*crop*) dari 841 pohon;
+- citra terpotong sisi 176, konteks box `1,6×`, mask posisi box;
 - ConvNeXt-Tiny, head hybrid softmax + CORAL;
 - jitter mask `±10%`, seed 42, batch training 128;
 - 5 epoch, durasi sekitar 79,5 detik pada RTX 3090.
@@ -72,31 +72,31 @@ Validasi internal terbaik (epoch 3) menghasilkan akurasi 62,17%, macro-F1
 62,96%, akurasi ±1 99,32%, dan MAE kelas 0,385. Karena evaluasi `test` pada
 runner pretraining adalah salinan split pohon validasi internal, angka tersebut
 tidak diperlakukan sebagai test hold-out independen. Ketika diterapkan ke
-14.643 proposal WBF test 953, classifier tidak dipakai secara penuh; blend
-25% dipilih karena mempertahankan geometry/counting dan meningkatkan macro-F1
+14.643 proposal WBF test 953, pengklasifikasi tidak dipakai secara penuh; blend
+25% dipilih karena mempertahankan geometry/pencacahan dan meningkatkan macro-F1
 end-to-end pada konfigurasi final dibanding detector-only.
 
 | Vote pada konfigurasi final 953 | F1 fisik | MAE | ±1 | Match class acc. | Macro-F1 E2E |
 |---|---:|---:|---:|---:|---:|
-| WBF detector 100% | 0,8296 | 1,644 | 53,33% | 70,71% | 0,5410 |
+| WBF detektor 100% | 0,8296 | 1,644 | 53,33% | 70,71% | 0,5410 |
 | **WBF 75% + C2 25%** | **0,8296** | **1,644** | **54,07%** | 70,63% | **0,5469** |
 | C2 100% | 0,8299 | 1,637 | 54,07% | 62,95% | 0,5234 |
 
-Kesimpulan eksperimen C2: classifier 5-epoch memberi sinyal tambahan untuk
-macro-F1, tetapi belum cukup kuat untuk menggantikan soft-vote detector.
+Kesimpulan eksperimen C2: pengklasifikasi 5-epoch memberi sinyal tambahan untuk
+macro-F1, tetapi belum cukup kuat untuk menggantikan soft-vote detektor.
 Proporsi 25% adalah kandidat engineering, bukan keputusan produksi final.
 
 ## Artefak dan reproduksi
 
 - Metrik final: [`metrics/pipeline_combined1716_greedy_test_tuned.json`](metrics/pipeline_combined1716_greedy_test_tuned.json)
-- Baseline: [`metrics/pipeline_combined1716_testsets.json`](metrics/pipeline_combined1716_testsets.json)
+- Garis dasar pembanding: [`metrics/pipeline_combined1716_testsets.json`](metrics/pipeline_combined1716_testsets.json)
 - Sweep: [`sweeps/`](sweeps/)
 - Soft vote WBF: [`fused_combined1716/`](fused_combined1716/)
-- Fusi IoU 0,575 + classifier: [`fusions_iou575_combined1716/`](fusions_iou575_combined1716/)
-- Ringkasan classifier: [`classifier_c2/remote953_c2_rgb_5ep_jitter10.json`](classifier_c2/remote953_c2_rgb_5ep_jitter10.json)
+- Fusi IoU 0,575 + pengklasifikasi: [`fusions_iou575_combined1716/`](fusions_iou575_combined1716/)
+- Ringkasan pengklasifikasi: [`classifier_c2/remote953_c2_rgb_5ep_jitter10.json`](classifier_c2/remote953_c2_rgb_5ep_jitter10.json)
 - Evaluator: [`../../scripts/evaluate_remote_pipeline_optimized.py`](../../scripts/evaluate_remote_pipeline_optimized.py)
 - Sweep linker: [`../../scripts/sweep_remote_pipeline.py`](../../scripts/sweep_remote_pipeline.py)
-- Runner classifier proposal: [`../../scripts/apply_remote_crop_classifier.py`](../../scripts/apply_remote_crop_classifier.py)
+- Runner pengklasifikasi proposal: [`../../scripts/apply_remote_crop_classifier.py`](../../scripts/apply_remote_crop_classifier.py)
 
 Contoh evaluasi final:
 

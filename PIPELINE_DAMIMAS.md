@@ -59,11 +59,11 @@ graph TD
 
 ## 4. Analisis Batas Teoretis dan Dekomposisi Wilayah Klasifikasi
 
-Plafon teoretis model penggabungan (*oracle*) pada himpunan uji DAMIMAS mencapai **$87,39\%$**, namun rata-rata terbobot konvensional mentok pada plafon **$75,23\%$**.
+Plafon teoretis model penggabungan (*oracle*) pada himpunan uji DAMIMAS mencapai **$87,39\%$**, namun rata-rata terbobot konvensional mencapai batas saturasi pada plafon **$75,23\%$**.
 
 Dekomposisi wilayah prediksi himpunan uji:
 * **Wilayah Anggota Sepakat ($64,7\%$ populasi tandan)**: Akurasi mencapai **$81,92\%$**.
-* **Wilayah Anggota Berselisih ($35,3\%$ populasi tandan)**: Akurasi berada di angka **$61,21\%$** (meskipun model batas atas teoretis/oracle di wilayah ini mencapai $97,41\%$).
+* **Wilayah Anggota Berselisih ($35,3\%$ populasi tandan)**: Akurasi berada di angka **$61,21\%$** (meskipun model batas atas teoretis/model batas atas teoretis (*oracle*) di wilayah ini mencapai $97,41\%$).
 * **Korelasi Tingkat Keyakinan vs Kebenaran**: Sangat rendah ($r = \mathbf{+0,1185}$), sehingga strategi pemilihan berbasis tingkat keyakinan (*confidence-weighted selection*) tidak efektif.
 
 Peningkatan melampaui $75\%$ memerlukan model *gating* non-linier yang dipelajari secara *out-of-fold* dari representasi visual independen.

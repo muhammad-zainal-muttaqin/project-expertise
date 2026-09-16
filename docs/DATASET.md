@@ -9,7 +9,7 @@ Dokumen ini memuat spesifikasi teknis, karakteristik sensor, distribusi kategori
 | Parameter Properti | Nilai Spesifikasi |
 |---|---|
 | Sumber Repositori | [ULM-DS-Lab/SawitMVC-YOLO](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-YOLO) |
-| Lisensi Data | CC BY-NC 4.0 |
+| Lisensi Data | CC BY-NC 4,0 |
 | Populasi Pohon | 953 pohon (908 pohon 4 sisi pandang, 45 pohon 8 sisi pandang) |
 | Total Citra | 3.992 citra |
 | Resolusi Asli Citra | $960 \times 1.280\text{ piksel}$ (orientasi potret) |
@@ -35,7 +35,7 @@ Dokumen ini memuat spesifikasi teknis, karakteristik sensor, distribusi kategori
 | Parameter Properti | Nilai Spesifikasi |
 |---|---|
 | Sumber Repositori | [ULM-DS-Lab/SawitMVC-Depth](https://huggingface.co/datasets/ULM-DS-Lab/SawitMVC-Depth) |
-| Lisensi Data | CC BY-NC 4.0 (Akses Terbatas / *Private Repository*) |
+| Lisensi Data | CC BY-NC 4,0 (Akses Terbatas / *Private Repository*) |
 | Populasi Pohon | 352 pohon (sub-populasi DAMIMAS) |
 | Total Citra RGB | 1.408 citra ($1.280 \times 800\text{ piksel}$, orientasi lanskap) |
 | Total Kotak Pembatas | 2.299 kotak |

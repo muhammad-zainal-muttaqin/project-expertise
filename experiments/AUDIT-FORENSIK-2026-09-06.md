@@ -1,4 +1,4 @@
-# Log Eksperimen — Audit Forensik Data dan Pipeline (6 September 2026)
+# Log Eksperimen: Audit Forensik Data dan Pipeline (6 September 2026)
 
 Berkas ini bersifat *append-only* dan memakai penomoran `AF-E-###` agar tidak
 bertabrakan dengan rangkaian `V2-E-###` maupun `PT-E-###` yang sudah ada. Tidak
@@ -15,12 +15,12 @@ laporan lama kecuali disebut secara eksplisit sebagai pembanding.
 
 **Artefak.** Metrik pada `results/audit_forensik_2026-09-06/`, log eksekusi pada
 `logs_ringkas/audit_forensik_2026-09-06/`, skrip pada `scripts/audit_forensik/`.
-Bobot model, dump prediksi, dan citra terpotong berada di bucket
+Bobot model, *dump* prediksi, dan citra terpotong berada di bucket
 `ULM-DS-Lab/project-expertise-backup` pada awalan `audit_forensik_2026-09-06/`.
 
 ---
 
-## AF-E-001 — Perbandingan tingkat pohon antar-kampanye pada 352 pohon identik
+## AF-E-001: Perbandingan tingkat pohon antar-kampanye pada 352 pohon identik
 
 **Rancangan Eksperimen.** Membaca `bunches` tingkat pohon pada kedua rilis untuk 352 pohon
 fisik yang sama, lalu membandingkan jumlah tandan unik dan komposisi kelasnya.
@@ -57,7 +57,7 @@ berstrata oleh anotator, yang belum dilakukan.
 
 ---
 
-## AF-E-002 — Konsistensi label lintas-tampak untuk tandan fisik yang sama
+## AF-E-002: Konsistensi label lintas-tampak untuk tandan fisik yang sama
 
 **Rancangan Eksperimen.** Untuk setiap tandan multi-tampak, membandingkan `class_id` pada
 seluruh tampak tempat ia muncul. Skrip: `scripts/audit_forensik/an5_labelnoise.py`.
@@ -82,7 +82,7 @@ kelas yang ditetapkan, hanya tentang keseragamannya antartampak.
 
 ---
 
-## AF-E-003 — Struktur posisi tandan dalam pohon sebagai prediktor kematangan
+## AF-E-003: Struktur posisi tandan dalam pohon sebagai prediktor kematangan
 
 **Rancangan Eksperimen.** Menghitung peringkat vertikal dan peringkat ukuran setiap tandan
 di dalam pohonnya, lalu melatih pengklasifikasi tanpa satu piksel pun.
@@ -108,7 +108,7 @@ merupakan batas atas, bukan performa yang dapat dicapai saat inferensi.
 
 ---
 
-## AF-E-004 — Plafon lapisan pencacahan dengan deteksi *oracle*
+## AF-E-004: Plafon lapisan pencacahan dengan deteksi *oracle*
 
 **Rancangan Eksperimen.** Mengganti seluruh tahap deteksi dengan kotak acuan, lalu
 menjalankan Ridge dari cacah kotak per kelas menuju cacah tandan unik per kelas.
@@ -139,13 +139,13 @@ sistematis; ambang *singleton* global tidak sesuai untuk tugas ini.
 **Batasan Validitas & Audit.** Ridge di sini dilatih dari cacah kotak acuan,
 sehingga distribusi fiturnya bebas derau dan tidak dapat dicapai saat
 penerapan; angkanya adalah plafon lapisan pencacahan, bukan performa. Toleransi
-±1 bersifat longgar terhadap kelas yang jarang — rerata acuan B1 hanya
-`0,86` per pohon berbanding `10,17` untuk total — sehingga ±1 per kelas dan ±1
+±1 bersifat longgar terhadap kelas yang jarang, rerata acuan B1 hanya
+`0,86` per pohon berbanding `10,17` untuk total, sehingga ±1 per kelas dan ±1
 pada total **tidak sebanding langsung**.
 
 ---
 
-## AF-E-005 — Plafon `mAP50` dengan lokalisasi sempurna
+## AF-E-005: Plafon `mAP50` dengan lokalisasi sempurna
 
 **Rancangan Eksperimen.** Membentuk 18.540 citra terpotong tandan (cincin konteks `1,6×`,
 sesuai `PROPOSAL-Pipeline.md` §4), melatih ConvNeXt-Tiny 10 *epoch*, lalu
@@ -155,7 +155,7 @@ Skrip: `exp_crops.py`, `exp_train.py`, `exp_ceiling.py`, `exp_sensitivity.py`.
 
 **Temuan Empiris Terukur.**
 
-- Akurasi validasi per-*crop* `0,6635` — berada di dalam pita `0,62`–`0,70`
+- Akurasi validasi per-*crop* `0,6635`, berada di dalam pita `0,62`–`0,70`
   yang dicapai berulang oleh ConvNeXt, Swin, EfficientNetV2, dan DINOv2 pada
   repositori ini.
 - Plafon `mAP50` empat kelas dengan kotak sempurna: **`0,6569`**
@@ -183,7 +183,7 @@ batas atas, bukan sebagai `mAP` detektor.
 
 ---
 
-## AF-E-006 — Perbandingan taksonomi dengan detektor nyata
+## AF-E-006: Perbandingan taksonomi dengan detektor nyata
 
 **Rancangan Eksperimen.** Tiga pelatihan YOLO26s yang identik kecuali taksonomi labelnya,
 `imgsz 960`, 30 *epoch*, `patience 8`, `batch 16`, `workers 32`, `cache ram`,
@@ -214,21 +214,21 @@ selang kepercayaan berpasangan.
 
 ---
 
-## AF-E-007 — Matriks generalisasi lintas-kampanye dan dekomposisi galatnya
+## AF-E-007: Matriks generalisasi lintas-kampanye dan dekomposisi galatnya
 
-**Rancangan Eksperimen.** Dua detektor *class-agnostic* dilatih terpisah — satu pada Mei
-(953), satu pada 763 (Juli+Agustus) — lalu disilangkan. Evaluasi kampanye pada
+**Rancangan Eksperimen.** Dua detektor *class-agnostic* dilatih terpisah, satu pada Mei
+(953), satu pada 763 (Juli+Agustus), lalu disilangkan. Evaluasi kampanye pada
 model 763 memakai partisi uji miliknya sendiri untuk mencegah kontaminasi.
 Skrip: `run_exp.py`, `e1b_fp.py`, `e1c_fpkind.py`, `e1d_merge.py`.
 
-**Temuan Empiris Terukur — `mAP50` lokalisasi agnostik.**
+**Temuan Empiris Terukur, `mAP50` lokalisasi agnostik.**
 
 | Dilatih pada | Mei 953 | Juli 352 | Agustus 411 |
 |---|---:|---:|---:|
 | Mei (953) | **0,8057** (P 0,797 · R 0,709) | 0,4720 (P **0,581** · R 0,470) | 0,5955 (P 0,663 · R 0,539) |
 | 763 (Juli+Agustus) | 0,6243 (P 0,707 · R **0,609**) | **0,7691** (P 0,782 · R 0,724) | **0,8522** (P 0,852 · R 0,818) |
 
-Pada taksonomi empat kelas, model 763 mencapai `mAP50 = 0,1898` di test Mei —
+Pada taksonomi empat kelas, model 763 mencapai `mAP50 = 0,1898` di test Mei, 
 mereproduksi rentang bencana `0,1776`–`0,2018` yang dilaporkan `V2-E-042`.
 
 **Dekomposisi positif palsu** (model Mei, `conf ≥ 0,50`):
@@ -241,7 +241,7 @@ mereproduksi rentang bencana `0,1776`–`0,2018` yang dilaporkan `V2-E-042`.
 
 *nested* berarti titik pusat deteksi berada **di dalam** sebuah kotak acuan
 tetapi `IoU < 0,5`. Melonggarkan kriteria menjadi `IoU ≥ 0,3` menaikkan presisi
-Juli dari `0,612` menjadi `0,867` — melampaui presisi Mei sendiri (`0,839`) —
+Juli dari `0,612` menjadi `0,867`, melampaui presisi Mei sendiri (`0,839`), 
 dan daya tangkapnya dari `0,454` menjadi `0,644`.
 
 **Hipotesis penggabungan kotak diuji dan ditolak.** Bila Juli membingkai satu
@@ -249,7 +249,7 @@ gerombol tandan sebagai satu kotak, sebuah kotak acuan akan memuat beberapa
 deteksi yakin. Terukur: `0,2%` pada Mei, `0,2%` pada Juli, `0,0%` pada Agustus.
 
 **Keputusan Metodologis.** Terdapat **dua perbedaan protokol yang terpisah**:
-(a) konvensi kotak — Juli/Agustus membingkai objek tunggal yang sama secara
+(a) konvensi kotak: Juli/Agustus membingkai objek tunggal yang sama secara
 lebih longgar, dan ini menjelaskan sebagian besar keruntuhan `AP` lintas-korpus;
 (b) kelengkapan anotasi tingkat pohon (`AF-E-001`), yang tidak dapat dijelaskan
 oleh konvensi kotak maupun penggabungan. Keduanya membuat pelatihan gabungan
@@ -257,7 +257,7 @@ oleh konvensi kotak maupun penggabungan. Keduanya membuat pelatihan gabungan
 
 **Koreksi terhadap hipotesis awal audit ini.** Dugaan awal bahwa positif palsu
 Juli sebagian besar adalah tandan nyata yang tidak dilabeli **tidak didukung**:
-hanya `3,6%` yang benar-benar berada di lokasi tanpa kotak acuan. Dugaan itu
+hanya `3,6%` yang berada di lokasi tanpa kotak acuan. Dugaan itu
 dicatat di sini sebagai hipotesis yang gugur.
 
 **Batasan Validitas & Audit.** Dekomposisi positif palsu memakai kriteria
@@ -271,7 +271,7 @@ angka lintas-kampanye ini memakai satu model tunggal, bukan ansambel WBF.
 
 ---
 
-## AF-E-008 — Pencacahan tandan siap panen ujung ke ujung
+## AF-E-008: Pencacahan tandan siap panen ujung ke ujung
 
 **Rancangan Eksperimen.** Detektor dua kelas `AF-E-006` dijalankan pada seluruh partisi
 953, lalu fitur bergaya `F_all` (cacah deteksi per kelas pada sepuluh ambang
@@ -297,13 +297,13 @@ toleransi ±1, dan **tidak tercapai** untuk cacah total.
 
 **Batasan Validitas & Audit.** Deteksi pada partisi TRAIN bersifat *in-sample*
 terhadap detektor, sehingga baris "*fit* pada TRAIN" optimistis; baris "*fit*
-pada VAL" (96 pohon) adalah yang jujur, tetapi berdaya statistik rendah.
+pada VAL" (96 pohon) adalah yang sesuai protokol, tetapi berdaya statistik rendah.
 Toleransi ±1 longgar terhadap besaran yang reratanya hanya `0,86` per pohon,
 sehingga tidak sebanding dengan ±1 pada cacah total.
 
 ---
 
-## AF-E-009 — Fusi penampilan dan struktur pada deteksi nyata
+## AF-E-009: Fusi penampilan dan struktur pada deteksi nyata
 
 **Rancangan Eksperimen.** Model struktur (`HistGradientBoosting`, 8 fitur geometri)
 dilatih pada deteksi partisi TRAIN; pengklasifikasi *crop* dijalankan pada
@@ -341,9 +341,9 @@ dibedakan dari derau seleksi.
 
 ---
 
-## AF-E-010 — Verifikasi cacat kendala sisi pada `sweep_remote_pipeline.UF`
+## AF-E-010: Verifikasi cacat kendala sisi pada `sweep_remote_pipeline.UF`
 
-**Rancangan Eksperimen.** Kedua varian `UF` — versi repositori dan versi yang diperbaiki —
+**Rancangan Eksperimen.** Kedua varian `UF`, versi repositori dan versi yang diperbaiki, 
 diberi daftar tepi yang sama dari proposal nyata detektor agnostik pada test
 953, lalu jumlah klaster yang memuat dua deteksi atau lebih dari sisi fisik yang
 sama dihitung. Skrip: `run_e345.py` bagian E5.
@@ -371,7 +371,7 @@ hanya dapat diketahui setelah *sweep* dijalankan ulang dengan kode yang benar.
 
 ---
 
-## AF-E-011 — Detektor agnostik berkapasitas lebih tinggi dan kepala ordinal CORN
+## AF-E-011: Detektor agnostik berkapasitas lebih tinggi dan kepala ordinal CORN
 
 **Rancangan Eksperimen.** Dua komponen dilatih untuk menguji rekomendasi `AF-E-005` dan
 `AF-E-002` secara ujung ke ujung, bukan sebagai plafon.
@@ -409,7 +409,7 @@ seleksi dan tidak lagi netral bagi komponen ini.
 
 ---
 
-## AF-E-012 — Pipeline Panen ujung ke ujung
+## AF-E-012: Pipeline Panen ujung ke ujung
 
 **Rancangan Eksperimen.** Deteksi agnostik → penaut tepi terlatih → `UF` berkendala sisi
 (versi diperbaiki `AF-E-010`) → skor kematangan tingkat tandan (rerata berbobot
@@ -449,7 +449,7 @@ dipisahkan. Tidak ada selang kepercayaan berpasangan untuk selisih makro-F1.
 
 ---
 
-## AF-E-013 — Lapisan pencacahan Ridge per kelas dan cacah tandan siap panen
+## AF-E-013: Lapisan pencacahan Ridge per kelas dan cacah tandan siap panen
 
 **Rancangan Eksperimen.** Cacah klaster mentah diganti lapisan Ridge yang memetakan
 statistik klaster dan statistik deteksi multi-ambang (37 fitur, gaya `F_all`)
@@ -461,9 +461,9 @@ TRAIN, `alpha` melalui `RidgeCV`, TEST dibuka sekali. Skrip: `panen_count.py`,
 
 | Besaran | MAE | Tepat | ±1 | Rerata acuan |
 |---|---:|---:|---:|---:|
-| **B1 — siap panen** | **0,402** | **0,629** | **0,970** | 0,86/pohon |
-| B1+B2 — matang | 1,068 | 0,379 | 0,765 | 2,72/pohon |
-| B3+B4 — belum matang | 1,636 | 0,235 | 0,545 | 7,45/pohon |
+| **B1, siap panen** | **0,402** | **0,629** | **0,970** | 0,86/pohon |
+| B1+B2, matang | 1,068 | 0,379 | 0,765 | 2,72/pohon |
+| B3+B4, belum matang | 1,636 | 0,235 | 0,545 | 7,45/pohon |
 | Total tandan | 1,402 | 0,227 | 0,568 | 10,17/pohon |
 
 Perbandingan langsung terhadap cacah klaster mentah pada profil yang sama:
@@ -476,7 +476,7 @@ panen** (`±1 = 0,970`) pada pipeline ujung ke ujung tanpa *oracle* apa pun.
 Target yang sama **tidak tercapai** untuk cacah total (`0,568`) maupun untuk
 gabungan B1+B2 (`0,765`). Karena kartu dataset menetapkan B1 sebagai
 *optimal harvest stage* sedangkan B2 masih *transitioning*, besaran operasional
-yang benar adalah B1, bukan B1+B2 — dan besaran itulah yang justru memenuhi
+yang benar adalah B1, bukan B1+B2, dan besaran itulah yang justru memenuhi
 target.
 
 **Batasan Validitas & Audit.** Cacah B1 memiliki rerata acuan hanya `0,86` per pohon,
@@ -487,13 +487,13 @@ lebih lemah pada `AF-E-012`.
 
 ---
 
-## AF-E-014 — Sweep dijalankan ulang dengan `UF` yang benar, dan koreksi atas `AF-E-010`
+## AF-E-014: Sweep dijalankan ulang dengan `UF` yang benar, dan koreksi atas `AF-E-010`
 
 **Rancangan Eksperimen.** Setelah perbaikan `AF-E-010` diterapkan, seluruh penelusuran
 parameter dijalankan ulang dengan **grid yang persis sama** dengan berkas hasil
 lama (`proposal_min` 9 nilai × `link_threshold` 10 nilai × `singleton_min`
 7 nilai = 630 konfigurasi, `max_size` 3, `pair_mode` "all", `vote_mode`
-softvote, split test), memakai dump WBF `combined1716` yang sudah tersimpan di
+softvote, split test), memakai *dump* WBF `combined1716` yang sudah tersimpan di
 repositori. Skrip: `scripts/sweep_remote_pipeline.py` (versi diperbaiki) dan
 `scripts/audit_forensik/uf_impact.py`.
 
@@ -505,7 +505,7 @@ repositori. Skrip: `scripts/sweep_remote_pipeline.py` (versi diperbaiki) dan
 | Depth | idem berkas lama | `0,8231 → 0,8231` | `1,091 → 1,091` | **0 dari 630** |
 
 Pengukuran pelanggaran kendala pada daftar tepi yang **sebenarnya dipakai**
-sweep — yaitu setelah `linear_sum_assignment` per pasangan sisi:
+sweep, yaitu setelah `linear_sum_assignment` per pasangan sisi:
 
 | `pair_mode` | `max_size` | Klaster melanggar (versi cacat) | Δ jumlah klaster setelah diperbaiki |
 |---|---:|---:|---:|
@@ -514,19 +514,19 @@ sweep — yaitu setelah `linear_sum_assignment` per pasangan sisi:
 | `all` | **4** | **7,95%** | **+60** |
 | `adjacent` | 2, 3, 4 | 0,00% | 0 |
 
-**Keputusan Metodologis — koreksi terhadap `AF-E-010`.** Angka `45,3%` pada
+**Keputusan Metodologis, koreksi terhadap `AF-E-010`.** Angka `45,3%` pada
 `AF-E-010` **melebih-lebihkan dampak operasional cacat tersebut**. Angka itu
 diukur pada daftar tepi geometri sederhana tanpa penugasan Hungarian,
 sedangkan jalur sweep yang sebenarnya menerapkan `linear_sum_assignment` pada
 setiap pasangan sisi lebih dahulu. Penugasan satu-lawan-satu itu membuat satu
 deteksi hanya dapat memiliki satu tepi per pasangan sisi, sehingga membentuk
 klaster dengan dua anggota dari sisi yang sama memerlukan **tiga pasangan sisi
-berbeda** — mustahil bila anggotanya paling banyak tiga. Cacat itu karena itu
+berbeda**, mustahil bila anggotanya paling banyak tiga. Cacat itu karena itu
 **dorman untuk seluruh profil yang pernah dikunci proyek**: `V2-E-043` memakai
 maksimum dua anggota, `V2-E-045` memakai tiga anggota bersebelahan.
 
 Perbaikannya tetap dipertahankan karena ia mencegah kegagalan nyata pada
-`max_size ≥ 4` dengan `pair_mode` "all" — konfigurasi yang ada di dalam ruang
+`max_size ≥ 4` dengan `pair_mode` "all", konfigurasi yang ada di dalam ruang
 pencarian dan dipakai oleh jangkar Hungarian A pada `GSP_LINKER` (`max_size` 4).
 Namun perbaikan ini **tidak mengubah satu pun angka test terkunci**, dan
 penilaian `docs/ANALISIS_PIPELINE_MENDALAM.md` §5.5 bahwa cacat tersebut dorman
@@ -535,12 +535,12 @@ terbukti benar.
 **Batasan Validitas & Audit.** Verifikasi ini memakai bank `combined1716` dengan
 `vote_mode` softvote pada split test. Jangkar Hungarian A pada `GSP_LINKER`
 memakai `max_size` 4; profil itu berada di wilayah tempat cacat aktif dan
-**belum** dijalankan ulang di sini karena dump serta jalur evaluasinya berbeda.
+**belum** dijalankan ulang di sini karena *dump* serta jalur evaluasinya berbeda.
 Itu adalah satu-satunya profil terkunci yang masih perlu diperiksa ulang.
 
 ---
 
-## AF-E-015 — Harga presisi untuk memulihkan tandan yang punya kandidat
+## AF-E-015: Harga presisi untuk memulihkan tandan yang punya kandidat
 
 **Konteks.** `results/audit_2026-09-06/recovery_budget_val.json` (sesi lain,
 6 September 2026) menunjukkan bahwa 227 dari 287 tandan yang tidak terpasangkan
@@ -573,7 +573,7 @@ palsu per tandan yang dipulihkan**. Batas atas daya tangkap dengan kandidat
 longgar adalah `0,9156`; **`79` tandan (`8,4%`) tetap tak terjangkau** oleh
 pengelompokan kandidat apa pun.
 
-**Keputusan Metodologis — palang keputusan untuk decoder yang diusulkan.**
+**Keputusan Metodologis, palang keputusan untuk decoder yang diusulkan.**
 Peluang pemulihan itu nyata, tetapi bukan daya tangkap gratis. Pada titik
 operasi longgar, penyaring terpelajar harus:
 
@@ -591,7 +591,7 @@ Angka-angka ini menjadi kriteria yang dapat diperiksa untuk usulan pada
 **Dua konsekuensi praktis.**
 
 1. Garis dasar pembanding yang adil bukan `F1 0,7586`, melainkan **`0,7716`**
-   pada profil `det_conf 0,25` / *singleton* `0,40` — kenaikan yang diperoleh
+   pada profil `det_conf 0,25` / *singleton* `0,40`, kenaikan yang diperoleh
    tanpa model baru. Membandingkan decoder terhadap `0,7586` akan mengatributkan
    hasil penalaan ambang sebagai kemajuan arsitektur.
 2. Tahap "pulihkan objek tanpa kandidat" memang layak ditunda: imbalannya
@@ -606,7 +606,7 @@ cache tersebut, bukan untuk detektor secara umum.
 
 ---
 
-## AF-E-016 — Jangkar Hungarian A diperiksa: cacat `UF` tidak memengaruhinya
+## AF-E-016, Jangkar Hungarian A diperiksa: cacat `UF` tidak memengaruhinya
 
 **Konteks.** `AF-E-014` menyisakan satu butir terbuka: jangkar Hungarian A
 pada `GSP_LINKER` adalah satu-satunya profil test-locked yang memakai
@@ -622,8 +622,8 @@ ini karena menjamin ≤ 1 proposal per sisi secara struktural pada
 `enumerate_candidates`.
 
 **Rancangan Eksperimen.** Kedua varian `UF` diberi daftar tepi yang identik pada profil
-Anchor A yang persis — proposal `0,125`, `pair_mode` bersebelahan, tautan
-`0,15`, *singleton* `0,15`, `max_size` `4` — memakai dump WBF `combined1716`
+Anchor A yang persis, proposal `0,125`, `pair_mode` bersebelahan, tautan
+`0,15`, *singleton* `0,15`, `max_size` `4`, memakai *dump* WBF `combined1716`
 softvote dan prior rotasi yang dilatih dari TRAIN.
 Skrip: `scripts/audit_forensik/anchor_a.py`.
 
@@ -635,8 +635,8 @@ Skrip: `scripts/audit_forensik/anchor_a.py`.
 | Versi diperbaiki | 1.586 | 0 | **0 dari 135** |
 
 **Keputusan Metodologis.** Partisi klaster identik pohon demi pohon, sehingga
-seluruh metrik hilir Anchor A — F1 fisik `0,8387`, MAE `1,3630`, ±1 `0,6370`,
-akurasi kelas `0,7442`, makro-F1 `0,6034` — **tidak berubah** oleh perbaikan
+seluruh metrik hilir Anchor A: F1 fisik `0,8387`, MAE `1,3630`, ±1 `0,6370`,
+akurasi kelas `0,7442`, makro-F1 `0,6034`, **tidak berubah** oleh perbaikan
 `AF-E-010`. Alasannya sesuai argumen `GSP_LINKER.md`: dengan hanya pasangan
 sisi bersebelahan, menutup siklus yang mengulang satu sisi memerlukan jalur
 0→1→2→3→0, yaitu lima anggota, sedangkan `max_size = 4` sudah memblokirnya.
@@ -645,6 +645,6 @@ Dengan ini seluruh profil test-locked proyek telah diperiksa terhadap cacat
 `AF-E-010`, dan **tidak satu pun angka terkunci yang terpengaruh**.
 
 **Batasan Validitas & Audit.** Pemeriksaan pada split VALIDATION menghasilkan nol
-klaster karena dump `fused_combined1716` yang tersimpan di repositori hanya
-memuat split TEST; baris VAL karena itu kosong, bukan lulus. Yang benar-benar
+klaster karena *dump* `fused_combined1716` yang tersimpan di repositori hanya
+memuat split TEST; baris VAL karena itu kosong, bukan lulus. Yang
 terukur adalah TEST, yaitu split tempat angka Anchor A dikunci.

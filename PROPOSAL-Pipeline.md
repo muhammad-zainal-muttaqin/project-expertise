@@ -2,27 +2,27 @@
 
 > **Status dokumentasi (2026-08-28).** Dokumen ini adalah arsitektur kanonik
 > pipeline. Istilah **V1/V2** di bawah berarti revisi pipeline, bukan label
-> tampak foto `V1`/`V2` pada crop. Semua angka dan keputusan eksperimen dirujuk
+> tampak foto `V1`/`V2` pada citra terpotong (*crop*). Semua angka dan keputusan eksperimen dirujuk
 > ke log hasil; dokumen ini tidak mengubah hasil test-locked.
 
 ## Peta revisi pipeline
 
 | Revisi | Jalur utama | Status dan rujukan |
 |---|---|---|
-| **V1 — baseline/original** | WBF proposal class-agnostic → linker awal (Hungarian/Union-Find dan prior rotasi) → classifier per tandan → counting Ridge/reconciliation | Baseline end-to-end dan eksperimen awal tercatat di [`HANDOFF.md`](HANDOFF.md), [`experiments/EKSPERIMEN.md`](experiments/EKSPERIMEN.md), dan [`PIPELINE_EXPERIMENTS_V3.md`](results/remote_eval_2026-08-27/PIPELINE_EXPERIMENTS_V3.md). |
-| **V2 — learned/re-ranked** | Proposal deep-tail → skor `p_tp` → learned edge linker → GSP MILP set-partition → count/class layer dan residual/skip composition | Implementasi, konfigurasi, ablasi, dan hasil TRAIN/VAL tercatat di [`GSP_LINKER.md`](results/remote_eval_2026-08-28/GSP_LINKER.md), [`MAP_BOOST.md`](results/remote_eval_2026-08-28/MAP_BOOST.md), dan [`WAVE2_RECAP.md`](results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md). V2 terbaru belum menggantikan hasil test-locked. |
+| **V1, garis dasar pembanding (*baseline*)/original** | WBF proposal class-agnostic → linker awal (Hungarian/Union-Find dan prior rotasi) → pengklasifikasi per tandan → pencacahan (*counting*) Ridge/reconciliation | Garis dasar pembanding end-to-end dan eksperimen awal tercatat di [`HANDOFF.md`](HANDOFF.md), [`experiments/EKSPERIMEN.md`](experiments/EKSPERIMEN.md), dan [`PIPELINE_EXPERIMENTS_V3.md`](results/remote_eval_2026-08-27/PIPELINE_EXPERIMENTS_V3.md). |
+| **V2, learned/re-ranked** | Proposal deep-tail → skor `p_tp` → learned edge linker → GSP MILP set-partition → count/class layer dan residual/skip composition | Implementasi, konfigurasi, ablasi, dan hasil TRAIN/VAL tercatat di [`GSP_LINKER.md`](results/remote_eval_2026-08-28/GSP_LINKER.md), [`MAP_BOOST.md`](results/remote_eval_2026-08-28/MAP_BOOST.md), dan [`WAVE2_RECAP.md`](results/remote_eval_2026-08-28/validation_wave/WAVE2_RECAP.md). V2 terbaru belum menggantikan hasil test-locked. |
 | **Modality follow-up** | RGB+D4 native dan fixed late fusion pada `new763` | Ablasi terkontrol, bukan revisi V2 production; hasilnya ada di [`NEW763_RGBD4_RESULTS.md`](docs/NEW763_RGBD4_RESULTS.md). |
 
 ### Keputusan versi saat ini
 
 - V1 tetap menjadi reference pipeline yang dapat dibandingkan secara langsung.
-- V2 menyimpan peningkatan dan trade-off secara eksplisit; tidak ada kandidat
+- V2 menyimpan peningkatan dan kompromi performa (*trade-off*) secara eksplisit; tidak ada kandidat
   V2 yang memenuhi seluruh guardrail end-to-end 953 dan sekaligus menggantikan
   anchor pada validation.
 - Hasil test-locked yang sudah dipilih sebelum test tetap beku. Kandidat V2,
   DINO/stacking, dan late fusion hanya boleh dipromosikan setelah evaluasi
   hold-out baru dengan profile yang dikunci.
-- Modul quality gate, retake recommendation, confidence/UI, dan deployment
+- Modul quality gate, retake recommendation, skor keyakinan (*confidence*)/UI, dan deployment
   belum dianggap selesai hanya karena proposal arsitekturnya sudah terdokumentasi.
 
 Menurut saya, pipeline terbaik harus memisahkan tiga tugas:
@@ -66,25 +66,25 @@ Untuk mode akurasi maksimum:
 - Jalankan YOLO26l, RT-DETR-L, dan RF-DETR-L.
 - Simpan seluruh vektor probabilitas B1–B4, bukan hanya kelas tertinggi.
 - Gunakan WBF secara class-agnostic untuk membuat proposal tandan fisik.
-- Proposal ini hanya menjawab “di mana tandannya?”, bukan kelas kematangannya.
+- Proposal ini hanya menjawab "di mana tandannya?", bukan kelas kematangannya.
 
 Angka 81,06% dan 83,81% yang pernah tercantum di proposal adalah hasil
 historis dengan protokol berbeda. Pada verifikasi remote 27 Agustus 2026,
 WBF tiga model `combined1716` mencapai AP50 lokalisasi class-agnostic 87,64%
 di SawitMVC-Depth-YOLO dan 83,72% di SawitMVC-YOLO. Angka ini tetap hanya
-mengukur lokasi kotak, bukan klasifikasi kematangan atau counting.
+mengukur lokasi kotak, bukan klasifikasi kematangan atau pencacahan.
 
 ## 3. Penautan lintas-sisi
 
 Modul linker harus:
 
-- bekerja pada hasil deteksi nyata, bukan hanya kotak ground truth;
+- bekerja pada hasil deteksi nyata, bukan hanya kotak nilai acuan kebenaran (*ground truth*);
 - memakai arah pergeseran bertanda akibat gerakan searah jarum jam;
 - lebih mengutamakan pasangan sisi bersebelahan;
 - menggunakan fitur posisi, ukuran, luas, kemiripan probabilitas kelas, dan bila tersedia embedding Re-ID;
-- memakai kompatibilitas kelas secara lunak, bukan aturan keras “kelas berbeda pasti tandan berbeda”;
+- memakai kompatibilitas kelas secara lunak, bukan aturan keras "kelas berbeda pasti tandan berbeda";
 - membatasi satu tandan maksimal satu deteksi per sisi;
-- memakai batas ukuran cluster yang dikalibrasi; baseline memakai maksimal
+- memakai batas ukuran cluster yang dikalibrasi; garis dasar pembanding memakai maksimal
   tiga tampak, sedangkan iterasi greedy remote menunjukkan maksimal dua
   anggota lebih efektif pada test yang diuji;
 - menghasilkan `link_confidence` dan menandai pool yang meragukan.
@@ -95,37 +95,37 @@ Jangan menghitung jumlah tandan hanya dengan menghitung kotak atau jumlah pool. 
 
 Untuk setiap tandan fisik yang sudah ditautkan:
 
-- gunakan crop persegi berisi box dan cincin konteks `1,6×` sisi box;
+- gunakan citra terpotong persegi berisi box dan cincin konteks `1,6×` sisi box;
 - masukkan RGB/BGR sesuai preprocessing, ditambah mask posisi box;
-- gunakan backbone `ConvNeXt-Tiny` dengan head hybrid softmax + CORAL untuk
+- gunakan kerangka utama (*backbone*) `ConvNeXt-Tiny` dengan head hybrid softmax + CORAL untuk
   memanfaatkan urutan ordinal B1–B4;
 - lakukan augmentasi fotometrik ringan serta jitter posisi/skala mask `±10%`
-  agar crop training menyerupai box detektor;
-- split berdasarkan pohon, bukan crop, untuk mencegah kebocoran antar-sisi;
-- simpan seluruh probabilitas kelas, entropy, dan confidence, bukan hanya
+  agar citra terpotong training menyerupai box detektor;
+- split berdasarkan pohon, bukan citra terpotong, untuk mencegah kebocoran antar-sisi;
+- simpan seluruh probabilitas kelas, entropy, dan skor keyakinan, bukan hanya
   `argmax`;
 - jangan mengaktifkan depth otomatis. Eksperimen proyek menunjukkan early
-  fusion depth tidak konsisten; cabang depth harus lulus ablation terkontrol.
+  fusion depth tidak konsisten; cabang depth harus lulus studi ablasi (*ablation study*) terkontrol.
 
 Iterasi cepat yang telah dijalankan pada 27 Agustus 2026 adalah pretraining
-RGB selama 5 epoch pada 16.542 crop/841 pohon. Hasil validasi terbaiknya
+RGB selama 5 epoch pada 16.542 citra terpotong/841 pohon. Hasil validasi terbaiknya
 akurasi 62,17%, macro-F1 62,96%, akurasi ordinal ±1 99,32%, dan MAE kelas
 0,385. Model ini diuji sebagai blend 25% pada probabilitas WBF di test 953;
 hasilnya dicatat sebagai kandidat engineering, bukan model produksi yang
 sudah tervalidasi independen.
 
-## 5. Counting
+## 5. Pencacahan
 
 - Untuk pipeline produksi penuh, gunakan Ridge Regression dengan fitur `F_all`
   multi-ambang dan rekonsiliasi agar jumlah per kelas konsisten dengan jumlah
   total.
-- Pada verifikasi remote, Ridge `F_all` belum dijalankan karena dump yang
-  tersedia adalah keluaran detector/linker. Angka `counting` pada laporan
+- Pada verifikasi remote, Ridge `F_all` belum dijalankan karena *dump* yang
+  tersedia adalah keluaran detektor/linker. Angka `counting` pada laporan
   remote berarti jumlah **raw linked clusters** per pohon, bukan klaim Ridge.
 - Setiap cluster harus memiliki `link_confidence`, kelas/probabilitas agregat,
   daftar sisi yang mendukung, dan status `low_confidence`.
 
-Jumlah pool mentah tidak boleh dijadikan hasil counting final untuk deployment.
+Jumlah pool mentah tidak boleh dijadikan hasil pencacahan final untuk deployment.
 Benchmark historis terbaik yang tercatat untuk Ridge adalah:
 
 - akurasi pencacahan dengan toleransi ±1: 75,79%;
@@ -140,7 +140,7 @@ Untuk setiap pohon, aplikasi sebaiknya menampilkan:
 - daftar setiap tandan fisik;
 - kelas dan probabilitasnya;
 - jumlah sisi tempat tandan terlihat;
-- confidence penautan;
+- skor keyakinan penautan;
 - kotak tandan pada masing-masing foto;
 - indikator kualitas empat foto;
 - peringatan jika terlalu banyak tandan hanya terlihat dari satu sisi;
@@ -152,7 +152,7 @@ Kandidat arsitektur deployment adalah:
 
 > Model dilatih pada `combined1716`; YOLO26l, RT-DETR-L, dan RF-DETR-L
 > menghasilkan proposal class-agnostic melalui WBF; linker memakai prior arah
-> putar dan batas satu deteksi per sisi; classifier crop mengeluarkan
+> putar dan batas satu deteksi per sisi; pengklasifikasi citra terpotong (*crop classifier*) mengeluarkan
 > probabilitas B1–B4; kemudian Ridge `F_all` dan rekonsiliasi menghitung total
 > per pohon.
 

@@ -44,7 +44,7 @@ menekan duplikasi dalam satu model. Untuk RT, union-NMS memberi +0,028602
 mAP50 terhadap RGB; untuk YOLO, union-WBF memberi +0,038361.
 
 Paired bootstrap level-citra dilakukan setelah resep fixed dipilih untuk
-screening: YOLO union-WBF memakai 500 resample dan menghasilkan Δ rata-rata
+penyaringan awal (*screening*): YOLO union-WBF memakai 500 resample dan menghasilkan Δ rata-rata
 0,037912, CI95 [0,016060; 0,059120], seluruh resample positif. RT union-NMS
 memakai 200 resample sebagai screen cepat dan menghasilkan Δ rata-rata
 0,028492, CI95 [0,009231; 0,047236], seluruh resample positif. Kedua hasil
@@ -54,8 +54,8 @@ klaim generalisasi sebelum evaluasi held-out baru. RF union-NMS tidak dipaksa
 masuk bootstrap karena mAP50 point-nya sedikit di bawah RGB (0,606856 vs
 0,608233), walaupun mAP50:95 naik +0,004001.
 
-Interpretasi sementara: sinyal paling menjanjikan bukan “depth selalu
-menang” pada early stem, melainkan kombinasi detector RGB dan RGB+D4 yang
+Interpretasi sementara: sinyal paling menjanjikan bukan "depth selalu
+unggul" pada early stem, melainkan kombinasi detektor RGB dan RGB+D4 yang
 memiliki error berbeda, dengan NMS mengurangi duplikasi query RT dan WBF
 memberi manfaat khusus pada YOLO. WBF class-aware naif tidak universal dan
 jelas merusak RF/RT; tidak boleh dipakai sebagai modul umum tanpa validasi
@@ -102,10 +102,10 @@ di seluruh arsitektur.
   depth yang sudah dipelajari; hasil final bukan warm-start dari checkpoint
   RGB new763.
 - RF-DETR-L v2 memakai `rf-detr-large-2026.pth` generic yang sama dengan
-  baseline RGB (MD5 `5cb72153541cbcb9aa6efa26222acc75`). Patch projection
-  DINO memiliki bentuk `(384, 4, 16, 16)`, kanal depth awal nol, dan head COCO
+  garis dasar pembanding (*baseline*) RGB (MD5 `5cb72153541cbcb9aa6efa26222acc75`). Patch projection
+  DINO memiliki bentuk `(384; 4; 16; 16)`, kanal depth awal nol, dan head COCO
   di-reinitialize menjadi empat kelas pada kedua recipe.
-- RT-DETR-L memakai `/workspace/rtdetr-l.pt` generic yang sama dengan baseline
+- RT-DETR-L memakai `/workspace/rtdetr-l.pt` generic yang sama dengan garis dasar pembanding
   RGB, membangun HGStem dengan `ch=4` sebelum optimizer, menyalin bobot RGB ke
   tiga kanal pertama, dan menginisialisasi kanal depth ke nol.
 - Checkpoint dipilih oleh validation mAP50:95 framework masing-masing sebelum
@@ -123,7 +123,7 @@ di seluruh arsitektur.
 | Bootstrap RF JSON | [`results/new763_rfdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rfdetr_l_rgbd4_val_bootstrap.json) |
 | Hasil RT JSON | [`results/new763_rtdetr_l_rgbd4_val.json`](../results/new763_rtdetr_l_rgbd4_val.json) |
 | Bootstrap RT JSON | [`results/new763_rtdetr_l_rgbd4_val_bootstrap.json`](../results/new763_rtdetr_l_rgbd4_val_bootstrap.json) |
-| Fixed late-fusion JSON | [`results/new763_rgbd4/`](../results/new763_rgbd4/) — berkas `*_late_fusion_val.json` dan bootstrap terkait |
+| Fixed late-fusion JSON | [`results/new763_rgbd4/`](../results/new763_rgbd4/), berkas `*_late_fusion_val.json` dan bootstrap terkait |
 | Audit RT checkpoint | [`results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json`](../results/new763_rgbd4/rtdetr_l_rgbd4_checkpoint_audit.json) |
 | Grafik agregat | [`results/figures/new763_rgbd4_val_comparison.png`](../results/figures/new763_rgbd4_val_comparison.png) |
 | Grafik per kelas | [`results/figures/new763_rgbd4_per_class_delta.png`](../results/figures/new763_rgbd4_per_class_delta.png) |
@@ -139,21 +139,21 @@ langsung ke bucket Hugging Face:
 Hash dan ukuran ketiga model tercantum dalam
 [`results/new763_rgbd4/new763_rgbd4_summary.json`](../results/new763_rgbd4/new763_rgbd4_summary.json).
 Dataset TIFF RGBD4 sekitar 6,9 GiB juga sengaja tidak dimasukkan ke GitHub;
-manifest, konfigurasi, metrics training, prediction dump VALID, dan seluruh
+manifest, konfigurasi, metrics training, prediction *dump* VALID, dan seluruh
 JSON hasil sudah dicatat di repository.
 
 ## Keputusan
 
-Dengan protokol ini, depth belum layak menggantikan baseline RGB pada
+Dengan protokol ini, depth belum layak menggantikan garis dasar pembanding RGB pada
 `new763`: YOLO26l pada dasarnya imbang, RF-DETR-L v2 memiliki point estimate
 lebih rendah, dan RT-DETR-L memberi gain point kecil yang belum signifikan. Ini
 bukan bukti bahwa depth tidak berguna secara umum; cakupan
 valid sensor hanya sekitar 0,286–0,288 dari grid warna dan eksperimen ini
 baru menguji early 4-channel fusion dengan depth stem nol. Eksperimen fusion
-lain harus tetap diperlakukan sebagai ablation baru dan tidak boleh membuka
+lain harus tetap diperlakukan sebagai studi ablasi (*ablation study*) baru dan tidak boleh membuka
 TEST secara diam-diam.
 
-Catatan kualitas RT-DETR: kolom validation loss framework menjadi `NaN` pada
+Catatan kualitas RT-DETR: kolom fungsi rugi validasi framework menjadi `NaN` pada
 sejumlah epoch akhir, tetapi metrik COCO dan seluruh tensor checkpoint tetap
 finite. Anomali ini dicatat di `rtdetr_l_rgbd4_checkpoint_audit.json` dan harus
 diungkapkan bila hasil dipakai dalam naskah.

@@ -1,7 +1,7 @@
 # Cakupan review berurutan
 
 Review ini tidak menyatakan bahwa seluruh berkas repositori sudah dibaca.
-Daftar berikut membatasi klaim terhadap bagian yang benar-benar diperiksa.
+Daftar berikut membatasi klaim terhadap bagian yang diperiksa.
 
 ## Jalur produksi dan eksperimen yang dibaca penuh
 
@@ -45,7 +45,7 @@ Nama skrip tanpa direktori mengacu pada `scripts/`,
 
 - `audit_implementation_contracts.py`: kendala sisi terkini, kasus IoU,
   kemurnian identitas, normalisasi WBF, bobot kelas, ranking kepala,
-  penyelarasan baris, prediksi kosong, C3/BatchNorm, dan kanal crop.
+  penyelarasan baris, prediksi kosong, C3/BatchNorm, dan kanal citra terpotong (*crop*).
 - `audit_latest_artifacts.py`: konstanta dipilih TRAIN, transisi split,
   reproduksi hasil Panen awal/final, matriks konfusi ujung ke ujung,
   evaluasi 135 pohon dengan profil tetap, serta diagnosis cache CORN.

@@ -74,25 +74,25 @@ Sumber ukuran: `experiments/EKSPERIMEN.md` (`V2-E-042`, `V2-E-045`),
 
 Metrik yang dipakai berulang dan sering tertukar:
 
-- **`AP50` agnostik** — kualitas lokalisasi tanpa label kelas. Bukan akurasi
+- **`AP50` agnostik**, kualitas lokalisasi tanpa label kelas. Bukan akurasi
   kematangan dan bukan akurasi pencacahan (`OPTIMIZED_PIPELINE.md` menegaskan
   hal ini secara eksplisit).
-- **`mAP50` sadar-kelas** — deteksi empat kelas B1–B4 pada tingkat citra.
-- **F1 fisik** — kualitas asosiasi lintas sisi: satu klaster prediksi
+- **`mAP50` sadar-kelas**, deteksi empat kelas B1–B4 pada tingkat citra.
+- **F1 fisik**, kualitas asosiasi lintas sisi: satu klaster prediksi
   dipasangkan dengan satu tandan acuan pada tingkat pohon.
-- **MAE / akurasi ±1** — pencacahan tandan per pohon.
-- **`matched_class_accuracy` / makro-F1 E2E** — klasifikasi kematangan pada
+- **MAE / akurasi ±1**, pencacahan tandan per pohon.
+- **`matched_class_accuracy` / makro-F1 E2E**, klasifikasi kematangan pada
   klaster yang berhasil dipasangkan saja.
 
 ---
 
-## 2. Jalur V1 — garis dasar pembanding/original
+## 2. Jalur V1: garis dasar pembanding/original
 
 Jalur ini memakai WBF proposal *class-agnostic*, penaut Hungarian dan
 *union-find* dengan prior rotasi, pengklasifikasi per tandan, serta lapisan
 pencacahan Ridge dengan rekonsiliasi.
 
-### 2.1 `V2-E-042` — verifikasi bobot remote dan garis dasar pipeline empat sisi
+### 2.1 `V2-E-042`: verifikasi bobot remote dan garis dasar pipeline empat sisi
 
 **Rancangan.** Enam bobot detektor (YOLO26l, RT-DETR-L, RF-DETR-L dari bank
 `new763` dan `combined1716`) diuji ulang pada dua kumpulan uji lokal dengan
@@ -138,7 +138,7 @@ konsisten lintas domain; degradasi performa `new763` pada domain 953 (`mAP50` RT
 `0,1110`) menegaskan bahwa cakupan domain data latih adalah faktor ketangguhan
 yang dominan.
 
-### 2.2 `V2-E-043` — pengetatan proposal dan penaut (*greedy*/*test-tuned*)
+### 2.2 `V2-E-043`: pengetatan proposal dan penaut (*greedy*/*test-tuned*)
 
 **Rancangan.** *Sweep* CPU pada *dump* WBF melalui `scripts/sweep_remote_pipeline.py`
 yang mencakup ambang proposal, ambang tautan, ambang *singleton*, mode pasangan
@@ -169,7 +169,7 @@ sweep. Ini bukan estimasi hold-out; threshold wajib dikunci ulang pada validatio
 set." Angka `0,8590`/`0,8296` karena itu adalah **batas atas rekayasa**, bukan
 estimasi generalisasi.
 
-### 2.3 `V2-E-044` — pengklasifikasi *crop* RGB lima *epoch*
+### 2.3 `V2-E-044`: pengklasifikasi *crop* RGB lima *epoch*
 
 **Rancangan.** Prapelatihan *tree-disjoint* dari SawitMVC-YOLO/953: 16.542 *crop*
 dari 841 pohon, ConvNeXt-Tiny, kepala hibrida *softmax* + CORAL, *seed* 42.
@@ -188,17 +188,17 @@ MAE kelas 0,385.
 | C2 pengklasifikasi 100% | 0,8299 | 1,637 | 54,07% | 62,95% | 0,5234 |
 | WBF 75% + C2 25% | 0,8296 | 1,644 | 54,07% | 70,63% | **0,5469** |
 
-**Penilaian.** Putusan resmi pada log adalah **FALSIFIED** — gugur secara empiris — untuk penggantian penuh:
+**Penilaian.** Putusan resmi pada log adalah **FALSIFIED**, gugur secara empiris, untuk penggantian penuh:
 akurasi kelas turun 7,76 poin persentase dan makro-F1 E2E turun `0,0176`.
 Interpretasi yang wajar: pengklasifikasi *crop* yang dilatih lima *epoch* pada
 kotak acuan tidak dapat menandingi probabilitas *soft-vote* tiga detektor yang
 sudah beroperasi pada distribusi kotak yang sama dengan waktu inferensi. *Blend*
 25% dipertahankan hanya sebagai kandidat rekayasa dengan margin sangat tipis
 (makro-F1 naik `0,0059`, ±1 naik 0,74 poin persentase) pada kumpulan uji yang
-sama yang dipakai untuk memilihnya — sehingga margin tersebut tidak dapat
+sama yang dipakai untuk memilihnya, sehingga margin tersebut tidak dapat
 dibedakan dari derau seleksi.
 
-### 2.4 `V2-E-045` — lapisan *count-aware* terkunci validasi (jangkar test-locked V1)
+### 2.4 `V2-E-045`: lapisan *count-aware* terkunci validasi (jangkar test-locked V1)
 
 **Rancangan.** Pertanyaan yang diuji adalah apakah kenaikan `V2-E-043` bertahan
 ketika konfigurasi dikunci dari TRAIN/VAL, bukan dipilih dari uji. Prior rotasi
@@ -231,13 +231,13 @@ dengan MAE validasi `0,726` dan `1,253`.
 
 **Empat cabang yang ditolak** pada eksperimen yang sama:
 
-1. **WBF berbobot `[0,75; 1; 1,5]`** — ditolak. Meskipun sebagian `mAP` tingkat
+1. **WBF berbobot `[0,75; 1; 1,5]`**, ditolak. Meskipun sebagian `mAP` tingkat
    citra naik, F1 hilir validasi turun menjadi `0,7951` (Depth) dan `0,7736` (953).
-2. **Penaut pasangan logistik TRAIN-only** — ditolak. F1 validasi `0,7680` (Depth)
+2. **Penaut pasangan logistik TRAIN-only**, ditolak. F1 validasi `0,7680` (Depth)
    dan `0,7374` (953), di bawah prior rotasi manual.
-3. ***Blend* jumlah prediksi dengan jumlah klaster mentah** — ditolak. Profil final
+3. ***Blend* jumlah prediksi dengan jumlah klaster mentah**, ditolak. Profil final
    memakai *blend* `0` (Ridge murni).
-4. **WBF IoU `0,50`–`0,70`** — IoU `0,60` dipertahankan.
+4. **WBF IoU `0,50`–`0,70`**: IoU `0,60` dipertahankan.
 
 **Penilaian.** Inilah kontribusi metodologis paling penting pada jalur V1. Jarak
 antara `V2-E-043` (*greedy*: F1 `0,8590`/`0,8296`) dan `V2-E-045` (terkunci
@@ -250,7 +250,7 @@ Kaveat yang dinyatakan sendiri oleh entri tersebut penting: "Test lokal tetap
 pernah dibaca dalam eksperimen historis, jadi konfirmasi ini tidak disebut
 *hold-out* publikasi yang sepenuhnya pristine."
 
-### 2.5 `PIPELINE_EXPERIMENTS_V3` — penelusuran parameter keluarga eksperimen V1
+### 2.5 `PIPELINE_EXPERIMENTS_V3`: penelusuran parameter keluarga eksperimen V1
 
 Dokumen `results/remote_eval_2026-08-27/PIPELINE_EXPERIMENTS_V3.md` mencatat
 penelusuran parameter (*sweep*) sepuluh keluarga eksperimen terhadap dua target rekayasa: klasifikasi
@@ -258,7 +258,7 @@ empat kelas ≥ 75% dan lokalisasi agnostik ≈ 90%.
 
 Keluarga yang **ditolak seluruhnya**: fotometrik (*hue*/MLP warna, CLAHE,
 *sharpening*, *gamma*, kecerahan/kontras); koreksi warna (*gray-world*,
-*white-balance* ringan — E2E validasi terbaik hanya 71,62% dan 71,88%); TTA
+*white-balance* ringan: E2E validasi terbaik hanya 71,62% dan 71,88%); TTA
 (fotometrik, konteks 1,25/2,0, *flip*, rotasi); *fine-tuning* detektor lokal dan
 YOLO resolusi 1.600 (validasi lebih rendah atau terlalu mahal); *ensemble*
 kepala; serta *reranking* kualitas klaster.
@@ -278,13 +278,13 @@ tercapai**, dan eksperimen filter/TTA tambahan sebaiknya dihentikan.
 
 ---
 
-## 3. Jalur V2 — *learned*/*re-ranked*
+## 3. Jalur V2: *learned*/*re-ranked*
 
 Jalur V2 mengganti dua komponen: penaut Hungarian + *union-find* diganti *Global
 Set-Partition* (GSP) berbasis MILP, dan proposal WBF diberi lapisan
 *re-ranker* `p_tp` terlatih.
 
-### 3.1 GSP *linker* — partisi global per pohon
+### 3.1 GSP *linker*: partisi global per pohon
 
 **Motivasi teknis.** Inspeksi kode menemukan bahwa *constraint* "maksimal satu
 proposal per sisi fisik dalam satu klaster" pada kelas `UF` di
@@ -336,7 +336,7 @@ peringkat *score*).
 | 953 (135 pohon) | Hungarian Jangkar A | 0,8387 | 1,3630 | 0,2741 | 0,6370 | 0,7442 (832/1.118) | 0,6034 |
 | Depth (110 pohon) | GSP | 0,8534 | 0,7727 | 0,4455 | 0,8545 | 0,8162 (373/457) | 0,6519 |
 
-Selang kepercayaan 95% *bootstrap* (2.000 resampel pohon, `RandomState(42)`) —
+Selang kepercayaan 95% *bootstrap* (2.000 resampel pohon, `RandomState(42)`), 
 953: F1 [0,8174; 0,8587]; MAE [1,1630; 1,5852]; ±1 [0,5556; 0,7185]; akurasi
 kelas [0,7112; 0,7735]; makro-F1 [0,5655; 0,6382]. Depth: F1 [0,8301; 0,8761];
 MAE [0,6091; 0,9455]; ±1 [0,7818; 0,9182]; akurasi kelas [0,7765; 0,8556];
@@ -345,15 +345,15 @@ makro-F1 [0,6046; 0,6918].
 *Solver* pada profil Depth terkunci: `milp` = 109, `empty` = 1,
 `greedy_fallback` = 0 dari 110 pohon.
 
-**Catatan kritis yang mudah terlewat.** Peningkatan pada 953 (F1 `0,8043` →
+**Catatan penting yang mudah terlewat.** Peningkatan pada 953 (F1 `0,8043` →
 `0,8387`) **bukan hasil GSP**, melainkan hasil profil Hungarian yang
 *dikunci ulang* pada sesi tersebut (Jangkar A) yang berbeda dari profil
 `V2-E-045` (proposal `0,125`, tautan `0,30`, `max_size` 3, peringkat
 *max member*). Menyebut kenaikan 953 sebagai "kemenangan V2" akan salah
-atribusi: yang menang pada 953 adalah profil *baseline* yang disetel ulang,
+atribusi: yang unggul pada 953 adalah profil *baseline* yang disetel ulang,
 sedangkan metode V2 justru ditolak di sana.
 
-### 3.2 *Map boost* — proposal *deep-tail* dan *re-ranker* `p_tp`
+### 3.2 *Map boost*: proposal *deep-tail* dan *re-ranker* `p_tp`
 
 **Metode tiga lapis.** (1) Fusi WBF *deep-tail* dengan `iou_threshold = 0,60` pada
 tiga ambang skor minimum {`0,05`; `0,02`; `0,01`}; (2) `HistGradientBoostingClassifier`
@@ -380,7 +380,7 @@ resampel berpasangan tingkat citra):
 VAL pada profil sadar-kelas Depth (`0,6623` vs `0,6595`, yaitu +0,0028)
 **berbalik arah pada uji** menjadi −0,0139, dan tim memutuskan mempertahankan
 profil apa adanya serta mencatatnya sebagai temuan generalisasi negatif alih-alih
-memilih ulang dari uji. Kedua, besar efek yang benar-benar didukung secara
+memilih ulang dari uji. Kedua, besar efek yang didukung secara
 statistik sangat kecil: +0,0070 dan +0,0108 `mAP` pada 953. Ini bukan lompatan
 performa, melainkan perbaikan marginal yang kebetulan dapat dideteksi karena
 *bootstrap* berpasangan tingkat citra memiliki daya yang relatif tinggi
@@ -413,16 +413,16 @@ ulang dan tanpa seleksi):
 
 Akurasi kelas dan makro-F1 **tidak memiliki CI berpasangan** karena garis dasar
 lama hanya menyimpan hasil kelas agregat, bukan hitungan benar per pohon. Kedua
-metrik itu dilaporkan sebagai estimasi titik saja — keputusan yang tepat, dan
+metrik itu dilaporkan sebagai estimasi titik saja, keputusan yang tepat, dan
 dinyatakan eksplisit di `PERFORMANCE_WAVE_2026-08-28.md`.
 
 **Pembacaan yang benar:** dari delapan perbandingan E2E, hanya **tiga** yang
-selang kepercayaannya tidak mencakup nol — F1 fisik pada kedua kumpulan dan
+selang kepercayaannya tidak mencakup nol: F1 fisik pada kedua kumpulan dan
 akurasi pencacahan tepat pada Depth. Seluruh metrik MAE dan ±1 tetap belum konklusif.
 Dengan kata lain, bukti yang kokoh adalah **perbaikan asosiasi/deteksi fisik**,
 bukan perbaikan pencacahan.
 
-### 3.4 *Validation wave* dan *Wave 2* — 2.893 baris tanpa kandidat unggul menyeluruh
+### 3.4 *Validation wave* dan *Wave 2*: 2.893 baris tanpa kandidat unggul menyeluruh
 
 Kedua gelombang ini dijalankan sepenuhnya pada TRAIN/VAL dan **tidak membuka
 TEST**.
@@ -476,7 +476,7 @@ kompromi performa (*trade-off*), bukan pada wilayah yang masih dapat diperbaiki 
 
 ---
 
-## 4. *Follow-up* modalitas — RGB+D4 pada `new763`
+## 4. *Follow-up* modalitas: RGB+D4 pada `new763`
 
 ### 4.1 *Early fusion* empat kanal
 
@@ -542,12 +542,12 @@ dipakai sebagai modul umum tanpa validasi terpisah.
 RF-DETR-L v1 yang **dikeluarkan dari perbandingan**: `patch_projection` dibangun
 tiga kanal, lalu adaptor mengganti modul menjadi empat kanal *setelah* grup
 parameter *optimizer* dibuat, sehingga parameter kanal *depth* tidak pernah masuk
-*optimizer*. Buktinya adalah `checkpoint_depth_weight_norm = 0.0` berbanding
-`checkpoint_rgb_weight_norm = 4.430938`. *Run* tersebut sempat mencatat validasi
+*optimizer*. Buktinya adalah `checkpoint_depth_weight_norm = 0,0` berbanding
+`checkpoint_rgb_weight_norm = 4,430938`. *Run* tersebut sempat mencatat validasi
 `mAP50 = 0,595464`, angka yang tampak wajar dan mudah dilaporkan tanpa audit.
 Menemukan dan mengeluarkannya adalah praktik yang benar.
 
-Anomali RT-DETR juga dicatat: kolom *validation loss* menjadi `NaN` pada sejumlah
+Anomali RT-DETR juga dicatat: kolom *fungsi rugi validasi* menjadi `NaN` pada sejumlah
 *epoch* akhir, meskipun metrik COCO dan seluruh tensor *checkpoint* tetap
 terhingga.
 
@@ -555,7 +555,7 @@ terhingga.
 
 ## 5. Analisis kritis
 
-### 5.1 Apa yang benar-benar terbukti
+### 5.1 Apa yang terbukti
 
 Hanya empat klaim yang didukung selang kepercayaan yang tidak mencakup nol pada
 data uji:
@@ -580,19 +580,19 @@ terpilih dari validasi (*validation-selected*), atau belum konklusif.
 Penolakan pada berkas ini berkualitas tinggi karena hampir selalu disertai alasan
 kuantitatif, bukan sekadar "tidak membantu". Tiga pola penolakan yang berulang:
 
-**Pola A — keunggulan validasi yang berbalik arah pada uji.** `class_conf` pada
+**Pola A, keunggulan validasi yang berbalik arah pada uji.** `class_conf` pada
 V1 (74,06% VAL → 71,81% TEST) dan profil sadar-kelas Depth pada *map boost*
 (+0,0028 VAL → −0,0139 TEST). Keduanya menunjukkan bahwa kumpulan validasi
 proyek ini terlalu kecil untuk membedakan profil yang berdekatan.
 
-**Pola B — pertukaran metrik yang tidak dapat dihindari.** Setiap cabang yang
+**Pola B, pertukaran metrik yang tidak dapat dihindari.** Setiap cabang yang
 menaikkan akurasi kelas menurunkan F1 fisik atau MAE: *head-aware truncation*,
 selektor kompromi V2-only Depth, GSP pada 953, *count meta-ensemble*, dan profil
 *class-priority* V1. Konsistensi pola ini lintas sembilan cabang independen
 adalah bukti struktural bahwa pipeline sudah berada di permukaan Pareto pada
 kapasitas data saat ini.
 
-**Pola C — kapasitas model tambahan yang tidak berpindah menjadi performa.**
+**Pola C, kapasitas model tambahan yang tidak berpindah menjadi performa.**
 DINOv2-Large, ConvNeXt-Small, Swin-Tiny, EfficientNetV2-S, atensi GPU, dan
 regresor pencacahan nonlinear seluruhnya gagal mengungguli *stack* sederhana
 yang sudah ada. Pada `PT-E-026` di subproyek `pipeline-pertandan`, pola serupa
@@ -606,7 +606,7 @@ pada `V2-E-042` dan pada *baseline* RGB `new763`. (b) Duplikasi klaster sebagai
 penyebab utama galat pencacahan terkonfirmasi berulang dari `V2-E-042` sampai
 `V2-E-045`. (c) Kesalahan kelas bersifat ordinal (B2↔B3, B3↔B4) muncul di
 `PIPELINE_EXPERIMENTS_V3` dan tetap terlihat pada matriks konfusi uji terkunci
-GSP — pada 953, 101 prediksi B3 berpasangan dengan acuan B2 dan 79 prediksi B3
+GSP, pada 953, 101 prediksi B3 berpasangan dengan acuan B2 dan 79 prediksi B3
 berpasangan dengan acuan B4. (d) B4 secara konsisten menjadi kelas terlemah:
 F1 `0,5114` (953) dan `0,4176` (Depth) pada uji terkunci; `AP50` B4 `0,3693`
 pada *map boost* Depth; `AP50` B4 `0,240195` pada *baseline* RGB YOLO26l `new763`.
@@ -618,7 +618,7 @@ untuk *depth* monokular pada 953, dan `new763` RGB+D4 tidak menemukan efek
 signifikan pada ketiga arsitektur. Kesimpulan yang konsisten dengan seluruh bukti
 adalah: **manfaat *depth* bergantung pada jenis *depth* (sensor vs monokular),
 tugasnya (lokalisasi vs klasifikasi), dan cara penggabungannya (*early* vs
-*late*)** — bukan properti umum modalitas. (b) Arah efek WBF *class-aware*
+*late*)**, bukan properti umum modalitas. (b) Arah efek WBF *class-aware*
 berbalik antararsitektur pada `new763`.
 
 ### 5.4 Ketidaksesuaian dokumentasi yang perlu diperbaiki
@@ -648,7 +648,7 @@ sesi ini". Namun kedua kumpulan uji yang sama sudah dibaca pada `V2-E-042`
 pada uji), dan `V2-E-045` (konfirmasi). Akumulasi paparan uji karena itu jauh
 lebih besar daripada satu kali. `V2-E-045` sendiri mengakui hal ini. Pengaman (*guard*)
 teknis `SystemExit` hanya memeriksa keberadaan berkas keluaran pada `--output-root`
-yang sama, dan dapat dilewati sepenuhnya dengan `--output-root` berbeda — hal yang
+yang sama, dan dapat dilewati sepenuhnya dengan `--output-root` berbeda, hal yang
 juga dinyatakan sendiri oleh kedua lembar bukti.
 
 **(4) Jangkar Ridge `75,79%` / `1,0039` pada `PROPOSAL-Pipeline.md` §5 berasal
@@ -681,7 +681,7 @@ MAE total per pohon). Rujukan korpus perlu ditulis eksplisit di proposal.
 
 **Daya statistik.** Kumpulan uji berisi 135 dan 110 pohon; kumpulan validasi
 91 dan 117 pohon. Pada ukuran ini, selang kepercayaan MAE Depth membentang
-[0,6091; 0,9455] — lebar `0,336` tandan per pohon, yaitu sekitar 43% dari nilai
+[0,6091; 0,9455], lebar `0,336` tandan per pohon, yaitu sekitar 43% dari nilai
 *estimasi titiknya. Temuan `V2-E-023` bahwa "split test 352 tidak punya daya
 statistik untuk membedakan konfigurasi" berlaku juga di sini. Konsekuensinya,
 seluruh perbandingan profil yang selisihnya di bawah ≈0,02 pada metrik apa pun
@@ -698,7 +698,7 @@ data prapelatihan, sehingga nilai generalisasi yang sah adalah `test_bersih`
 (19 pohon / 316 kotak, `AP50 = 0,7702`); (b) 44 dari 55 pohon uji dataset 352
 termuat dalam partisi latih dataset 953. Audit irisan `tree_id` antara partisi
 latih `combined1716` dan kedua kumpulan uji lokal **belum selesai** menurut
-`V2-E-042` batasan poin 1 — ini merupakan butir audit terpenting yang belum
+`V2-E-042` batasan poin 1, ini merupakan butir audit terpenting yang belum
 tuntas sebelum publikasi.
 
 **Pergeseran domain temporal.** Dataset 953 direkam Mei 2026 dan Depth 352 pada
@@ -711,7 +711,7 @@ grid warna pada `new763`. Kesimpulan "*depth* belum layak menggantikan RGB" berl
 untuk kondisi cakupan ini, bukan untuk modalitas *depth* secara umum.
 
 **Metrik `counting` yang tidak seragam.** Pada `V2-E-042` s.d. `V2-E-044`,
-"counting" berarti jumlah klaster tertaut mentah. Pada `V2-E-045` dan seterusnya,
+"pencacahan (*counting*)" berarti jumlah klaster tertaut mentah. Pada `V2-E-045` dan seterusnya,
 angka tersebut berasal dari lapisan Ridge *count-aware* yang dilatih dari TRAIN.
 Keduanya tidak sama dengan Ridge `F_all` + rekonsiliasi yang dispesifikasikan
 untuk *deployment* pada `PROPOSAL-Pipeline.md` §5, yang **belum pernah dijalankan**
@@ -744,11 +744,11 @@ dengan lapisan *re-ranker*. Asosiasi fisik mencapai F1 `0,85` (Depth) dan `0,84`
 kedua kumpulan. Pencacahan Depth berada pada MAE `0,77` dengan akurasi ±1
 `85,45%`.
 
-**Yang belum dicapai.** Kedua target rekayasa pada `HANDOFF.md` — 75% klasifikasi
-empat kelas dan 90% lokalisasi agnostik — belum terpenuhi secara bersamaan pada
+**Yang belum dicapai.** Kedua target rekayasa pada `HANDOFF.md`: 75% klasifikasi
+empat kelas dan 90% lokalisasi agnostik, belum terpenuhi secara bersamaan pada
 kedua domain. Klasifikasi 953 berada pada `74,42%` (mendekati target, tetapi tanpa
 CI) dan lokalisasi 953 pada `84,19%`. Modul *quality gate*, rekomendasi
-pengambilan ulang, *confidence*/UI, dan *deployment* belum ada implementasinya —
+pengambilan ulang, *confidence*/UI, dan *deployment* belum ada implementasinya, 
 `PROPOSAL-Pipeline.md` sendiri menegaskan bahwa modul-modul ini "belum dianggap
 selesai hanya karena proposal arsitekturnya sudah terdokumentasi". Ridge `F_all`
 + rekonsiliasi yang menjadi spesifikasi *deployment* belum pernah dijalankan pada
@@ -759,7 +759,7 @@ atas rata-rata: gerbang jangkar dengan toleransi eksplisit sebelum setiap grid,
 *guard* teknis terhadap pembukaan uji berulang, pelaporan regresi apa adanya
 (profil sadar-kelas Depth −0,0139), penolakan untuk memfabrikasi CI ketika data
 per pohon tidak tersedia, audit *run* yang gagal secara diam-diam (RF-DETR v1
-dengan `depth_weight_norm = 0.0`), dan penyimpanan hasil negatif sebagai kontrol.
+dengan `depth_weight_norm = 0,0`), dan penyimpanan hasil negatif sebagai kontrol.
 Kelemahan utamanya bukan pada pelaksanaan eksperimen, melainkan pada **sinkronisasi
 dokumentasi**: `STATUS.md` dan `PROPOSAL-Pipeline.md` tertinggal dari lembar bukti
 V2, dan dua lembar bukti terpenting belum memiliki ID eksperimen resmi.
@@ -770,7 +770,7 @@ V2, dan dua lembar bukti terpenting belum memiliki ID eksperimen resmi.
 
 Diurutkan menurut rasio nilai terhadap biaya.
 
-**Prioritas 1 — Menuntaskan butir audit dan sinkronisasi dokumentasi (biaya rendah,
+**Prioritas 1: Menuntaskan butir audit dan sinkronisasi dokumentasi (biaya rendah,
 menghalangi publikasi).**
 
 1. Selesaikan **audit irisan `tree_id`** antara partisi latih `combined1716` dan
@@ -787,7 +787,7 @@ menghalangi publikasi).**
    yang membuktikan hasil terkunci tidak berubah pada konfigurasi
    `adjacent`/`max_size ≤ 4`.
 
-**Prioritas 2 — Menambah daya statistik (biaya sedang, satu-satunya jalan menuju
+**Prioritas 2: Menambah daya statistik (biaya sedang, satu-satunya jalan menuju
 klaim publikasi).**
 
 5. Kumpulkan **pohon empat sisi baru** sebagai *hold-out* eksternal yang belum
@@ -801,11 +801,11 @@ klaim publikasi).**
    Ketiadaannya saat ini menghalangi klaim atas metrik yang paling dekat dengan
    target 75%.
 
-**Prioritas 3 — Arah teknis yang masih menjanjikan (berbasis bukti yang ada).**
+**Prioritas 3: Arah teknis yang masih menjanjikan (berbasis bukti yang ada).**
 
-7. **Kualitas label B2/B4.** Bukti konvergen dari tiga sumber independen —
+7. **Kualitas label B2/B4.** Bukti konvergen dari tiga sumber independen, 
    kekeliruan ordinal B2↔B3 dan B3↔B4 pada matriks konfusi uji terkunci, `AP50`
-   B4 terendah pada setiap evaluasi, dan kegagalan seluruh cabang fotometrik —
+   B4 terendah pada setiap evaluasi, dan kegagalan seluruh cabang fotometrik, 
    menunjukkan bahwa batas saat ini kemungkinan besar berada pada definisi dan
    konsistensi label, bukan pada kapasitas model. Audit label yang dikunci pada
    partisi lintas lokasi/kamera adalah investasi yang paling mungkin memindahkan
@@ -831,14 +831,14 @@ regresor pencacahan nonlinear. Seluruhnya sudah diuji dan ditolak dengan alasan
 kuantitatif.
 
 **Mengenai jalur RGB+D4.** Bukti saat ini tidak mendukung promosi *early fusion*
-empat kanal. Yang layak dilanjutkan adalah *late fusion* — tetapi **per arsitektur**,
+empat kanal. Yang layak dilanjutkan adalah *late fusion*, tetapi **per arsitektur**,
 tidak sebagai modul umum, mengingat WBF *class-aware* naif merusak RF (−0,080) dan
 RT (−0,171) sementara menaikkan YOLO (+0,038). Verifikasi memerlukan evaluasi
 *held-out* baru karena resep saat ini dipilih melalui penyaringan awal (*screening*) pada VAL.
 
 ---
 
-## Lampiran — Peta rujukan angka utama
+## Lampiran: Peta rujukan angka utama
 
 | Angka | Nilai | Berkas sumber |
 |---|---|---|

@@ -21,7 +21,7 @@ mengikuti resep acuan: 1.280 piksel, *batch* 4, *seed* 42, *cosine learning
 rate*, 60 *epoch*, dan *patience* 15. RF-DETR-L mengikuti resep acuan:
 1.280 piksel, *batch* 4, akumulasi gradien 4, 20 *epoch*, dan *patience* 5.
 Eksperimen RGB+D RF-DETR menggunakan berkas pralatih generik resmi
-`rf-detr-large-2026.pth` yang sama dengan sumber baseline RGB. Hash MD5 berkas
+`rf-detr-large-2026.pth` yang sama dengan sumber garis dasar pembanding (*baseline*) RGB. Hash MD5 berkas
 tersebut adalah `5cb72153541cbcb9aa6efa26222acc75`; head COCO diganti menjadi
 empat kelas pada kedua recipe. Dengan demikian perbandingan RGB versus RGB+D
 RF-DETR memakai sumber inisialisasi yang sama.
@@ -47,7 +47,7 @@ tetap 0,3–20,0 meter:
 
 \[
 d_8=1+\operatorname{round}\left(254\operatorname{clip}\left(
-\frac{1/z-1/z_{far}}{1/z_{near}-1/z_{far}},0,1\right)\right).
+\frac{1/z-1/z_{far}}{1/z_{near}−1/z_{far}},0,1\right)\right).
 \]
 
 Nilai 0 dicadangkan untuk lubang/invalid; nilai 1–255 adalah depth valid.
@@ -73,7 +73,7 @@ halaman pertama TIFF yang dapat menghilangkan kanal keempat.
 ## Temuan empiris terukur
 
 Builder menghasilkan 2.144 citra TRAIN dan 468 citra VALID. Seluruh 2.612
-TIFF dibuka ulang oleh reader produksi sebagai `uint8 (800, 1280, 4)`, dan
+TIFF dibuka ulang oleh reader produksi sebagai `uint8 (800; 1280; 4)`, dan
 seluruh 2.612 label identik dengan label sumber. Dua varian kalibrasi teramati
 dan dihitung per *sidecar*. Selang valid depth setelah reproyeksi rata-rata
 sekitar 0,286 pada TRAIN dan 0,288 pada VALID; nilai ini adalah diagnostik
@@ -82,14 +82,14 @@ cakupan sensor, bukan skor detektor.
 Hasil akhir VAL-only dicatat pada
 [`NEW763_RGBD4_RESULTS.md`](NEW763_RGBD4_RESULTS.md) dan JSON di direktori
 `results/`. YOLO26l menghasilkan mAP50 0,529523 versus RGB 0,529357;
-bootstrap berpasangan 500 resample memberi CI95 Δ [-0,024195; 0,028892],
+bootstrap berpasangan 500 resample memberi CI95 Δ [−0,024195; 0,028892],
 sehingga tidak ada bukti peningkatan. RF-DETR-L v2 menghasilkan mAP50 0,597070
-versus RGB 0,608233; CI95 paired Δ [-0,037049; 0,018074], juga melintasi nol.
+versus RGB 0,608233; CI95 paired Δ [−0,037049; 0,018074], juga melintasi nol.
 Metrik mAP50:95 RF v2 adalah 0,226946 versus 0,227471 pada RGB. Angka RF v1
 tidak dipakai karena stem depth-nya dibuat setelah optimizer sehingga tidak
 trainable melalui optimizer yang sudah ada. RT-DETR-L menghasilkan mAP50
 0,584088 versus RGB 0,577766 dan mAP50:95 0,212043 versus 0,211041; paired
-bootstrap memberi CI95 Δ [-0,026770; 0,039670], sehingga point gain RT juga
+bootstrap memberi CI95 Δ [−0,026770; 0,039670], sehingga point gain RT juga
 belum signifikan. Selisih semuanya dihitung
 oleh `pycocotools.COCOeval` pada 468 citra validasi yang sama. Uji pada TEST
 tidak termasuk dalam eksperimen ini.

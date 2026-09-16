@@ -1,4 +1,4 @@
-# Manifest Artefak — Audit Forensik 6 September 2026
+# Manifest Artefak: Audit Forensik 6 September 2026
 
 Rujukan naratif: [`docs/AUDIT-FORENSIK-2026-09-06.md`](../../docs/AUDIT-FORENSIK-2026-09-06.md).
 Log eksperimen: [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../../experiments/AUDIT-FORENSIK-2026-09-06.md).
@@ -9,7 +9,7 @@ Log eksperimen: [`experiments/AUDIT-FORENSIK-2026-09-06.md`](../../experiments/A
 |---|---|
 | GPU | NVIDIA RTX 3090, 24 GB |
 | CPU / RAM | 64 vCPU / 503 GB |
-| Python | 3.12 |
+| Python | 3,12 |
 | `torch` | 2.14.0+cu130 |
 | `ultralytics` | 8.4.142 |
 | `scikit-learn` | 1.9.0 |

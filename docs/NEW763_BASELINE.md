@@ -1,4 +1,4 @@
-# Spesifikasi Baseline & Evaluasi Korpus SawitMVC-Depth v2.0.0 (763 Pohon)
+# Spesifikasi Garis dasar pembanding & Evaluasi Korpus SawitMVC-Depth v2.0.0 (763 Pohon)
 
 Dokumen ini memuat spesifikasi metodologis dan protokol evaluasi garis dasar (*baseline*) pada dataset **SawitMVC-Depth-YOLO v2.0.0** (763 pohon multi-kampanye).
 
@@ -22,7 +22,7 @@ Tiga arsitektur detektor dipilih berdasarkan rekam jejak performa terverifikasi 
 * **Jadwal Pelatihan & Penghentian Dini**:
   * **YOLO26l & RT-DETR-L**: Maksimum 60 *epoch*, toleransi penghentian dini (*early stopping patience*) 15 *epoch*.
   * **RF-DETR-L**: Maksimum 20 *epoch*, toleransi penghentian dini 5 *epoch* untuk mencegah *overfitting* pada konvergensi dini.
-* **Protokol Evaluasi**: Metrik $mAP50$ dan $mAP50\text{--}95$ dihitung melalui `pycocotools.COCOeval`, dengan seluruh dump prediksi disimpan ke format `.npz`.
+* **Protokol Evaluasi**: Metrik $mAP50$ dan $mAP50\text{--}95$ dihitung melalui `pycocotools.COCOeval`, dengan seluruh *dump* prediksi disimpan ke format `.npz`.
 
 ---
 
@@ -71,7 +71,7 @@ sedangkan WBF tiga detektor mencapai `0,6062` secara class-aware dan `0,8451`
 secara agnostik. Pada test SawitMVC-YOLO 953, nilainya turun menjadi `0,1776`,
 `0,2018`, dan `0,4974`.
 
-Hasil tersebut adalah verifikasi engineering, bukan pengganti angka baseline
-kanonik pada bagian sebelumnya. Laporan lengkap, metrik per kelas, dump
+Hasil tersebut adalah verifikasi engineering, bukan pengganti angka garis dasar pembanding (*baseline*)
+kanonik pada bagian sebelumnya. Laporan lengkap, metrik per kelas, *dump*
 prediksi, dan perbandingan dengan `combined1716` tersedia di
 [`results/remote_eval_2026-08-27/README.md`](../results/remote_eval_2026-08-27/README.md).

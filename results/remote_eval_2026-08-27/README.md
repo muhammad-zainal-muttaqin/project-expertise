@@ -1,4 +1,4 @@
-# Verifikasi Model Remote dan Pipeline Empat Sisi — 27 Agustus 2026
+# Verifikasi Model Remote dan Pipeline Empat Sisi: 27 Agustus 2026
 
 Dokumen ini merangkum verifikasi lokal terhadap bobot model yang dipilih dari
 bucket Hugging Face `ULM-DS-Lab/project-expertise-backup`. Verifikasi ini
@@ -10,12 +10,12 @@ Status artefak: **selesai dan tersimpan di repositori**. Bobot model tetap
 berada di luar Git; daftar jalur remote, ukuran, dan *checksum* tercatat pada
 [`MANIFEST.md`](MANIFEST.md). Tidak ada token akses yang disimpan dalam repo.
 
-Eksperimen lanjutan pipeline warna, detail, crop-head, TTA, detector fine-tune,
+Eksperimen lanjutan pipeline warna, detail, crop-head, TTA, detektor penyesuaian terarah (*fine-tuning*),
 reranking, dan evaluasi test dicatat pada
 [`PIPELINE_EXPERIMENTS_V3.md`](PIPELINE_EXPERIMENTS_V3.md).
 Ringkasan versioned untuk learned detector-space linker validation tersedia
 di [`metrics/learned_linker_validation_summary.json`](metrics/learned_linker_validation_summary.json);
-raw checkpoint dan dump pair tetap berada di artifact storage eksternal.
+raw checkpoint dan *dump* pair tetap berada di artifact storage eksternal.
 
 ## Kesimpulan eksekutif
 
@@ -66,10 +66,10 @@ dibedakan dalam naskah publikasi.
 
 - Resolusi masukan: 1.280 piksel.
 - Metrik deteksi: `pycocotools.COCOeval`, `mAP50` dan `mAP50–95`.
-- Inferensi detektor: confidence minimum internal `0,001`, NMS IoU `0,7`,
+- Inferensi detektor: skor keyakinan (*confidence*) minimum internal `0,001`, NMS IoU `0,7`,
   maksimum 300 deteksi per citra.
 - Batch inferensi: YOLO26l `16`; RT-DETR-L dan RF-DETR-L `8`.
-- WBF: IoU `0,60`, confidence masukan `0,05`.
+- WBF: IoU `0,60`, skor keyakinan masukan `0,05`.
 - Penaut empat sisi: prior rotasi bertanda yang dikalibrasi dari data latih,
   pemungutan suara kelas berbobot dari tiga detektor, dan ambang penaut yang
   dikalibrasi dari data latih. Ambang yang diperoleh adalah `0,32` untuk
@@ -77,7 +77,7 @@ dibedakan dalam naskah publikasi.
 - Seluruh prediksi mentah dan hasil fusi disimpan sebagai `.npz` agar metrik
   dapat diaudit tanpa inferensi ulang.
 
-## 2. Deteksi empat kelas — model tunggal
+## 2. Deteksi empat kelas: model tunggal
 
 Nilai berikut merupakan hasil inferensi baru pada test lokal menggunakan bank
 `combined1716`. Kolom B1–B4 adalah AP50 per kelas.
@@ -107,9 +107,9 @@ Nilai berikut merupakan hasil inferensi baru pada test lokal menggunakan bank
 Pembulatan pada tabel adalah empat angka di belakang koma; nilai presisi
 lengkap tersedia pada berkas JSON di direktori [`metrics/`](metrics/).
 
-## 3. Fusi tiga model — WBF
+## 3. Fusi tiga model: WBF
 
-Tabel ini adalah konfigurasi baseline V2-E-042 (WBF IoU `0,60`); konfigurasi
+Tabel ini adalah konfigurasi garis dasar pembanding (*baseline*) V2-E-042 (WBF IoU `0,60`); konfigurasi
 greedy terbaru dan ablation-nya dicatat pada §8.
 
 | Bank | Test | WBF class-aware mAP50 | mAP50–95 | AP50 agnostik | AP50–95 agnostik |
@@ -135,7 +135,7 @@ sebagai klaim kematangan B1–B4.
 
 ## 4. Pipeline empat sisi: deteksi fisik, klasifikasi, dan pencacahan
 
-Tabel berikut adalah baseline V2-E-042 sebelum pengetatan duplicate-cluster;
+Tabel berikut adalah garis dasar pembanding V2-E-042 sebelum pengetatan duplicate-cluster;
 hasil optimized ada pada §8 dan laporan [OPTIMIZED_PIPELINE.md](OPTIMIZED_PIPELINE.md).
 
 Evaluasi ini menggunakan WBF sebagai pembuat proposal, pemungutan suara kelas
@@ -171,9 +171,9 @@ dikalibrasi pada data latih. Pencocokan prediksi–acuan memakai IoU minimum
   prediksi berlebih menyebabkan presisi dan pencacahan memburuk.
 - Pada `combined1716` SawitMVC-YOLO, 3.366 klaster diprediksi untuk 1.342
   tandan acuan. Akibatnya MAE mencapai 14,99 meskipun recall 93,44%.
-- `new763` menghasilkan counting yang relatif lebih rendah MAE-nya pada test
+- `new763` menghasilkan pencacahan (*counting*) yang relatif lebih rendah MAE-nya pada test
   953 karena ambang penaut `0,43` menekan sebagian duplikasi, tetapi kualitas
-  deteksi dan klasifikasi kelasnya jauh lebih rendah. Ini adalah trade-off
+  deteksi dan klasifikasi kelasnya jauh lebih rendah. Ini adalah kompromi performa (*trade-off*)
   threshold, bukan bukti bahwa `new763` lebih baik secara umum.
 - Kelas B4 tetap menjadi kelas paling sulit pada F1 end-to-end, terutama pada
   domain 953. Kelas ini perlu strategi khusus untuk objek kecil, tertutup,
@@ -183,20 +183,20 @@ dikalibrasi pada data latih. Pencocokan prediksi–acuan memakai IoU minimum
 
 ### Klaim yang aman
 
-- “Ensembel tiga detektor mencapai **AP50 lokalisasi class-agnostic 83,50%**
-  pada test SawitMVC-YOLO lokal.”
-- “Bank `combined1716` memberikan performa deteksi empat kelas yang paling
+- "Ensembel tiga detektor mencapai **AP50 lokalisasi class-agnostic 83,50%**
+  pada test SawitMVC-YOLO lokal."
+- "Bank `combined1716` memberikan performa deteksi empat kelas yang paling
   konsisten di dua domain yang diuji; RF-DETR-L adalah detektor tunggal terbaik
-  berdasarkan mAP50.”
-- “Pipeline empat sisi sudah menunjukkan feasibility untuk pembentukan proposal
+  berdasarkan mAP50."
+- "Pipeline empat sisi sudah menunjukkan feasibility untuk pembentukan proposal
   dan asosiasi lintas tampak, tetapi pencacahan per pohon belum memenuhi target
-  produksi.”
+  produksi."
 
 ### Klaim yang belum aman
 
-- Tidak boleh menyebut `83,50%` sebagai akurasi kematangan, akurasi counting,
+- Tidak boleh menyebut `83,50%` sebagai akurasi kematangan, akurasi pencacahan,
   atau `mAP50` empat kelas.
-- Tidak boleh menyatakan counting sudah “akurat” hanya karena F1 proposal
+- Tidak boleh menyatakan pencacahan sudah "akurat" hanya karena F1 proposal
   berada di atas 0,5.
 - Tidak boleh menyebut hasil ini sebagai skor *hold-out* publikasi yang sepenuhnya
   independen sebelum audit irisan `tree_id` antara split latih
@@ -206,16 +206,16 @@ dikalibrasi pada data latih. Pencocokan prediksi–acuan memakai IoU minimum
 
 - [`MANIFEST.md`](MANIFEST.md): sumber model, ukuran, *checksum*, konfigurasi,
   dan pemetaan artefak.
-- [`metrics/`](metrics/): 12 JSON detektor tunggal, 2 JSON pipeline baseline,
+- [`metrics/`](metrics/): 12 JSON detektor tunggal, 2 JSON pipeline garis dasar pembanding,
   dan 1 JSON pipeline greedy optimized.
-- [`predictions/`](predictions/): 12 dump prediksi mentah (`.npz`).
+- [`predictions/`](predictions/): 12 *dump* prediksi mentah (`.npz`).
 - [`fused_new763/`](fused_new763/) dan
-  [`fused_combined1716/`](fused_combined1716/): masing-masing 8 dump WBF
+  [`fused_combined1716/`](fused_combined1716/): masing-masing 8 *dump* WBF
   (`classaware`, `agnostic`, `classvote`, dan `softvote` untuk dua dataset).
 - [`fusions_iou575_combined1716/`](fusions_iou575_combined1716/): fusi IoU
-  0,575 dan dump probabilitas classifier/blend untuk eksperimen optimized 953.
-- [`sweeps/`](sweeps/): sweep linker dan ablation probabilitas kelas.
-- [`classifier_c2/`](classifier_c2/): ringkasan serta prediksi classifier crop
+  0,575 dan *dump* probabilitas pengklasifikasi/blend untuk eksperimen optimized 953.
+- [`sweeps/`](sweeps/): sweep linker dan studi ablasi (*ablation study*) probabilitas kelas.
+- [`classifier_c2/`](classifier_c2/): ringkasan serta prediksi pengklasifikasi citra terpotong (*crop classifier*)
   RGB 5 epoch.
 - [`../../scripts/eval_remote_pipeline_postprocess.py`](../../scripts/eval_remote_pipeline_postprocess.py):
   skrip fusi, kalibrasi prior, penaut empat sisi, dan evaluasi metrik hilir.
@@ -252,13 +252,13 @@ python scripts/eval_remote_pipeline_postprocess.py \
 ```
 
 Ganti `--bank` menjadi `new763` untuk meregenerasi hasil pembanding. Dataset
-dan dump prediksi yang digunakan pada sesi asli berada di luar repo sesuai
+dan *dump* prediksi yang digunakan pada sesi asli berada di luar repo sesuai
 pemetaan pada `MANIFEST.md`; bobot tidak disalin ke Git.
 
-## 8. Iterasi greedy pipeline dan classifier 5 epoch
+## 8. Iterasi greedy pipeline dan pengklasifikasi 5 epoch
 
-Analisis lanjutan menemukan bottleneck utama pada linker: recall proposal sudah
-tinggi, tetapi klaster duplikat sangat banyak. Pengetatan confidence proposal,
+Analisis lanjutan menemukan hambatan struktural (*bottleneck*) utama pada linker: recall proposal sudah
+tinggi, tetapi klaster duplikat sangat banyak. Pengetatan skor keyakinan proposal,
 singleton, batas anggota cluster, dan pasangan sisi menurunkan prediksi
 cluster `combined1716` dari 3.366 menjadi 1.358 pada test 953. Hasil lengkap,
 termasuk seluruh sweep dan konfigurasi final, ada di
@@ -269,27 +269,27 @@ termasuk seluruh sweep dan konfigurasi final, ada di
 | SawitMVC-Depth-YOLO | **0,8590** | **0,818** | **83,64%** | **0,6419** |
 | SawitMVC-YOLO 953 | **0,8296** | **1,644** | **54,07%** | **0,5469** |
 
-Angka ini mengalahkan baseline remote sebelumnya (masing-masing F1 `0,6140`/
+Angka ini mengalahkan garis dasar pembanding remote sebelumnya (masing-masing F1 `0,6140`/
 `0,5327` dan MAE `4,518`/`14,993`), tetapi dipilih secara greedy langsung
-pada test. Counting yang dilaporkan adalah jumlah cluster mentah; Ridge
+pada test. Pencacahan yang dilaporkan adalah jumlah cluster mentah; Ridge
 `F_all` belum diterapkan.
 
-Classifier crop RGB ConvNeXt-Tiny dilatih cepat 5 epoch pada 16.542 crop/841
-pohon. C2-only tidak menggantikan soft vote detector karena class accuracy
+Pengklasifikasi citra terpotong RGB ConvNeXt-Tiny dilatih cepat 5 epoch pada 16.542 citra terpotong (*crop*)/841
+pohon. C2-only tidak menggantikan soft vote detektor karena class accuracy
 end-to-end turun; blend 25% dipertahankan sebagai kandidat khusus test 953.
 Ringkasannya ada di [`classifier_c2/`](classifier_c2/), sedangkan skripnya
 ada di [`../../scripts/apply_remote_crop_classifier.py`](../../scripts/apply_remote_crop_classifier.py).
 
 ## 9. Validation-locked generalization pipeline (V2-E-045)
 
-Iterasi berikutnya memisahkan pencarian konfigurasi dari test. Detector bank
+Iterasi berikutnya memisahkan pencarian konfigurasi dari test. Detektor bank
 `combined1716` tetap memakai tiga model dengan bobot WBF sama; yang ditambah
 adalah layer rekonsiliasi jumlah berbasis fitur proposal. Ridge dilatih hanya
 pada tree `train`, regularisasi dipilih melalui 5-fold CV di `train`, dan
 validation dipakai untuk mengunci profil per dataset. Ranking cluster memakai
 kekuatan dukungan multi-view (`support` pada Depth, `max_member` pada 953),
 serta probabilitas kelas dikoreksi ringan dengan prior kelas `train` pangkat
-`-0,25`.
+`−0,25`.
 
 | Dataset | Split | F1 fisik | MAE count | ±1 count | Match class acc. | Macro-F1 E2E |
 |---|---|---:|---:|---:|---:|---:|
@@ -307,8 +307,8 @@ yang sepenuhnya pristine.
 ### Apa yang berhasil dan yang ditolak
 
 - Layer count-aware menekan duplikasi tanpa menambah atau mengubah bobot
-  detector. Pada validation, Depth mencapai MAE `0,726` dan 953 `1,253`.
-- Bobot detector tidak otomatis membantu. Contoh bobot `[0,75; 1; 1,5]`
+  detektor. Pada validation, Depth mencapai MAE `0,726` dan 953 `1,253`.
+- Bobot detektor tidak otomatis membantu. Contoh bobot `[0,75; 1; 1,5]`
   meningkatkan sebagian mAP image-level, tetapi F1 hilir turun menjadi `0,7951`
   pada Depth dan `0,7736` pada 953; konfigurasi equal-weight dipertahankan.
 - Pair-linker logistic yang dilatih dari pasangan proposal `train` juga
@@ -320,7 +320,7 @@ Dengan demikian, angka yang paling aman untuk klaim generalisasi engineering
 saat ini adalah sekitar **80% F1 fisik**, MAE count **<1 tandan/pohon pada
 Depth** dan **sekitar 1,4 pada 953**, dengan matched-class accuracy sekitar
 **80%** dan **71%**. Angka `83%` class-agnostic AP50 tetap merupakan metrik
-lokalisasi image-level, bukan akurasi counting atau klasifikasi.
+lokalisasi image-level, bukan akurasi pencacahan atau klasifikasi.
 
 Reproduksi layer count-aware:
 

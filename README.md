@@ -1,11 +1,11 @@
-# Project Expertise — Deteksi & Pencacahan Tandan Kelapa Sawit RGB+D
+# Project Expertise: Deteksi & Pencacahan Tandan Kelapa Sawit RGB+D
 
 Volume 2 dari rangkaian riset deteksi tandan buah segar (TBS) kelapa sawit.
 Volume 1 ([Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline)) memuat tinjauan pustaka komprehensif atas 182 makalah ilmiah dan eksperimen diagnostik awal E-001 s.d. F-007. Repositori ini menjalankan eksperimen empiris terarah dengan metodologi yang lebih terukur.
 
 ## Tujuan Penelitian
 
-Membandingkan tiga arsitektur detektor modern — **YOLO26l, RT-DETR-L, dan RF-DETR-L** — pada dataset **RGB** dan **RGB+Depth (4-kanal)**, lalu mengukur pengaruhnya terhadap **lokalisasi**, **klasifikasi tingkat kematangan (B1–B4)**, dan **pencacahan (*counting*) per pohon**.
+Membandingkan tiga arsitektur detektor modern, **YOLO26l, RT-DETR-L, dan RF-DETR-L**, pada dataset **RGB** dan **RGB+Depth (4-kanal)**, lalu mengukur pengaruhnya terhadap **lokalisasi**, **klasifikasi tingkat kematangan (B1–B4)**, dan **pencacahan (*counting*) per pohon**.
 
 Sejak **Fase 6**, ruang lingkup diperluas secara sistematis: tidak lagi terbatas pada komparasi arsitektur detektor satu-tahap konvensional, melainkan mengadopsi **pipeline dua-tahap modular** (lokalisasi *class-agnostic* terpisah dari klasifikasi kematangan ordinal) guna mengatasi hambatan struktural yang teridentifikasi pada analisis diagnostik (lihat [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md)).
 
@@ -62,14 +62,14 @@ dan [manifest artefak](results/remote_eval_2026-08-27/MANIFEST.md).
 | `new763` / SawitMVC-YOLO 953 | 0,1776 | 0,2018 | 0,4974 | 6,56 |
 
 \* MAE pada tabel ini untuk `combined1716` memakai profil greedy terbaru dan
-merupakan raw linked-cluster count; baseline remote sebelumnya adalah 4,52 dan
-14,99. Nilai `new763` adalah baseline lama.
+merupakan raw linked-cluster count; garis dasar pembanding (*baseline*) remote sebelumnya adalah 4,52 dan
+14,99. Nilai `new763` adalah garis dasar pembanding lama.
 
 `0,8372`/`83,72%` dan `0,8764` adalah AP50 lokalisasi class-agnostic, bukan
 akurasi klasifikasi B1–B4 atau akurasi pencacahan. Tanda bintang menunjukkan
-MAE profil greedy terbaru; MAE baseline sebelumnya adalah 4,52 dan 14,99.
+MAE profil greedy terbaru; MAE garis dasar pembanding sebelumnya adalah 4,52 dan 14,99.
 Profil terbaru mencapai F1 fisik `0,8590` (Depth) dan `0,8296` (953), dengan
-akurasi counting ±1 masing-masing `83,64%` dan `54,07%`. Angka ini dipilih
+akurasi pencacahan (*counting*) ±1 masing-masing `83,64%` dan `54,07%`. Angka ini dipilih
 langsung dari test untuk engineering, sehingga belum menjadi klaim produksi.
 
 Rincian iterasi tersedia pada [laporan optimized pipeline](results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md).
@@ -82,20 +82,20 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 
 | Dokumen | Deskripsi Isi |
 |---|---|
-| [docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md) | **Alur Kerja Kronologis & Lembar Bukti** — Rekonstruksi runut waktu seluruh simpul eksperimen, metrik, visualisasi, dan tautan log tersemat sesuai kaidah EYD V / PUEBI. |
-| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Laporan Akhir** — Sintesis menyeluruh hasil riset, analisis ancaman validitas, dan rekomendasi penerapan. |
-| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Diagnostik Sinyal Depth (Fase 6)** — Penemuan sifat fisik sinyal kedalaman (relief ordinal vs skala metrik), rasio *SNR*, dan bukti redundansi kematangan. |
-| [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Panduan Reproduksi** — Prosedur eksekusi langkah-demi-langkah beserta katalog 9 jebakan operasional (*silent failures*). |
-| [docs/NEW763_BASELINE.md](docs/NEW763_BASELINE.md) | **Baseline Korpus 763 Pohon** — Spesifikasi rilis SawitMVC-Depth v2.0.0 dan evaluasi multi-kampanye. |
+| [docs/WORKFLOW_KRONOLOGIS.md](docs/WORKFLOW_KRONOLOGIS.md) | **Alur Kerja Kronologis & Lembar Bukti**: Rekonstruksi runut waktu seluruh simpul eksperimen, metrik, visualisasi, dan tautan log tersemat sesuai kaidah EYD V / PUEBI. |
+| [docs/LAPORAN-AKHIR.md](docs/LAPORAN-AKHIR.md) | **Laporan Akhir**: Sintesis menyeluruh hasil riset, analisis ancaman validitas, dan rekomendasi penerapan. |
+| [docs/DIAGNOSIS-DEPTH.md](docs/DIAGNOSIS-DEPTH.md) | **Diagnostik Sinyal Depth (Fase 6)**: Penemuan sifat fisik sinyal kedalaman (relief ordinal vs skala metrik), rasio *SNR*, dan bukti redundansi kematangan. |
+| [docs/REPRODUKSI-FASE6.md](docs/REPRODUKSI-FASE6.md) | **Panduan Reproduksi**: Prosedur eksekusi langkah-demi-langkah beserta katalog 9 jebakan operasional (*silent failures*). |
+| [docs/NEW763_BASELINE.md](docs/NEW763_BASELINE.md) | **Baseline Korpus 763 Pohon**: Spesifikasi rilis SawitMVC-Depth v2.0.0 dan evaluasi multi-kampanye. |
 | [docs/NEW763_RGBD4_RESULTS.md](docs/NEW763_RGBD4_RESULTS.md) | Ablasi fair RGB versus RGB+D4 dan fixed late fusion pada VALID new763, termasuk bootstrap dan audit kanal. |
-| [docs/EDA-COMBINED1716.md](docs/EDA-COMBINED1716.md) | **Analisis Eksploratif Data** — Karakteristik distribusi kelas dan sebaran spasial korpus gabungan 1.716 pohon. |
+| [docs/EDA-COMBINED1716.md](docs/EDA-COMBINED1716.md) | **Analisis Eksploratif Data**: Karakteristik distribusi kelas dan sebaran spasial korpus gabungan 1.716 pohon. |
 | [docs/REGENERASI.md](docs/REGENERASI.md) | Prosedur pembentukan ulang data turunan multi-kanal, citra terpotong (*crop*), dan partisi symlink. |
 | [docs/REKAP.md](docs/REKAP.md) | Rekapitulasi komparasi, percobaan gagal, dan sintesis pembelajaran dari Volume 1 & Volume 2. |
 | [docs/DATASET.md](docs/DATASET.md) | Spesifikasi teknis dataset SawitMVC-YOLO dan SawitMVC-Depth. |
 | [docs/RENCANA.md](docs/RENCANA.md) | Rencana kerja dan metodologi per fase. |
 | [experiments/EKSPERIMEN.md](experiments/EKSPERIMEN.md) | Log *append-only* per hipotesis (`V2-E-001` s.d. `V2-E-044`). |
 | [pipeline-pertandan/](pipeline-pertandan/) | Subproyek mandiri asosiasi multi-tampak dan klasifikasi tingkat tandan fisik. |
-| [results/](results/) | Direktori artefak metrik kuantitatif JSON, CSV, dump prediksi NPZ, dan laporan verifikasi remote. |
+| [results/](results/) | Direktori artefak metrik kuantitatif JSON, CSV, *dump* prediksi NPZ, dan laporan verifikasi remote. |
 
 ---
 
@@ -121,8 +121,8 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 - `eval_remote_pipeline_postprocess.py`: WBF, prior rotasi, linker empat sisi, dan metrik raw linked-cluster.
 - `sweep_remote_pipeline.py`: Sweep cepat proposal/linker dengan probabilitas kelas penuh.
 - `evaluate_remote_pipeline_optimized.py`: Evaluator profil greedy yang diberi label test-tuned.
-- `train_crop_classifier.py`, `apply_remote_crop_classifier.py`: Eksperimen classifier crop 5 epoch dan aplikasinya pada proposal remote.
-- `blend_vote_dumps.py`: Pembentukan blend probabilitas detector dan classifier untuk ablation.
+- `train_crop_classifier.py`, `apply_remote_crop_classifier.py`: Eksperimen pengklasifikasi citra terpotong (*crop classifier*) 5 epoch dan aplikasinya pada proposal remote.
+- `blend_vote_dumps.py`: Pembentukan blend probabilitas detektor dan pengklasifikasi untuk studi ablasi (*ablation study*).
 - `sweep_inferensi.py`: Penelusuran kombinasi resolusi citra dan ambang NMS IoU pada split validasi.
 - `eval_twostage.py`: Rekomposisi inferensi dua-tahap menuju metrik $mAP50$ deteksi kematangan.
 - `run_counting_twostage.py`: Pipeline pencacahan *Ridge +* $F_{all}$ di atas estimasi dua-tahap.
@@ -130,7 +130,7 @@ Rincian per fase tersedia di [experiments/STATUS.md](experiments/STATUS.md).
 ### 3. Audit Validitas & Analisis Silsilah Data
 - `probe_pergeseran_temporal.py`: Analisis perbandingan label citra ber-ID identik antar-tanggal akuisisi.
 - `bootstrap_map.py` & `bootstrap_map_from_npz.py`: Estimasi selang kepercayaan $mAP50$ dan $AP50$ lokalisasi berpasangan tingkat citra.
-- `eval_agnostic_from_npz.py`: Evaluasi lokalisasi murni *class-agnostic* langsung dari dump prediksi tanpa inferensi ulang.
+- `eval_agnostic_from_npz.py`: Evaluasi lokalisasi murni *class-agnostic* langsung dari *dump* prediksi tanpa inferensi ulang.
 - `eval_confusion_from_npz.py`: Analisis matriks konfusi bersyarat dan retensi performa lokalisasi.
 - `buat_test_953_bersih.py`: Pembangunan partisi uji 953 pohon bersih (19 pohon bebas kontaminasi prapelatihan).
 
@@ -150,5 +150,5 @@ Seluruh data turunan berukuran besar dapat diregenerasi secara deterministik men
 
 ## Repositori Terkait
 
-- [Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline): Volume 1 — Tinjauan pustaka dan pengujian diagnostik awal.
+- [Research-Pipeline](https://github.com/muhammad-zainal-muttaqin/Research-Pipeline): Volume 1: Tinjauan pustaka dan pengujian diagnostik awal.
 - [Baseline-SawitMVC](https://github.com/ULM-SawitMVC/Baseline-SawitMVC): Pipa pencacahan acuan YOLO26m + *Ridge Regression*.

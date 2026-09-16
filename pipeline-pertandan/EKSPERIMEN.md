@@ -1,11 +1,11 @@
-# EKSPERIMEN — `pipeline-pertandan`
+# EKSPERIMEN: `pipeline-pertandan`
 
 Log **append-only**. Satu entri = satu hipotesis falsifiable. Jangan sunting
 entri lama; kalau sebuah entri keliru, tulis entri baru yang mengoreksinya dan
 sebutkan nomornya. Hasil negatif dicatat dengan bobot yang sama dengan hasil
 positif.
 
-Penomoran `PT-E-*` — terpisah dari deret `V2-E-*` di `../experiments/EKSPERIMEN.md`.
+Penomoran `PT-E-*`, terpisah dari deret `V2-E-*` di `../experiments/EKSPERIMEN.md`.
 Alasannya di [`CLAUDE.md`](CLAUDE.md) §1.
 
 ## Template entri
@@ -33,39 +33,39 @@ Alasannya di [`CLAUDE.md`](CLAUDE.md) §1.
 ## Rencana (belum dijalankan)
 
 Diambil dari [`docs/PROPOSAL.md`](docs/PROPOSAL.md) §8. Baris ini **bukan**
-entri — ia dihapus dari daftar dan diganti entri sungguhan begitu eksperimennya
+entri, ia dihapus dari daftar dan diganti entri sebenarnya begitu eksperimennya
 selesai.
 
 | ID | Isi | Gerbang | Biaya | Status |
 |---|---|---|---|---|
-| `PT-E-001` | Rangka evaluasi per-tandan + plafon oracle (R0–R4 di atas tautan GT, CI bootstrap-pohon) | **G0** | CPU ~1 jam | belum |
-| `PT-E-002a` | Ukur algoritma dedup yang sudah ada pada metrik penautan langsung | **G1** | CPU ~1 jam | **terblokir** — menunggu lokasi kodenya |
+| `PT-E-001` | Rangka evaluasi per-tandan + plafon model batas atas teoretis (*oracle*) (R0–R4 di atas tautan GT, CI bootstrap-pohon) | **G0** | CPU ~1 jam | belum |
+| `PT-E-002a` | Ukur algoritma dedup yang sudah ada pada metrik penautan langsung | **G1** | CPU ~1 jam | **terblokir**, menunggu lokasi kodenya |
 | `PT-E-002b` | Penaut re-ID (hanya kalau 002a di bawah G1) | **G1** | GPU 2–4 jam | belum |
 | `PT-E-003` | Tangga aturan keputusan R0–R5 di atas penaut nyata | **G2** | CPU (+1 jam GPU untuk R5) | belum |
-| `PT-E-004` | Counting dari jumlah pool vs k=1,8905 vs Ridge+F_all | G3 | CPU | belum |
-| `PT-E-005` | (opsional) classifier multi-tampak C3 | — | GPU ~4 jam | belum |
+| `PT-E-004` | Pencacahan (*counting*) dari jumlah pool vs k=1,8905 vs Ridge+F_all | G3 | CPU | belum |
+| `PT-E-005` | (opsional) pengklasifikasi multi-tampak C3 | — | GPU ~4 jam | belum |
 
 **Urutannya mengikat**: PT-E-001 lebih dulu, dan tidak ada training GPU sebelum
 G0 punya angka.
 
 ---
 
-## PT-E-000 — Probe kelayakan (2026-08-17)
+## PT-E-000: Probe kelayakan (2026-08-17)
 
 Bukan eksperimen berhipotesis; pengukuran dasar yang menjadi landasan proposal.
 Dicatat di sini supaya angkanya punya nomor yang bisa dirujuk.
 
-**Data & split** — SawitMVC-YOLO vanilla, 953 pohon (716/96/141 kanonik),
+**Data & split**: SawitMVC-YOLO vanilla, 953 pohon (716/96/141 kanonik),
 18.540 kotak, 9.823 tandan unik. Verifikasi integritas: seluruh 8.945 berkas
 dataset byte-identik dengan hash yang dicatat HuggingFace saat unduh (nol beda).
 
-**Cara** —
+**Cara**, 
 ```bash
 cd /workspace/project-expertise
 .venv/bin/python pipeline-pertandan/scripts/probe_penautan_953.py
 ```
 
-**Hasil** —
+**Hasil**, 
 
 | Blok | Temuan |
 |---|---|
@@ -75,33 +75,33 @@ cd /workspace/project-expertise
 | D penaut geometri-saja | val ROC-AUC 0,9301, F1 pasangan 0,4850; penugasan global berkendala val F1 0,4518 / ARI 0,4385; **dikunci ke test: F1 0,4282 / ARI 0,3912** |
 | E selisih recall | conf 0,25: recall per-kemunculan 63,36% → per-tandan **77,85%** (**+14,49 pp**); 23,3% pool yang terdeteksi ≥2 sisi punya prediksi kelas yang tidak sepakat |
 
-**Putusan** — Tidak ada. Ini pengukuran, bukan uji hipotesis. Yang diputuskan
+**Putusan**: Tidak ada. Ini pengukuran, bukan uji hipotesis. Yang diputuskan
 olehnya: (a) satuan per-tandan memberi keuntungan besar tanpa model baru;
 (b) geometri saja tidak cukup untuk menaut; (c) voting mayoritas tidak bisa
 dipakai sebagai aturan agregasi.
 
-**Kaveat** — Angka D adalah **batas bawah** penautan (geometri tanpa piksel),
+**Kaveat**: Angka D adalah **batas bawah** penautan (geometri tanpa piksel),
 bukan kemampuan algoritma dedup yang sudah ada. Lihat `CLAUDE.md` §4.
 
-**Sumber** — `scripts/probe_penautan_953.py` · `results/probe_penautan_953.json`
+**Sumber**, `scripts/probe_penautan_953.py` · `results/probe_penautan_953.json`
 
 ---
 
-## PT-E-001 — Plafon penggabungan dengan tautan oracle (2026-08-17)
+## PT-E-001: Plafon penggabungan dengan tautan model batas atas teoretis (2026-08-17)
 
-**Hipotesis** — Dengan tautan lintas-sisi yang sempurna, menggabungkan tampak
+**Hipotesis**: Dengan tautan lintas-sisi yang sempurna, menggabungkan tampak
 dari tandan fisik yang sama menaikkan akurasi kelas per tandan dibanding
 melihat satu foto saja.
 
-**Yang memalsukan** (ditulis sebelum melihat hasil) — suku PENGGABUNGAN
+**Yang memalsukan** (ditulis sebelum melihat hasil), suku PENGGABUNGAN
 (R4 vs R0cal pada pool multi-tampak) < +2,0 pp di val, atau CI95 bootstrap-pohon
-memuat nol.
+mencakup nilai nol.
 
-**Data & split** — SawitMVC-YOLO vanilla, val 96 / test 141 pohon. Detektor
-`yolo26l_e60_i1280_v2repro` (sel 5). Dump prediksi tervalidasi lebih dulu:
+**Data & split**: SawitMVC-YOLO vanilla, val 96 / test 141 pohon. Detektor
+`yolo26l_e60_i1280_v2repro` (sel 5). *Dump* prediksi tervalidasi lebih dulu:
 mAP50 test **0,5435** vs 0,5436 tercatat (selisih 0,0001).
 
-**Cara** —
+**Cara**, 
 ```bash
 .venv/bin/python pipeline-pertandan/scripts/infer_skor_penuh.py --split train val test
 .venv/bin/python pipeline-pertandan/scripts/validasi_dump.py --split test
@@ -109,16 +109,16 @@ mAP50 test **0,5435** vs 0,5436 tercatat (selisih 0,0001).
 ```
 Terkunci di val: conf 0,10 · bobot `conf × √luas` · τ = (0,6; 1,7; 2,6).
 
-**Koreksi rancangan yang mengubah jawaban** — versi pertama membandingkan R4
+**Koreksi rancangan yang mengubah jawaban**, versi pertama membandingkan R4
 langsung ke R0 dan mendapat +4,9 pp di val. Angka itu menyesatkan: R4 juga
 menaikkan akurasi pool bersisi-TUNGGAL (0,6917 → 0,7222), tempat tidak ada
 penggabungan sama sekali. Sebagian gain ternyata rekalibrasi ambang kelas.
 Selisih karena itu dipecah, dan gerbang dinilai pada suku penggabungan saja.
-Baseline satu-tampak juga diubah dari undian acak menjadi EKSPEKTASI atas
-seluruh tampak — satu undian menggeser selisih dari 2,38 pp ke 1,03 pp, derau
+Garis dasar pembanding (*baseline*) satu-tampak juga diubah dari undian acak menjadi EKSPEKTASI atas
+seluruh tampak, satu undian menggeser selisih dari 2,38 pp ke 1,03 pp, derau
 sebesar efeknya sendiri.
 
-**Hasil** —
+**Hasil**, 
 
 | Suku | val | test |
 |---|---|---|
@@ -134,31 +134,31 @@ Menurut jumlah tampak (test): 1 tampak 0,6869 (ketiga aturan identik, seperti
 seharusnya) · 2 tampak 0,7277 → **0,7685** · 3 tampak 0,7403 → **0,7662** ·
 4+ 0,7375 → **0,8000**.
 
-**Putusan** — **DIKONFIRMASI.** Gerbang G0 LOLOS. Suku rekalibrasi nol di kedua
-split; suku penggabungan replikasi dari val ke test dengan CI tidak memuat nol.
+**Putusan**, **DIKONFIRMASI.** Gerbang G0 LOLOS. Suku rekalibrasi nol di kedua
+split; suku penggabungan replikasi dari val ke test dengan CI tidak mencakup nilai nol.
 
-**Kaveat wajib** — risiko yang sudah dipra-daftar di proposal §5.4 memang
+**Kaveat wajib**, risiko yang sudah dipra-daftar di proposal §5.4 memang
 terjadi: R4 menaikkan recall B2 (0,378 → 0,542) tetapi menurunkan B4
 (0,709 → 0,624). Yang menyelamatkannya, macro-F1 ikut naik (0,6851 → 0,7084)
-dan MAE ordinal turun — jadi bukan sekadar memindahkan galat antar kelas.
+dan MAE ordinal turun, jadi bukan sekadar memindahkan galat antar kelas.
 
-**Sumber** — `scripts/eval_pertandan.py` · `results/pt_e_001_oracle.json` ·
+**Sumber**, `scripts/eval_pertandan.py` · `results/pt_e_001_oracle.json` ·
 `results/validasi_dump_test.json`
 
 ---
 
-## PT-E-002 — Penaut lintas-sisi nyata (2026-08-17)
+## PT-E-002: Penaut lintas-sisi nyata (2026-08-17)
 
-**Hipotesis** — Penaut berbasis penampilan terlatih mencapai F1 pasangan val
+**Hipotesis**: Penaut berbasis penampilan terlatih mencapai F1 pasangan val
 ≥ 0,65 dan ARI ≥ 0,55, cukup untuk menyalurkan gain PT-E-001 ke pipeline utuh.
 
-**Yang memalsukan** — F1 val < 0,65 atau ARI val < 0,55.
+**Yang memalsukan**: F1 val < 0,65 atau ARI val < 0,55.
 
-**Data & split** — kotak GT (bukan deteksi), supaya mutu penautan terisolasi
+**Data & split**, kotak GT (bukan deteksi), supaya mutu penautan terisolasi
 dari galat deteksi. Train 716 pohon → 121.891 pasangan lintas-sisi, 8.034
 positif (6,6%).
 
-**Hasil** —
+**Hasil**, 
 
 | Varian | val F1 | val ARI | test F1 | test ARI |
 |---|---|---|---|---|
@@ -168,128 +168,128 @@ positif (6,6%).
 | D kelas **prediksi**, lunak | 0,3732 | 0,3228 | 0,3651 | 0,3069 |
 | **E = D + embedding re-ID out-of-fold** | **0,4323** | **0,3623** | **0,3979** | **0,3292** |
 
-**Putusan** — **DIPALSUKAN.** Gerbang G1 GUGUR di semua varian; yang tertinggi
+**Putusan**, **DIPALSUKAN.** Gerbang G1 GUGUR di semua varian; yang tertinggi
 dan sah (E) hanya 0,4323 lawan ambang 0,65.
 
 **Tiga temuan yang mengikat pekerjaan berikutnya:**
 
 1. **Penampilan tangan tidak menolong** (B vs A: −0,0033 F1). Negatif yang harus
-   dikalahkan semuanya dari pohon yang sama — warna, pencahayaan, dan kematangan
+   dikalahkan semuanya dari pohon yang sama, warna, pencahayaan, dan kematangan
    nyaris identik, sementara tandan yang sama berubah rupa dari 90° berbeda.
 
 2. **Kelas GT dan kelas prediksi tidak boleh dipertukarkan.** Aturan "beda kelas
    berarti bukan tandan yang sama" BENAR secara fisik dan berlaku 100% di GT
    (`class_mismatch` = 0). Tetapi penaut dilatih di kotak GT lalu dipakai atas
-   kelas PREDIKSI, tempat aturan itu cuma benar ~77% (23,3% tandan multi-sisi
+   kelas PREDIKSI, tempat aturan itu hanya benar ~77% (23,3% tandan multi-sisi
    punya prediksi berbeda antar sisi). Akibatnya: `kelas_sama` menurunkan AUC
-   **0,375** saat dipermutasi — lima kali lipat fitur berikutnya — dan **100,0%**
+   **0,375** saat dipermutasi, lima kali lipat fitur berikutnya, dan **100,0%**
    pool multi-anggota jadi homogen kelasnya, sehingga agregasi tidak punya apa
    pun untuk diperbaiki (terlihat sebagai R1 = R2 = R3 = R0 persis di PT-E-003
-   varian B). Membuang fiturnya juga salah: B2 anjlok ke 0,2557. Yang benar
+   varian B). Membuang fiturnya juga salah: B2 menurun drastis ke 0,2557. Yang benar
    adalah bentuk LUNAK atas distribusi prediksi (varian D).
 
 3. **Embedding re-ID menghafal, tapi tidak kosong.** AUC cosine-saja: train
    **1,0000** / val 0,7564 / test 0,7195. Melatih penaut memakai embedding yang
    sudah menghafal pohon-pohon itu meruntuhkan AUC val ke 0,578 dan F1 test ke
    0,1801. Dengan embedding **out-of-fold** (dua model, masing-masing menahan
-   separuh pohon train), varian E naik ke F1 test 0,3979 — melewati D
+   separuh pohon train), varian E naik ke F1 test 0,3979, melewati D
    (+0,033 F1, +0,022 ARI). Jadi ide inti proposal menambah sinyal nyata,
    hanya belum cukup.
 
-**Sumber** — `scripts/penaut_pertandan.py` · `scripts/reid_pertandan.py` ·
+**Sumber**, `scripts/penaut_pertandan.py` · `scripts/reid_pertandan.py` ·
 `results/pt_e_002_penaut.json` · `results/pt_e_002_penaut_kontaminasi_fold.json`
 (versi terkontaminasi, disimpan sebagai bukti butir 3)
 
 ---
 
-## PT-E-003 — Pipeline utuh tanpa GT (2026-08-17)
+## PT-E-003: Pipeline utuh tanpa GT (2026-08-17)
 
-**Hipotesis** — Akurasi kelas per tandan dengan penaut nyata >= akurasi dengan
-tautan oracle - 2,0 pp.
+**Hipotesis**: Akurasi kelas per tandan dengan penaut nyata >= akurasi dengan
+tautan model batas atas teoretis - 2,0 pp.
 
-**Data & split** — val 96 / test 141 pohon, deteksi conf>=0,10, penaut varian E
+**Data & split**, val 96 / test 141 pohon, deteksi conf>=0,10, penaut varian E
 (ambang 0,25, kelas GT tidak dipakai).
 
-**Hasil (test)** — R0 0,6999 · R0cal 0,6981 · R1 0,7053 · R2 0,7053 ·
-R3 0,7053 · **R4 0,7124**. Oracle R4 0,7360.
+**Hasil (test)**: R0 0,6999 · R0cal 0,6981 · R1 0,7053 · R2 0,7053 ·
+R3 0,7053 · **R4 0,7124**. Model batas atas teoretis R4 0,7360.
 
 Pada pool >=2 tampak (n=371): R0cal 0,6655 -> R4 **0,7143**, selisih
-**+4,85 pp, CI95 [+2,03; +7,81]** (val +3,15 pp, CI [-0,03; +6,21]).
+**+4,85 pp, CI95 [+2,03; +7,81]** (val +3,15 pp, CI [−0,03; +6,21]).
 
 Mutu penautan di ruang DETEKSI: presisi 0,3342 · **recall 0,1200** · F1 0,1766 ·
 ARI 0,1549. 39,9% pool seluruhnya positif palsu.
 
-**Putusan** — **DIPALSUKAN.** G2 GUGUR: 0,7124 vs 0,7360 = -2,36 pp.
+**Putusan**, **DIPALSUKAN.** G2 GUGUR: 0,7124 vs 0,7360 = −2,36 pp.
 
 **Yang penting justru bukan putusannya:**
 
 1. R1, R2, R3 akhirnya **berbeda** dari R0. Dengan varian B (kelas GT) ketiganya
-   identik 0,7116 persis — bukti langsung bahwa pool homogen kelasnya. Blokade
+   identik 0,7116 persis, bukti langsung bahwa pool homogen kelasnya. Blokade
    itu hilang setelah kelas prediksi dipakai secara lunak.
 2. Penggabungan **bekerja end-to-end tanpa GT sama sekali**, CI95 tidak memuat
-   nol. Jadi +4,36 pp di PT-E-001 bukan artefak tautan oracle.
+   nol. Jadi +4,36 pp di PT-E-001 bukan artefak tautan model batas atas teoretis.
 3. Yang datar adalah angka AGREGAT, karena penaut hanya menyatukan 371 dari
    1.269 tandan (29%). Sisanya 71% tidak tersentuh agregasi.
 
-**Kaveat** — ambang 0,25 diwarisi dari sapuan di atas kotak GT lalu dipakai di
+**Kaveat**, ambang 0,25 diwarisi dari sapuan di atas kotak GT lalu dipakai di
 atas deteksi yang distribusi skornya berbeda. Menyetelnya ulang di val-deteksi
 sah menurut protokol dan belum dijalankan (`--sapu-ambang`).
 
-**Sumber** — `scripts/eval_endtoend.py` · `results/pt_e_003_endtoend.json` ·
+**Sumber**, `scripts/eval_endtoend.py` · `results/pt_e_003_endtoend.json` ·
 `results/pt_e_003_endtoend_varianB_kelasGT.json` (pembanding varian bocor)
 
 ---
 
-## PT-E-004 — Counting per pohon vs penghitung yang sudah ada (2026-08-17)
+## PT-E-004: Pencacahan per pohon vs penghitung yang sudah ada (2026-08-17)
 
-**Hipotesis** — Menghitung POOL mengalahkan penaksiran statistik dari hitungan
+**Hipotesis**: Menghitung POOL mengalahkan penaksiran statistik dari hitungan
 deteksi mentah.
 
-**Data & split** — deteksi yang sama untuk kelima penghitung; C3 dan C5 dipas di
+**Data & split**, deteksi yang sama untuk kelima penghitung; C3 dan C5 dipas di
 train (716 pohon), dievaluasi di test (141 pohon).
 
-**Hasil (test)** —
+**Hasil (test)**, 
 
-| Penghitung | macro MAE | class +-1 | tree +-1 | bias/pohon |
+| Penghitung | macro MAE | class +−1 | tree +−1 | bias/pohon |
 |---|---|---|---|---|
 | C1 naif | 4,3582 | 0,3741 | 0,0142 | +16,13 |
 | C2 k global 1,8905 | 1,6696 | 0,5000 | 0,0780 | +3,84 |
-| C3 k per kelas | 1,1854 | 0,5709 | 0,1064 | -0,08 |
+| C3 k per kelas | 1,1854 | 0,5709 | 0,1064 | −0,08 |
 | **C4 hitung pool** | **3,3422** | 0,4273 | 0,0426 | **+11,96** |
-| **C5 Ridge + F_all** | **1,0542** | 0,6064 | 0,1489 | -0,04 |
+| **C5 Ridge + F_all** | **1,0542** | 0,6064 | 0,1489 | −0,04 |
 
-**Putusan** — **DIPALSUKAN.** G3 GUGUR telak: 3,3422 vs 1,0542.
+**Putusan**, **DIPALSUKAN.** G3 GUGUR telak: 3,3422 vs 1,0542.
 
 **Sebabnya sama dengan PT-E-003**: penaut yang tidak menggabung memecah satu
 tandan menjadi beberapa pool, jadi jumlah pool melebihi jumlah tandan sekitar
 12 per pohon. Penautan hanya memangkas seperempat kelebihan hitung C1
 (+16,13 -> +11,96).
 
-**Kewarasan** — C5 mencapai 1,0542, dekat angka repo induk untuk YOLO26m
+**Kewarasan**: C5 mencapai 1,0542, dekat angka repo induk untuk YOLO26m
 (1,036), jadi implementasi F_all di sini wajar.
 
-**Hubungan dengan E-007** — ini mengonfirmasi ulang E-007 lewat jalur berbeda:
-penautan eksplisit tetap kalah dari koreksi statistik untuk counting. Bedanya,
+**Hubungan dengan E-007**, ini mengonfirmasi ulang E-007 lewat jalur berbeda:
+penautan eksplisit tetap berada di bawah koreksi statistik untuk pencacahan. Bedanya,
 sekarang sebabnya terukur (recall pasangan 0,12), bukan sekadar tercatat
 sebagai kegagalan.
 
-**Sumber** — `scripts/eval_counting.py` · `results/pt_e_004_counting.json`
+**Sumber**, `scripts/eval_counting.py` · `results/pt_e_004_counting.json`
 
 ---
 
-## PT-E-006 — Penghitung Baseline-SawitMVC (M01-M05) di deteksi nyata (2026-08-17)
+## PT-E-006: Penghitung Baseline-SawitMVC (M01-M05) di deteksi nyata (2026-08-17)
 
-**Latar** — User menunjuk `github.com/ULM-SawitMVC/Baseline-SawitMVC` sebagai
+**Latar**: User menunjuk `github.com/ULM-SawitMVC/Baseline-SawitMVC` sebagai
 lokasi algoritma dedup miliknya. Repo itu memuat lima algoritma heuristik dengan
-angka tercatat **Acc+-1 87,62% / macro MAE 0,3746 pada 953 pohon** — jauh lebih
+angka tercatat **Acc+−1 87,62% / macro MAE 0,3746 pada 953 pohon**, jauh lebih
 baik daripada apa pun di PT-E-004 (terbaik Ridge+F_all, macro MAE 1,0542).
 
-**Hipotesis** — Selisih itu berasal dari MASUKAN, bukan dari algoritmanya:
+**Hipotesis**: Selisih itu berasal dari MASUKAN, bukan dari algoritmanya:
 angka 0,375 diukur di kotak GT, bukan di deteksi detektor.
 
-**Cara** — algoritma yang sama, dua masukan, korpus dan split disebut eksplisit.
+**Cara**, algoritma yang sama, dua masukan, korpus dan split disebut eksplisit.
 
-**Hasil** —
+**Hasil**, 
 
 | Masukan | Himpunan | Algoritma | macro MAE | class ±1 | tree ±1 | total MAE |
 |---|---|---|---|---|---|---|
@@ -299,7 +299,7 @@ angka 0,375 diukur di kotak GT, bukan di deteksi detektor.
 | deteksi YOLO26l | 141 test | M05 (terbaik dari lima) | 1,8085 | 0,5975 | 0,1489 | 4,9929 |
 | deteksi YOLO26l | 141 test | naif tanpa dedup | 4,3582 | 0,3741 | 0,0142 | 16,1560 |
 
-**Putusan** — **DIKONFIRMASI.** Angka acuan repo tereproduksi **persis sampai
+**Putusan**, **DIKONFIRMASI.** Angka acuan repo tereproduksi **persis sampai
 empat desimal** (0,3746 / 0,8762 / 1,3305) di kotak GT 953 pohon. Di deteksi
 nyata, algoritma yang sama turun ke macro MAE 1,8298.
 
@@ -315,32 +315,32 @@ nyata, algoritma yang sama turun ke macro MAE 1,8298.
 | hitung pool (C4, pipeline ini) | 3,3422 |
 | naif (C1) | 4,3582 |
 
-**Kenapa M01 turun** — konstantanya (`BASE_FACTORS` 1,986 / 1,786 / 1,795 /
+**Kenapa M01 turun**, konstantanya (`BASE_FACTORS` 1,986 / 1,786 / 1,795 /
 1,655 dan `dup_rate` adaptif) diturunkan dari rasio duplikasi **kotak GT**.
 Detektor melewatkan ~18% kemunculan, jadi rasio duplikasi nyatanya berbeda dan
 konstanta itu jadi salah kalibrasi. Bias totalnya +4,92 tandan per pohon di
 deteksi vs +0,41 di GT. **Ini kalibrasi, bukan cacat gagasan**: menurunkan ulang
 faktor yang sama dari train-deteksi (C3) langsung memberi 1,1854.
 
-**Konsekuensi untuk sub-proyek ini** — algoritma M01-M05 **tidak bisa dipakai
+**Konsekuensi untuk sub-proyek ini**, algoritma M01-M05 **tidak bisa dipakai
 sebagai modul L**. Ia menjawab "berapa banyak tandan per kelas", bukan "kotak
 mana milik tandan mana". Pipeline per-tandan butuh identitas, bukan cacah.
 Pemblokir G1 karena itu masih terbuka.
 
-**Catatan kehati-hatian** — README repo itu sendiri sudah memisahkan kedua
-setelan (98,05% Class+-1 dengan deteksi GT vs 77,48% dengan YOLO26m). Angka
+**Catatan kehati-hatian**: README repo itu sendiri sudah memisahkan kedua
+setelan (98,05% Class+−1 dengan deteksi GT vs 77,48% dengan YOLO26m). Angka
 87,62% di `algorithms/README.md` tidak menyebut masukannya, jadi mudah terbaca
 sebagai angka end-to-end padahal bukan. Layak diberi keterangan di sana.
 
-**Sumber** — `scripts/eval_counting_baseline.py` ·
+**Sumber**, `scripts/eval_counting_baseline.py` ·
 `results/pt_e_006_baseline_counting.json`
 
-### PT-E-006 — tambahan: masukan C, detektor repo itu sendiri
+### PT-E-006, tambahan: masukan C, detektor repo itu sendiri
 
 Ditambahkan setelah entri di atas ditulis (bukan menyunting yang lama). Repo
 Baseline-SawitMVC menyertakan prediksi ter-cache detektornya sendiri
 (`predictions/y26mv2_per_tree/`, YOLO26m `y26mv2`, 953 pohon). Memakainya
-menutup kemungkinan bahwa penurunan di masukan B cuma efek detektor berbeda.
+menutup kemungkinan bahwa penurunan di masukan B hanya efek detektor berbeda.
 
 **M01 pada 141 pohon test, tiga masukan:**
 
@@ -354,11 +354,11 @@ menutup kemungkinan bahwa penurunan di masukan B cuma efek detektor berbeda.
 
 1. Selisih A → C (0,34 → 1,18, **3,5x**) adalah **efek detektor murni**:
    algoritma sama, korpus sama, hanya kotaknya yang berganti dari GT ke deteksi.
-   Ini sejalan dengan README repo itu sendiri (98,05% Class+-1 dengan deteksi GT
+   Ini sejalan dengan README repo itu sendiri (98,05% Class+−1 dengan deteksi GT
    vs 77,48% dengan YOLO26m).
 2. Selisih C → B (1,18 → 1,83) **bukan** kelemahan algoritmanya melainkan
    ambang keyakinan: PT-E-00x memakai conf 0,10 karena disetel untuk memaksimalkan
-   manfaat penggabungan pada tugas KLASIFIKASI, bukan untuk counting. Di ambang
+   manfaat penggabungan pada tugas KLASIFIKASI, bukan untuk pencacahan. Di ambang
    serendah itu deteksi jauh lebih banyak (naif 4,36 vs 2,45 macro MAE), jadi
    penghitung apa pun yang berbasis pembagian ikut membengkak. Angka M01 yang
    adil untuk dikutip adalah **1,1826**, bukan 1,8298.
@@ -366,33 +366,33 @@ menutup kemungkinan bahwa penurunan di masukan B cuma efek detektor berbeda.
    M01 1,1826 · k-per-kelas 1,1854 · Ridge+F_all 1,0542 (dan 1,036 di catatan
    repo itu untuk detektornya sendiri). Tidak ada yang mendekati 0,37.
 
-**Kesimpulan yang mengikat** — angka 87,62% / macro MAE 0,3746 di
+**Kesimpulan yang mengikat**, angka 87,62% / macro MAE 0,3746 di
 `algorithms/README.md` adalah angka **kotak GT**, bukan end-to-end. Ia sah dan
 tereproduksi persis, tetapi tidak sebanding dengan angka end-to-end mana pun.
-Yang membatasi counting bukan algoritma dedup-nya, melainkan detektornya —
+Yang membatasi pencacahan bukan algoritma dedup-nya, melainkan detektornya, 
 persis kesimpulan yang sudah ditulis README utama repo itu.
 
 ---
 
-## PT-E-007 — Penghitung Baseline-SawitMVC sebagai REM penggabungan (2026-08-17)
+## PT-E-007: Penghitung Baseline-SawitMVC sebagai REM penggabungan (2026-08-17)
 
-**Latar** — PT-E-003 menunjukkan penaut **terlalu pelit**: 3.095 kelompok untuk
+**Latar**: PT-E-003 menunjukkan penaut **terlalu pelit**: 3.095 kelompok untuk
 1.404 tandan asli (2,2x), hanya 29% tandan punya pool >=2 tampak. Algoritma
-M01 dari Baseline-SawitMVC tahu hal yang tidak diketahui penaut — berapa banyak
+M01 dari Baseline-SawitMVC tahu hal yang tidak diketahui penaut, berapa banyak
 tandan di pohon itu. Gagasannya: pakai angka itu sebagai target, gabungkan terus
 dari pasangan berskor tertinggi sampai jumlah kelompok turun ke target.
 
-**Hipotesis** — Memaksa penggabungan sampai cacah target menaikkan porsi tandan
+**Hipotesis**: Memaksa penggabungan sampai cacah target menaikkan porsi tandan
 yang tersatukan, sehingga gain +4,9 pp dari PT-E-001/003 menyentuh lebih banyak
 tandan dan akurasi kelas agregat naik melewati pipeline lama (0,7203).
 
-**Yang memalsukan** — akurasi kelas TIDAK naik saat porsi tersatukan naik.
+**Yang memalsukan**, akurasi kelas TIDAK naik saat porsi tersatukan naik.
 
-**Cara** — deteksi, penaut, dan aturan yang sama persis di ketiga mode; hanya
+**Cara**, deteksi, penaut, dan aturan yang sama persis di ketiga mode; hanya
 kriteria berhentinya berbeda. Kendala keras tetap: satu kotak per sisi per
 tandan, plafon ukuran 3 (4-sisi) / 6 (8-sisi).
 
-**Hasil** —
+**Hasil**, 
 
 | Split | Mode | Kelompok / asli | Tersatukan | R0 | R4 | F1 penaut |
 |---|---|---|---|---|---|---|
@@ -403,8 +403,8 @@ tandan, plafon ukuran 3 (4-sisi) / 6 (8-sisi).
 | test | B rem M01 | 2.098 / 1.404 (1,49x) | 59,3% | 0,6577 | 0,6872 | 0,1897 |
 | test | C rem **cacah sempurna** | 1.582 / 1.404 (1,13x) | 75,9% | 0,6132 | 0,6454 | 0,1875 |
 
-**Putusan** — **DIPALSUKAN, tegas.** Remnya bekerja persis seperti dirancang —
-porsi tersatukan naik 29% → 76% dan rasio kelompok mendekati 1,0 — tetapi
+**Putusan**, **DIPALSUKAN, tegas.** Remnya bekerja persis seperti dirancang, 
+porsi tersatukan naik 29% → 76% dan rasio kelompok mendekati 1,0, tetapi
 akurasi kelas **turun monoton** di kedua split (test 0,7139 → 0,6872 → 0,6454).
 
 **Diagnosis ulang yang mengikat pekerjaan berikutnya.** Mode C adalah kuncinya:
@@ -413,38 +413,38 @@ menyalahkan taksiran M01. Akurasinya tetap turun paling dalam. Artinya:
 
 > Masalah penaut **bukan berhenti terlalu cepat**, melainkan **urutan skornya
 > salah**. Kalau peringkat pasangannya benar, memaksa menggabung lebih banyak
-> — dari skor tertinggi ke bawah — akan menggabung pasangan yang benar lebih
+>, dari skor tertinggi ke bawah, akan menggabung pasangan yang benar lebih
 > dulu dan akurasi naik. Yang terjadi sebaliknya: pasangan berskor tertinggi
 > yang belum tergabung ternyata mayoritas SALAH.
 
 Ini membatalkan dua dugaan sebelumnya yang tercatat di PT-E-003:
-1. "recall pasangan 0,12 sebagian artefak ambang warisan kotak GT" — **salah**.
+1. "recall pasangan 0,12 sebagian artefak ambang warisan kotak GT", **salah**.
    Menurunkan ambang (mode B/C) memperburuk, bukan memperbaiki.
-2. "menyetel ambang di ruang deteksi adalah perbaikan murah" — **tidak berguna**.
+2. "menyetel ambang di ruang deteksi adalah perbaikan murah", **tidak berguna**.
    Ambang berapa pun tidak menolong kalau peringkatnya yang keliru.
 
-**Yang tetap bertahan** — aturan agregasi terus memberi nilai tambah di semua
+**Yang tetap bertahan**, aturan agregasi terus memberi nilai tambah di semua
 mode, bahkan justru menguat saat pool makin kotor (test R4−R0: +1,44 → +2,96 →
 +3,24 pp). Jadi modul A sehat; yang rusak masukannya.
 
-**Konsekuensi** — algoritma dedup Baseline-SawitMVC **tidak bisa menolong
+**Konsekuensi**, algoritma dedup Baseline-SawitMVC **tidak bisa menolong
 pipeline ini**, baik sebagai pengganti penaut (ia tidak mencocokkan kotak,
 PT-E-006) maupun sebagai rem (dicoba di sini, memperburuk). Jalan yang tersisa
-adalah menaikkan mutu **peringkat pasangan** itu sendiri — bukan menyetel ulang
+adalah menaikkan mutu **peringkat pasangan** itu sendiri, bukan menyetel ulang
 kapan berhenti.
 
-**Sumber** — `scripts/eval_rem_hitung.py` · `results/pt_e_007_rem_hitung.json`
+**Sumber**, `scripts/eval_rem_hitung.py` · `results/pt_e_007_rem_hitung.json`
 
 ---
 
-## PT-E-008 — Arah putar pengambilan foto (2026-08-17)
+## PT-E-008: Arah putar pengambilan foto (2026-08-17)
 
-**Latar** — Pemilik data mengonfirmasi: foto diambil **memutari pohon searah
+**Latar**: Pemilik data mengonfirmasi: foto diambil **memutari pohon searah
 jarum jam**, urutan sisi 1→2→3→4 konsisten. Informasi ini tidak pernah dipakai;
-seluruh fitur geometri sebelumnya memakai `abs_dcx` — **nilai mutlak** — sehingga
+seluruh fitur geometri sebelumnya memakai `abs_dcx`, **nilai mutlak**, sehingga
 arah pergeseran dibuang.
 
-**Hipotesis** — Tandan yang sama bergeser ke arah yang konsisten antar sisi
+**Hipotesis**: Tandan yang sama bergeser ke arah yang konsisten antar sisi
 berurutan, dan tanda pergeseran itu memisahkan pasangan benar dari salah jauh
 lebih baik daripada jaraknya saja.
 
@@ -460,18 +460,18 @@ Konstanta yang dipas di train (`results/harapan_geser.json`) memperlihatkan
 tanda tangan putaran melingkar yang rapi pada pohon 8-sisi:
 
     offset  1      2      3      4      5      6      7
-    dx    +0,120 +0,255 +0,347 +0,308 -0,355 -0,261 -0,152
+    dx    +0,120 +0,255 +0,347 +0,308 −0,355 −0,261 −0,152
 
 Naik sampai puncak di offset 3–4 (~90–135°), lalu berbalik tanda, dan simetris
 hampir sempurna terhadap titik balik. Ini persis yang diharapkan dari
 pengambilan foto memutar satu arah.
 
-**Fitur yang ditambahkan** — `offset_bertanda`, `dx_bertanda`, `dy_bertanda`,
+**Fitur yang ditambahkan**, `offset_bertanda`, `dx_bertanda`, `dy_bertanda`,
 `sisa_dx` (dx dikurangi harapan untuk offset itu), `abs_sisa_dx`. Urutan pasangan
 dikanonikkan (selalu dari sisi ber-indeks kecil ke besar) supaya tandanya
 bermakna tetap. Konstanta dipas **hanya di split train**.
 
-**Hasil — penaut di kotak GT:**
+**Hasil, penaut di kotak GT:**
 
 | Varian | val F1 | val ARI | test F1 | test ARI |
 |---|---|---|---|---|
@@ -482,42 +482,42 @@ bermakna tetap. Konstanta dipas **hanya di split train**.
 
 Bias jumlah kelompok ikut membaik: −0,96 → **−0,22**.
 
-**Putusan — gerbang G1 LOLOS** (val F1 0,6718 ≥ 0,65 dan ARI 0,6139 ≥ 0,55),
+**Putusan, gerbang G1 LOLOS** (val F1 0,6718 ≥ 0,65 dan ARI 0,6139 ≥ 0,55),
 setelah gugur di semua varian sebelumnya.
 
-**Hasil — pipeline utuh (test):**
+**Hasil, pipeline utuh (test):**
 
 | | tanpa arah | dengan arah |
 |---|---|---|
 | F1 penautan di deteksi | 0,1766 | 0,1957 |
 | R4 akurasi kelas | 0,7124 | **0,7179** |
-| R4 vs oracle | −2,36 pp | **−1,81 pp** |
+| R4 vs model batas atas teoretis | −2,36 pp | **−1,81 pp** |
 | penggabungan, pool ≥2 tampak | +4,76 pp | **+5,32 pp**, CI95 [+2,09; +8,42] |
 
-**Putusan — gerbang G2 LOLOS** (−1,81 pp, toleransi −2,0), setelah gugur
+**Putusan, gerbang G2 LOLOS** (−1,81 pp, toleransi −2,0), setelah gugur
 sebelumnya.
 
 **JEBAKAN yang sempat memakan korban dan sudah ditutup.** Tabel konstanta hidup
 sebagai global modul yang semula hanya diisi di dalam `main()` skrip penaut.
 Skrip end-to-end meng-import modul itu dan mendapatkannya **kosong**, sehingga
-fitur arah tidak aktif dan hasilnya diam-diam kembali ke fitur lama — tanpa satu
+fitur arah tidak aktif dan hasilnya diam-diam kembali ke fitur lama, tanpa satu
 pun pesan galat. Gejalanya khas: F1 end-to-end 0,1766 → 0,1761, **identik sampai
 tiga desimal**, padahal di kotak GT melonjak 0,3651 → 0,6486. Angka yang tidak
 berubah sama sekali itu tandanya. Perbaikan akar: tabel di-cache ke
 `results/harapan_geser.json` dan dimuat **otomatis saat modul di-import**, plus
 `RuntimeWarning` keras kalau kosong.
 
-**Catatan jujur** — lompatan ini bukan hasil pemodelan. Warna, tekstur, embedding
-terlatih, out-of-fold, dan rem cacah semuanya mentok atau memperburuk. Yang
+**Catatan apa adanya**, lompatan ini bukan hasil pemodelan. Warna, tekstur, embedding
+terlatih, out-of-fold, dan rem cacah semuanya mencapai batas saturasi atau memperburuk. Yang
 membuka jalan adalah satu kalimat dari pemilik data tentang **cara foto diambil**
-— informasi yang seharusnya ditanyakan di awal, bukan setelah tujuh eksperimen.
+, informasi yang seharusnya ditanyakan di awal, bukan setelah tujuh eksperimen.
 
-**Sumber** — `scripts/penaut_pertandan.py` (fitur + `hitung_harapan_geser`) ·
+**Sumber**, `scripts/penaut_pertandan.py` (fitur + `hitung_harapan_geser`) ·
 `results/harapan_geser.json` · `results/pt_e_002_penaut.json` ·
 `results/pt_e_003_endtoend.json` · pembanding tanpa arah disimpan di
 `results/pt_e_00{2,3,4}_*_tanpa_arah.json`
 
-### PT-E-008 — tambahan: sapuan ambang di ruang deteksi, dan counting diulang
+### PT-E-008, tambahan: sapuan ambang di ruang deteksi, dan pencacahan diulang
 
 Ditambahkan setelah entri di atas (bukan menyunting yang lama).
 
@@ -532,7 +532,7 @@ berlaku saat PERINGKAT skornya buruk; setelah arah putar, AUC pasangan 0,95):
 | 0,35 | 0,7079 | 261 | 0,2596 |
 | **0,45** | **0,7112** | 246 | 0,2595 |
 
-Polanya konsisten: **ambang lebih tinggi lebih baik** — lebih sedikit kelompok
+Polanya konsisten: **ambang lebih tinggi lebih baik**, lebih sedikit kelompok
 tapi lebih bersih. Dikunci 0,45. Perbaikannya marginal (+0,22 pp di val, nol di
 test: 0,7179 di kedua ambang; jumlah pool multi berubah 335 → 309, jadi runnya
 memang berbeda).
@@ -544,7 +544,7 @@ memang berbeda).
 | C4 hitung pool | 3,3422 (bias +11,96) | **3,4610** (bias +12,54) |
 | C5 Ridge + F_all | 1,0542 | 1,0542 |
 
-**G3 tetap GUGUR**, dan sedikit memburuk — konsekuensi langsung ambang 0,45 yang
+**G3 tetap GUGUR**, dan sedikit memburuk, konsekuensi langsung ambang 0,45 yang
 menghasilkan lebih banyak kelompok.
 
 **Bottleneck sudah BERGESER, dan ini temuan operasionalnya.** Di kotak GT penaut
@@ -554,29 +554,29 @@ di ruang deteksi seluruhnya berisi positif palsu.
 
 Penyebabnya bisa ditunjuk: ambang keyakinan deteksi **conf 0,10** dipilih di
 PT-E-001 saat penggabungan masih lemah, ketika memaksimalkan recall memang
-menguntungkan. Setelah penaut bekerja, pilihan itu jadi merugikan — deteksi
+menguntungkan. Setelah penaut bekerja, pilihan itu jadi merugikan, deteksi
 sampah ikut membentuk kelompok palsu, merusak baik klasifikasi maupun cacah.
 **Menyapu ulang conf belum dikerjakan** dan merupakan langkah termurah berikutnya.
 
-**Sumber** — `results/pt_e_003_endtoend.json` (memuat `sapuan_ambang_val_deteksi`) ·
+**Sumber**, `results/pt_e_003_endtoend.json` (memuat `sapuan_ambang_val_deteksi`) ·
 `results/pt_e_004_counting.json` · pembanding tanpa arah di
 `results/pt_e_00{3,4}_*_tanpa_arah.json`
 
 ---
 
-## PT-E-009 — Sapuan ulang ambang keyakinan deteksi (2026-08-17)
+## PT-E-009: Sapuan ulang ambang keyakinan deteksi (2026-08-17)
 
-**Hipotesis** — `conf = 0,10` dikunci di PT-E-001 saat penggabungan masih lemah.
+**Hipotesis**, `conf = 0,10` dikunci di PT-E-001 saat penggabungan masih lemah.
 Setelah PT-E-008 memperbaiki penaut, 40% kelompok di ruang deteksi seluruhnya
 positif palsu; menaikkan `conf` seharusnya membuang sampah itu dan menaikkan
 akurasi kelas maupun cacah.
 
-**Yang memalsukan** — akurasi kelas atas SELURUH tandan GT tidak naik saat
+**Yang memalsukan**, akurasi kelas atas SELURUH tandan GT tidak naik saat
 `conf` dinaikkan.
 
-**Cara** — 6 conf x 3 ambang penaut, `tau` disetel ulang per conf, semua dipilih
+**Cara**: 6 conf x 3 ambang penaut, `tau` disetel ulang per conf, semua dipilih
 di val. Bagian mahal (citra, deskriptor, embedding, skor seluruh pasangan)
-dihitung sekali di conf terendah lalu disaring — deteksi di ambang tinggi adalah
+dihitung sekali di conf terendah lalu disaring, deteksi di ambang tinggi adalah
 himpunan bagian dari ambang rendah. Penghitung pembanding dipas ulang di train
 pada tiap conf.
 
@@ -598,7 +598,7 @@ akurasi atas **seluruh tandan GT**, dengan tandan tak terdeteksi dihitung salah.
 | 0,50 | 46% | 0,397 | 0,7636 | 0,3549 |
 | 0,60 | 24% | 0,538 | 0,8107 | 0,1986 |
 
-**Putusan** — **DIPALSUKAN.** `conf = 0,10` sudah optimal; menaikkannya
+**Putusan**, **DIPALSUKAN.** `conf = 0,10` sudah optimal; menaikkannya
 memperburuk secara monoton. Terkunci dari val: conf 0,10, ambang penaut 0,65
 (marginal di atas 0,45: 0,6411 vs 0,6391).
 
@@ -607,41 +607,41 @@ memperburuk secara monoton. Terkunci dari val: conf 0,10, ambang penaut 0,65
 | | nilai |
 |---|---|
 | R4 atas seluruh 1.404 tandan GT | **0,6474** (cakupan 90%) |
-| R4 atas tandan terdeteksi | 0,7163 (oracle 0,7360) |
+| R4 atas tandan terdeteksi | 0,7163 (model batas atas teoretis 0,7360) |
 | C4 hitung pool | macro MAE 3,6571 |
 | C5 Ridge + F_all | macro MAE **1,0542** |
 
-**Yang dipelajari** — dugaannya separuh benar dan separuh salah. Benar: positif
+**Yang dipelajari**, dugaannya separuh benar dan separuh salah. Benar: positif
 palsu memang merusak penautan, dan membuangnya menaikkan F1 penaut dua kali
 lipat (0,25 → 0,54) serta akurasi pada tandan yang tersisa (0,715 → 0,811).
 Salah: itu tidak bisa ditebus dengan menaikkan ambang, karena kurva
-presisi-recall detektor terlalu curam — setiap tandan sampah yang dibuang
+presisi-recall detektor terlalu curam, setiap tandan sampah yang dibuang
 menyeret beberapa tandan asli. **Perbaikannya harus di detektornya, bukan di
 ambangnya.**
 
-Ini juga menutup jalur counting: C4 tidak akan mengalahkan C5 selama cacah pool
+Ini juga menutup jalur pencacahan: C4 tidak akan mengalahkan C5 selama cacah pool
 mewarisi seluruh positif palsu detektor, dan ambang bukan alat untuk itu.
 
-**Sumber** — `scripts/sapu_conf.py` · `results/pt_e_009_sapu_conf.json`
+**Sumber**, `scripts/sapu_conf.py` · `results/pt_e_009_sapu_conf.json`
 
 ---
 
-## PT-E-010 — Konfigurasi terbaik diuji di SawitMVC-Depth 352 (2026-08-17)
+## PT-E-010: Konfigurasi terbaik diuji di SawitMVC-Depth 352 (2026-08-17)
 
-**Hipotesis** — Temuan di korpus 953 bertahan di sesi akuisisi yang berbeda.
+**Hipotesis**: Temuan di korpus 953 bertahan di sesi akuisisi yang berbeda.
 
-**Kenapa uji ini kuat** — SawitMVC-Depth direkam terpisah ~80 hari setelah korpus
+**Kenapa uji ini kuat**: SawitMVC-Depth direkam terpisah ~80 hari setelah korpus
 953 (`../results/pergeseran_temporal.json`), kamera berbeda, citra landscape
 1280x800 alih-alih portrait 960x1280, dan 352 pohon alih-alih 953. Kalau temuan
-intinya bertahan, ia sifat protokol pengambilan — bukan kebetulan satu sesi.
+intinya bertahan, ia sifat protokol pengambilan, bukan kebetulan satu sesi.
 
-**Konfigurasi** — dikunci dari 953, TIDAK disetel ulang: detektor
+**Konfigurasi**, dikunci dari 953, TIDAK disetel ulang: detektor
 `runs/yolo26l_e60_i1280_rgb352` (detektor 352 sendiri), penaut varian E
 (geometri + arah putar + kelas prediksi lunak + re-ID), aturan R4, conf 0,10.
 Bobot re-ID **dipindah apa adanya dari 953** (uji transfer). Konstanta arah putar
-dan `tau` dipas ulang di train 352 — kalibrasi, bukan penyetelan konfigurasi.
+dan `tau` dipas ulang di train 352, kalibrasi, bukan penyetelan konfigurasi.
 
-### Hasil 1 — arah putar: REPLIKASI KUAT
+### Hasil 1, arah putar: REPLIKASI KUAT
 
 | Offset (4-sisi) | 352 | 953 |
 |---|---|---|
@@ -653,7 +653,7 @@ Arah dan konsistensi identik. Besaran lebih kecil karena citra lebih lebar, jadi
 pergeseran sudut yang sama menutupi fraksi lebar yang lebih kecil. Konstanta yang
 dipas di train 352: `+0,168 · +0,209 · −0,164`.
 
-### Hasil 2 — penaut: REPLIKASI, dan JAUH LEBIH BAIK
+### Hasil 2, penaut: REPLIKASI, dan JAUH LEBIH BAIK
 
 | | 953 | **352** |
 |---|---|---|
@@ -666,12 +666,12 @@ dipas di train 352: `+0,168 · +0,209 · −0,164`.
 
 Selisih di ruang deteksi itu **3,6 kali lipat** dan menjelaskan sisanya: detektor
 352 menghasilkan 2,7 deteksi/citra pada conf 0,10, sedangkan detektor 953
-menghasilkan 8,2 — jadi beban positif palsu jauh lebih ringan. **Ini konfirmasi
+menghasilkan 8,2, jadi beban positif palsu jauh lebih ringan. **Ini konfirmasi
 langsung diagnosis PT-E-009**: yang membatasi pipeline di 953 memang detektornya,
 dan begitu detektornya lebih bersih, penaut langsung bekerja mendekati mutunya di
-kotak GT (0,708 vs 0,685 — praktis sama).
+kotak GT (0,708 vs 0,685, praktis sama).
 
-### Hasil 3 — recall: REPLIKASI
+### Hasil 3, recall: REPLIKASI
 
 | | 953 | 352 |
 |---|---|---|
@@ -679,7 +679,7 @@ kotak GT (0,708 vs 0,685 — praktis sama).
 | recall per-tandan | 0,9038 | 0,8354 |
 | **selisih** | **+8,11 pp** | **+9,64 pp** |
 
-### Hasil 4 — penggabungan kelas: TIDAK REPLIKASI SECARA SIGNIFIKAN
+### Hasil 4, penggabungan kelas: TIDAK REPLIKASI SECARA SIGNIFIKAN
 
 | Split | G0 (R4 vs R0cal, pool >=2) |
 |---|---|
@@ -687,23 +687,23 @@ kotak GT (0,708 vs 0,685 — praktis sama).
 | **test (55 pohon, 95 pool multi)** | **+2,85 pp**, CI95 [−2,00; +8,24] |
 | pembanding 953 test (758 pool multi) | +4,36 pp, CI95 [+2,33; +6,25] |
 
-Arahnya positif di kedua split, tetapi CI test **memuat nol**. Lebar CI-nya 10,2
-pp lawan 3,9 pp di 953 — konsekuensi langsung ukuran sampel: 95 pool multi-tampak
+Arahnya positif di kedua split, tetapi CI test **mencakup nilai nol**. Lebar CI-nya 10,2
+pp lawan 3,9 pp di 953, konsekuensi langsung ukuran sampel: 95 pool multi-tampak
 lawan 758. **Uji ini tidak punya daya untuk memutuskan**, bukan bukti efeknya
 hilang.
 
-### Hasil 5 — R4 tidak menang di test 352
+### Hasil 5: R4 tidak unggul di test 352
 
-| Test 352, tautan oracle | akurasi |
+| Test 352, tautan model batas atas teoretis | akurasi |
 |---|---|
 | R0 satu tampak | 0,6970 |
 | R0cal | 0,6814 |
 | **R2 rerata softmax** | **0,7094** |
 | R4 ekspektasi ordinal | 0,6946 |
 
-Di val 352 R4 menang telak (0,7846 vs R0 0,7017, +8,3 pp), di test ia kalah dari
-R2. Penyebab paling mungkin: `tau` dicari di **52 pohon val** — terlalu sedikit,
-jadi ambangnya overfit. Di 953 (96 pohon val, 890 pool) R4 menang konsisten di
+Di val 352 R4 unggul telak (0,7846 vs R0 0,7017, +8,3 pp), di test ia berada di bawah
+R2. Penyebab paling mungkin: `tau` dicari di **52 pohon val**, terlalu sedikit,
+jadi ambangnya penyesuaian berlebih. Di 953 (96 pohon val, 890 pool) R4 unggul konsisten di
 kedua split. **Pelajaran: pemilihan ambang ordinal butuh split val yang lebih
 besar daripada yang tersedia di 352.**
 
@@ -714,26 +714,26 @@ besar daripada yang tersedia di 352.**
 | Recall | 0,7390 | **0,8354** |
 | Akurasi kelas | **0,7063** | 0,6946 |
 
-Pola yang sama dengan 953: recall menang, kelas imbang-sedikit-di-bawah.
+Pola yang sama dengan 953: recall unggul, kelas imbang-sedikit-di-bawah.
 
-**Putusan** — **SEBAGIAN DIKONFIRMASI.** Tiga dari lima temuan replikasi kuat
-(arah putar, mutu penaut, pergeseran recall), dan yang keempat — penaut jauh
-lebih baik di detektor yang lebih bersih — **mengonfirmasi diagnosis PT-E-009
+**Putusan**, **SEBAGIAN DIKONFIRMASI.** Tiga dari lima temuan replikasi kuat
+(arah putar, mutu penaut, pergeseran recall), dan yang keempat, penaut jauh
+lebih baik di detektor yang lebih bersih, **mengonfirmasi diagnosis PT-E-009
 secara independen**. Yang tidak replikasi adalah keuntungan kelas dari
 penggabungan, tetapi test 352 terlalu kecil untuk memutuskannya (CI 10,2 pp).
 
-**Sumber** — `scripts/uji_352.py` · `results/pt_e_010_uji_352.json`
+**Sumber**, `scripts/uji_352.py` · `results/pt_e_010_uji_352.json`
 
 ---
 
-## PT-E-011 — KOREKSI: hambatannya bukan mutu detektor, melainkan kepadatan adegan (2026-08-17)
+## PT-E-011, KOREKSI: hambatannya bukan mutu detektor, melainkan kepadatan adegan (2026-08-17)
 
-**Latar** — PT-E-009 dan PT-E-010 sama-sama menyimpulkan "yang membatasi adalah
+**Latar**: PT-E-009 dan PT-E-010 sama-sama menyimpulkan "yang membatasi adalah
 detektor". Pemilik data menolak kesimpulan itu: menurutnya mengganti detektor
 paling naik 1-2%, dan kalau memang seberpengaruh itu, efeknya akan terlihat
 lepas dari arsitektur backbone-nya. Klaim itu diuji langsung.
 
-**Yang tidak pernah saya periksa** — kepadatan objek per citra. Seluruh argumen
+**Yang tidak pernah saya periksa**, kepadatan objek per citra. Seluruh argumen
 "detektor 352 lebih bersih" bersandar pada 2,7 deteksi/citra lawan 8,2, tanpa
 membandingkannya dengan jumlah objek yang memang ada di sana.
 
@@ -747,12 +747,12 @@ membandingkannya dengan jumlah objek yang memang ada di sana.
 | **presisi deteksi** | **0,584** | **0,639** |
 | **recall deteksi** | **0,823** | 0,739 |
 
-**Putusan** — **KESIMPULAN PT-E-009/010 DIPALSUKAN.** Kedua detektor mutunya
+**Putusan**, **KESIMPULAN PT-E-009/010 DIPALSUKAN.** Kedua detektor mutunya
 setara: presisi beda 5,5 pp, dan detektor 953 justru **lebih baik recall-nya**
 (0,823 vs 0,739). Deteksi/citra 2,90x lebih banyak di 953 hampir seluruhnya
 dijelaskan oleh objek yang 2,39x lebih padat, bukan oleh positif palsu berlebih.
 
-**Diagnosis pengganti — kepadatan adegan, bukan mutu detektor:**
+**Diagnosis pengganti, kepadatan adegan, bukan mutu detektor:**
 
 | | 953 | 352 |
 |---|---|---|
@@ -762,50 +762,50 @@ dijelaskan oleh objek yang 2,39x lebih padat, bukan oleh positif palsu berlebih.
 
 Mencari 10 pasangan benar di antara 235 versus 6 di antara 28. Tugas penautan di
 953 **secara kombinatorik ~5x lebih sulit**, dan itu sifat korpusnya (10,3 tandan
-per pohon lawan 6,5), bukan sifat detektornya. Mengganti backbone tidak mengubah
+per pohon lawan 6,5), bukan sifat detektornya. Mengganti kerangka utama (*backbone*) tidak mengubah
 kepadatan adegan.
 
 **Apa yang ini batalkan:**
-- "Perbaikannya harus di detektornya, bukan di ambangnya" (PT-E-009) — separuh
+- "Perbaikannya harus di detektornya, bukan di ambangnya" (PT-E-009), separuh
   benar: ambang memang bukan alatnya, tetapi detektor juga bukan.
 - "Selisih 3,6x di ruang deteksi mengonfirmasi diagnosis PT-E-009 secara
-  independen" (PT-E-010) — **tidak sah**. Selisih itu dijelaskan kepadatan.
+  independen" (PT-E-010), **tidak sah**. Selisih itu dijelaskan kepadatan.
 
 **Apa yang ini KUATKAN:** kenapa fitur arah putar (PT-E-008) memberi lompatan
 terbesar sepanjang sub-proyek ini. Ia bekerja bukan dengan memperbaiki
-diskriminasi per pasangan, melainkan dengan **memangkas ruang kandidat** —
+diskriminasi per pasangan, melainkan dengan **memangkas ruang kandidat**, 
 persis obat untuk masalah kombinatorik. Prior lain yang mempersempit kandidat
 lebih jauh (mis. depth di korpus 352) karena itu lebih menjanjikan daripada
 detektor baru. Kaveat: E-007 Volume 1 sudah pernah memalsukan penautan berbasis
 depth, tetapi tanpa prior arah dan tanpa penilai terlatih.
 
-**Pelajaran metodologis** — ini kesalahan penyebut yang **keempat** di sub-proyek
+**Pelajaran metodologis**, ini kesalahan penyebut yang **keempat** di sub-proyek
 ini, dalam bentuk baru: membandingkan hitungan mentah (deteksi/citra) antar
 korpus tanpa menormalkannya terhadap jumlah objek yang ada. Aturan di
 `docs/HASIL.md` §13 diperluas: **periksa penyebut setiap kali dua angka
-dibandingkan — termasuk saat penyebutnya adalah "berapa banyak yang seharusnya
+dibandingkan, termasuk saat penyebutnya adalah "berapa banyak yang seharusnya
 ada".**
 
-**Sumber** — diukur langsung dari `results/pred_skorpenuh{,_352}_test.npz` dan
+**Sumber**, diukur langsung dari `results/pred_skorpenuh{,_352}_test.npz` dan
 GT kedua korpus; perintahnya ada di riwayat percakapan sesi 2026-08-17.
 
 ---
 
-## PT-E-013 — Depth + arah putar → rekonstruksi 3D (352) (2026-08-17)
+## PT-E-013: Depth + arah putar → rekonstruksi 3D (352) (2026-08-17)
 
-**Hipotesis** — PT-E-011 menyimpulkan hambatannya kombinatorik, dan obatnya
+**Hipotesis**: PT-E-011 menyimpulkan hambatannya kombinatorik, dan obatnya
 prior yang memangkas ruang kandidat. Korpus 352 punya depth metrik. Digabung
 arah putar yang sudah terbukti, seharusnya bisa merekonstruksi posisi 3D tiap
-tandan di kerangka berpusat-pohon — dan tandan yang sama harus mendarat di titik
+tandan di kerangka berpusat-pohon, dan tandan yang sama harus mendarat di titik
 yang sama dari sisi mana pun ia dilihat. Itu prior pemangkas kandidat yang jauh
 lebih kuat daripada pergeseran horizontal saja.
 
-**Yang memalsukan** — jarak 3D antar pasangan setandan tidak lebih kecil
+**Yang memalsukan**, jarak 3D antar pasangan setandan tidak lebih kecil
 daripada antar pasangan beda-tandan.
 
-**Cara** — depth mentah `.raw` (848x480, uint16 mm) direproyeksi penuh ke bidang
+**Cara**, depth mentah `.raw` (848x480, uint16 mm) direproyeksi penuh ke bidang
 warna 1280x800 memakai kalibrasi di sidecar tiap berkas: intrinsik depth ->
-ekstrinsik (`mTrans` = [-23,67; 0,07; 0,14] mm) -> intrinsik warna. Metadata
+ekstrinsik (`mTrans` = [−23,67; 0,07; 0,14] mm) -> intrinsik warna. Metadata
 dataset **eksplisit memperingatkan** bahwa me-resize buffer secara langsung
 meleset median 29 px, jadi reproyeksi penuh memang wajib. Distorsi diabaikan
 (koefisiennya kecil).
@@ -825,10 +825,10 @@ Kedua tanda putaran diuji.
 | tinggi metrik (ΔY) | 0,6027 |
 | jarak horizontal MUTLAK | 0,2542 |
 
-Kewarasan: median depth per citra 2.524 mm (p10 1.122, p90 3.337) — reproyeksinya
+Kewarasan: median depth per citra 2.524 mm (p10 1.122, p90 3.337), reproyeksinya
 benar, ini bukan bug.
 
-**Putusan** — **DIPALSUKAN.** Rekonstruksi 3D tidak lebih baik daripada acak,
+**Putusan**, **DIPALSUKAN.** Rekonstruksi 3D tidak lebih baik daripada acak,
 untuk kedua arah putaran. Jarak 3D pasangan setandan (median 416 mm) justru
 **lebih besar** daripada pasangan beda-tandan (383 mm).
 
@@ -836,7 +836,7 @@ untuk kedua arah putaran. Jarak 3D pasangan setandan (median 416 mm) justru
 mengandaikan kamera mengorbit pada jari-jari tetap, selalu membidik sumbu pohon,
 dengan langkah azimut persis 90°. Pengambilannya handheld: jarak berubah, arah
 bidik berubah, sudutnya tidak persis. Rekonstruksi **memperbesar** galat itu
-alih-alih meniadakannya — sebab tiap galat pose masuk sebagai pergeseran
+alih-alih meniadakannya, sebab tiap galat pose masuk sebagai pergeseran
 sistematis seluruh titik dari citra tersebut.
 
 Ini mereproduksi pemalsuan E-007 (Volume 1) lewat jalur berbeda, **dengan
@@ -848,29 +848,29 @@ sedikit di atas tinggi-citra ternormalkan yang sudah dipakai (0,5926). Diuji
 gabungan pada held-out: 0,5648 → **0,5766**, naik 0,012 AUC. Terlalu kecil untuk
 berarti ketika penaut sudah di AUC 0,95. **Tidak dimasukkan ke fitur produksi.**
 
-**Konsekuensi** — depth **bukan** prior pemangkas kandidat yang dicari. Prior
+**Konsekuensi**, depth **bukan** prior pemangkas kandidat yang dicari. Prior
 yang bekerja (arah putar) bekerja justru karena ia **tidak** memerlukan
 rekonstruksi: ia hanya butuh urutan sisi, bukan pose. Kandidat prior berikutnya
-sebaiknya punya sifat yang sama — bergantung pada hal yang terkendali dalam
+sebaiknya punya sifat yang sama, bergantung pada hal yang terkendali dalam
 protokol pengambilan, bukan pada geometri yang tidak diukur.
 
-**Sumber** — diukur langsung dari `/workspace/SawitMVC-Depth/depth/*.{raw,json}`;
+**Sumber**, diukur langsung dari `/workspace/SawitMVC-Depth/depth/*.{raw,json}`;
 skrip probe ada di riwayat percakapan sesi 2026-08-17.
 
 ---
 
-## PT-E-012 — Modul C3, classifier multi-tampak (2026-08-17)
+## PT-E-012: Modul C3, pengklasifikasi multi-tampak (2026-08-17)
 
-**Hipotesis** — Sketsa asal menunjukkan seluruh potongan tandan masuk KE DALAM
+**Hipotesis**: Sketsa asal menunjukkan seluruh potongan tandan masuk KE DALAM
 model, keluar satu label. Yang dibangun selama ini bukan itu: tiap potongan
-dinilai sendiri, digabung rumus R4 di luar model. Rumus itu buta konteks — tidak
+dinilai sendiri, digabung rumus R4 di luar model. Rumus itu buta konteks, tidak
 bisa tahu satu foto buram atau dua tampak beda kelas karena satu dari sisi
 bayangan. Model yang melihat semuanya sekaligus mestinya bisa mempelajarinya.
 
-**Yang memalsukan** — C3 tidak mengalahkan C2 (yang mengisolasi "melihat banyak
-tampak sekaligus" dari "punya classifier khusus").
+**Yang memalsukan**: C3 tidak mengalahkan C2 (yang mengisolasi "melihat banyak
+tampak sekaligus" dari "punya pengklasifikasi khusus").
 
-**Cara** — ketiganya dinilai pada POTONGAN GT dan TAUTAN ORACLE, himpunan tandan
+**Cara**, ketiganya dinilai pada POTONGAN GT dan TAUTAN Model batas atas teoretis, himpunan tandan
 yang sama, supaya galat deteksi dan galat penautan tidak ikut campur.
 
 | Jalur | Isi |
@@ -884,146 +884,146 @@ yang sama, supaya galat deteksi dan galat penautan tidak ikut campur.
 | Jalur | Akurasi | Pada pool >=2 tampak |
 |---|---|---|
 | **C1 skor detektor + R4** | **0,7208** | **0,7583** |
-| C2 classifier per-tampak + R4 | 0,7087 | 0,7397 |
-| C3 multi-tampak (backbone sebagian beku) | 0,6781 | 0,7006 |
-| C3 multi-tampak (backbone **beku penuh**) | 0,6467 | 0,6820 |
+| C2 pengklasifikasi per-tampak + R4 | 0,7087 | 0,7397 |
+| C3 multi-tampak (kerangka utama sebagian beku) | 0,6781 | 0,7006 |
+| C3 multi-tampak (kerangka utama **beku penuh**) | 0,6467 | 0,6820 |
 
-**Putusan** — **DIPALSUKAN.** C3 kalah dari C2 sebesar 3,06 pp dan dari C1
-sebesar 4,27 pp. Membekukan backbone penuh — dugaan perbaikan untuk overfit —
+**Putusan**, **DIPALSUKAN.** C3 berada di bawah C2 sebesar 3,06 pp dan dari C1
+sebesar 4,27 pp. Membekukan kerangka utama penuh, dugaan perbaikan untuk penyesuaian berlebih, 
 **memperburuk lagi** menjadi 0,6467.
 
 **Dua temuan, dan yang kedua lebih luas dari yang pertama:**
 
 1. **C3 < C2.** Melihat seluruh tampak sekaligus tidak menolong pada skala data
-   ini. Penyebabnya overfit: C2 mencapai loss latih **0,0018** (praktis
+   ini. Penyebabnya penyesuaian berlebih: C2 mencapai fungsi rugi pelatihan **0,0018** (praktis
    menghafal), dan varian beku penuh tetap menunjukkan train 0,878 lawan val
    0,643 meski kepalanya kecil dengan dropout 0,5 dan weight decay 1e-2.
-   Contoh latihnya cuma 7.427 tandan; C3 punya parameter lebih banyak dan
+   Contoh latihnya hanya 7.427 tandan; C3 punya parameter lebih banyak dan
    contoh lebih sedikit daripada C2 (yang berlatih per-tampak, ~14 ribu).
 
-2. **C2 < C1** — ini yang lebih penting. Classifier potongan khusus **kalah dari
+2. **C2 < C1**, ini yang lebih penting. Pengklasifikasi potongan khusus **berada di bawah
    skor kelas detektor yang sudah ada**. Detektor dilatih pada tugas deteksi
    penuh di 3.000 citra dengan sinyal supervisi dan augmentasi jauh lebih kaya;
-   classifier potongan di 716 pohon tidak bisa menandinginya. **Jadi yang
-   tertutup bukan cuma C3, melainkan seluruh jalur "tingkatkan modul C".**
+   pengklasifikasi potongan di 716 pohon tidak bisa menandinginya. **Jadi yang
+   tertutup bukan hanya C3, melainkan seluruh jalur "tingkatkan modul C".**
 
-**Batas klaim yang jujur** — ini memalsukan C3 **pada skala data ini**, bukan
-gagasan classifier multi-tampak secara umum. Kalau nanti korpusnya jauh lebih
+**Batas klaim yang sesuai bukti**, ini memalsukan C3 **pada skala data ini**, bukan
+gagasan pengklasifikasi multi-tampak secara umum. Kalau nanti korpusnya jauh lebih
 besar, pertanyaannya layak dibuka lagi. Yang TIDAK boleh disimpulkan dari sini:
-bahwa agregasi multi-tampak tidak berguna — R4 di atas C1 tetap memberi
+bahwa agregasi multi-tampak tidak berguna: R4 di atas C1 tetap memberi
 +4,36 pp (PT-E-001), dan itu bertahan.
 
-**Sumber** — `scripts/c3_multitampak.py` · `results/pt_e_012_c3.json`; varian
-backbone beku penuh ada di riwayat percakapan sesi 2026-08-17.
+**Sumber**, `scripts/c3_multitampak.py` · `results/pt_e_012_c3.json`; varian
+kerangka utama beku penuh ada di riwayat percakapan sesi 2026-08-17.
 
 ---
 
-## PT-E-014 — Backbone lain untuk modul C (2026-08-18)
+## PT-E-014: Kerangka utama lain untuk modul C (2026-08-18)
 
-**Hipotesis** — PT-E-012 memalsukan modul C memakai SATU backbone (ResNet-18).
-`IDEA.md` sec.4 butir 1 meminta backbone lebih kuat. Kalau ConvNeXt-Tiny membalik
+**Hipotesis**: PT-E-012 memalsukan modul C memakai SATU kerangka utama (ResNet-18).
+`IDEA.md` sec.4 butir 1 meminta kerangka utama lebih kuat. Kalau ConvNeXt-Tiny membalik
 C2<C1 atau C3<C2, penutupan jalur modul C oleh PT-E-012 terlalu dini.
 
-**Yang memalsukan** — ConvNeXt tidak menaikkan C2/C3 di atas ResNet-18.
+**Yang memalsukan**: ConvNeXt tidak menaikkan C2/C3 di atas ResNet-18.
 
-**Cara** — protokol identik PT-E-012 baris per baris: potongan GT, tautan oracle,
+**Cara**, protokol identik PT-E-012 baris per baris: potongan GT, tautan model batas atas teoretis,
 himpunan tandan sama (train 7.427 / val 992 / test 1.404, multi-tampak
 5.546/760/1.022), 25 epoch, `tau` dipas di val per jalur. Yang berubah hanya
-backbone. ConvNeXt dibekukan `features.0..3`, analog dengan `conv1..layer2` di
+kerangka utama. ConvNeXt dibekukan `features.0..3`, analog dengan `conv1..layer2` di
 ResNet-18. Dua seed (0, 1) supaya efeknya bisa dibandingkan dengan derau.
 
-**Reproduksi lebih dulu** — sel kontrol `resnet18+ce` menghasilkan **C1 R4 test
+**Reproduksi lebih dulu**, sel kontrol `resnet18+ce` menghasilkan **C1 R4 test
 0,7208** dan **C1 R4_multi 0,7583**, keduanya PERSIS sama dengan PT-E-012. Jalur
 tanpa training tereproduksi penuh, jadi pipa data, pembentukan pool, pemasangan
 `tau`, dan evaluasi tervalidasi. Jalur terlatih TIDAK tereproduksi: C2 0,6823
-lawan 0,7087 di PT-E-012 (-2,64 pp), sebabnya urutan konsumsi RNG saat
+lawan 0,7087 di PT-E-012 (−2,64 pp), sebabnya urutan konsumsi RNG saat
 inisialisasi berbeda karena struktur modul sedikit berbeda.
 
 **Hasil (test 953, akurasi R4; C1 = 0,7208 di semua sel):**
 
-| backbone | loss | seed | C2 R4 | C3 | C2-C1 | C3-C1 |
+| kerangka utama | fungsi rugi | seed | C2 R4 | C3 | C2-C1 | C3-C1 |
 |---|---|---|---|---|---|---|
-| resnet18 | ce | 0 | 0,6823 | 0,6667 | -3,85 | -5,41 |
-| resnet18 | ce | 1 | 0,6980 | 0,6859 | -2,28 | -3,49 |
-| convnext_tiny | ce | 0 | 0,7009 | 0,6994 | -1,99 | -2,14 |
-| convnext_tiny | ce | 1 | 0,7115 | **0,7187** | -0,93 | **-0,21** |
+| resnet18 | ce | 0 | 0,6823 | 0,6667 | −3,85 | −5,41 |
+| resnet18 | ce | 1 | 0,6980 | 0,6859 | −2,28 | −3,49 |
+| convnext_tiny | ce | 0 | 0,7009 | 0,6994 | −1,99 | −2,14 |
+| convnext_tiny | ce | 1 | 0,7115 | **0,7187** | −0,93 | **−0,21** |
 
-**Putusan** — **SEBAGIAN DIKONFIRMASI.** ConvNeXt menaikkan C2 (+1,86 pp pada ce,
+**Putusan**, **SEBAGIAN DIKONFIRMASI.** ConvNeXt menaikkan C2 (+1,86 pp pada ce,
 seed 0) dan C3 tajam (+3,27 pp pada ce, seed 0), tetapi tidak satu pun sel
 mengalahkan C1. Arah PT-E-012 bertahan; magnitudonya tidak.
 
 **Temuan yang lebih luas: PT-E-012 tidak punya error bar.** Rentang antar-seed
 untuk konfigurasi yang SAMA adalah 1,06-1,99 pp (C2) dan 0,43-1,93 pp (C3).
-Putusan PT-E-012 bersandar pada selisih C2-C1 = -1,21 pp, yang lebih KECIL
+Putusan PT-E-012 bersandar pada selisih C2-C1 = −1,21 pp, yang lebih KECIL
 daripada rentang seed di tiga dari empat konfigurasi. Selisih sebesar itu tidak
 bisa dipisahkan dari derau inisialisasi dengan satu seed.
 
-**Sumber** — `scripts/c_backbone_ordinal.py` · `results/pt_e_014_c_*.json` ·
-dump `results/pt_e_014_prob_*.npz` · bobot `runs/c_*/best.pt`
+**Sumber**, `scripts/c_backbone_ordinal.py` · `results/pt_e_014_c_*.json` ·
+*dump* `results/pt_e_014_prob_*.npz` · bobot `runs/c_*/best.pt`
 
 ---
 
-## PT-E-015 — Ordinal loss (CORAL) untuk modul C (2026-08-18)
+## PT-E-015: fungsi rugi ordinal (CORAL) untuk modul C (2026-08-18)
 
-**Hipotesis** — `IDEA.md` sec.4 butir 2. B1<B2<B3<B4 berurutan; cross-entropy
+**Hipotesis**, `IDEA.md` sec.4 butir 2. B1<B2<B3<B4 berurutan; cross-entropy
 memperlakukan galat B1-vs-B2 sama mahal dengan B1-vs-B4. Aturan agregasi R4
-sendiri sudah ordinal, jadi loss ordinal menyelaraskan latih dengan hilir.
+sendiri sudah ordinal, jadi fungsi rugi ordinal menyelaraskan latih dengan hilir.
 
-**Yang memalsukan** — CORAL tidak menaikkan akurasi di atas cross-entropy.
+**Yang memalsukan**: CORAL tidak menaikkan akurasi di atas cross-entropy.
 
-**Cara** — faktor kedua dari skrip yang sama, backbone dipatok. CORAL memodelkan
+**Cara**, faktor kedua dari skrip yang sama, kerangka utama dipatok. CORAL memodelkan
 K-1 ambang kumulatif `P(y>k)` dengan bobot BERSAMA dan bias dipaksa menurun
 (`b_k = b0 - cumsum(softplus(delta))`). Monotonisitas itu wajib, bukan kosmetik:
 tanpanya selisih kumulatif bisa negatif dan vektor kelasnya tidak sah disuap ke R4.
 
 **Hasil (test, akurasi; selisih coral - ce pada seed 0):**
 
-| backbone | C2 ce | C2 coral | delta | C3 ce | C3 coral | delta |
+| kerangka utama | C2 ce | C2 coral | delta | C3 ce | C3 coral | delta |
 |---|---|---|---|---|---|---|
 | resnet18 | 0,6823 | 0,7058 | **+2,35 pp** | 0,6667 | 0,6766 | +0,99 pp |
 | convnext_tiny | 0,7009 | 0,7037 | +0,28 pp | 0,6994 | **0,7130** | +1,36 pp |
 
-**Putusan** — **SEBAGIAN DIKONFIRMASI.** CORAL menaikkan akurasi di keempat
-pasangan (C2 dan C3, dua backbone) pada seed 0, terbesar +2,35 pp. Tetapi
+**Putusan**, **SEBAGIAN DIKONFIRMASI.** CORAL menaikkan akurasi di keempat
+pasangan (C2 dan C3, dua kerangka utama) pada seed 0, terbesar +2,35 pp. Tetapi
 seed 1 membalik sebagian (resnet18 C2: ce 0,6980 lawan coral 0,6859), dan
 seluruh selisihnya berada di dalam rentang seed yang diukur PT-E-014. **Arahnya
 konsisten, magnitudonya tidak terpisahkan dari derau pada n seed = 2.**
 
 Digabung dengan PT-E-014: sel terbaik `convnext_tiny+coral` seed 0 memberi C3
-0,7130 lawan 0,6781 di PT-E-012, memperkecil jarak C3-C1 dari -4,27 pp menjadi
-**-0,78 pp**. Jalur modul C tidak seburuk yang PT-E-012 simpulkan, tapi tetap
+0,7130 lawan 0,6781 di PT-E-012, memperkecil jarak C3-C1 dari −4,27 pp menjadi
+**−0,78 pp**. Jalur modul C tidak seburuk yang PT-E-012 simpulkan, tapi tetap
 belum mengalahkan C1 secara tunggal.
 
-**Sumber** — sama dengan PT-E-014.
+**Sumber**, sama dengan PT-E-014.
 
 ---
 
-## PT-E-016 — Penaut GNN di ruang kotak GT (2026-08-18)
+## PT-E-016: Penaut GNN di ruang kotak GT (2026-08-18)
 
-**Hipotesis** — `IDEA.md` sec.4 butir 3. PT-E-007 menyimpulkan urutan skor penaut
+**Hipotesis**, `IDEA.md` sec.4 butir 3. PT-E-007 menyimpulkan urutan skor penaut
 yang salah, bukan ambangnya. Urutan skor yang salah adalah gejala khas penilaian
 INDEPENDEN: kalau kotak `a` sangat cocok dengan `b`, itu semestinya menurunkan
 skor `a`-dengan-`c`, tapi `HistGradientBoosting` yang menilai satu pasangan
 sekaligus tidak punya jalan untuk tahu. GNN dengan attention per-simpul membawa
 persaingan antar-kandidat ke DALAM skor.
 
-**Yang memalsukan** — GNN tidak mengalahkan penilai independen pada F1/ARI klaster.
+**Yang memalsukan**: GNN tidak mengalahkan penilai independen pada F1/ARI klaster.
 
-**Cara** — fitur pasangan SAMA PERSIS (varian E: geometri + arah putar +
+**Cara**, fitur pasangan SAMA PERSIS (varian E: geometri + arah putar +
 penampilan + re-ID + prob prediksi) dan perakit klaster SAMA PERSIS (Hungarian
 per pasangan-sisi, lalu union-find serakah, batasan sisi-unik dan ukuran maks
 3/6). Yang berbeda hanya cara skor sisi dihitung.
 
 **Cacat metodologis di run pertama, dicatat karena mengubah putusan.** Grid
-ambang `[0,10 .. 0,50]` diwarisi dari baseline. Baseline memuncak di 0,25
+ambang `[0,10 .. 0,50]` diwarisi dari garis dasar pembanding. Garis dasar pembanding memuncak di 0,25
 (optimum interior, sah); GNN naik MONOTON sampai 0,50 lalu grid habis. Delta yang
-tercatat -3,36 pp mengukur GNN yang dilumpuhkan. Skor GNN memang terkalibrasi
+tercatat −3,36 pp mengukur GNN yang dilumpuhkan. Skor GNN memang terkalibrasi
 lebih tinggi karena `pos_weight` 14,2. Disapu ulang di grid sampai 0,975,
 optimum GNN ada di **0,90** (interior) dan putusannya berbalik.
 
 **Hasil (test 953, 138 pohon, ambang dikunci dari val):**
 
-| | baseline | GNN |
+| | garis dasar pembanding | GNN |
 |---|---|---|
 | AUC pasangan val | 0,9508 | **0,9585** |
 | F1 | 0,6243 | 0,6349 |
@@ -1035,43 +1035,43 @@ Bootstrap tingkat pohon (2.000 resample):
 
 | | delta | CI95 | P(delta>0) |
 |---|---|---|---|
-| F1 | +1,06 pp | [-1,46 ; +3,83] | 0,787 |
-| ARI | +3,45 pp | [-0,05 ; +7,38] | 0,971 |
-| cakupan | -0,98 pp | [-3,99 ; +2,14] | 0,257 |
+| F1 | +1,06 pp | [−1,46 ; +3,83] | 0,787 |
+| ARI | +3,45 pp | [−0,05 ; +7,38] | 0,971 |
+| cakupan | −0,98 pp | [−3,99 ; +2,14] | 0,257 |
 
-**Putusan** — **TIDAK KONKLUSIF.** Yang bertahan tanpa kaveat hanya AUC pasangan
+**Putusan**, **TIDAK KONKLUSIF.** Yang bertahan tanpa kaveat hanya AUC pasangan
 (+0,0077), yang bebas ambang dan bebas perakit. F1 tidak terpisahkan dari nol,
-dan val justru memilih baseline (0,6692 lawan 0,6535) sementara test memilih GNN
-— ranking yang berbalik antar-split adalah tanda selisihnya sebanding derau.
-ARI nyaris lolos (batas bawah -0,05 pp) tetapi menyebutnya signifikan berarti
+dan val justru memilih garis dasar pembanding (0,6692 lawan 0,6535) sementara test memilih GNN
+, ranking yang berbalik antar-split adalah tanda selisihnya sebanding derau.
+ARI nyaris lolos (batas bawah −0,05 pp) tetapi menyebutnya signifikan berarti
 menggeser ambang setelah melihat angka, yang dilarang CLAUDE.md sec.2.
 
 **Koreksi penyebut yang penting.** `IDEA.md` menargetkan cakupan penaut
-29% -> >70%. Angka 29% itu hidup di ruang DETEKSI. Di ruang kotak GT — tempat
-eksperimen ini berjalan dan tempat gerbang G1 diukur — baseline SUDAH 0,6595.
+29% -> >70%. Angka 29% itu hidup di ruang DETEKSI. Di ruang kotak GT, tempat
+eksperimen ini berjalan dan tempat gerbang G1 diukur, garis dasar pembanding SUDAH 0,6595.
 Target IDEA.md tidak bisa dijawab di sini. Lihat PT-E-017.
 
-**Sumber** — `scripts/gnn_penaut.py` · `scripts/sapu_ambang_gnn.py` ·
+**Sumber**, `scripts/gnn_penaut.py` · `scripts/sapu_ambang_gnn.py` ·
 `scripts/ci_gnn.py` · `results/pt_e_016_gnn.json` ·
 `results/pt_e_016b_sapu_ambang.json` · `results/pt_e_016c_ci.json` ·
-dump `results/pt_e_016_skor_test.npz` · bobot `runs/gnn_penaut/best.pt`
+*dump* `results/pt_e_016_skor_test.npz` · bobot `runs/gnn_penaut/best.pt`
 
 ---
 
-## PT-E-017 — Penaut dilatih di RUANG DETEKSI, bukan kotak GT (2026-08-18)
+## PT-E-017: Penaut dilatih di RUANG DETEKSI, bukan kotak GT (2026-08-18)
 
-**Hipotesis** — Sejak PT-E-002 sampai PT-E-010, penaut SELALU dilatih di pasangan
+**Hipotesis**: Sejak PT-E-002 sampai PT-E-010, penaut SELALU dilatih di pasangan
 kotak GT (`eval_endtoend.py`: "melatih ulang penaut di pasangan kotak GT split
 train") lalu dipakai di atas deteksi. Kotak GT bersih: tepat satu per tandan
-nyata, nol positif palsu. Deteksi tidak — PT-E-003 mencatat 39,9% pool seluruhnya
+nyata, nol positif palsu. Deteksi tidak: PT-E-003 mencatat 39,9% pool seluruhnya
 positif palsu. Penaut yang tak pernah melihat positif palsu saat latihan tidak
 punya cara belajar menolaknya. Kalau benar, sebagian dari "cakupan 29%" bukan
 kombinatorik melainkan domain shift.
 
-**Yang memalsukan** — melatih di pasangan deteksi tidak menaikkan F1 penautan
+**Yang memalsukan**, melatih di pasangan deteksi tidak menaikkan F1 penautan
 di ruang deteksi.
 
-**Cara** — tiga lengan, fitur/conf/perakit sama persis, `conf` 0,10 dikunci dari
+**Cara**, tiga lengan, fitur/conf/perakit sama persis, `conf` 0,10 dikunci dari
 PT-E-001:
 
 | lengan | penilai | dilatih di |
@@ -1092,22 +1092,22 @@ PT-E-001:
 deteksi terpetakan. Penyebut kedua dilaporkan juga di JSON
 (`cakupan_atas_semua`, penyebut 1.022 = seluruh tandan multi-sisi termasuk yang
 detektornya lewatkan): A 0,1057 · B 0,2818 · C 0,2847. Dua penyebut ini sengaja
-dipisah — CLAUDE.md sec.8.
+dipisah, CLAUDE.md sec.8.
 
-**Putusan** — **DIKONFIRMASI, kuat.** Domain shift (B-A) = **+15,88 pp F1**.
+**Putusan**, **DIKONFIRMASI, kuat.** Domain shift (B-A) = **+15,88 pp F1**.
 Penalaran bersama di atasnya (C-B) = **+7,08 pp F1**. Total F1 naik 2,5x.
 
 **Angka yang paling telak: AUC lengan A = 0,5868**, nyaris tebak-tebakan. Penaut
 yang sama mencetak AUC 0,9508 di pasangan kotak GT. Artinya seluruh hasil
-penautan ruang deteksi di sub-proyek ini — F1 0,1766 (PT-E-003), cakupan 29%,
-dan gerbang G3 yang gugur — diproduksi oleh penaut yang praktis acak di domain
+penautan ruang deteksi di sub-proyek ini: F1 0,1766 (PT-E-003), cakupan 29%,
+dan gerbang G3 yang gugur, diproduksi oleh penaut yang praktis acak di domain
 tempat ia sebenarnya dipakai.
 
 **Konsekuensi untuk diagnosis yang berlaku (CLAUDE.md sec.6).** Diagnosis
 "hambatannya kepadatan adegan, dan itu kombinatorik" tidak salah tapi **tidak
 lengkap**: 15,88 pp bisa diambil tanpa satu pun ide baru, hanya dengan
-memindahkan data latih ke domain yang benar. Kombinatorik tetap nyata — F1 0,3788
-masih jauh dari 0,65 — tetapi ia bukan satu-satunya penjelasan, dan bukan yang
+memindahkan data latih ke domain yang benar. Kombinatorik tetap nyata: F1 0,3788
+masih jauh dari 0,65, tetapi ia bukan satu-satunya penjelasan, dan bukan yang
 termurah diperbaiki.
 
 **Dan GNN baru menunjukkan nilainya di sini.** Di ruang kotak GT ia menambah
@@ -1116,30 +1116,30 @@ termurah diperbaiki.
 akal secara mekanis: persaingan antar-kandidat baru berguna kalau ada kandidat
 sampah untuk dikalahkan, dan kotak GT tidak punya satu pun.
 
-**Sumber** — `scripts/gnn_deteksi.py` · `results/pt_e_017_gnn_deteksi.json` ·
-dump `results/pt_e_017_skor_test.npz` · bobot `runs/gnn_deteksi/best.pt`
+**Sumber**, `scripts/gnn_deteksi.py` · `results/pt_e_017_gnn_deteksi.json` ·
+*dump* `results/pt_e_017_skor_test.npz` · bobot `runs/gnn_deteksi/best.pt`
 
 ---
 
-## PT-E-018 — C1/C2/C3 sebagai ANGGOTA ENSEMBLE, bukan pesaing (2026-08-18)
+## PT-E-018: C1/C2/C3 sebagai ANGGOTA ENSEMBLE, bukan pesaing (2026-08-18)
 
-**Hipotesis** — PT-E-012 mengadu C1/C2/C3 satu lawan satu, menyimpulkan tidak ada
+**Hipotesis**: PT-E-012 mengadu C1/C2/C3 satu lawan satu, menyimpulkan tidak ada
 yang mengalahkan C1, lalu menutup "seluruh jalur tingkatkan modul C". Pengukuran
 itu benar; inferensinya melompat. Yang tidak pernah ditanyakan: apakah galat
 mereka TERDEKORELASI. C1 adalah kepala klasifikasi detektor (tugas deteksi penuh,
-3.000 citra, augmentasi mosaic/hsv, supervisi kotak+kelas). C2 adalah classifier
+3.000 citra, augmentasi mosaic/hsv, supervisi kotak+kelas). C2 adalah pengklasifikasi
 potongan (7.427 potongan sudah-terpotong, flip+brightness, kelas murni). Dua
 rezim latih yang nyaris tidak beririsan.
 
-**Yang memalsukan** — ensemble tidak mengalahkan C1 sendirian.
+**Yang memalsukan**, ensemble tidak mengalahkan C1 sendirian.
 
-**Cara** — nol training baru; hanya kombinasi dump PT-E-014/015. Subset dipilih
+**Cara**, nol training baru; hanya kombinasi *dump* PT-E-014/015. Subset dipilih
 SERAKAH maju di val (`tau` dipatok selama pencarian supaya seleksi tidak memilih
-anggota yang cocok dengan ambang tertentu — jebakan yang sama dengan rekalibrasi
+anggota yang cocok dengan ambang tertentu, jebakan yang sama dengan rekalibrasi
 tersamar sebagai agregasi di PT-E-001), lalu bobot dan `tau` dipas di val. Test
 disentuh sekali.
 
-**Hasil (test 953, akurasi R4, potongan GT + tautan oracle):**
+**Hasil (test 953, akurasi R4, potongan GT + tautan model batas atas teoretis):**
 
 | | test | test multi-tampak |
 |---|---|---|
@@ -1151,45 +1151,45 @@ disentuh sekali.
 | **Ensemble** C1 0,6 + convnext-coral 0,2 + convnext-ce 0,2 | **0,7464** | **0,7789** |
 
 vs C1: **+2,56 pp, CI95 [+0,52 ; +4,53], P(delta>0) = 0,992** (bootstrap 138 pohon).
-val 0,7470 lawan test 0,7464 — stabil, tidak seperti PT-E-016 yang rankingnya
+val 0,7470 lawan test 0,7464, stabil, tidak seperti PT-E-016 yang rankingnya
 berbalik antar-split.
 
-**Putusan** — **DIKONFIRMASI.** CI tidak memuat nol.
+**Putusan**, **DIKONFIRMASI.** CI tidak mencakup nilai nol.
 
 **Dua konsekuensi yang lebih besar dari angkanya:**
 
-1. **Setiap anggota C2 kalah dari C1, gabungannya menang.** Semua C2 ada di
+1. **Setiap anggota C2 berada di bawah C1, gabungannya unggul.** Semua C2 ada di
    0,682-0,706, C1 di 0,7208. Ini membantah INFERENSI PT-E-012, bukan
    pengukurannya: yang tertutup adalah jalur MENGGANTI C1, bukan jalur
    MELENGKAPI C1. Yang terakhir tidak pernah diuji.
 
-2. **Plafon 73,60% bukan plafon.** PT-E-001 menetapkan plafon oracle R4 di atas
+2. **Plafon 73,60% bukan plafon.** PT-E-001 menetapkan plafon model batas atas teoretis R4 di atas
    skor detektor 0,7360, dan `IDEA.md` menutup dengan "potensi maksimal ide ini
-   melalui Oracle R4 adalah 73,60% bila tetap mengandalkan skor detektor YOLO".
+   melalui Model batas atas teoretis R4 adalah 73,60% bila tetap mengandalkan skor detektor YOLO".
    Ensemble mendarat di **0,7464** pada protokol yang sama, melewatinya +1,04 pp.
    Klausa "bila tetap mengandalkan skor detektor" ternyata menanggung seluruh
    beban: 73,60% adalah sifat probabilitas C1, bukan sifat pendekatan agregasi.
 
-**Batas klaim** — diukur pada potongan GT dan tautan oracle, sama seperti
+**Batas klaim**, diukur pada potongan GT dan tautan model batas atas teoretis, sama seperti
 PT-E-012, jadi ia mengukur plafon modul C, bukan pipeline utuh. Anggota C2
 dilatih di potongan GT; memakainya di potongan DETEKSI adalah domain shift
 tersendiri yang belum diuji (bandingkan PT-E-017, di mana shift serupa merugikan
 0,35 AUC). Itu pekerjaan PT-E-019.
 
-**Sumber** — `scripts/ensemble_c.py` · `results/pt_e_018_ensemble.json`
+**Sumber**, `scripts/ensemble_c.py` · `results/pt_e_018_ensemble.json`
 
 ---
 
-## PT-E-019 — Pipeline utuh: penaut PT-E-017 + ensemble PT-E-018 (2026-08-18)
+## PT-E-019, Pipeline utuh: penaut PT-E-017 + ensemble PT-E-018 (2026-08-18)
 
-**Hipotesis** — PT-E-017 (penaut ruang deteksi, F1 0,1492 -> 0,3788) dan PT-E-018
+**Hipotesis**: PT-E-017 (penaut ruang deteksi, F1 0,1492 -> 0,3788) dan PT-E-018
 (ensemble kelas, +2,56 pp) menyentuh pipeline lewat jalur berbeda: penaut
 menentukan BERAPA BANYAK tandan tersentuh agregasi, ensemble menentukan akurasi
 TIAP tandan yang tersentuh. Kalau keduanya nyata, efeknya berlipat.
 
-**Yang memalsukan** — gabungan tidak melebihi jumlah kontribusi masing-masing.
+**Yang memalsukan**, gabungan tidak melebihi jumlah kontribusi masing-masing.
 
-**Cara** — faktorial 2x2 (penaut lama/baru x kelas C1/ensemble), test 953,
+**Cara**, faktorial 2x2 (penaut lama/baru x kelas C1/ensemble), test 953,
 139 pohon, 1.268 tandan. Ambang penaut DIKUNCI dari PT-E-017 (lama 0,05; baru
 0,90) supaya tidak disetel terhadap metrik hilir. `tau` dipas di val per sel.
 
@@ -1203,11 +1203,11 @@ TIAP tandan yang tersentuh. Kalau keduanya nyata, efeknya berlipat.
 | penaut baru x ensemble | 0,7303 | 0,7287 | 0,7242 | **649** |
 
 Acuan: PT-E-003 pipeline utuh 0,7124 · pipeline lama per-citra 0,7203 ·
-plafon oracle C1 0,7360.
+plafon model batas atas teoretis C1 0,7360.
 
-**Putusan** — **DIPALSUKAN pada klaim berlipat.** Kontribusi penaut +0,63 pp,
+**Putusan**, **DIPALSUKAN pada klaim berlipat.** Kontribusi penaut +0,63 pp,
 kontribusi kelas +1,11 pp, jumlah seharusnya +1,74 pp; gabungan hanya **+0,87 pp**
-(CI95 [-1,23; +2,93], P=0,778). Sel terbaik BUKAN gabungannya melainkan
+(CI95 [−1,23; +2,93], P=0,778). Sel terbaik BUKAN gabungannya melainkan
 `penaut lama x ensemble` = 0,7311.
 
 **Kenapa mereka saling menggantikan, bukan menambah.** Kolom `test multi`
@@ -1230,41 +1230,41 @@ tercapai.
    paling mungkin `results/harapan_geser.json` yang diperbaiki di sesi ini:
    penaut lama di sini memakai prior arah putar yang benar, termasuk untuk 34
    pohon 8-sisi yang sebelumnya mendapat nol. Artinya sebagian kenaikan sudah ada
-   di baseline yang diperbaiki, bukan dari intervensi. Ini BUKAN reproduksi persis.
+   di garis dasar pembanding yang diperbaiki, bukan dari intervensi. Ini BUKAN reproduksi persis.
 2. **Tidak ada sel yang signifikan** terhadap kontrol pada n=137 pohon.
 3. Ensemble memakai C2 yang dilatih di potongan KOTAK GT dan dipakai di potongan
    DETEKSI. Shift itu ternyata TIDAK merusak seperti pada penaut (+1,11 pp masih
    positif), jadi risiko yang dikhawatirkan di PT-E-018 tidak terwujud -- tapi
    juga tidak diuji terpisah.
 
-**Yang bertahan** — tiga sel non-kontrol melewati 0,7124 (PT-E-003), dan tiga
+**Yang bertahan**, tiga sel non-kontrol melewati 0,7124 (PT-E-003), dan tiga
 dari empat melewati 0,7203 (pipeline lama per-citra). Sel terbaik 0,7311 tinggal
-0,49 pp dari plafon oracle 0,7360 **dengan tautan nyata, bukan oracle**.
+0,49 pp dari plafon model batas atas teoretis 0,7360 **dengan tautan nyata, bukan oracle**.
 
-**Arah berikutnya yang ditunjukkan hasil ini** — karena ensemble menolong di
+**Arah berikutnya yang ditunjukkan hasil ini**, karena ensemble menolong di
 tandan satu-tampak dan penaut menolong dengan memindahkan tandan keluar dari
 sana, keduanya bersaing memperebutkan populasi yang sama. Pengungkit yang belum
 tersentuh adalah menaikkan plafon pada tandan MULTI-tampak: di sana R4 di atas
-C1 sudah 0,7319 sementara oracle C1 0,7360, jadi ruangnya tipis. Menembusnya
+C1 sudah 0,7319 sementara model batas atas teoretis C1 0,7360, jadi ruangnya tipis. Menembusnya
 menuntut aturan agregasi yang lebih baik daripada R4, bukan probabilitas per
 tampak yang lebih baik.
 
-**Sumber** — `scripts/endtoend_gabungan.py` · `results/pt_e_019_gabungan.json`
+**Sumber**, `scripts/endtoend_gabungan.py` · `results/pt_e_019_gabungan.json`
 
 ---
 
-## PT-E-020 — Penaut global khusus DAMIMAS dengan konteks kompetisi (2026-08-18)
+## PT-E-020: Penaut global khusus DAMIMAS dengan konteks kompetisi (2026-08-18)
 
-**Tujuan engineering** — menaikkan mutu association di adegan padat tanpa
+**Tujuan engineering**, menaikkan mutu association di adegan padat tanpa
 mengubah detektor: model sisi dilatih langsung pada pasangan DETEKSI DAMIMAS,
 fiturnya membawa residual gerak bertanda, rank kandidat per sisi, margin
 kompetitor, distribusi kelas lunak, dan embedding re-ID. Skor kemudian dirakit
 dengan Hungarian, average/min/top-2 linkage, atau correlation-clustering ILP.
 
-**Protokol** — prior gerak dan lima model sisi dipasang di 641 pohon TRAIN;
+**Protokol**, prior gerak dan lima model sisi dipasang di 641 pohon TRAIN;
 model/ensemble/perakit/batas ukuran/ambang dipilih di 86 pohon VAL; 127 pohon
 TEST baru dibuat graf dan dinilai setelah konfigurasi terkunci. Checkpoint
-re-ID juga DAMIMAS-only. Detektor tetap dump C1 yang sama pada `conf=0,10`.
+re-ID juga DAMIMAS-only. Detektor tetap *dump* C1 yang sama pada `conf=0,10`.
 
 **Sinyal model sisi.** Ada 225.918 pasangan train, 6.242 positif (2,763%), 52
 fitur. AUC val lima kandidat = 0,9309--0,9435. Konfigurasi utility memilih
@@ -1278,7 +1278,7 @@ rerata tiga HistGradientBoosting, average-link, batas klaster observasi, ambang
 | **cakupan** | 0,3561 | 0,2568 | **0,5806** | **0,6400** | **0,4784** | 4,160 |
 | hitung-pool | 0,2600 | 0,1721 | 0,5312 | 0,5614 | 0,4196 | **2,880** |
 
-**Putusan** — association membaik material dan kepala tugas memang harus
+**Putusan**, association membaik material dan kepala tugas memang harus
 dipisahkan. Sebagai acuan historis, PT-E-017 pada seluruh varietas mencatat F1
 0,3788, cakupan-terdeteksi 0,3839, dan cakupan-semua 0,2847; angka itu bukan
 pembanding kausal yang persis karena scope sekarang hanya DAMIMAS. Walau
@@ -1286,34 +1286,34 @@ demikian, kenaikan absolut pada korpus yang tetap sangat padat cukup besar untuk
 dipakai sebagai komponen pipeline berikutnya.
 
 **Batas yang tetap keras.** Target cakupan semua >70% belum tercapai. Lebih
-penting, jumlah pool bukan estimator counting yang baik: bahkan kepala khusus
-MAE-pool masih 2,880, jauh di atas regresor counting sekitar 1,00. Karena itu
-linker dipakai untuk identitas/agregasi dan sebagai fitur counting, bukan
-dipaksa menjadi hasil counting akhir.
+penting, jumlah pool bukan estimator pencacahan yang baik: bahkan kepala khusus
+MAE-pool masih 2,880, jauh di atas regresor pencacahan sekitar 1,00. Karena itu
+linker dipakai untuk identitas/agregasi dan sebagai fitur pencacahan, bukan
+dipaksa menjadi hasil pencacahan akhir.
 
-**Sumber** — `scripts/linker_global_damimas.py` ·
+**Sumber**, `scripts/linker_global_damimas.py` ·
 `scripts/laporkan_kepala_linker_damimas.py` ·
 `results/damimas_linker_global.json`
 
 ---
 
-## PT-E-021 — Kepala proposal fisik dan relabel probabilistik DAMIMAS (2026-08-18)
+## PT-E-021: Kepala proposal fisik dan relabel probabilistik DAMIMAS (2026-08-18)
 
-**Tujuan engineering** — memisahkan dua keputusan yang sebelumnya bercampur:
+**Tujuan engineering**, memisahkan dua keputusan yang sebelumnya bercampur:
 proposal fisik dibuat unik lintas kelas untuk lokalisasi/linker, sedangkan
 kepala mAP boleh memancarkan empat hipotesis kelas berperingkat untuk satu
 proposal. Semua ambang NMS, temperatur, smoothing ordinal, eksponen skor, dan
 routing dipilih di 86 pohon VAL; TEST dibuka setelah konfigurasi terkunci.
 
 **Proposal fisik.** NMS class-agnostic IoU 0,60 dengan kotak dari baris skor
-tertinggi menang di VAL. Ia menghasilkan test AP50 lokalisasi **0,8381**,
+tertinggi unggul di VAL. Ia menghasilkan test AP50 lokalisasi **0,8381**,
 AP50-95 **0,3662**, dan titik operasi P/R/F1 **0,8017 / 0,7952 / 0,7984**.
-Dengan tautan oracle pada `conf=0,01`, recall fisik test **0,9620**, R4
+Dengan tautan model batas atas teoretis pada `conf=0,01`, recall fisik test **0,9620**, R4
 **0,7464**, macro-F1 **0,7162**, dan R4 pada 883 tandan multi-tampak **0,7724**.
-Utility `accuracy x recall` 0,7180 belum mengalahkan baseline 0,7204, sehingga
+Utility `accuracy x recall` 0,7180 belum mengalahkan garis dasar pembanding 0,7204, sehingga
 proposal ini menjadi kepala lokalisasi/linker dan tidak menggusur kepala recall.
 
-**Relabel probabilistik.** Konfigurasi VAL-locked memakai classifier hibrida,
+**Relabel probabilistik.** Konfigurasi VAL-locked memakai pengklasifikasi hibrida,
 campuran label asal 0,5, `T=0,6`, gamma 2, top-4, eksponen lokalisasi 1,25, dan
 smoothing ordinal 0,2. Dibanding fusion YOLO PT-E-019/awal, hasil test berubah:
 
@@ -1327,26 +1327,26 @@ smoothing ordinal 0,2. Dibanding fusion YOLO PT-E-019/awal, hasil test berubah:
 Keempat AP50 kelas naik pada relabel: **0,7923 / 0,4942 / 0,6548 / 0,4106**.
 Routing akhir hanya mengganti skor B3 dengan WBF original+relabel dan menjadi
 kepala mAP; relabel murni tetap kepala titik-operasi karena macro-F1-nya lebih
-baik. Ekspansi multi-kelas hanya dipakai evaluator deteksi; counting dan linker
+baik. Ekspansi multi-kelas hanya dipakai evaluator deteksi; pencacahan dan linker
 tetap menerima satu proposal fisik, sehingga satu tandan tidak dihitung empat
 kali.
 
-**Sumber** — `../scripts/relabel_detektor_damimas.py` ·
+**Sumber**, `../scripts/relabel_detektor_damimas.py` ·
 `../scripts/fusi_proposal_damimas.py` · `../scripts/fusi_detektor_damimas.py` ·
 `../results/damimas_relabel_classifier.json` ·
 `../results/damimas_fusi_yolo_relabel.json`
 
 ---
 
-## PT-E-022 — Linker global di atas proposal unik (2026-08-18)
+## PT-E-022: Linker global di atas proposal unik (2026-08-18)
 
-**Hipotesis** — deduplikasi class-agnostic sebelum membentuk graf mengurangi
+**Hipotesis**, deduplikasi class-agnostic sebelum membentuk graf mengurangi
 kompetitor palsu tanpa membuang distribusi kelas lunak. Pair model dipasang pada
 proposal unik TRAIN dari C1; model/perakit/ambang dipilih pada proposal fusion
 VAL; TEST proposal fusion baru dinilai setelah lock.
 
 Pasangan train turun **225.918 -> 144.277**, sementara prevalensi pasangan benar
-naik **2,763% -> 4,237%**. Average-link HGB ambang 0,70 menang di VAL.
+naik **2,763% -> 4,237%**. Average-link HGB ambang 0,70 unggul di VAL.
 
 | kepala VAL-locked | F1 test | presisi | recall | cakupan terdeteksi | cakupan semua | MAE pool |
 |---|---:|---:|---:|---:|---:|---:|
@@ -1358,42 +1358,42 @@ Terhadap PT-E-020 dengan protokol DAMIMAS yang sama, kepala utility naik F1
 **0,4631 -> 0,5171** dan cakupan-terdeteksi **0,5628 -> 0,6229**. Kepala
 coverage melewati target 70% bila penyebutnya tandan yang terdeteksi; cakupan
 atas seluruh tandan masih 51,55%, jadi target global belum tercapai. MAE pool
-1,864 juga masih kalah dari regresor counting 1,004 dan tetap hanya menjadi
-fitur, bukan hasil counting final.
+1,864 juga masih berada di bawah regresor pencacahan 1,004 dan tetap hanya menjadi
+fitur, bukan hasil pencacahan final.
 
-**Sumber** — `scripts/linker_global_damimas.py` ·
+**Sumber**, `scripts/linker_global_damimas.py` ·
 `scripts/laporkan_kepala_linker_damimas.py` ·
 `results/damimas_linker_global_proposal_yolo.json`
 
 ---
 
-## PT-E-023 — Mixture-of-experts strict DAMIMAS (2026-08-18)
+## PT-E-023: Mixture-of-experts strict DAMIMAS (2026-08-18)
 
-Empat classifier per-tandan strict mempunyai oracle-disagreement sekitar 83%
+Empat pengklasifikasi per-tandan strict mempunyai oracle-disagreement sekitar 83%
 di VAL, tetapi meta-model 120 fitur tidak dapat memprediksi anggota yang benar
-secara stabil. OOF GroupKFold per pohon memilih classifier klasik saja;
+secara stabil. OOF GroupKFold per pohon memilih pengklasifikasi klasik saja;
 hasil test 0,7234 / macro-F1 0,7055, di bawah champion ConvNeXt 0,7378 / 0,7166.
 Kepala per-tandan ini **DITOLAK**.
 
-Pada tugas per-view, meta ordinal berbasis classifier klasik, ConvNeXt-224,
+Pada tugas per-view, meta ordinal berbasis pengklasifikasi klasik, ConvNeXt-224,
 jumlah sisi, arah view, dan konteks pohon memberi test akurasi **0,7111** dan
 macro-F1 **0,6894**. Akurasi hanya +0,08 pp dari klasik 0,7103, tetapi macro-F1
 naik +1,01 pp; ia diterima sebagai kepala per-view sementara. Semua meta-model,
 blend, dan ambang dipilih dari prediksi OOF VAL sebelum TEST dibaca.
 
-**Sumber** — `scripts/moe_classifier_damimas.py` · `scripts/moe_view_damimas.py`
+**Sumber**, `scripts/moe_classifier_damimas.py` · `scripts/moe_view_damimas.py`
 · `results/damimas_moe_classifier.json` · `results/damimas_moe_view.json`
 
 ---
 
-## PT-E-024 — Propagasi confidence kelas lintas-view (2026-08-18)
+## PT-E-024: Propagasi skor keyakinan kelas lintas-view (2026-08-18)
 
-**Hipotesis** — linker proposal-unik tidak hanya berguna untuk laporan
+**Hipotesis**, linker proposal-unik tidak hanya berguna untuk laporan
 per-tandan. Evidence kelas dari view lain pada klaster prediksi yang sama dapat
-dipropagasikan kembali ke confidence deteksi per-citra, sehingga memperbaiki
+dipropagasikan kembali ke skor keyakinan (*confidence*) deteksi per-citra, sehingga memperbaiki
 ranking COCO tanpa menciptakan kotak baru.
 
-**Protokol** — baris deteksi routing PT-E-021 dipetakan ke proposal fisik unik.
+**Protokol**, baris deteksi routing PT-E-021 dipetakan ke proposal fisik unik.
 Kepala linker, agregasi, kekuatan campuran, eksponen objectness/kelas, dan
 score-blend disapu hanya pada 86 pohon VAL. Setelah konfigurasi global terkunci,
 router per kelas mengambil konfigurasi terbaik untuk masing-masing AP kelas
@@ -1411,24 +1411,24 @@ tetap.
 Validation juga bergerak searah: mAP50 **0,5881 -> 0,6024** dan mAP50-95
 **0,2716 -> 0,2774**. Audit invariant atas 44.926 baris VAL dan 66.539 baris
 TEST membuktikan delta koordinat maksimum 0, delta label maksimum 0, dan jumlah
-baris identik. Hanya 5.714/7.751 confidence yang berubah. Dengan demikian gain
-ini benar-benar berasal dari evidence multi-view, bukan penambahan proposal.
+baris identik. Hanya 5.714/7.751 skor keyakinan yang berubah. Dengan demikian gain
+ini berasal dari evidence multi-view, bukan penambahan proposal.
 
-**Putusan** — **DITERIMA** sebagai kepala deteksi class-aware sementara. Ia
+**Putusan**, **DITERIMA** sebagai kepala deteksi class-aware sementara. Ia
 memberi gain pada seluruh kelas dan tiga metrik utama sekaligus. Jalur proposal
-fisik/linker/counting tetap terpisah agar empat hipotesis kelas tidak pernah
+fisik/linker/pencacahan tetap terpisah agar empat hipotesis kelas tidak pernah
 menjadi empat objek.
 
-**Sumber** — `../scripts/propagasi_multiview_damimas.py` ·
+**Sumber**, `../scripts/propagasi_multiview_damimas.py` ·
 `../results/damimas_propagasi_multiview.json` ·
 `../results/pred_damimas_propagasi_multiview_{val,test}.npz`
 
 ---
 
-## PT-E-025 — Evaluasi end-to-end global satu-ke-satu (2026-08-18)
+## PT-E-025: Evaluasi end-to-end global satu-ke-satu (2026-08-18)
 
-**Tujuan** — mengganti angka classifier strict/oracle dengan evaluasi deploy
-yang benar-benar memakai proposal dan cluster prediksi. Pool dipasangkan ke GT
+**Tujuan**, mengganti angka pengklasifikasi strict/model batas atas teoretis dengan evaluasi deploy
+yang memakai proposal dan cluster prediksi. Pool dipasangkan ke GT
 secara Hungarian satu-ke-satu hanya pada lapisan evaluator. Pool tak terpasang
 menjadi FP dan tandan tak terpasang menjadi FN; satu pool tidak boleh mengklaim
 dua tandan.
@@ -1436,7 +1436,7 @@ dua tandan.
 Seluruh sumber probabilitas, kepala linker, threshold pool, aturan agregasi,
 skema bobot, dan tau ordinal dipilih pada VAL. Konfigurasi final memakai
 probabilitas PT-E-024, kepala linker coverage, threshold 0,15, serta R4 berbobot
-confidence dengan tau `(0,40; 1,75; 2,50)`. TEST baru dibuka setelah lock.
+skor keyakinan dengan tau `(0,40; 1,75; 2,50)`. TEST baru dibuka setelah lock.
 
 | metrik fisik | VAL | TEST |
 |---|---:|---:|
@@ -1455,20 +1455,20 @@ pool palsu. Probabilitas hasil propagasi mengalahkan routing lokal dan proposal
 C1 pada objective VAL, sehingga gain PT-E-024 bertahan setelah seluruh lapisan
 disambungkan.
 
-**Sumber** — `scripts/eval_endtoend_global_damimas.py` ·
+**Sumber**, `scripts/eval_endtoend_global_damimas.py` ·
 `results/damimas_endtoend_global.json`
 
 ---
 
-## PT-E-026 — Counting multi-bank anchor + proposal + linker (2026-08-18)
+## PT-E-026: Pencacahan multi-bank anchor + proposal + linker (2026-08-18)
 
-**Hipotesis** — statistik proposal unik dan klaster linker membawa informasi
-counting yang tidak ada pada dump anchor 1.683-dim. Menggabungkan bank anchor,
+**Hipotesis**, statistik proposal unik dan klaster linker membawa informasi
+pencacahan yang tidak ada pada *dump* anchor 1.683-dim. Menggabungkan bank anchor,
 proposal, dan 321 fitur linker seharusnya menurunkan macro-MAE terhadap kepala
 anchor 1,0039 tanpa memakai jumlah pool sebagai hitungan langsung.
 
-**Protokol** — fitur TRAIN/VAL dibangun lebih dulu. Seluruh 13 keluarga model
-baseline ditambah PLS dijalankan pada ruang anchor 1.683, proposal 1.683,
+**Protokol**, fitur TRAIN/VAL dibangun lebih dulu. Seluruh 13 keluarga model
+garis dasar pembanding ditambah PLS dijalankan pada ruang anchor 1.683, proposal 1.683,
 concat 3.366, dan concat+linker 3.687 dimensi. Kepala per kelas, kalibrasi,
 kepala total, dan rekonsiliasi dipilih di 86 pohon VAL. TEST 127 pohon baru
 dibuka setelah lock tercetak. Fitur linker hanya memakai cluster prediksi;
@@ -1486,32 +1486,32 @@ dikerjakan sesudah hasil ini ditutup.
 | full multi-bank | TEST | 1,0374 | **0,7579** | 0,3071 | 1,8504 |
 
 Full search mereproduksi kandidat anchor lama sampai empat desimal sebelum
-menguji bank baru, sehingga regresi bukan akibat baseline yang hilang. Meski
+menguji bank baru, sehingga regresi bukan akibat garis dasar pembanding yang hilang. Meski
 lock full terlihat kuat di VAL, gain macro tidak bertransfer: 0,8110 menjadi
-1,0374 di TEST. B3 tetap bottleneck (MAE 1,5276). Fitur tambahan membantu
+1,0374 di TEST. B3 tetap hambatan struktural (*bottleneck*) (MAE 1,5276). Fitur tambahan membantu
 seleksi validation tetapi meningkatkan variance pada hanya 641 pohon train.
 
-**Putusan** — hipotesis gain macro **DIPALSUKAN**; kepala macro tetap ensemble
+**Putusan**, hipotesis gain macro **DIPALSUKAN**; kepala macro tetap ensemble
 anchor 1,0039. Varian compact **DITERIMA HANYA sebagai kepala total khusus**
 karena total-MAE turun 1,8583 → 1,7795, sementara angka macro/tree tidak boleh
 diatribusikan kepadanya. Full dan compact disimpan terpisah agar hasil negatif
 tidak tertimpa.
 
-**Sumber** — `scripts/counting_multibank_damimas.py` ·
+**Sumber**, `scripts/counting_multibank_damimas.py` ·
 `results/damimas_counting_multibank_{compact,full}.json` ·
 `runs/counting_multibank_damimas/ensemble_{compact,full}.joblib`
 
 ---
 
-## PT-E-028 — CatBoost regularized dengan seleksi OOF+VAL (2026-08-18)
+## PT-E-028: CatBoost regularized dengan seleksi OOF+VAL (2026-08-18)
 
-**Hipotesis** — regularisasi kuat dan pemilihan kepala dari prediksi OOF TRAIN
+**Hipotesis**, regularisasi kuat dan pemilihan kepala dari prediksi OOF TRAIN
 ditambah VAL bersih dapat mengurangi variance PT-E-026 dan menurunkan
-macro-MAE counting terhadap champion anchor 1,0039. Resep CatBoost ditetapkan
+macro-MAE pencacahan terhadap champion anchor 1,0039. Resep CatBoost ditetapkan
 sebelum run: MultiRMSE 500 iterasi, depth 5, learning rate 0,035,
 `l2_leaf_reg=20`, `rsm=0,25`, dan 5 fold.
 
-**Protokol** — empat ruang fitur (`anchor`, `proposal`, `concat`, dan
+**Protokol**, empat ruang fitur (`anchor`, `proposal`, `concat`, dan
 `concat_linker`) menghasilkan prediksi OOF TRAIN serta prediksi VAL. Kepala per
 kelas, kalibrasi, kepala jumlah-total, dan rekonsiliasi dikunci pada gabungan
 OOF+VAL. Konfigurasi tercetak sebelum cache, label, serta fitur TEST dibuka.
@@ -1526,28 +1526,28 @@ Model terpakai kemudian dipasang ulang pada TRAIN+VAL tanpa mengubah lock.
 
 CatBoost tidak mengganti champion macro 1,0039 ataupun class ±1 0,7579.
 Tree ±1 naik dari ensemble anchor 0,3228 menjadi 0,3386, tetapi masih di bawah
-single-model 0,3780. Hipotesis gain macro karena itu **DIPALSUKAN**; dump dan
+single-model 0,3780. Hipotesis gain macro karena itu **DIPALSUKAN**; *dump* dan
 model tetap disimpan sebagai kandidat diversity untuk stacker final.
 
-**Koreksi terminologi PT-E-026** — rekonsiliasi seluruh run terkunci pada mode
+**Koreksi terminologi PT-E-026**, rekonsiliasi seluruh run terkunci pada mode
 `raw`. Akibatnya kolom `total-MAE` PT-E-026 dan angka CatBoost 1,7323 adalah MAE
 penjumlahan empat kepala kelas, bukan metrik regresor jumlah-total yang sudah
 dipilih terpisah. Audit inference-only atas model yang telah terkunci memberi:
 
 | kepala jumlah-total langsung | VAL saat seleksi | TEST audit |
 |---|---:|---:|
-| baseline anchor | 1,3837 | 1,5669 |
+| garis dasar pembanding anchor | 1,3837 | 1,5669 |
 | compact multi-bank | 1,3605 | **1,4882** |
 | full multi-bank | **1,3140** | 1,5276 |
 | CatBoost | 1,3721 | 1,5512 |
 
 Compact 1,4882 adalah hasil TEST terbaik yang teramati, tetapi ranking audit
-TEST tidak dijadikan lock final. Full menang pada VAL, sementara stacker
-counting final akan dipilih dari OOF/VAL setelah bank RF-DETR/RT-DETR lengkap.
+TEST tidak dijadikan lock final. Full unggul pada VAL, sementara stacker
+pencacahan final akan dipilih dari OOF/VAL setelah bank RF-DETR/RT-DETR lengkap.
 Prediksi per-pohon dan hash model disimpan agar koreksi dapat dihitung ulang
 tanpa fitting atau pemilihan ulang.
 
-**Sumber** — source run `edfeb5c` ·
+**Sumber**, source run `edfeb5c` ·
 `scripts/counting_catboost_damimas.py` ·
 `scripts/audit_counting_total_damimas.py` ·
 `results/damimas_counting_catboost.json` ·
@@ -1556,19 +1556,19 @@ tanpa fitting atau pemilihan ulang.
 
 ---
 
-## PT-E-029 — Ensemble kelas DAMIMAS: rata-rata berbobot mengalahkan stacker (2026-08-18)
+## PT-E-029, Ensemble kelas DAMIMAS: rata-rata berbobot mengalahkan stacker (2026-08-18)
 
-**Hipotesis** — `PIPELINE_DAMIMAS.md` mencatat "stacking seluruh model strict"
-berhenti di 0,7272, KALAH dari champion tunggalnya (0,7378). Stacker yang kalah
+**Hipotesis**, `PIPELINE_DAMIMAS.md` mencatat "stacking seluruh model strict"
+berhenti di 0,7272, Berada di bawah champion tunggalnya (0,7378). Stacker yang lebih rendah
 dari anggota terbaiknya bukan bukti anggotanya tidak saling melengkapi; itu
-gejala meta-learner yang overfit. Dengan VAL 86 pohon / 919 tandan, meta-learner
+gejala meta-learner yang penyesuaian berlebih. Dengan VAL 86 pohon / 919 tandan, meta-learner
 punya derajat kebebasan jauh melebihi yang bisa ditopang data seleksinya.
 Rata-rata berbobot dengan derajat kebebasan yang bisa dihitung jari seharusnya
-menang.
+unggul.
 
-**Yang memalsukan** — rata-rata berbobot tidak melewati champion tunggal.
+**Yang memalsukan**, rata-rata berbobot tidak melewati champion tunggal.
 
-**Cara** — metode PT-E-018 dipindahkan ke DAMIMAS: seleksi maju serakah di VAL,
+**Cara**, metode PT-E-018 dipindahkan ke DAMIMAS: seleksi maju serakah di VAL,
 bobot satu parameter, aturan keputusan dipilih lewat CV, TEST dibuka sekali.
 Lima bank per-tandan yang ada dipakai apa adanya; nol training baru.
 
@@ -1585,7 +1585,7 @@ Lima bank per-tandan yang ada dipakai apa adanya; nol training baru.
    0,7508 dan 0,7410) -- lalu jatuh ke **0,7318 di TEST**, di bawah `tau`
    tunggal yang memberi 0,7439. Tiga ambang tambahan dipas pada 212 tandan
    satu-tampak VAL saja; ia menghafal. Aturan berparameter lebih banyak SELALU
-   menang di data tempat parameternya dipas.
+   unggul di data tempat parameternya dipas.
 
    Perbaikannya bukan menengok TEST, melainkan memilih aturan lewat **CV 5-fold
    tingkat pohon di DALAM VAL**. CV langsung membalik urutannya:
@@ -1607,49 +1607,49 @@ Lima bank per-tandan yang ada dipakai apa adanya; nol training baru.
 | stacking semua (acuan) | 0,7312 | 0,7226 | — | — |
 | **ensemble (224 + klasik + set_transformer)** | **0,7508** | **0,7439** | **0,6590** | **0,7742** |
 
-vs champion pilihan-VAL: **+1,67 pp, CI95 [-0,15; +3,55], P(delta>0) = 0,96**.
+vs champion pilihan-VAL: **+1,67 pp, CI95 [−0,15; +3,55], P(delta>0) = 0,96**.
 Juga di atas champion terdokumentasi 0,7378 dan stacking 0,7272.
 
-**Putusan** — **DIKONFIRMASI.** Rata-rata berbobot mengalahkan baik champion
+**Putusan**, **DIKONFIRMASI.** Rata-rata berbobot mengalahkan baik champion
 tunggal maupun stacker, dengan nol training baru. CI menyentuh nol di batas
 bawah, jadi ini kuat tetapi belum tuntas secara statistik pada 124 pohon.
 
-**Jarak ke target** — `IDEA.md` menargetkan 0,80; ini 0,7439. Dekomposisinya
+**Jarak ke target**, `IDEA.md` menargetkan 0,80; ini 0,7439. Dekomposisinya
 menunjukkan kenapa itu masih jauh: satu-tampak 0,6590 lawan multi-tampak 0,7742.
 Bahkan kalau satu-tampak dinaikkan SAMA TINGGI dengan multi-tampak, totalnya
 hanya 0,7742. Target 0,80 menuntut **keduanya** naik, bukan salah satu.
 
-**Sumber** — `scripts/ensemble_kelas_damimas.py` ·
+**Sumber**, `scripts/ensemble_kelas_damimas.py` ·
 `results/pt_e_029_ensemble_kelas_damimas.json` ·
-dump `results/pt_e_029_ensemble_kelas_damimas_pred.npz`
+*dump* `results/pt_e_029_ensemble_kelas_damimas_pred.npz`
 
 ---
 
-## PT-E-030 — CORAL runtuh, CORN tidak: +36,8 pp dari mengganti loss ordinal (2026-08-18)
+## PT-E-030, CORAL runtuh, CORN tidak: +36,8 pp dari mengganti fungsi rugi ordinal (2026-08-18)
 
-**Hipotesis** — Tidak satu pun anggota classifier DAMIMAS memakai loss ordinal,
+**Hipotesis**: Tidak satu pun anggota pengklasifikasi DAMIMAS memakai fungsi rugi ordinal,
 padahal B1<B2<B3<B4 berurutan dan PT-E-015 (korpus 953) mengukur CORAL memberi
 +2,35 pp. Anggota ordinal juga yang paling mungkin TERDEKORELASI: seluruh anggota
 DAMIMAS berjangkar C1 (`mode_c1="residual"`), model ini tidak.
 
-**Yang memalsukan** — loss ordinal tidak menghasilkan anggota yang berguna.
+**Yang memalsukan**, fungsi rugi ordinal tidak menghasilkan anggota yang berguna.
 
-**Cara** — dua sel, resep IDENTIK (convnext_tiny, potongan 224 px, 12 epoch,
+**Cara**, dua sel, resep IDENTIK (convnext_tiny, potongan 224 px, 12 epoch,
 lr 2e-4, batch 48, seed 42, `features.0..3` beku). Satu-satunya yang berbeda:
-kepala loss.
+kepala fungsi rugi.
 
 **Hasil (test DAMIMAS, 1.316 tandan):**
 
-| loss | val | test |
+| fungsi rugi | val | test |
 |---|---|---|
-| CORAL (Cao et al. 2020, arXiv:1901.07884) | 0,3373 | **0,3305** |
-| CORN (Shi et al. 2023, arXiv:2111.08851) | 0,7095 | **0,6983** |
+| CORAL (Cao et al. 2020, arXiv:1901,07884) | 0,3373 | **0,3305** |
+| CORN (Shi et al. 2023, arXiv:2111,08851) | 0,7095 | **0,6983** |
 
-**+36,8 pp hanya dari mengganti loss.** Tebak acak 0,25; kelas mayoritas B3
+**+36,8 pp hanya dari mengganti fungsi rugi.** Tebak acak 0,25; kelas mayoritas B3
 sendirian 0,52 -- jadi CORAL bukan "lebih buruk", ia RUSAK.
 
 **Kenapa CORAL runtuh, dan ini bukan bug melainkan sifatnya.** Diagnosis dari
-dump prediksi: model memilih B4 untuk 966 dari 1.316 tandan, dan kelas tengah
+*dump* prediksi: model memilih B4 untuk 966 dari 1.316 tandan, dan kelas tengah
 terkurung -- **maks P(B2) = 0,291, maks P(B3) = 0,301**. Sebabnya struktural.
 CORAL memakai SATU vektor bobot bersama, jadi seluruh citra dipetakan ke satu
 skor skalar `s` dan tiga ambang hanya menggeser bias:
@@ -1657,14 +1657,14 @@ skor skalar `s` dan tiga ambang hanya menggeser bias:
     P(y = tengah) = sigma(s + b0) - sigma(s + b1)
 
 Nilai maksimumnya dibatasi jarak antar-bias. Saat bias menyempit selama training,
-kelas tengah tidak bisa menang berapa pun citranya. Ini persis kelemahan yang
+kelas tengah tidak bisa unggul berapa pun citranya. Ini persis kelemahan yang
 dilaporkan penulis CORN sendiri: "CORAL performs noticeably worse than OR-NN on
 the balanced MORPH-2 and AFAD datasets... likely due to its weight-sharing
 constraint limiting expressiveness". Di DAMIMAS ia muncul dalam bentuk ekstrem.
 
 CORN menghapus kekangan itu: tiap task punya bobot sendiri, dan konsistensi rank
 datang dari aturan rantai `P(y>r_k) = prod_{j<=k} f_j` yang otomatis monoton
-karena tiap faktor di [0,1]. Subset latihnya bersarang: `S_1` = semua,
+karena tiap faktor di [0; 1]. Subset latihnya bersarang: `S_1` = semua,
 `S_k = {y > r_{k-1}}`.
 
 **Catatan yang layak dicatat untuk arah berikutnya.** Task 3 CORN dilatih HANYA
@@ -1675,7 +1675,7 @@ tetapi dengan dasar teori dan tanpa parameter campuran tambahan. Spesialis
 terpisah karena itu TIDAK dijalankan; ia baru masuk akal kalau CORN terbukti
 belum menyerap batas B2|B3.
 
-**Putusan** — **DIKONFIRMASI untuk CORN, DIPALSUKAN untuk CORAL di korpus ini.**
+**Putusan**, **DIKONFIRMASI untuk CORN, DIPALSUKAN untuk CORAL di korpus ini.**
 CORN 0,6983 masih di bawah anggota terbaik (set_transformer 0,7386), jadi ia
 bukan champion tunggal; nilainya ada di keragaman ensemble.
 
@@ -1683,20 +1683,20 @@ bukan champion tunggal; nilainya ada di keragaman ensemble.
 yang MODEST di dataset seimbang (MORPH-2 MAE 2,99 -> 2,98) dan jelas di lainnya
 (AFAD 2,99 -> 2,81). Selisih +36,8 pp di sini bukan "CORN 36 pp lebih baik dari
 CORAL" secara umum -- ia besar karena CORAL kebetulan runtuh total pada
-konfigurasi ini (backbone sebagian beku, 12 epoch, 4 kelas dengan dua kelas
-tengah). Yang bisa diklaim: pada resep ini, weight-sharing CORAL fatal.
+konfigurasi ini (kerangka utama sebagian beku, 12 epoch, 4 kelas dengan dua kelas
+tengah). Yang bisa diklaim: pada resep ini, weight-sharing CORAL menimbulkan degradasi mendasar.
 
-**Sumber** — `scripts/classifier_coral_damimas.py` (mendukung `--loss
+**Sumber**, `scripts/classifier_coral_damimas.py` (mendukung `--loss
 coral|corn`) · `results/damimas_classifier_{coral,corn}_s42.json` ·
-dump `results/damimas_classifier_{coral,corn}_s42_pred.npz` ·
+*dump* `results/damimas_classifier_{coral,corn}_s42_pred.npz` ·
 bobot `runs/classifier_{coral,corn}_damimas_s42/best.pt`
 
 ---
 
-## PT-E-031 — Spesialis per-batas: 86% galat duduk di dua batas, memperbaikinya tetap tidak menolong (2026-08-18)
+## PT-E-031, Spesialis per-batas: 86% galat duduk di dua batas, memperbaikinya tetap tidak menolong (2026-08-18)
 
-**Hipotesis** — Analisis galat ensemble PT-E-029 (test DAMIMAS, 1.316 tandan,
-337 galat) menunjukkan akurasi +-1 = 0,9962, jadi hampir SELURUH galat adalah
+**Hipotesis**: Analisis galat ensemble PT-E-029 (test DAMIMAS, 1.316 tandan,
+337 galat) menunjukkan akurasi +−1 = 0,9962, jadi hampir SELURUH galat adalah
 kelas bertetangga, dan galat itu menumpuk:
 
 | batas | galat | porsi |
@@ -1711,25 +1711,25 @@ keputusan pasangan padahal empat di antaranya nyaris tak pernah salah
 belajar satu batas mestinya memakai seluruh kapasitasnya untuk keputusan yang
 menentukan.
 
-**Yang memalsukan** — spesialis batas tidak mengalahkan ensemble PT-E-029.
+**Yang memalsukan**, spesialis batas tidak mengalahkan ensemble PT-E-029.
 
-**Cara** — dua ConvNeXt-Tiny biner (stem..stage2 dibekukan, 10 epoch, BCE
+**Cara**, dua ConvNeXt-Tiny biner (stem..stage2 dibekukan, 10 epoch, BCE
 `pos_weight`), masing-masing dilatih HANYA pada potongan train dua kelas yang
 bersangkutan: B2 vs B3 (9.268 potongan, 2.504 vs 6.764) dan B3 vs B4 (9.154
-potongan, 6.764 vs 2.390). Intervensinya sengaja seminimal mungkin — satu
+potongan, 6.764 vs 2.390). Intervensinya sengaja seminimal mungkin, satu
 parameter per batas. Spesialis tidak menggantikan keputusan, ia hanya membagi
 ulang massa probabilitas yang SUDAH ada di dua kelas bertetangga:
 
     q = (1-lam)*q_ensemble + lam*q_spesialis
     p'[bawah], p'[atas] = (p[bawah]+p[atas])*(1-q), (p[bawah]+p[atas])*q
 
-Total massa tidak berubah, dan `lam = 0` mengembalikan ensemble persis — jadi
+Total massa tidak berubah, dan `lam = 0` mengembalikan ensemble persis, jadi
 secara konstruksi ia tidak bisa merusak kecuali memang lebih buruk. `lam`
 dipilih lewat CV 5-fold tingkat pohon di DALAM VAL, bukan fit VAL (alasannya di
-PT-E-029: `tau` per-nview menang di fit VAL 0,7595 lalu jatuh ke 0,7318 di
+PT-E-029: `tau` per-nview unggul di fit VAL 0,7595 lalu jatuh ke 0,7318 di
 TEST). TEST dibuka SEKALI setelah kedua `lam` terkunci.
 
-**CV di dalam VAL — keuntungannya ada, tetapi tipis:**
+**CV di dalam VAL, keuntungannya ada, tetapi tipis:**
 
 | lam | B2_vs_B3 | B3_vs_B4 |
 |---|---|---|
@@ -1752,42 +1752,42 @@ positif, TEST dibuka.
 | + spesialis B2/B3 | 0,7363 | — | — | — |
 | **+ spesialis B3/B4 (akhir)** | **0,7340** | 0,6676 | 0,7577 | 0,6988 |
 
-vs acuan: **-0,15 pp, CI95 [-1,05; +0,76], P(delta>0) = 0,344**. Waktu 533 detik.
+vs acuan: **−0,15 pp, CI95 [−1,05; +0,76], P(delta>0) = 0,344**. Waktu 533 detik.
 
-**Putusan** — **DIPALSUKAN.** Keuntungan CV sebesar 0,33-0,43 pp tidak bertahan
+**Putusan**, **DIPALSUKAN.** Keuntungan CV sebesar 0,33-0,43 pp tidak bertahan
 ke TEST; besarnya persis seukuran derau seleksi pada VAL 86 pohon.
 
 **Catatan acuan yang harus dibaca bersama angkanya.** Skrip ini memakai argmax
-atas dump probabilitas PT-E-029, yang memberi 0,7356 — BUKAN 0,7439 yang jadi
-angka juara PT-E-029 (itu memakai aturan keputusan ordinal `tau`). Jadi -0,15 pp
+atas *dump* probabilitas PT-E-029, yang memberi 0,7356: BUKAN 0,7439 yang jadi
+angka juara PT-E-029 (itu memakai aturan keputusan ordinal `tau`). Jadi −0,15 pp
 di atas adalah selisih terhadap varian argmax; terhadap pipeline juara yang
 sebenarnya, hasil akhir 0,7340 tertinggal 0,99 pp. Tidak ada pembacaan yang
-membuat spesialis menang.
+membuat spesialis unggul.
 
 **Arti bersama PT-E-033/034/035/036.** Ini kegagalan dari arah yang berbeda dan
 karena itu informatif. PT-E-033..036 mencoba membaca "anggota mana yang benar"
 dari keluaran anggota dan gagal. PT-E-031 tidak menebak anggota sama sekali: ia
 melatih model BARU yang melihat citra, khusus untuk keputusan yang paling sering
-salah — dan tetap tidak menambah apa pun. Artinya sisa galat di batas B2/B3 dan
+salah, dan tetap tidak menambah apa pun. Artinya sisa galat di batas B2/B3 dan
 B3/B4 bukan soal kapasitas yang terbagi-bagi; potongan di kedua sisi batas itu
 memang tidak terpisahkan oleh citra 224 px sendirian.
 
-**Kaveat jujur** — entri ini ditulis 2026-08-18 setelah `STATUS.md` sempat
+**Kaveat yang **, entri ini ditulis 2026-08-18 setelah `STATUS.md` sempat
 mencatat PT-E-031 "tidak dijalankan". Eksperimennya memang sempat dilewati
 (alasan waktu itu: task 3 CORN sudah dilatih tepat di {B3,B4}), lalu dieksekusi
 di akhir sesi; catatan statusnya yang tertinggal, bukan hasilnya.
 
-**Sumber** — `scripts/spesialis_batas_damimas.py` ·
+**Sumber**, `scripts/spesialis_batas_damimas.py` ·
 `results/pt_e_031_spesialis_batas.json` ·
-dump `results/pt_e_031_spesialis_batas_pred.npz` ·
+*dump* `results/pt_e_031_spesialis_batas_pred.npz` ·
 log `logs_ringkas/pt_e_031_spesialis_batas.log` ·
 bobot `runs/spesialis_B2_vs_B3_damimas/best.pt`, `runs/spesialis_B3_vs_B4_damimas/best.pt`
 
 ---
 
-## PT-E-032 — RF-DETR DAMIMAS memuncak di epoch 5, lalu memburuk 55 epoch (2026-08-18)
+## PT-E-032: RF-DETR DAMIMAS memuncak di epoch 5, lalu memburuk 55 epoch (2026-08-18)
 
-**Konteks** — Training RF-DETR-L DAMIMAS (`scripts/train_rfdetr_damimas.py`,
+**Konteks**: Training RF-DETR-L DAMIMAS (`scripts/train_rfdetr_damimas.py`,
 default `--epochs 60`, seed 42) diambil alih sesi ini saat berjalan di epoch 27
 dan dibiarkan tuntas sampai epoch 60.
 
@@ -1798,44 +1798,44 @@ dan dibiarkan tuntas sampai epoch 60.
 | val ema_mAP50 | 0,3757 | 0,5825 | **0,5830** | 0,5736 | 0,5395 | 0,5115 | 0,4887 | 0,4885 |
 
 Puncak `ema_mAP_50` di **epoch 5 = 0,5830**; puncak `mAP_50` non-EMA di epoch 13
-= 0,5780. Epoch terakhir **-9,46 pp di bawah puncak**, dan penurunannya monoton
+= 0,5780. Epoch terakhir **−9,46 pp di bawah puncak**, dan penurunannya monoton
 setelah epoch ~5 -- bukan fluktuasi.
 
-**Putusan** — jadwal 60 epoch **terlalu panjang** untuk korpus ini. 641 pohon
+**Putusan**, jadwal 60 epoch **terlalu panjang** untuk korpus ini. 641 pohon
 train / 2.700 citra tidak menopang jadwal sepanjang itu. Checkpoint yang benar
 menurut seleksi VAL adalah `checkpoint_best_ema.pth`, tertulis pukul 12:33,
 yaitu **sekitar 6,5 dari 7 jam GPU berikutnya tidak menghasilkan apa pun yang
 dipakai**.
 
-**Konsekuensi praktis** — untuk run RF-DETR DAMIMAS berikutnya: pakai maksimal
+**Konsekuensi praktis**, untuk run RF-DETR DAMIMAS berikutnya: pakai maksimal
 ~15 epoch dengan patience, atau pertahankan 60 epoch HANYA kalau tujuannya
 mempelajari kurva. Jangan memilih checkpoint terakhir. Ini sejalan dengan
-`../docs/RENCANA.md` Fase 5 yang sudah mensyaratkan screening 15 epoch/patience 3
+`../docs/RENCANA.md` Fase 5 yang sudah mensyaratkan penyaringan awal (*screening*) 15 epoch/patience 3
 untuk kandidat baru.
 
-**Batas klaim** — angka di atas VAL, bukan TEST; ia dipakai untuk MEMILIH
-checkpoint, jadi memang seharusnya VAL. Perbandingan terhadap baseline deteksi
+**Batas klaim**, angka di atas VAL, bukan TEST; ia dipakai untuk MEMILIH
+checkpoint, jadi memang seharusnya VAL. Perbandingan terhadap garis dasar pembanding deteksi
 DAMIMAS (test mAP50 0,5503) belum dihitung karena butuh inferensi TEST dengan
 checkpoint terpilih.
 
-**Sumber** — `runs/rfdetr_l_damimas_s42/metrics.csv` (60 baris, ikut ter-commit
+**Sumber**, `runs/rfdetr_l_damimas_s42/metrics.csv` (60 baris, ikut ter-commit
 ke `results/riwayat_epoch/`)
 
 ---
 
-## PT-E-033 — Bagged ensemble selection tidak menolong: plafonnya di ANGGOTA (2026-08-18)
+## PT-E-033, Bagged ensemble selection tidak menolong: plafonnya di ANGGOTA (2026-08-18)
 
-**Hipotesis** — PT-E-029 memakai seleksi maju serakah di VAL, dan Caruana et al.
+**Hipotesis**: PT-E-029 memakai seleksi maju serakah di VAL, dan Caruana et al.
 (ICML 2004) mendokumentasikan bahwa prosedur itu **overfit himpunan hillclimb**.
-Himpunan seleksi di sini cuma 86 pohon, dan gejalanya sudah terukur empat kali
+Himpunan seleksi di sini hanya 86 pohon, dan gejalanya sudah terukur empat kali
 dalam satu sesi (naik di VAL, tidak bertransfer ke TEST). Kalau penyebab
 stagnasi adalah VARIANS SELEKSI, penawar dari paper yang sama harus menolong:
 seleksi dengan pengembalian, bagging atas bootstrap himpunan hillclimb, dan
 sorted initialization.
 
-**Yang memalsukan** — bagging tidak menaikkan akurasi TEST.
+**Yang memalsukan**, bagging tidak menaikkan akurasi TEST.
 
-**Cara** — 200 bag, tiap bag: bootstrap tingkat POHON (bukan tandan -- tandan
+**Cara**: 200 bag, tiap bag: bootstrap tingkat POHON (bukan tandan -- tandan
 dalam satu pohon berbagi pencahayaan/varietas/sesi, jadi bootstrap per-tandan
 melaporkan stabilitas terlalu optimistis), 80% library ditawarkan, inisialisasi
 dari model tunggal terbaik pada bag itu, 25 langkah seleksi DENGAN pengembalian.
@@ -1849,14 +1849,14 @@ VAL. Nol training baru.
 | PT-E-029 serakah biasa | 0,7639 | **0,7409** | 0,6676 | 0,7670 |
 | PT-E-033 bagged | 0,7606 | **0,7394** | 0,6532 | 0,7701 |
 
-delta **-0,15 pp**, CI95 [-1,67; +1,45], P(delta>0) = 0,42.
+delta **−0,15 pp**, CI95 [−1,67; +1,45], P(delta>0) = 0,42.
 
 Bobot memang jadi jauh lebih halus -- convnext224 0,4455 · corn224 0,1793 ·
 klasik 0,1661 · set_transformer 0,1496 · convnext128 0,0594 -- alih-alih 1/3
 keras pada tiga anggota. Jadi bagging BEKERJA sebagai peredam varians seleksi;
 ia hanya tidak mengubah hasilnya.
 
-**Putusan** — **DIPALSUKAN**, dan justru itu yang berguna. Seluruh varian
+**Putusan**, **DIPALSUKAN**, dan justru itu yang berguna. Seluruh varian
 ensemble yang dicoba sesi ini mendarat di pita sempit **0,7394-0,7439**: serakah
 biasa, serakah + corn224, dan bagged 200x. Kalau varians seleksi yang jadi
 hambatan, bagging seharusnya memisahkan diri dari pita itu. Ia tidak.
@@ -1865,25 +1865,25 @@ hambatan, bagging seharusnya memisahkan diri dari pita itu. Ia tidak.
 di cara menggabungkannya.** Kombinasi terbaik dari lima bank yang ada sudah
 tercapai. Menambah metode penggabungan lain -- stacking, weighted majority,
 Bayesian model averaging -- menyerang bagian yang sudah tidak mengandung sisa
-sinyal. Yang tersisa hanya dua: anggota yang benar-benar lebih baik, atau
+sinyal. Yang tersisa hanya dua: anggota yang lebih baik, atau
 anggota yang salah di tempat yang berbeda dari kelima ini.
 
 Catatan penting: ini TIDAK membatalkan diagnosis "VAL 86 pohon terlalu kecil".
 VAL kecil tetap membuat setiap kenaikan di bawah ~2 pp tidak terverifikasi -- ia
 hanya bukan penyebab plafon 0,74.
 
-**Sumber** — `scripts/ensemble_bagged_damimas.py` · `results/pt_e_033_bagged.json`
-· dump `results/pt_e_033_bagged_pred.npz`
+**Sumber**, `scripts/ensemble_bagged_damimas.py` · `results/pt_e_033_bagged.json`
+· *dump* `results/pt_e_033_bagged_pred.npz`
 
 ---
 
-## PT-E-034 — Plafon: 0,80 masih mungkin, tapi tidak lewat rata-rata berbobot (2026-08-18)
+## PT-E-034, Plafon: 0,80 masih mungkin, tapi tidak lewat rata-rata berbobot (2026-08-18)
 
-**Pertanyaan** — Setelah PT-E-033 memalsukan bagging dan seluruh varian ensemble
+**Pertanyaan**: Setelah PT-E-033 memalsukan bagging dan seluruh varian ensemble
 mendarat di pita 0,7394-0,7439, apakah target 0,80 masih bisa dicapai dari lima
 bank yang ada, atau sudah habis?
 
-**Cara** — tiga plafon dihitung, dua di antaranya SENGAJA CURANG (parameter dipas
+**Cara**, tiga plafon dihitung, dua di antaranya SENGAJA MEMAKAI KEBOCORAN PARTISI (parameter dipas
 langsung di TEST) supaya batas atas tiap keluarga metode terlihat. Nol training.
 
 **Hasil (test DAMIMAS, 1.316 tandan):**
@@ -1891,21 +1891,21 @@ langsung di TEST) supaya batas atas tiap keluarga metode terlihat. Nol training.
 | | akurasi | arti |
 |---|---|---|
 | set_transformer (anggota terbaik) | 0,7386 | model tunggal |
-| **dicapai jujur, terkunci VAL** | **0,7439** | PT-E-029 |
-| `tau` dipas langsung di TEST | 0,7470 | plafon curang aturan ordinal |
-| bobot dipas langsung di TEST | 0,7523 | **plafon curang SELURUH rata-rata berbobot** |
+| **dicapai sesuai protokol, terkunci VAL** | **0,7439** | PT-E-029 |
+| `tau` dipas langsung di TEST | 0,7470 | plafon dengan kebocoran partisi, aturan ordinal |
+| bobot dipas langsung di TEST | 0,7523 | **plafon dengan kebocoran partisi, SELURUH rata-rata berbobot** |
 | **oracle pilih-anggota** | **0,8739** | selalu pilih anggota yang kebetulan benar |
 
-Oracle per-populasi: satu-tampak 0,8353 · multi-tampak 0,8876.
+Model batas atas teoretis per-populasi: satu-tampak 0,8353 · multi-tampak 0,8876.
 
-**Putusan — dua fakta yang bertabrakan, dan itu petunjuknya:**
+**Putusan, dua fakta yang bertabrakan, dan itu petunjuknya:**
 
-1. **Informasinya ADA.** Oracle pilih-anggota 0,8739 jauh melewati 0,80. Kelima
+1. **Informasinya ADA.** Model batas atas teoretis pilih-anggota 0,8739 jauh melewati 0,80. Kelima
    bank secara kolektif sudah memuat jawaban benar untuk 87% tandan.
 
 2. **Rata-rata berbobot TIDAK BISA mengaksesnya.** Dengan bobot dipas langsung di
    TEST -- kecurangan telak yang mustahil di deployment -- keluarga metode ini
-   mentok di 0,7523. Hasil jujur 0,7439 hanya **0,84 pp** di bawahnya.
+   mencapai batas saturasi di 0,7523. Hasil sesuai protokol 0,7439 hanya **0,84 pp** di bawahnya.
 
 Jadi pita sempit 0,7394-0,7439 di PT-E-029/033 bukan kebetulan dan bukan akibat
 VAL kecil: **itu dinding keluarga metodenya.** Menyetel bobot, menambah bag,
@@ -1915,11 +1915,11 @@ lebih dari ~0,84 pp lagi, berapa pun usahanya.
 **Konsekuensi untuk arah berikutnya.** Kesenjangan 0,8739 lawan 0,7523 adalah
 **12,2 pp yang hanya bisa diambil penggabung BERGANTUNG-MASUKAN** -- yang belajar
 KAPAN mempercayai anggota mana, bukan bobot global tetap. Nama keluarganya
-Dynamic Classifier Selection / Dynamic Ensemble Selection (lihat Cruz, Sabourin
-& Cavalcanti, "Dynamic classifier selection: Recent advances and perspectives",
+Dynamic Pengklasifikasi Selection / Dynamic Ensemble Selection (lihat Cruz, Sabourin
+& Cavalcanti, "Dynamic pengklasifikasi selection: Recent advances and perspectives",
 Information Fusion 2018).
 
-Kaveat jujur yang harus dibawa: `moe_classifier` DAMIMAS yang sudah ada adalah
+Kaveat yang harus dibawa: `moe_classifier` DAMIMAS yang sudah ada adalah
 percobaan ke arah itu dan ia **merosot jadi "pilih klasik saja"** -- OOF VAL
 memilih satu anggota dan test berhenti di 0,7234. Itu gejala gating yang gagal
 belajar pada data seleksi kecil, bukan bukti keluarga metodenya salah; tetapi ia
@@ -1928,27 +1928,27 @@ Karena itu langkah pertama yang masuk akal bukan gating yang lebih besar,
 melainkan **fitur gating yang murah dan bermakna** (jumlah tampak, keyakinan
 antar-anggota, ketidaksepakatan antar-anggota) yang parameternya sedikit.
 
-**Sumber** — dihitung langsung dari dump bank di `results/damimas_*_pred.npz`;
+**Sumber**, dihitung langsung dari *dump* bank di `results/damimas_*_pred.npz`;
 angka tereproduksi dengan potongan skrip di entri ini dan `PT-E-033`.
 
 ---
 
-## PT-E-035 — DES berbasis keyakinan gagal, dan sebabnya terukur (2026-08-18)
+## PT-E-035: DES berbasis keyakinan gagal, dan sebabnya terukur (2026-08-18)
 
-**Hipotesis** — PT-E-034 menunjukkan sisa 12,2 pp hanya bisa diambil penggabung
+**Hipotesis**: PT-E-034 menunjukkan sisa 12,2 pp hanya bisa diambil penggabung
 BERGANTUNG-MASUKAN. Varian termurah dari keluarga itu memakai keyakinan sebagai
 sinyal gerbang: per tandan, percayai anggota yang paling yakin.
 
-**Yang memalsukan** — DES berbasis keyakinan tidak mengalahkan rata-rata biasa.
+**Yang memalsukan**: DES berbasis keyakinan tidak mengalahkan rata-rata biasa.
 
-**Cara** — empat varian berparameter 0-1, dipilih lewat CV 5-fold tingkat pohon
+**Cara**, empat varian berparameter 0-1, dipilih lewat CV 5-fold tingkat pohon
 di dalam VAL (bukan fit VAL). Rancangan sengaja dibuat sekaku mungkin karena
 `moe_classifier` DAMIMAS sudah pernah merosot jadi "pilih klasik saja".
 
 **Hasil (test):** varian B (bobot ~ conf^T, T=4 dipilih CV) memberi **0,7340**,
-yaitu **-0,68 pp** terhadap PT-E-029 (CI95 [-2,05; +0,68], P=0,153).
+yaitu **−0,68 pp** terhadap PT-E-029 (CI95 [−2,05; +0,68], P=0,153).
 
-**Putusan** — **DIPALSUKAN.**
+**Putusan**, **DIPALSUKAN.**
 
 **Sebabnya terukur, dan ini temuan utamanya.** Populasi test terbelah:
 
@@ -1961,7 +1961,7 @@ Di wilayah berselisih -- tempat seluruh 12,2 pp itu berada:
 
 | strategi | akurasi |
 |---|---|
-| oracle (ada anggota yang benar) | **0,9741** |
+| model batas atas teoretis (ada anggota yang benar) | **0,9741** |
 | rata-rata probabilitas (sekarang) | 0,6121 |
 | pilih anggota paling YAKIN | 0,5711 |
 | pilih anggota ACAK | 0,5435 |
@@ -1977,7 +1977,7 @@ bahkan LEBIH BURUK daripada merata-ratakan.
 
 Wilayah berselisih harus naik dari 0,6121 ke 0,765, yaitu **+15,3 pp**, dan
 gerbangnya harus menebak anggota yang benar dengan ~76% ketepatan padahal
-keyakinan hanya mencapai 57%. Oracle 0,9741 memastikan sinyalnya ADA; yang tidak
+keyakinan hanya mencapai 57%. Model batas atas teoretis 0,9741 memastikan sinyalnya ADA; yang tidak
 ada adalah cara membacanya dari keluaran anggota saja.
 
 **Syarat yang tersisa untuk 0,80, dan biayanya.** Gerbang harus DIPELAJARI dari
@@ -1986,21 +1986,21 @@ butuh prediksi OUT-OF-FOLD -- artinya tiap anggota dilatih ulang K kali. Itu
 biaya GPU, dan sesi ini dihentikan atas keputusan pemilik repo sebelum langkah
 tersebut dijalankan.
 
-**Sumber** — `scripts/des_damimas.py` · `results/pt_e_035_des.json` ·
-dump `results/pt_e_035_des_pred.npz`
+**Sumber**, `scripts/des_damimas.py` · `results/pt_e_035_des.json` ·
+*dump* `results/pt_e_035_des_pred.npz`
 
 ---
 
-## PT-E-036 — Gerbang atas pola perselisihan juga buta (2026-08-18)
+## PT-E-036: Gerbang atas pola perselisihan juga buta (2026-08-18)
 
-**Hipotesis** — PT-E-035 mengukur keyakinan hampir buta soal siapa yang benar.
+**Hipotesis**: PT-E-035 mengukur keyakinan hampir buta soal siapa yang benar.
 Sisa kemungkinan tanpa GPU: sinyalnya ada di POLA, yaitu identitas siapa-bilang-apa.
 Kalau `corn224` bilang B2 sementara `convnext224` bilang B3, mungkin ada bias
 sistematis yang bisa dipelajari terlepas dari keyakinan.
 
-**Yang memalsukan** — gerbang pola tidak mengalahkan rata-rata biasa di CV.
+**Yang memalsukan**, gerbang pola tidak mengalahkan rata-rata biasa di CV.
 
-**Cara** — HistGradientBoosting kecil (200 iter, 15 daun) atas fitur yang
+**Cara**: HistGradientBoosting kecil (200 iter, 15 daun) atas fitur yang
 seluruhnya berasal dari keluaran anggota, nol inferensi baru: kelas prediksi tiap
 anggota (one-hot, M*K), keyakinan tiap anggota (M), probabilitas rata-rata (K),
 jumlah tampak, dan ukuran mayoritas. Dievaluasi HANYA lewat CV 5-fold tingkat
@@ -2011,19 +2011,19 @@ pohon di dalam VAL.
 | | akurasi |
 |---|---|
 | rata-rata probabilitas | **0,7421** |
-| gerbang pola | 0,7062 (**-3,59 pp**) |
+| gerbang pola | 0,7062 (**−3,59 pp**) |
 
-**Putusan** — **DIPALSUKAN.** Karena CV tidak menunjukkan keunggulan, **TEST
+**Putusan**, **DIPALSUKAN.** Karena CV tidak menunjukkan keunggulan, **TEST
 TIDAK DIBUKA** -- membukanya hanya akan menambah satu kesempatan peeking tanpa
 dasar. Ini sekaligus memperbaiki kebiasaan sesi ini yang sempat melihat TEST
 berulang kali saat menyeleksi ensemble (dicatat sebagai kaveat di PT-E-029).
 
 **Arti gabungan dengan PT-E-034/035.** Tiga cara membaca "siapa yang benar" sudah
-diuji dan ketiganya gagal: bobot global (PT-E-034, plafon curang 0,7523),
-keyakinan (PT-E-035, korelasi +0,1185), dan pola perselisihan (di sini, -3,59 pp).
-Sinyalnya ADA -- oracle 0,9741 di wilayah berselisih -- tetapi **tidak dapat
+diuji dan ketiganya gagal: bobot global (PT-E-034, plafon dengan kebocoran partisi 0,7523),
+keyakinan (PT-E-035, korelasi +0,1185), dan pola perselisihan (di sini, −3,59 pp).
+Sinyalnya ADA -- model batas atas teoretis 0,9741 di wilayah berselisih -- tetapi **tidak dapat
 dibaca dari keluaran anggota saja**. Gerbang yang bisa membacanya harus melihat
 CITRA, bukan hanya prediksi, dan harus dilatih pada prediksi out-of-fold. Itu
 biaya GPU.
 
-**Sumber** — `scripts/gate_pola_damimas.py` · `results/pt_e_036_gate.json`
+**Sumber**, `scripts/gate_pola_damimas.py` · `results/pt_e_036_gate.json`

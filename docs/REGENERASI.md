@@ -90,7 +90,7 @@ done
 .venv/bin/python scripts/build_crop_dataset.py --src 352 --workers 8
 .venv/bin/python scripts/build_crop_dataset.py --src 953 --workers 8
 ```
-*Verifikasi*: Menghasilkan 2.299 crop dari 352 pohon (1.517 latih / 372 validasi / 410 uji) dan 16.542 crop dari 953 pohon.
+*Verifikasi*: Menghasilkan 2.299 citra terpotong (*crop*) dari 352 pohon (1.517 latih / 372 validasi / 410 uji) dan 16.542 citra terpotong dari 953 pohon.
 
 ### 3.4 Pembangunan Dataset Lokalisasi Murni (*Class-Agnostic*)
 ```bash

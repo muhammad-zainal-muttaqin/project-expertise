@@ -8,7 +8,7 @@
 
 | Revisi | Definisi ringkas | Status |
 |---|---|---|
-| **V1/original** | WBF proposal → linker awal/prior rotasi → classifier per tandan → counting/reconciliation | Reference dan baseline end-to-end; hasil serta ablasi historis tercatat. |
+| **V1/original** | WBF proposal → linker awal/prior rotasi → pengklasifikasi per tandan → pencacahan (*counting*)/reconciliation | Reference dan garis dasar pembanding (*baseline*) end-to-end; hasil serta ablasi historis tercatat. |
 | **V2** | Deep-tail + `p_tp` re-ranker → learned edge linker → GSP MILP → count/class composition | Sudah diimplementasikan dan diaudit pada TRAIN/VAL; belum menggantikan hasil test-locked. |
 | **RGB+D4 follow-up** | Ablasi empat kanal dan fixed late fusion pada `new763` | Jalur modality follow-up terpisah; validation-only. |
 
@@ -33,7 +33,7 @@ Split Uji: $mAP50$ pycocotools / $\text{Class }\pm 1\text{ Acc}$ Ridge+$F_{\text
 
 ---
 
-## 2. Sintesis Temuan Kritis Lintas-Fase
+## 2. Sintesis Temuan Utama Lintas-Fase
 
 1. **Pergeseran Domain Temporal (Simpul V2-E-022)**:
    Dataset SawitMVC 953 direkam pada Mei 2026 dan SawitMVC-Depth 352 pada Juli 2026 ($\sim 80\text{ hari}$ jeda / $5\text{--}11$ siklus panen). Pada pohon yang sama, proporsi kelas B3 menyusut drastis dari $55,3\%$ menjadi $14,0\%$. Perbandingan deteksi 4-kelas lintas-dataset **tidak valid secara metodologis**.
@@ -84,7 +84,7 @@ Nilai agnostik adalah lokalisasi tanpa label kelas. Pipeline empat sisi belum
 ditetapkan sebagai pencacah produksi karena duplikasi klaster masih
 menghasilkan akurasi tepat/±1 yang rendah, khususnya pada domain 953.
 
-## 6. Iterasi greedy pipeline dan classifier 5 epoch (V2-E-043/V2-E-044)
+## 6. Iterasi greedy pipeline dan pengklasifikasi 5 epoch (V2-E-043/V2-E-044)
 
 Iterasi 27 Agustus 2026 berhasil menurunkan duplikasi cluster pada bank
 `combined1716`:
@@ -94,14 +94,14 @@ Iterasi 27 Agustus 2026 berhasil menurunkan duplikasi cluster pada bank
 | SawitMVC-Depth-YOLO | **0,8590** | **0,818** | **83,64%** | **0,6419** |
 | SawitMVC-YOLO 953 | **0,8296** | **1,644** | **54,07%** | **0,5469** |
 
-Baseline masing-masing adalah F1 `0,6140`/`0,5327` dan MAE
-`4,518`/`14,993`. Counting di sini adalah raw linked-cluster count, bukan
+Garis dasar pembanding masing-masing adalah F1 `0,6140`/`0,5327` dan MAE
+`4,518`/`14,993`. Pencacahan di sini adalah raw linked-cluster count, bukan
 Ridge `F_all`. Parameter dipilih melalui greedy sweep langsung pada test,
 sehingga belum merupakan angka generalisasi.
 
-Classifier crop RGB 5 epoch menghasilkan validasi internal terbaik akurasi
+Pengklasifikasi citra terpotong (*crop classifier*) RGB 5 epoch menghasilkan validasi internal terbaik akurasi
 `0,6217` dan macro-F1 `0,6296`. C2-only ditolak karena class accuracy
-end-to-end turun; blend 25% dengan soft-vote detector dipakai sebagai kandidat
+end-to-end turun; blend 25% dengan soft-vote detektor dipakai sebagai kandidat
 khusus test 953. Rincian dan artefak ada di
 [`V2-E-043/V2-E-044`](EKSPERIMEN.md#v2-e-043-pengetatan-proposal-dan-linker-mengurangi-duplikasi-cluster-pada-pipeline-empat-sisi)
 dan [laporan optimasi](../results/remote_eval_2026-08-27/OPTIMIZED_PIPELINE.md).
@@ -144,7 +144,7 @@ tersebut disimpan sebagai studi ablasi pada
 Kandidat baru masih berupa hasil validation-lock dan belum menggantikan
 angka TEST yang telah dikunci sebelumnya.
 
-Follow-up backbone independen memakai ConvNeXt-Small, Swin-Tiny, dan
+Follow-up kerangka utama (*backbone*) independen memakai ConvNeXt-Small, Swin-Tiny, dan
 EfficientNetV2-S sebagai opini tambahan. Head terbaik tunggal 953 mencapai
 matched `0,7594` / macro-F1 `0,6055`; fusion nominal mencapai `0,7697` /
 `0,6166`, tetapi hanya menambah satu pohon benar dibanding anchor `0,7684` /
@@ -166,7 +166,7 @@ komposisi VAL yang telah dideklarasikan diuji ulang. Kandidat terbaik menjaga
 original GSP, memakai target count V2 geo (Ridge fit TRAIN), lalu memakai
 class calibration `scale_macro` yang sudah dipilih dari VAL:
 
-| Metrik Depth VAL | Baseline | Kandidat |
+| Metrik Depth VAL | Garis dasar pembanding | Kandidat |
 |---|---:|---:|
 | physical F1 | 0,852641 | **0,854225** |
 | MAE | 0,931624 | **0,914530** |

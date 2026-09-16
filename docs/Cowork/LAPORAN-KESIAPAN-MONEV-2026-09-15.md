@@ -1,7 +1,7 @@
-# Laporan Kesiapan Monev — Pengembangan Perangkat Mobile dengan Teknologi Depth Sensor untuk Penghitungan dan Klasifikasi Tandan Kelapa Sawit Berbasis Deep Learning
+# Laporan Kesiapan Monev: Pengembangan Perangkat Mobile dengan Teknologi Depth Sensor untuk Penghitungan dan Klasifikasi Tandan Kelapa Sawit Berbasis Deep Learning
 
 **Tanggal penyusunan:** 15 September 2026  
-**Monev dijadwalkan:** Rabu, 23 September 2026, pukul 10.00–11.00 WITA  
+**Monev dijadwalkan:** Rabu, 23 September 2026, pukul 10,00–11,00 WITA  
 **Penyaji:** Bu Fatma (Dosen Ilmu Komputer)  
 **Disusun oleh:** Muhammad Zainal Muttaqin (Asisten Dosen)  
 **Sumber data:** Repositori `project-expertise`, komit terakhir per 15 September 2026
@@ -61,10 +61,10 @@ Keempat komponen di atas saling bergantung: perangkat mobile adalah wadah pengir
 
 | Komponen | Bukti | Rujukan |
 |----------|-------|---------|
-| **Dataset berlabel** — tiga korpus RGB dan RGB+D dengan anotasi kematangan B1–B4 | 953 pohon (18.540 kotak), 763 pohon *depth* (data diperluas), 1.716 pohon gabungan (1.364 pohon fisik unik) | `docs/DATASET.md` |
-| **Tiga arsitektur detektor** — YOLO26l, RT-DETR-L, RF-DETR-L | Dilatih pada resolusi 1.280 px, dievaluasi pada partisi uji terpisah | `experiments/EKSPERIMEN.md`, `V2-E-001` |
+| **Dataset berlabel**, tiga korpus RGB dan RGB+D dengan anotasi kematangan B1–B4 | 953 pohon (18.540 kotak), 763 pohon *depth* (data diperluas), 1.716 pohon gabungan (1.364 pohon fisik unik) | `docs/DATASET.md` |
+| **Tiga arsitektur detektor**: YOLO26l, RT-DETR-L, RF-DETR-L | Dilatih pada resolusi 1.280 px, dievaluasi pada partisi uji terpisah | `experiments/EKSPERIMEN.md`, `V2-E-001` |
 | **Ensembel WBF** (*Weighted Box Fusion*) | AP50 lokalisasi agnostik-kelas: 0,8350 (953), 0,8764 (763) | `metrics/recap.md` |
-| **Pipeline empat sisi** — penaut lintas-sisi, deduplikasi, pencacahan | Beberapa metode penaut (Hungarian, GSP MILP, prior rotasi, *learned edge*) | `PROPOSAL-Pipeline.md` |
+| **Pipeline empat sisi**, penaut lintas-sisi, deduplikasi, pencacahan | Beberapa metode penaut (Hungarian, GSP MILP, prior rotasi, *learned edge*) | `PROPOSAL-Pipeline.md` |
 | **Reproyeksi data kedalaman** | Menggunakan kalibrasi sensor Orbbec, intrinsik/ekstrinsik dua kamera, koreksi distorsi Brown–Conrady | `docs/NEW763_RGBD4_RESULTS.md` |
 | **Evaluasi terkontrol RGB vs RGB+D** | Protokol *bootstrap* berpasangan, *seed* tetap, partisi pohon bukan citra | Berbagai artefak JSON di `results/` |
 | **Artefak evaluasi terkunci uji** | JSON metrik per pohon dengan selang kepercayaan 95% | `results/remote_eval_2026-08-28/` |
@@ -134,7 +134,7 @@ Selang kepercayaan ini menunjukkan rentang ketidakpastian setiap estimasi titik.
 
 Tabel berikut menunjukkan perbedaan antara jumlah yang diprediksi dan jumlah acuan untuk setiap kelas kematangan, dijumlahkan atas seluruh pohon uji.
 
-**RGB 953 — Partisi Uji, 135 Pohon (Penaut Hungarian *Anchor A*):**
+**RGB 953: Partisi Uji, 135 Pohon (Penaut Hungarian *Anchor A*):**
 
 | Kelas | Prediksi | Acuan | Bias | Bias Relatif |
 |-------|----------|-------|------|--------------|
@@ -146,7 +146,7 @@ Tabel berikut menunjukkan perbedaan antara jumlah yang diprediksi dan jumlah acu
 
 Makro-rerata nilai mutlak bias relatif: **18,78%**
 
-**Depth 763 — Partisi Uji, 110 Pohon (Penaut GSP MILP):**
+**Depth 763: Partisi Uji, 110 Pohon (Penaut GSP MILP):**
 
 | Kelas | Prediksi | Acuan | Bias | Bias Relatif |
 |-------|----------|-------|------|--------------|
@@ -158,7 +158,7 @@ Makro-rerata nilai mutlak bias relatif: **18,78%**
 
 Makro-rerata nilai mutlak bias relatif: **19,62%**
 
-**Temuan penting:** Jumlah total yang mendekati acuan (bias −1,34% pada RGB) menyembunyikan kesalahan komposisi. Pada RGB, tandan B2 kurang terhitung 41% sementara B3 berlebih 17% — keduanya nyaris saling mengimbangi pada jumlah total, tetapi distribusi kematangan yang dilaporkan tidak mencerminkan kondisi sebenarnya. Pada Depth, bias tersebar lebih merata antarempat kelas, tetapi total masih kurang terhitung 8,24%.
+**Temuan penting:** Jumlah total yang mendekati acuan (bias −1,34% pada RGB) menyembunyikan kesalahan komposisi. Pada RGB, tandan B2 kurang terhitung 41% sementara B3 berlebih 17%, keduanya nyaris saling mengimbangi pada jumlah total, tetapi distribusi kematangan yang dilaporkan tidak mencerminkan kondisi sebenarnya. Pada Depth, bias tersebar lebih merata antarempat kelas, tetapi total masih kurang terhitung 8,24%.
 
 ### 4.5 Kinerja Makro-F1 per Kelas (Ujung ke Ujung)
 
@@ -169,7 +169,7 @@ Makro-rerata nilai mutlak bias relatif: **19,62%**
 | B3 | 0,6850 | 0,7092 |
 | B4 | 0,5114 | 0,4176 |
 
-Kelas B2 pada RGB (0,47) dan B4 pada kedua korpus (0,51 dan 0,42) merupakan titik terlemah. B2 adalah tandan matang optimal yang menjadi sasaran utama panen — kesalahan pada kelas ini berdampak langsung terhadap keputusan operasional.
+Kelas B2 pada RGB (0,47) dan B4 pada kedua korpus (0,51 dan 0,42) merupakan titik terlemah. B2 adalah tandan matang optimal yang menjadi sasaran utama panen, kesalahan pada kelas ini berdampak langsung terhadap keputusan operasional.
 
 ---
 
@@ -217,8 +217,8 @@ Temuan ini mengarahkan upaya perbaikan ke **peningkatan kemampuan klasifikasi ke
 |--------|-------|---------|
 | *Early fusion* 4-kanal tidak konsisten: YOLO datar, RF turun, RT naik kecil | Seluruh CI 95% melintasi nol | `NEW763_RGBD4_RESULTS.md` |
 | Kedalaman redundan untuk klasifikasi kematangan | Informasi kondisional $I(Y; D \mid \text{RGB}) \approx 0$ | `V2-E-016` |
-| Kedalaman monokular merugikan pada 953 | Delta −0,0476, CI [−0,0671; −0,0274] — **kalah signifikan** | `V2-E-029` |
-| Menambah kanal kelima (sensor + monokular) mengencerkan sinyal | Delta −0,0504, CI [−0,1038; −0,0015] — **kalah signifikan** | `V2-E-030` |
+| Kedalaman monokular merugikan pada 953 | Delta −0,0476, CI [−0,0671; −0,0274], **mengalami penurunan signifikan** | `V2-E-029` |
+| Menambah kanal kelima (sensor + monokular) mengencerkan sinyal | Delta −0,0504, CI [−0,1038; −0,0015], **mengalami penurunan signifikan** | `V2-E-030` |
 | Selisih lokalisasi depth vs RGB belum signifikan secara statistik pada 95% | CI delta [−0,0121; +0,0648], $P(\Delta>0)$ = 92,1% | `bootstrap_lokalisasi.json` |
 
 ### 6.3 Kesimpulan Kontribusi Depth
@@ -251,12 +251,12 @@ Tabel ini merangkum seluruh kategori pendekatan yang telah diuji beserta hasilny
 |------------|-----------|-------|
 | Invers mentah (*inverse raw*) | V2-E-005 | Tidak konsisten: YOLO naik, RT dan RF turun |
 | Gradien Sobel (`edge`) | V2-E-008, V2-E-010 | Terbaik untuk lokalisasi; tidak berpengaruh pada pencacahan |
-| *Dropout*, *clipped*, *valid mask* | V2-E-009 | Kalah dari `edge` pada penyaringan 15 *epoch* |
+| *Dropout*, *clipped*, *valid mask* | V2-E-009 | Berada di bawah `edge` pada penyaringan 15 *epoch* |
 | *Mid-fusion* dengan cabang terpisah dan *gate* | V2-E-009 | Gagal: puncak hanya 0,2087 |
 | *Early fusion* 4-kanal pada 763 | V2-E-034 | Seluruh CI melintasi nol; tidak signifikan |
 | *Late fusion* union-NMS dan WBF | Follow-up | Menjanjikan pada validasi; WBF tidak universal |
-| Kedalaman monokular (*monocular depth*) | V2-E-027–032 | Dua kali kalah signifikan; ditolak |
-| Lima kanal (sensor + monokular) | V2-E-030 | Kalah signifikan; mengencerkan sinyal |
+| Kedalaman monokular (*monocular depth*) | V2-E-027–032 | Dua kali mengalami penurunan signifikan; ditolak |
+| Lima kanal (sensor + monokular) | V2-E-030 | Mengalami penurunan signifikan; mengencerkan sinyal |
 
 ### 7.3 Penautan Lintas-Sisi dan Deduplikasi
 
@@ -276,8 +276,8 @@ Tabel ini merangkum seluruh kategori pendekatan yang telah diuji beserta hasilny
 | Pendekatan | Eksperimen | Hasil |
 |------------|-----------|-------|
 | Klasifikasi langsung dari detektor (satu tahap) | V2-E-001 | mAP50 sebagai ukuran gabungan; akurasi kelas terbatas |
-| ConvNeXt-Tiny / crop classifier | PT-E-012, 014 | Mengalahkan detektor pada benchmark crop, tetapi tidak bertahan ujung ke ujung |
-| CORAL ordinal loss | PT-E-014 | Runtuh ke 33,05% pada subtes; CORN lebih baik (69,83%) |
+| ConvNeXt-Tiny / pengklasifikasi citra terpotong (*crop classifier*) | PT-E-012, 014 | Mengalahkan detektor pada benchmark citra terpotong (*crop*), tetapi tidak bertahan ujung ke ujung |
+| fungsi rugi ordinal CORAL | PT-E-014 | Runtuh ke 33,05% pada subtes; CORN lebih baik (69,83%) |
 | DINOv2-Large *stacking* empat pakar | V2-E-046 | Validasi 76,8%; reproduksi hanya 71,6% (selisih tidak terjelaskan) |
 | Komposisi lintas-lapis | V2-E-047 | Validasi 85,0% (depth); solver MILP hilang, tidak dapat direproduksi |
 | Head-aware ranking | Wave 2 | Menaikkan akurasi kelas tetapi menurunkan F1 fisik |
@@ -309,9 +309,9 @@ Penelitian ini telah menguji **3 keluarga detektor, 6+ representasi kedalaman, 8
 | Status | Komponen | Keterangan |
 |--------|----------|------------|
 | Tersedia | Dataset RGB dan Depth | Tiga korpus, pembagian partisi terdokumentasi |
-| Tersedia | Tiga arsitektur detektor | YOLO26l, RT-DETR-L, RF-DETR-L — terlatih dan terevaluasi |
+| Tersedia | Tiga arsitektur detektor | YOLO26l, RT-DETR-L, RF-DETR-L, terlatih dan terevaluasi |
 | Tersedia | Ensembel WBF | AP50 lokalisasi 0,84–0,88 |
-| Tersedia | Pipeline empat sisi | Penaut, deduplikasi, pencacahan — beberapa varian |
+| Tersedia | Pipeline empat sisi | Penaut, deduplikasi, pencacahan, beberapa varian |
 | Tersedia | Reproyeksi kedalaman | Kalibrasi Orbbec, koreksi distorsi |
 | Tersedia | Perbandingan RGB vs RGB+D | Terkontrol, *bootstrap* berpasangan |
 | Tersedia | Evaluasi terkunci uji | JSON terlacak, selang kepercayaan tersedia |
@@ -332,11 +332,11 @@ Penelitian ini telah menguji **3 keluarga detektor, 6+ representasi kedalaman, 8
 
 Dokumen ini disertai lima grafik pendukung yang tersimpan di `monev-assets/`:
 
-1. **`01_perbandingan_pipeline.png`** — Perbandingan seluruh metrik pipeline terbaik antara RGB 953 dan Depth 763.
-2. **`02_bias_pencacahan_kelas.png`** — Bias pencacahan per kelas B1–B4 pada kedua korpus.
-3. **`03_rgb_vs_depth.png`** — Kinerja per tugas RGB vs Depth.
-4. **`04_ceklist_kesiapan.png`** — Status komponen yang sudah dan belum selesai.
-5. **`05_selang_kepercayaan.png`** — Selang kepercayaan 95% metrik utama.
+1. **`01_perbandingan_pipeline.png`**: Perbandingan seluruh metrik pipeline terbaik antara RGB 953 dan Depth 763.
+2. **`02_bias_pencacahan_kelas.png`**: Bias pencacahan per kelas B1–B4 pada kedua korpus.
+3. **`03_rgb_vs_depth.png`**: Kinerja per tugas RGB vs Depth.
+4. **`04_ceklist_kesiapan.png`**: Status komponen yang sudah dan belum selesai.
+5. **`05_selang_kepercayaan.png`**: Selang kepercayaan 95% metrik utama.
 
 ---
 

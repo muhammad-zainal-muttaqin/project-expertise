@@ -25,18 +25,18 @@ Tanggal: 6 September 2026. Pelaksana: satu agen, berurutan, tanpa subagen.
 
 ## Tahap
 
-1. **SELESAI untuk cakupan review** — Inventaris berkas utama, definisi metrik,
+1. **SELESAI untuk cakupan review**: Inventaris berkas utama, definisi metrik,
    silsilah data, dan audit evaluator. Cakupan bukan seluruh isi repositori.
-2. **SELESAI untuk cakupan review** — Reproduksi sintetis dan evaluasi ulang
+2. **SELESAI untuk cakupan review**: Reproduksi sintetis dan evaluasi ulang
    konfigurasi tetap Panen awal serta Panen final; tanpa pelatihan/GPU.
-3. **SELESAI untuk cakupan review** — Penelitian primer berdasarkan kesenjangan bukti;
+3. **SELESAI untuk cakupan review**: Penelitian primer berdasarkan kesenjangan bukti;
    membandingkan hipotesis penyebab dan alternatif rancangan.
-4. **SELESAI untuk cakupan review** — Laporan DOCX, cakupan pembacaan,
+4. **SELESAI untuk cakupan review**: Laporan DOCX, cakupan pembacaan,
    matriks bukti, dua skrip diagnostik, serta JSON hasil dan pemeriksaan
    struktur dokumen tersedia. Perbaikan produksi belum diimplementasikan.
-5. **BELUM DIJALANKAN** — Implementasi produksi dan ablasi TRAIN/VAL setelah
+5. **BELUM DIJALANKAN**: Implementasi produksi dan ablasi TRAIN/VAL setelah
    review; bukan bagian dari pekerjaan diagnostik yang sudah selesai.
-6. **BELUM DIJALANKAN** — Kunci model dan protokol; verifikasi generalisasi hanya pada partisi yang
+6. **BELUM DIJALANKAN**: Kunci model dan protokol; verifikasi generalisasi hanya pada partisi yang
    sesuai status paparan datanya. Laporkan kesenjangan terhadap target.
 
 ## Pembaruan setelah jeda

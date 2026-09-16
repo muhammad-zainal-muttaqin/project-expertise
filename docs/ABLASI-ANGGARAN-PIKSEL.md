@@ -14,26 +14,26 @@ kematangan B1–B4 menurun ketika informasi piksel pada objek bertambah?**
 
 Pemicunya adalah dua titik data historis yang arahnya berlawanan dengan
 hipotesis "citra terpotong (*crop*) lebih besar lebih baik": konfigurasi `ftS`
-(crop 176 piksel) mencapai akurasi $0,6837$, sedangkan `ftH` (crop 256 piksel
+(citra terpotong (*crop*) 176 piksel) mencapai akurasi $0,6837$, sedangkan `ftH` (citra terpotong 256 piksel
 disajikan pada 224) justru turun ke $0,6569$. Kedua titik itu tidak dapat
-memutuskan apa pun karena resolusi crop dan resolusi masukan model berubah
+memutuskan apa pun karena resolusi citra terpotong dan resolusi masukan model berubah
 bersamaan, sehingga dua faktor tercampur dalam satu selisih.
 
 Ablasi memisahkan kedua faktor tersebut ke dalam dua percobaan.
 
-**Percobaan A — anggaran piksel, kapasitas model dikunci.**
-Crop resolusi asli diturunkan ke $S \times S$ menggunakan interpolasi
+**Percobaan A, anggaran piksel, kapasitas model dikunci.**
+Citra terpotong resolusi asli diturunkan ke $S \times S$ menggunakan interpolasi
 `INTER_AREA`, lalu dinaikkan kembali ke $224 \times 224$ menggunakan
-`INTER_CUBIC`. Nilai $S \in \{32; 48; 64; 96; 128; 176; 224\}$. Backbone,
+`INTER_CUBIC`. Nilai $S \in \{32; 48; 64; 96; 128; 176; 224\}$. Kerangka utama (*backbone*),
 jumlah token, dan biaya komputasi identik pada seluruh kondisi; satu-satunya
 yang berubah adalah jumlah informasi piksel yang tersedia.
 
-**Percobaan B — plafon resolusi masukan, anggaran piksel dibuka penuh.**
-Crop resolusi asli langsung diubah ukurannya ke $R \times R$ dengan
+**Percobaan B, plafon resolusi masukan, anggaran piksel dibuka penuh.**
+Citra terpotong resolusi asli langsung diubah ukurannya ke $R \times R$ dengan
 $R \in \{224; 288; 320\}$. Percobaan ini menguji apakah menaikkan resolusi
 masukan model di atas 224 piksel masih memberikan imbalan.
 
-Geometri crop mengikuti `scripts/build_crop_dataset.py` secara persis, yaitu
+Geometri citra terpotong mengikuti `scripts/build_crop_dataset.py` secara persis, yaitu
 sisi jendela $= 1{,}6 \times \max(w, h)$ dengan pengisian tepi (*padding*),
 sehingga cincin di sekeliling objek tetap masuk.
 
@@ -57,18 +57,18 @@ adalah bentuk kurva terhadap $S$, bukan ketinggiannya.
 
 | Besaran | TRAIN (4.087 objek) | VALID (894 objek) |
 |---|---|---|
-| Sisi crop resolusi asli, median | 277 px | 277 px |
-| Sisi crop resolusi asli, rerata | 280,1 px | 280,8 px |
+| Sisi citra terpotong resolusi asli, median | 277 px | 277 px |
+| Sisi citra terpotong resolusi asli, rerata | 280,1 px | 280,8 px |
 | Persentil ke-5 | 157 px | 163 px |
 | Persentil ke-95 | 411 px | 404 px |
 | Fraksi objek di atas 176 px | 91,3% | 92,4% |
 | Fraksi objek di atas 224 px | 74,8% | 76,3% |
 | Fraksi objek di atas 288 px | 45,2% | 44,4% |
 
-Median sisi crop per kelas pada VALID: B1 = 300 px, B2 = 278 px, B3 = 276,5 px,
+Median sisi citra terpotong per kelas pada VALID: B1 = 300 px, B2 = 278 px, B3 = 276,5 px,
 B4 = 205 px. Seluruh citra sumber berukuran $1.280 \times 800$ piksel.
 
-Angka ini menetapkan bahwa konfigurasi `ftS` historis, yang menyimpan crop pada
+Angka ini menetapkan bahwa konfigurasi `ftS` historis, yang menyimpan citra terpotong pada
 176 piksel, membuang informasi piksel pada lebih dari sembilan dari sepuluh
 objek. Ablasi sampai 320 piksel karena itu mengukur informasi nyata, bukan
 sekadar interpolasi.
@@ -84,7 +84,7 @@ konfigurasi `ftS`. Selang kepercayaan berasal dari 2.000 ulangan bootstrap yang
 diambil ulang pada **tingkat pohon**, bukan tingkat objek, karena empat sisi
 pandang dari satu pohon tidak saling bebas.
 
-### 3.1 Percobaan A — anggaran piksel
+### 3.1 Percobaan A: anggaran piksel
 
 | Anggaran | $C$ | Akurasi | Macro-$F1$ | MAE ordinal | $\Delta$ akurasi vs `A176` | $P(\text{lebih baik})$ |
 |---|---|---|---|---|---|---|
@@ -96,7 +96,7 @@ pandang dari satu pohon tidak saling bebas.
 | **176 px** | 0,003 | **0,6510** | 0,5852 | **0,4072** | (acuan) | — |
 | 224 px | 0,001 | 0,6488 | 0,5650 | 0,4150 | $−0,0022$ $[−0,0248; +0,0191]$ | 0,41 |
 
-### 3.2 Percobaan B — resolusi masukan model
+### 3.2 Percobaan B: resolusi masukan model
 
 | Resolusi | $C$ | Akurasi | Macro-$F1$ | MAE ordinal | $\Delta$ macro-$F1$ vs `A176` | $P(\text{lebih baik})$ |
 |---|---|---|---|---|---|---|
@@ -112,7 +112,7 @@ ukuran dari 224 ke 224 memang bersifat identitas.
 
 1. **Kurva jenuh pada sekitar 96 piksel.** Anggaran 96 piksel sudah tidak
    terbedakan dari anggaran 176 piksel: selisih $−0,0034$ dengan selang
-   kepercayaan 95% $[−0,0240; +0,0184]$ yang mencakup nilai nol. Median crop
+   kepercayaan 95% $[−0,0240; +0,0184]$ yang mencakup nilai nol. Median citra terpotong
    yang tersedia (277 px) berada $2{,}9\times$ di atas titik jenuh ini.
 
 2. **Penurunan yang signifikan baru muncul di bawah 64 piksel.** Anggaran 32 px
@@ -132,8 +132,8 @@ ukuran dari 224 ke 224 memang bersifat identitas.
    sehingga peningkatan ini **belum mencapai signifikansi statistik**. Karena
    percobaan A menunjukkan anggaran piksel sudah jenuh jauh sebelum titik ini,
    sumber keuntungan tersebut lebih mungkin berupa granularitas spasial
-   backbone — jumlah token yang lebih banyak sebelum agregasi spasial
-   (*spatial pooling*) — dan bukan informasi piksel tambahan.
+   kerangka utama, jumlah token yang lebih banyak sebelum agregasi spasial
+   (*spatial pooling*), dan bukan informasi piksel tambahan.
 
 ---
 
@@ -141,7 +141,7 @@ ukuran dari 224 ke 224 memang bersifat identitas.
 
 Hipotesis anggaran piksel **tidak didukung** pada korpus dan protokol ini.
 Informasi piksel yang tersedia (median 277 px per objek) sudah hampir tiga kali
-lipat melampaui titik jenuh yang terukur (96 px). Menambah resolusi crop bukan
+lipat melampaui titik jenuh yang terukur (96 px). Menambah resolusi citra terpotong bukan
 jalur perbaikan yang menjanjikan untuk klasifikasi kematangan.
 
 Konsekuensi langsung bagi usulan pengklasifikasi tingkat butir buah pada
@@ -168,7 +168,7 @@ pada validasi (*validation-selected*), bukan temuan yang terkonfirmasi.
    representasi ConvNeXt-Tiny yang dibekukan, dan bukan batas untuk seluruh
    metode pembelajaran.
 
-2. **Struktur *stem* backbone.** ConvNeXt-Tiny memakai *patch stem* $4 \times 4$,
+2. **Struktur *stem* kerangka utama.** ConvNeXt-Tiny memakai *patch stem* $4 \times 4$,
    sehingga pada masukan 224 piksel satu token mewakili 4 piksel. Detail yang
    lebih halus dari 4 piksel hilang terlepas dari besarnya anggaran. Percobaan B
    menguji sebagian keterbatasan ini, tetapi tidak menghapusnya.
@@ -184,7 +184,7 @@ pada validasi (*validation-selected*), bukan temuan yang terkonfirmasi.
 
 5. **Crop RGB tanpa kanal penanda kotak.** Berbeda dari
    `build_crop_dataset.py`, ablasi ini tidak menyertakan kanal *mask* footprint
-   kotak acuan. Pada kanopi padat, satu crop dapat memuat lebih dari satu
+   kotak acuan. Pada kanopi padat, satu citra terpotong dapat memuat lebih dari satu
    tandan, sehingga terdapat ambiguitas target. Ambiguitas ini seragam pada
    seluruh kondisi dan tidak mengubah perbandingan relatif, tetapi menurunkan
    ketinggian absolut seluruh kurva.
@@ -207,6 +207,6 @@ python scripts/ablasi_anggaran_piksel.py probe    # probe linear + bootstrap
 |---|---|
 | [`scripts/ablasi_anggaran_piksel.py`](../scripts/ablasi_anggaran_piksel.py) | Skrip tiga tahap, seluruhnya CPU |
 | [`results/ablasi_piksel_2026-09-10/ablasi_anggaran_piksel.json`](../results/ablasi_piksel_2026-09-10/ablasi_anggaran_piksel.json) | Metrik seluruh kondisi, $C$ terpilih, skor lipatan silang, selang kepercayaan |
-| [`results/ablasi_piksel_2026-09-10/sisi_crop_native.json`](../results/ablasi_piksel_2026-09-10/sisi_crop_native.json) | Distribusi sisi crop resolusi asli |
+| [`results/ablasi_piksel_2026-09-10/sisi_crop_native.json`](../results/ablasi_piksel_2026-09-10/sisi_crop_native.json) | Distribusi sisi citra terpotong resolusi asli |
 | [`results/ablasi_piksel_2026-09-10/distribusi_ukuran_kotak.json`](../results/ablasi_piksel_2026-09-10/distribusi_ukuran_kotak.json) | Distribusi sisi kotak pembatas per partisi dan per kelas |
 | [`results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png`](../results/ablasi_piksel_2026-09-10/kurva_ablasi_anggaran_piksel.png) | Kurva kedua percobaan |

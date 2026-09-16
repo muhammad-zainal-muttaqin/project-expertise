@@ -27,7 +27,7 @@ Pola CWD yang sama berlaku untuk `train_rtdetr.py` (pakai `data_rgb.yaml` yang
 sama). `train_rfdetr.py` beda jalur (pakai `rfdetr_ds/`, bukan yaml ultralytics)
 -- perlu dicek terpisah apakah punya masalah serupa sebelum dijalankan.
 
-## Cache dataset ke disk lokal (2026-08-08) — hasil terukur
+## Cache dataset ke disk lokal (2026-08-08): hasil terukur
 
 Dataset di-cache dari `/workspace` (network mount, moosefs) ke disk lokal
 overlay (`/home/claudeuser/data-cache/`): `SawitMVC` (2,4G), `SawitMVC-Depth-YOLO`
@@ -40,15 +40,15 @@ tidak mengedit file research-pipeline apa pun).
 **Hasil setelah RT-DETR-L direstart dengan cache lokal:** GPU utilization naik
 jadi 97% konsisten (sebelumnya osilasi 33-99%), tapi **kecepatan wall-clock per
 epoch nyaris sama** (~326 detik vs ~334 detik sebelumnya). Kesimpulan:
-hipotesis awal (I/O jaringan sebagai bottleneck utama) **salah** — GPU compute
+hipotesis awal (I/O jaringan sebagai hambatan struktural (*bottleneck*) utama) **salah**: GPU compute
 RTX A4500 sendiri yang jadi batas kecepatan untuk beban kerja ini, bukan
 storage. Osilasi utilization yang teramati sebelumnya kemungkinan sampling
 sesaat, bukan pola I/O-wait yang konsisten.
 
 **Keputusan:** cache lokal tetap dipertahankan (tidak merugikan, dan akan
 berguna di Fase 2/3/5 yang membaca ulang dataset 352-pohon berkali-kali untuk
-banyak percobaan pendek — di situ overhead scan/setup per-run yang berulang
-baru benar-benar terasa). Tapi untuk mempercepat Fase 1 secara berarti,
+banyak percobaan pendek, di situ overhead scan/setup per-run yang berulang
+baru terasa). Tapi untuk mempercepat Fase 1 secara berarti,
 upgrade GPU (kandidat: L4, tensor core gen-4, per log asli E-021 mencatat ~1
 jam/60 epoch di L4 vs ~4-4,4 jam di A4500) lebih relevan daripada optimasi
 storage lebih lanjut.
@@ -57,10 +57,10 @@ storage lebih lanjut.
 
 1. [running] YOLO26l retrain -> `evidence/experiments/runs/yolo26l_e60_i1280_v2repro/`
 2. [belum] RT-DETR-L retrain -> `..._rtdetr_l_e60_i1280_v2repro/`
-3. [belum] RF-DETR-L retrain (override config lihat docs/RENCANA.md Fase 1.3)
+3. [belum] RF-DETR-L retrain (override config lihat docs/RENCANA.md Fase 1,3)
 4. [belum] Eval pycocotools ketiganya vs target E-021 (0,5300/0,5784/0,6038)
-5. [belum] Inference + adaptor per-pohon (scripts/adapters/) + counting Baseline-SawitMVC
+5. [belum] Inference + adaptor per-pohon (scripts/adapters/) + pencacahan (*counting*) Baseline-SawitMVC
    (ikuti pola exp_counting_v3.py: fit Ridge segar pada F_all per detektor,
    BUKAN run_e2e_pipeline.py -- lihat docs/SCHEMA-PERTREE.md)
-6. [belum] Tulis entri V2-E-001 (validasi reproduksi) dan V2-E-002 (mAP vs counting)
+6. [belum] Tulis entri V2-E-001 (validasi reproduksi) dan V2-E-002 (mAP vs pencacahan)
    di experiments/EKSPERIMEN.md
