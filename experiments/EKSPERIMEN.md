@@ -3086,3 +3086,109 @@ dengan konsekuensi kenaikan galat sekitar sepersepuluh.
 
 **Verdict:** CONFIRMED. Ketergantungan koefisien terhadap arsitektur detektor
 terukur satu tingkat lebih besar daripada ketergantungannya terhadap korpus.
+
+---
+
+## V2-E-050e: matriks laporan dirender menjadi peta panas beranotasi
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/gambar_laporan_pencacahan.py`](../scripts/gambar_laporan_pencacahan.py)
+
+### Rancangan Eksperimen
+
+Sepuluh matriks pada laporan kinerja diubah menjadi gambar. Skala sekuensial satu
+rona dipakai untuk besaran, yaitu biru untuk metrik deteksi, merah untuk galat
+pencacahan, dan hijau untuk akurasi. Skala divergen dua rona dengan titik tengah
+netral dipakai untuk bias yang memiliki arah positif dan negatif. Seluruh sel
+diberi anotasi nilai sehingga angka tetap terbaca tanpa merujuk tabel terpisah.
+
+### Temuan Empiris Terukur
+
+1. Sepuluh gambar dihasilkan dengan resolusi 200 titik per inci, berukuran total
+   968 KiB.
+2. Halaman PDF bertambah dari 7 menjadi 13 halaman.
+3. Pelampauan lebar kolom pada tabel tersisa $2,28$ pt, setara $0,8$ mm.
+
+### Keputusan Metodologis
+
+Tabel matriks pada Bagian 2, 3, 5, 6, 7, 8, dan 11 digantikan gambar beranotasi.
+Tabel pendamping dipertahankan hanya untuk kolom yang tidak dapat diwakili warna,
+yaitu jumlah citra, jumlah objek, ambang optimal, nama metode, dan angka
+`pycocotools`.
+
+### Batasan Validitas & Audit
+
+1. Warna pada beberapa gambar dinormalisasi per kolom, sehingga perbandingan
+   antarkolom tidak sah dibaca dari intensitas warna, hanya dari anotasinya.
+2. Gambar bersifat statis. Nilai lengkap tetap tersedia pada berkas JSON hasil.
+
+**Artefak:**
+
+- [`docs/assets/laporan-pencacahan-2026-09-16/`](../docs/assets/laporan-pencacahan-2026-09-16/)
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.pdf`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.pdf)
+
+**Verdict:** CONFIRMED. Seluruh matriks tersaji sebagai gambar beranotasi tanpa
+kehilangan satu pun nilai numerik.
+
+---
+
+## V2-E-050f: uji silang detektor dua arah dan penyetaraan cakupan laporan kinerja
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/inferensi_953_ke_763.py`](../scripts/inferensi_953_ke_763.py),
+[`scripts/susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py)
+
+### Rancangan Eksperimen
+
+Laporan kinerja sebelumnya tidak seimbang pada empat hal: varian koefisien hanya
+diuji pada RF-DETR-L, perbandingan metode kalibrasi hanya menyajikan rerata tiga
+detektor, uji silang hanya satu arah dari korpus `763` ke `953`, dan perbandingan
+$MAE$ antarkorpus dilakukan tanpa memperhitungkan kepadatan tandan. Pekerjaan ini
+menutup keempatnya. Bobot korpus `953` untuk ketiga arsitektur diunduh dari bucket
+`ULM-DS-Lab/project-expertise-backup`, lalu inferensi dijalankan pada RTX A5000
+dengan `ultralytics` 8.4.103 dan `rfdetr` 1.8.3 sesuai `requirements-freeze.txt`,
+pada protokol `V2-E-001` yakni imgsz 1.280, conf 0,001, iou 0,7, dan max_det 300.
+
+### Temuan Empiris Terukur
+
+1. **Penurunan lintas korpus bersifat dua arah dan setara.** Dari `763` ke `953`,
+   $mAP50$ turun ke $0,1109$ sampai $0,2332$. Dari `953` ke `763`, $mAP50$ turun ke
+   $0,1200$ sampai $0,2724$. Korpus `1716` bertahan pada $0,5399$ sampai $0,6302$
+   di kedua sasaran.
+2. **Kalibrasi ulang memulihkan pencacahan secara parsial.** Pada sasaran `953`,
+   detektor berkorpus `763` mencapai $MAE$ makro $1,2518$ sampai $1,5142$
+   berbanding $1,0408$ sampai $1,0816$ dalam domain. Pada sasaran `763`, detektor
+   berkorpus `953` mencapai $1,1136$ sampai $1,2273$ berbanding $0,6091$ sampai
+   $0,6886$ dalam domain.
+3. **Kepadatan tandan berbeda hampir dua kali lipat** antarkorpus, yakni $9,91$
+   tandan per pohon pada `953`, $5,07$ pada `763`, dan $7,67$ pada `1716`.
+4. **Peringkat antarkorpus berbalik pada basis relatif.** Dengan $MAE$ absolut,
+   korpus `763` tampak terbaik ($0,6091$ berbanding $1,0408$ pada `953`). Setelah
+   dibagi rerata cacah acuan per kelas, korpus `953` justru terendah ($0,4803$)
+   dan korpus `763` tertinggi ($0,5648$).
+5. **Korpus 352 tidak sah dipakai sebagai partisi uji silang** karena 34 dari 55
+   pohon ujinya berada pada partisi latih `763` dan 13 pada partisi validasinya.
+
+### Keputusan Metodologis
+
+Perbandingan lintas korpus wajib menyertakan $MAE$ relatif sebagai pendamping,
+karena $MAE$ absolut mencerminkan kepadatan tandan, bukan mutu pencacahan.
+Penyusunan laporan dipindahkan ke satu skrip yang membangkitkan seluruh angka dari
+berkas JSON hasil, sehingga penyalinan manual tidak lagi terjadi.
+
+### Batasan Validitas & Audit
+
+1. Bobot korpus `953` untuk RT-DETR-L dan RF-DETR-L berasal dari pelatihan ulang
+   7 September 2026, sedangkan YOLO26l memakai bobot `V2-E-001` asli.
+2. Baris `1716` ke `763` memakai 66 pohon irisan kedua skema partisi.
+3. Partisi uji `1716` memuat 141 pohon yang identik dengan partisi uji `953`,
+   sehingga angka kedua korpus tidak independen.
+
+**Artefak:**
+
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+- [`results/cross_eval/predictions/v2repro953_*__on_763__test.npz`](../results/cross_eval/predictions/)
+- [`results/counting_koefisien_2026-09-16/`](../results/counting_koefisien_2026-09-16/)
+
+**Verdict:** CONFIRMED. Matriks uji silang lengkap dua arah, dan koreksi basis
+perbandingan mengubah kesimpulan peringkat antarkorpus.

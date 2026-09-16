@@ -245,6 +245,15 @@ def main() -> None:
         "1716": "results/combined1716/predictions/combined1716_{slug}_rgb_s42_i1280__test.npz",
     }
 
+    # Kombinasi silang: detektor satu korpus dievaluasi pada partisi uji korpus lain.
+    silang = {
+        ("763", "953"): ("results/cross_eval/predictions/new763_{slug}__on_953__test.npz", "953"),
+        ("1716", "953"): ("results/cross_eval/predictions/combined1716_{slug}__on_953__test.npz", "953"),
+        ("1716", "763"): ("results/combined1716/predictions/combined1716_{slug}_rgb_s42_i1280__test.npz", "763dep"),
+        ("953", "763"): ("results/cross_eval/predictions/v2repro953_{slug}__on_763__test.npz", "763"),
+    }
+    gt_per_korpus["763dep"] = gt_763(depth, ("test",), awalan="DEPTH_")
+
     baris_keluaran = []
     for korpus, pola in dump_per_korpus.items():
         for slug, label in DETEKTOR:
@@ -253,7 +262,7 @@ def main() -> None:
                 print(f"[lewat] {path}")
                 continue
             hasil = evaluasi(gt_per_korpus[korpus], muat_deteksi(path))
-            hasil.update({"korpus_latih": korpus, "detektor": label,
+            hasil.update({"korpus_latih": korpus, "korpus_uji": korpus, "detektor": label,
                           "sumber_dump": str(path.relative_to(akar)).replace("\\", "/")})
             baris_keluaran.append(hasil)
             m = hasil["makro"]
@@ -264,6 +273,23 @@ def main() -> None:
                 f"| conf 0,25: P={hasil['pada_conf_tetap']['makro']['presisi']:.4f} "
                 f"R={hasil['pada_conf_tetap']['makro']['recall']:.4f} "
                 f"F1={hasil['pada_conf_tetap']['makro']['f1']:.4f}"
+            )
+
+    for (latih, uji), (pola, kunci_gt) in silang.items():
+        for slug, label in DETEKTOR:
+            path = akar / pola.format(slug=slug)
+            if not path.exists():
+                print(f"[lewat silang] {path.name}")
+                continue
+            hasil = evaluasi(gt_per_korpus[kunci_gt], muat_deteksi(path))
+            hasil.update({"korpus_latih": latih, "korpus_uji": uji, "detektor": label,
+                          "sumber_dump": str(path.relative_to(akar)).replace("\\", "/")})
+            baris_keluaran.append(hasil)
+            m = hasil["makro"]
+            print(
+                f"{latih:>4}->{uji:<5} {label:>10} n={hasil['n_citra']:>4} "
+                f"P={m['presisi']:.4f} R={m['recall']:.4f} F1={m['f1']:.4f} "
+                f"mAP50={m['map50']:.4f} mAP50-95={m['map50_95']:.4f}"
             )
 
     keluaran = Path(arg.out)

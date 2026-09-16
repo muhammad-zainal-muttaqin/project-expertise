@@ -41,6 +41,12 @@ SEED = 42
 
 
 def sumber_dump(akar: Path, korpus: str, slug: str) -> tuple[Path, str | None]:
+    if korpus == "1716>953":
+        return akar / f"results/cross_eval/predictions/combined1716_{slug}__on_953__test.npz", None
+    if korpus == "1716>763":
+        return akar / f"results/combined1716/predictions/combined1716_{slug}_rgb_s42_i1280__test.npz", "DEPTH_"
+    if korpus == "953>763":
+        return akar / f"results/cross_eval/predictions/v2repro953_{slug}__on_763__test.npz", None
     if korpus == "763>953":
         return akar / f"results/cross_eval/predictions/new763_{slug}__on_953__test.npz", None
     if korpus == "953":
@@ -51,9 +57,9 @@ def sumber_dump(akar: Path, korpus: str, slug: str) -> tuple[Path, str | None]:
 
 
 def gt_korpus(gt953: dict, gt763: dict, korpus: str) -> dict[str, np.ndarray]:
-    if korpus in ("953", "763>953"):
+    if korpus in ("953", "763>953", "1716>953"):
         return dict(gt953["test"])
-    if korpus == "763":
+    if korpus in ("763", "1716>763", "953>763"):
         return dict(gt763["test"])
     gabungan: dict[str, np.ndarray] = {}
     for split in ("train", "val", "test"):
@@ -62,14 +68,6 @@ def gt_korpus(gt953: dict, gt763: dict, korpus: str) -> dict[str, np.ndarray]:
         for pohon, nilai in gt763[split].items():
             gabungan[f"DEPTH_{pohon}"] = nilai
     return gabungan
-
-
-def muat_prediksi_korpus(path: Path, korpus: str) -> dict[str, list[np.ndarray]]:
-    """Untuk korpus 1716 awalan SAWIT_/DEPTH_ dipertahankan sebagai kunci pohon."""
-    prediksi = muat_prediksi(path, None)
-    if korpus != "1716":
-        return prediksi
-    return prediksi
 
 
 def metrik_lipat_silang(n: np.ndarray, y: np.ndarray, metode: str) -> tuple[dict, list[float], list[float]]:
@@ -98,6 +96,7 @@ def metrik_lipat_silang(n: np.ndarray, y: np.ndarray, metode: str) -> tuple[dict
             "bias": float(selisih[:, c].mean()),
             "acc_pm1": float((np.abs(selisih[:, c]) <= 1).mean()),
         }
+    rerata_acuan = np.maximum(y.mean(axis=0), 1e-9)
     total_pred, total_gt = prediksi.sum(axis=1), y.sum(axis=1)
     metrik = {
         "n_pohon": int(y.shape[0]),
@@ -105,6 +104,8 @@ def metrik_lipat_silang(n: np.ndarray, y: np.ndarray, metode: str) -> tuple[dict
         "rmse_makro": float(np.mean([per_kelas[c]["rmse"] for c in CLASSES])),
         "acc_pm1_makro": float(np.mean([per_kelas[c]["acc_pm1"] for c in CLASSES])),
         "bias_abs_makro": float(np.mean([abs(per_kelas[c]["bias"]) for c in CLASSES])),
+        "mae_relatif_makro": float(np.mean([per_kelas[c]["mae"] / rerata_acuan[i] for i, c in enumerate(CLASSES)])),
+        "tandan_per_pohon": float(y.sum(axis=1).mean()),
         "mae_total_pohon": float(np.abs(total_pred - total_gt).mean()),
         "rmse_total_pohon": float(np.sqrt(((total_pred - total_gt) ** 2).mean())),
         "bias_total_pohon": float((total_pred - total_gt).mean()),
@@ -128,14 +129,14 @@ def main() -> None:
     gt763 = muat_gt_763(Path(arg.depth_root))
 
     baris = []
-    for korpus in ("953", "763", "1716", "763>953"):
+    for korpus in ("953", "763", "1716", "763>953", "1716>953", "1716>763", "953>763"):
         gt = gt_korpus(gt953, gt763, korpus)
         for slug, label in DETEKTOR:
             path, awalan = sumber_dump(akar, korpus, slug)
             if not path.exists():
                 print(f"[lewat] {path}")
                 continue
-            prediksi = muat_prediksi_korpus(path, korpus)
+            prediksi = muat_prediksi(path, awalan)
             n, y, pohon = matriks_hitung(prediksi, gt, TAU_GRID)
             for metode in METODE:
                 metrik, tau, k = metrik_lipat_silang(n, y, metode)
@@ -171,6 +172,9 @@ def main() -> None:
                         "763": "SawitMVC-Depth-YOLO test (110 pohon)",
                         "1716": "Combined-1716 test (257 pohon)",
                         "763>953": "detektor latih 763 diuji pada SawitMVC-YOLO test (141 pohon)",
+                        "1716>953": "detektor latih 1716 diuji pada SawitMVC-YOLO test (141 pohon)",
+                        "1716>763": "detektor latih 1716 diuji pada irisan partisi uji 763 (66 pohon)",
+                        "953>763": "detektor latih 953 diuji pada SawitMVC-Depth-YOLO test (110 pohon)",
                     },
                     "gt_953": "Baseline-SawitMVC/ground_truth/split_manifest.csv",
                     "gt_763": "SawitMVC-Depth-YOLO/{train,valid,test}/linked/*.json",

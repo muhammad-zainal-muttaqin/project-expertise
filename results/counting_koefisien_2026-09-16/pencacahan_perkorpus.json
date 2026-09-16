@@ -7,7 +7,10 @@
       "953": "SawitMVC-YOLO test (141 pohon)",
       "763": "SawitMVC-Depth-YOLO test (110 pohon)",
       "1716": "Combined-1716 test (257 pohon)",
-      "763>953": "detektor latih 763 diuji pada SawitMVC-YOLO test (141 pohon)"
+      "763>953": "detektor latih 763 diuji pada SawitMVC-YOLO test (141 pohon)",
+      "1716>953": "detektor latih 1716 diuji pada SawitMVC-YOLO test (141 pohon)",
+      "1716>763": "detektor latih 1716 diuji pada irisan partisi uji 763 (66 pohon)",
+      "953>763": "detektor latih 953 diuji pada SawitMVC-Depth-YOLO test (110 pohon)"
     },
     "gt_953": "Baseline-SawitMVC/ground_truth/split_manifest.csv",
     "gt_763": "SawitMVC-Depth-YOLO/{train,valid,test}/linked/*.json"
@@ -36,6 +39,8 @@
         "rmse_makro": 2.950650434870388,
         "acc_pm1_makro": 0.5212765957446808,
         "bias_abs_makro": 1.4148936170212765,
+        "mae_relatif_makro": 0.9619606862024304,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 6.340425531914893,
         "rmse_total_pohon": 8.526138367455276,
         "bias_total_pohon": 5.659574468085107,
@@ -91,6 +96,8 @@
         "rmse_makro": 1.5511526480717022,
         "acc_pm1_makro": 0.7606382978723404,
         "bias_abs_makro": 0.18262411347517732,
+        "mae_relatif_makro": 0.49970713396157307,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.078014184397163,
         "rmse_total_pohon": 2.9905287845709694,
         "bias_total_pohon": -0.3191489361702128,
@@ -146,6 +153,8 @@
         "rmse_makro": 1.5407588969752446,
         "acc_pm1_makro": 0.7446808510638299,
         "bias_abs_makro": 0.12056737588652482,
+        "mae_relatif_makro": 0.5031126450031044,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 1.9858156028368794,
         "rmse_total_pohon": 2.853391661099332,
         "bias_total_pohon": -0.3404255319148936,
@@ -201,6 +210,8 @@
         "rmse_makro": 1.5605414208146144,
         "acc_pm1_makro": 0.7322695035460993,
         "bias_abs_makro": 0.15425531914893617,
+        "mae_relatif_makro": 0.4979273045931618,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.0354609929078014,
         "rmse_total_pohon": 2.9038980893748967,
         "bias_total_pohon": -0.475177304964539,
@@ -256,6 +267,8 @@
         "rmse_makro": 10.576861140602935,
         "acc_pm1_makro": 0.1400709219858156,
         "bias_abs_makro": 9.27659574468085,
+        "mae_relatif_makro": 3.9540768047605797,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 37.1063829787234,
         "rmse_total_pohon": 40.33371431740818,
         "bias_total_pohon": 37.1063829787234,
@@ -311,6 +324,8 @@
         "rmse_makro": 1.6589749439727943,
         "acc_pm1_makro": 0.7074468085106382,
         "bias_abs_makro": 0.21631205673758866,
+        "mae_relatif_makro": 0.5479372224700639,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.2836879432624113,
         "rmse_total_pohon": 3.391687795079432,
         "bias_total_pohon": -0.3971631205673759,
@@ -366,6 +381,8 @@
         "rmse_makro": 1.6304531208080122,
         "acc_pm1_makro": 0.7180851063829787,
         "bias_abs_makro": 0.17198581560283685,
+        "mae_relatif_makro": 0.5378091262174963,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.0921985815602837,
         "rmse_total_pohon": 3.1946320224503557,
         "bias_total_pohon": -0.6879432624113475,
@@ -421,6 +438,8 @@
         "rmse_makro": 1.5732873516562331,
         "acc_pm1_makro": 0.7429078014184398,
         "bias_abs_makro": 0.2783687943262412,
+        "mae_relatif_makro": 0.5102299934433224,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.276595744680851,
         "rmse_total_pohon": 3.1857395013109224,
         "bias_total_pohon": -1.1134751773049645,
@@ -476,6 +495,8 @@
         "rmse_makro": 7.853534849082905,
         "acc_pm1_makro": 0.20921985815602837,
         "bias_abs_makro": 6.675531914893616,
+        "mae_relatif_makro": 2.7125456310885983,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 26.70212765957447,
         "rmse_total_pohon": 29.638603349527763,
         "bias_total_pohon": 26.70212765957447,
@@ -531,6 +552,8 @@
         "rmse_makro": 1.5037050633206017,
         "acc_pm1_makro": 0.7464539007092198,
         "bias_abs_makro": 0.17907801418439717,
+        "mae_relatif_makro": 0.47965502968365803,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 1.9929078014184398,
         "rmse_total_pohon": 2.881833537699062,
         "bias_total_pohon": -0.7163120567375887,
@@ -586,6 +609,8 @@
         "rmse_makro": 1.5086787994400013,
         "acc_pm1_makro": 0.7429078014184397,
         "bias_abs_makro": 0.17198581560283688,
+        "mae_relatif_makro": 0.48027039962342527,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 1.9787234042553192,
         "rmse_total_pohon": 2.837189699345273,
         "bias_total_pohon": -0.6879432624113475,
@@ -641,6 +666,8 @@
         "rmse_makro": 1.5616181354260794,
         "acc_pm1_makro": 0.7216312056737588,
         "bias_abs_makro": 0.16489361702127658,
+        "mae_relatif_makro": 0.514018813274091,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.078014184397163,
         "rmse_total_pohon": 2.9905287845709694,
         "bias_total_pohon": -0.6595744680851063,
@@ -696,6 +723,8 @@
         "rmse_makro": 1.5412971991334614,
         "acc_pm1_makro": 0.765909090909091,
         "bias_abs_makro": 0.5545454545454545,
+        "mae_relatif_makro": 0.8077029133793658,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 2.5090909090909093,
         "rmse_total_pohon": 3.089571903266623,
         "bias_total_pohon": 2.0,
@@ -751,6 +780,8 @@
         "rmse_makro": 1.1466584037616883,
         "acc_pm1_makro": 0.8568181818181818,
         "bias_abs_makro": 0.3613636363636364,
+        "mae_relatif_makro": 0.5568228450515815,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.6090909090909091,
         "rmse_total_pohon": 2.1637509518930735,
         "bias_total_pohon": -1.4454545454545455,
@@ -806,6 +837,8 @@
         "rmse_makro": 1.1638173606649578,
         "acc_pm1_makro": 0.8590909090909091,
         "bias_abs_makro": 0.22045454545454546,
+        "mae_relatif_makro": 0.5817099475606633,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.3181818181818181,
         "rmse_total_pohon": 1.9140627898886609,
         "bias_total_pohon": -0.8818181818181818,
@@ -861,6 +894,8 @@
         "rmse_makro": 1.199216767958939,
         "acc_pm1_makro": 0.8386363636363636,
         "bias_abs_makro": 0.18636363636363634,
+        "mae_relatif_makro": 0.61418825945661,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.4,
         "rmse_total_pohon": 1.935317685925116,
         "bias_total_pohon": -0.7454545454545455,
@@ -916,6 +951,8 @@
         "rmse_makro": 3.407085886641859,
         "acc_pm1_makro": 0.4431818181818181,
         "bias_abs_makro": 2.436363636363636,
+        "mae_relatif_makro": 2.2044933474895507,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 9.763636363636364,
         "rmse_total_pohon": 11.132262695753848,
         "bias_total_pohon": 9.745454545454546,
@@ -971,6 +1008,8 @@
         "rmse_makro": 1.2871185280695614,
         "acc_pm1_makro": 0.8431818181818181,
         "bias_abs_makro": 0.25227272727272726,
+        "mae_relatif_makro": 0.6172069277610219,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.4090909090909092,
         "rmse_total_pohon": 2.1383936196891518,
         "bias_total_pohon": -0.7545454545454545,
@@ -1026,6 +1065,8 @@
         "rmse_makro": 1.2506493000593681,
         "acc_pm1_makro": 0.8454545454545455,
         "bias_abs_makro": 0.26136363636363635,
+        "mae_relatif_makro": 0.6141438389373887,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.4636363636363636,
         "rmse_total_pohon": 2.0068065993694377,
         "bias_total_pohon": -1.0454545454545454,
@@ -1081,6 +1122,8 @@
         "rmse_makro": 1.260956441885289,
         "acc_pm1_makro": 0.8386363636363636,
         "bias_abs_makro": 0.19318181818181818,
+        "mae_relatif_makro": 0.6266415576148929,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.3,
         "rmse_total_pohon": 1.7451230745865878,
         "bias_total_pohon": -0.6636363636363637,
@@ -1136,6 +1179,8 @@
         "rmse_makro": 2.591178022023146,
         "acc_pm1_makro": 0.6068181818181819,
         "bias_abs_makro": 1.677272727272727,
+        "mae_relatif_makro": 1.3818592467533115,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 6.709090909090909,
         "rmse_total_pohon": 7.525713496829629,
         "bias_total_pohon": 6.709090909090909,
@@ -1191,6 +1236,8 @@
         "rmse_makro": 1.1234143782362516,
         "acc_pm1_makro": 0.8522727272727273,
         "bias_abs_makro": 0.2477272727272727,
+        "mae_relatif_makro": 0.5716871592002566,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.2818181818181817,
         "rmse_total_pohon": 1.8115789195666254,
         "bias_total_pohon": -0.8636363636363636,
@@ -1246,6 +1293,8 @@
         "rmse_makro": 1.169849271326822,
         "acc_pm1_makro": 0.8431818181818181,
         "bias_abs_makro": 0.225,
+        "mae_relatif_makro": 0.583606864107773,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.2818181818181817,
         "rmse_total_pohon": 1.8853502206607278,
         "bias_total_pohon": -0.9,
@@ -1301,6 +1350,8 @@
         "rmse_makro": 1.1022751282419978,
         "acc_pm1_makro": 0.8613636363636364,
         "bias_abs_makro": 0.12727272727272726,
+        "mae_relatif_makro": 0.5648425825316588,
+        "tandan_per_pohon": 5.072727272727272,
         "mae_total_pohon": 1.0909090909090908,
         "rmse_total_pohon": 1.6068037160207784,
         "bias_total_pohon": -0.45454545454545453,
@@ -1356,6 +1407,8 @@
         "rmse_makro": 2.3868844159341434,
         "acc_pm1_makro": 0.6449416342412451,
         "bias_abs_makro": 1.0116731517509727,
+        "mae_relatif_makro": 0.8414620373854695,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 3.9610894941634243,
         "rmse_total_pohon": 5.966182258303848,
         "bias_total_pohon": 2.972762645914397,
@@ -1411,6 +1464,8 @@
         "rmse_makro": 1.4664921971014526,
         "acc_pm1_makro": 0.7714007782101167,
         "bias_abs_makro": 0.16828793774319067,
+        "mae_relatif_makro": 0.5344012701419396,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 1.801556420233463,
         "rmse_total_pohon": 2.5468375140470187,
         "bias_total_pohon": -0.6731517509727627,
@@ -1466,6 +1521,8 @@
         "rmse_makro": 1.5114644969600919,
         "acc_pm1_makro": 0.7684824902723735,
         "bias_abs_makro": 0.23638132295719846,
+        "mae_relatif_makro": 0.5459150462209331,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 2.0428015564202333,
         "rmse_total_pohon": 2.853763983162471,
         "bias_total_pohon": -0.9455252918287937,
@@ -1521,6 +1578,8 @@
         "rmse_makro": 1.4794296796654964,
         "acc_pm1_makro": 0.7684824902723736,
         "bias_abs_makro": 0.2519455252918288,
+        "mae_relatif_makro": 0.5323989432396512,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 1.972762645914397,
         "rmse_total_pohon": 2.7721516738309497,
         "bias_total_pohon": -1.0077821011673151,
@@ -1576,6 +1635,8 @@
         "rmse_makro": 8.047043126396886,
         "acc_pm1_makro": 0.24124513618677043,
         "bias_abs_makro": 6.296692607003891,
+        "mae_relatif_makro": 3.428382633782788,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 25.186770428015564,
         "rmse_total_pohon": 30.148594381673277,
         "bias_total_pohon": 25.186770428015564,
@@ -1631,6 +1692,8 @@
         "rmse_makro": 1.5134422635881055,
         "acc_pm1_makro": 0.7752918287937742,
         "bias_abs_makro": 0.30642023346303504,
+        "mae_relatif_makro": 0.5411619924259401,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 2.1361867704280155,
         "rmse_total_pohon": 3.0103582526567365,
         "bias_total_pohon": -1.2256809338521402,
@@ -1686,6 +1749,8 @@
         "rmse_makro": 1.4495088961108338,
         "acc_pm1_makro": 0.7928015564202334,
         "bias_abs_makro": 0.2490272373540856,
+        "mae_relatif_makro": 0.5014655467656622,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 2.046692607003891,
         "rmse_total_pohon": 2.900422617803775,
         "bias_total_pohon": -0.9961089494163424,
@@ -1741,6 +1806,8 @@
         "rmse_makro": 1.4607838892855107,
         "acc_pm1_makro": 0.7879377431906615,
         "bias_abs_makro": 0.2616731517509728,
+        "mae_relatif_makro": 0.5163982061288718,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 2.019455252918288,
         "rmse_total_pohon": 2.8400964525737815,
         "bias_total_pohon": -1.046692607003891,
@@ -1796,6 +1863,8 @@
         "rmse_makro": 5.729954425900846,
         "acc_pm1_makro": 0.3784046692607004,
         "bias_abs_makro": 4.10603112840467,
+        "mae_relatif_makro": 2.1652888050771852,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 16.43190661478599,
         "rmse_total_pohon": 20.776277253109,
         "bias_total_pohon": 16.424124513618676,
@@ -1851,6 +1920,8 @@
         "rmse_makro": 1.4177757218327844,
         "acc_pm1_makro": 0.7898832684824904,
         "bias_abs_makro": 0.22081712062256809,
+        "mae_relatif_makro": 0.5059024674184351,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 1.8171206225680934,
         "rmse_total_pohon": 2.638387669423018,
         "bias_total_pohon": -0.7976653696498055,
@@ -1906,6 +1977,8 @@
         "rmse_makro": 1.4006151595954992,
         "acc_pm1_makro": 0.7937743190661479,
         "bias_abs_makro": 0.09824902723735408,
+        "mae_relatif_makro": 0.48467023806000337,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 1.7470817120622568,
         "rmse_total_pohon": 2.698176354878114,
         "bias_total_pohon": -0.39299610894941633,
@@ -1961,6 +2034,8 @@
         "rmse_makro": 1.4513224310647537,
         "acc_pm1_makro": 0.784046692607004,
         "bias_abs_makro": 0.13132295719844359,
+        "mae_relatif_makro": 0.5169841034942997,
+        "tandan_per_pohon": 7.673151750972763,
         "mae_total_pohon": 1.8326848249027237,
         "rmse_total_pohon": 2.753844147287322,
         "bias_total_pohon": -0.5252918287937743,
@@ -2016,6 +2091,8 @@
         "rmse_makro": 3.8200995654673715,
         "acc_pm1_makro": 0.39361702127659576,
         "bias_abs_makro": 2.3475177304964543,
+        "mae_relatif_makro": 1.717380821417241,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 4.9787234042553195,
         "rmse_total_pohon": 6.606465777624371,
         "bias_total_pohon": 4.042553191489362,
@@ -2071,6 +2148,8 @@
         "rmse_makro": 2.1761176849627932,
         "acc_pm1_makro": 0.5567375886524824,
         "bias_abs_makro": 1.1843971631205674,
+        "mae_relatif_makro": 0.8249326415273334,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.49645390070922,
         "rmse_total_pohon": 3.3241006889188722,
         "bias_total_pohon": -0.3262411347517731,
@@ -2126,6 +2205,8 @@
         "rmse_makro": 1.9832016269098807,
         "acc_pm1_makro": 0.6347517730496454,
         "bias_abs_makro": 0.5106382978723405,
+        "mae_relatif_makro": 0.6857336907442707,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.595744680851064,
         "rmse_total_pohon": 3.520960539478876,
         "bias_total_pohon": -0.5673758865248227,
@@ -2181,6 +2262,8 @@
         "rmse_makro": 1.7660212063588872,
         "acc_pm1_makro": 0.6702127659574468,
         "bias_abs_makro": 0.3315602836879432,
+        "mae_relatif_makro": 0.5875855731304496,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.7588652482269502,
         "rmse_total_pohon": 3.5440490526999286,
         "bias_total_pohon": -1.326241134751773,
@@ -2236,6 +2319,8 @@
         "rmse_makro": 6.295774729704377,
         "acc_pm1_makro": 0.24645390070921985,
         "bias_abs_makro": 4.874113475177305,
+        "mae_relatif_makro": 3.475538293552025,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 11.25531914893617,
         "rmse_total_pohon": 14.394394101881597,
         "bias_total_pohon": 10.687943262411348,
@@ -2291,6 +2376,8 @@
         "rmse_makro": 2.8487005523547486,
         "acc_pm1_makro": 0.5053191489361701,
         "bias_abs_makro": 1.8670212765957448,
+        "mae_relatif_makro": 0.9324836904768627,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 6.574468085106383,
         "rmse_total_pohon": 7.4324380086061295,
         "bias_total_pohon": -6.375886524822695,
@@ -2346,6 +2433,8 @@
         "rmse_makro": 2.446541005308517,
         "acc_pm1_makro": 0.5354609929078015,
         "bias_abs_makro": 1.1578014184397163,
+        "mae_relatif_makro": 0.8880399346179106,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 4.390070921985815,
         "rmse_total_pohon": 5.468802558004788,
         "bias_total_pohon": -1.8794326241134751,
@@ -2401,6 +2490,8 @@
         "rmse_makro": 2.115364711041775,
         "acc_pm1_makro": 0.6276595744680851,
         "bias_abs_makro": 0.42907801418439717,
+        "mae_relatif_makro": 0.684596715120809,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 4.2695035460992905,
         "rmse_total_pohon": 5.344845730844327,
         "bias_total_pohon": -1.7163120567375887,
@@ -2456,6 +2547,8 @@
         "rmse_makro": 6.459795448337944,
         "acc_pm1_makro": 0.2801418439716312,
         "bias_abs_makro": 4.588652482269503,
+        "mae_relatif_makro": 3.459484951317644,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 16.31205673758865,
         "rmse_total_pohon": 18.941492598102496,
         "bias_total_pohon": 16.170212765957448,
@@ -2511,6 +2604,8 @@
         "rmse_makro": 2.4292159498351937,
         "acc_pm1_makro": 0.48936170212765956,
         "bias_abs_makro": 1.604609929078014,
+        "mae_relatif_makro": 0.9041083617561847,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 3.4113475177304964,
         "rmse_total_pohon": 4.179483832530398,
         "bias_total_pohon": -2.900709219858156,
@@ -2566,6 +2661,8 @@
         "rmse_makro": 2.2399399977417196,
         "acc_pm1_makro": 0.574468085106383,
         "bias_abs_makro": 0.8297872340425532,
+        "mae_relatif_makro": 0.8131143278820901,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 3.375886524822695,
         "rmse_total_pohon": 4.4816410368277735,
         "bias_total_pohon": -1.3049645390070923,
@@ -2621,6 +2718,8 @@
         "rmse_makro": 1.8023309127374643,
         "acc_pm1_makro": 0.6702127659574468,
         "bias_abs_makro": 0.3475177304964539,
+        "mae_relatif_makro": 0.5958695670375367,
+        "tandan_per_pohon": 9.907801418439716,
         "mae_total_pohon": 2.8368794326241136,
         "rmse_total_pohon": 3.602599534260687,
         "bias_total_pohon": -1.3900709219858156,
@@ -2652,6 +2751,2058 @@
         }
       },
       "sumber_dump": "results/cross_eval/predictions/new763_rfdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "YOLO26l",
+      "metode": "naif",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 2.0656028368794326,
+        "rmse_makro": 2.8783712475912613,
+        "acc_pm1_makro": 0.5212765957446809,
+        "bias_abs_makro": 1.5053191489361701,
+        "mae_relatif_makro": 0.9176622266196248,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 5.51063829787234,
+        "rmse_total_pohon": 7.698668946389323,
+        "bias_total_pohon": 4.460992907801418,
+        "per_kelas": {
+          "B1": {
+            "mae": 1.0780141843971631,
+            "rmse": 1.705227673491055,
+            "bias": 0.8652482269503546,
+            "acc_pm1": 0.6879432624113475
+          },
+          "B2": {
+            "mae": 1.6099290780141844,
+            "rmse": 2.3595287424663476,
+            "bias": 0.7021276595744681,
+            "acc_pm1": 0.5602836879432624
+          },
+          "B3": {
+            "mae": 4.198581560283688,
+            "rmse": 5.462963630778231,
+            "bias": 3.673758865248227,
+            "acc_pm1": 0.2198581560283688
+          },
+          "B4": {
+            "mae": 1.375886524822695,
+            "rmse": 1.985764943629411,
+            "bias": -0.7801418439716312,
+            "acc_pm1": 0.6170212765957447
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_yolo26l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "YOLO26l",
+      "metode": "global",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "k_rerata": [
+        0.254,
+        0.254,
+        0.254,
+        0.254
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0992907801418441,
+        "rmse_makro": 1.588459674317321,
+        "acc_pm1_makro": 0.7251773049645389,
+        "bias_abs_makro": 0.24822695035460993,
+        "mae_relatif_makro": 0.5078273833535099,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.1702127659574466,
+        "rmse_total_pohon": 2.9774566708770682,
+        "bias_total_pohon": -0.9929078014184397,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.41843971631205673,
+            "rmse": 0.7764257076067382,
+            "bias": -0.07801418439716312,
+            "acc_pm1": 0.9574468085106383
+          },
+          "B2": {
+            "mae": 1.070921985815603,
+            "rmse": 1.608928986086553,
+            "bias": -0.04964539007092199,
+            "acc_pm1": 0.723404255319149
+          },
+          "B3": {
+            "mae": 1.6666666666666667,
+            "rmse": 2.1879748724684185,
+            "bias": -0.24822695035460993,
+            "acc_pm1": 0.5177304964539007
+          },
+          "B4": {
+            "mae": 1.2411347517730495,
+            "rmse": 1.7805091311075736,
+            "bias": -0.6170212765957447,
+            "acc_pm1": 0.7021276595744681
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_yolo26l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "YOLO26l",
+      "metode": "k_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "k_rerata": [
+        0.254,
+        0.21600000000000003,
+        0.248,
+        0.328
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0851063829787235,
+        "rmse_makro": 1.5749310547935622,
+        "acc_pm1_makro": 0.7287234042553192,
+        "bias_abs_makro": 0.20921985815602837,
+        "mae_relatif_makro": 0.49448810078539507,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.1560283687943262,
+        "rmse_total_pohon": 2.931850044059393,
+        "bias_total_pohon": -0.8368794326241135,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.41134751773049644,
+            "rmse": 0.7718449849879597,
+            "bias": -0.05673758865248227,
+            "acc_pm1": 0.9574468085106383
+          },
+          "B2": {
+            "mae": 1.070921985815603,
+            "rmse": 1.600088650026386,
+            "bias": -0.3049645390070922,
+            "acc_pm1": 0.7304964539007093
+          },
+          "B3": {
+            "mae": 1.7304964539007093,
+            "rmse": 2.275369193018796,
+            "bias": -0.3120567375886525,
+            "acc_pm1": 0.49645390070921985
+          },
+          "B4": {
+            "mae": 1.127659574468085,
+            "rmse": 1.6524213911411063,
+            "bias": -0.16312056737588654,
+            "acc_pm1": 0.7304964539007093
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_yolo26l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "YOLO26l",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.27999999999999997,
+        0.16,
+        0.10999999999999999,
+        0.1
+      ],
+      "k_rerata": [
+        0.374,
+        0.298,
+        0.27,
+        0.328
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.1187943262411348,
+        "rmse_makro": 1.6227705257333274,
+        "acc_pm1_makro": 0.7145390070921986,
+        "bias_abs_makro": 0.2606382978723404,
+        "mae_relatif_makro": 0.515503680047432,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.2907801418439715,
+        "rmse_total_pohon": 3.1318541853505684,
+        "bias_total_pohon": -1.0425531914893618,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.45390070921985815,
+            "rmse": 0.8421519210665189,
+            "bias": -0.2127659574468085,
+            "acc_pm1": 0.9219858156028369
+          },
+          "B2": {
+            "mae": 1.1134751773049645,
+            "rmse": 1.6947980485980962,
+            "bias": -0.46099290780141844,
+            "acc_pm1": 0.7304964539007093
+          },
+          "B3": {
+            "mae": 1.7801418439716312,
+            "rmse": 2.301710742127588,
+            "bias": -0.20567375886524822,
+            "acc_pm1": 0.475177304964539
+          },
+          "B4": {
+            "mae": 1.127659574468085,
+            "rmse": 1.6524213911411063,
+            "bias": -0.16312056737588654,
+            "acc_pm1": 0.7304964539007093
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_yolo26l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RT-DETR-L",
+      "metode": "naif",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 8.98758865248227,
+        "rmse_makro": 10.1011777467843,
+        "acc_pm1_makro": 0.12234042553191489,
+        "bias_abs_makro": 8.98758865248227,
+        "mae_relatif_makro": 3.83148350827386,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 35.95035460992908,
+        "rmse_total_pohon": 38.786101919729695,
+        "bias_total_pohon": 35.95035460992908,
+        "per_kelas": {
+          "B1": {
+            "mae": 2.5602836879432624,
+            "rmse": 3.565993838572578,
+            "bias": 2.5602836879432624,
+            "acc_pm1": 0.3900709219858156
+          },
+          "B2": {
+            "mae": 9.361702127659575,
+            "rmse": 10.45354464976741,
+            "bias": 9.361702127659575,
+            "acc_pm1": 0.028368794326241134
+          },
+          "B3": {
+            "mae": 15.886524822695035,
+            "rmse": 17.18526500620032,
+            "bias": 15.886524822695035,
+            "acc_pm1": 0.0070921985815602835
+          },
+          "B4": {
+            "mae": 8.141843971631205,
+            "rmse": 9.199907492596893,
+            "bias": 8.141843971631205,
+            "acc_pm1": 0.06382978723404255
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rtdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RT-DETR-L",
+      "metode": "global",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.45,
+        0.45,
+        0.45,
+        0.45
+      ],
+      "k_rerata": [
+        0.382,
+        0.382,
+        0.382,
+        0.382
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.101063829787234,
+        "rmse_makro": 1.5845586316299096,
+        "acc_pm1_makro": 0.7074468085106382,
+        "bias_abs_makro": 0.2570921985815603,
+        "mae_relatif_makro": 0.5141453658306103,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.2624113475177303,
+        "rmse_total_pohon": 3.1521691281982247,
+        "bias_total_pohon": -0.9148936170212766,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.4397163120567376,
+            "rmse": 0.74376843799781,
+            "bias": -0.028368794326241134,
+            "acc_pm1": 0.9432624113475178
+          },
+          "B2": {
+            "mae": 1.1205673758865249,
+            "rmse": 1.6502739940140694,
+            "bias": 0.05673758865248227,
+            "acc_pm1": 0.6808510638297872
+          },
+          "B3": {
+            "mae": 1.6524822695035462,
+            "rmse": 2.226532462936626,
+            "bias": -0.2198581560283688,
+            "acc_pm1": 0.5177304964539007
+          },
+          "B4": {
+            "mae": 1.1914893617021276,
+            "rmse": 1.7176596315711323,
+            "bias": -0.723404255319149,
+            "acc_pm1": 0.6879432624113475
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rtdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RT-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.49000000000000005,
+        0.49000000000000005,
+        0.49000000000000005,
+        0.49000000000000005
+      ],
+      "k_rerata": [
+        0.36,
+        0.352,
+        0.434,
+        0.6759999999999999
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0921985815602837,
+        "rmse_makro": 1.6022754551638063,
+        "acc_pm1_makro": 0.7340425531914895,
+        "bias_abs_makro": 0.16666666666666666,
+        "mae_relatif_makro": 0.5099758725309051,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.2836879432624113,
+        "rmse_total_pohon": 3.3005479880281388,
+        "bias_total_pohon": -0.5531914893617021,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.44680851063829785,
+            "rmse": 0.7672369140425294,
+            "bias": -0.07801418439716312,
+            "acc_pm1": 0.9432624113475178
+          },
+          "B2": {
+            "mae": 1.0851063829787233,
+            "rmse": 1.68640790771559,
+            "bias": -0.375886524822695,
+            "acc_pm1": 0.7304964539007093
+          },
+          "B3": {
+            "mae": 1.6595744680851063,
+            "rmse": 2.275369193018796,
+            "bias": 0.05673758865248227,
+            "acc_pm1": 0.5460992907801419
+          },
+          "B4": {
+            "mae": 1.177304964539007,
+            "rmse": 1.6800878058783097,
+            "bias": -0.15602836879432624,
+            "acc_pm1": 0.7163120567375887
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rtdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RT-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.55,
+        0.39,
+        0.38,
+        0.49000000000000005
+      ],
+      "k_rerata": [
+        0.38,
+        0.27,
+        0.33,
+        0.6759999999999999
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0567375886524824,
+        "rmse_makro": 1.5196464566630263,
+        "acc_pm1_makro": 0.7411347517730497,
+        "bias_abs_makro": 0.15602836879432624,
+        "mae_relatif_makro": 0.47931145011844667,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.0709219858156027,
+        "rmse_total_pohon": 2.9245839856912474,
+        "bias_total_pohon": -0.624113475177305,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.3475177304964539,
+            "rmse": 0.6577416768573946,
+            "bias": -0.1347517730496454,
+            "acc_pm1": 0.9716312056737588
+          },
+          "B2": {
+            "mae": 1.099290780141844,
+            "rmse": 1.6438149712101018,
+            "bias": -0.16312056737588654,
+            "acc_pm1": 0.7375886524822695
+          },
+          "B3": {
+            "mae": 1.6028368794326242,
+            "rmse": 2.0969413727062984,
+            "bias": -0.1702127659574468,
+            "acc_pm1": 0.5390070921985816
+          },
+          "B4": {
+            "mae": 1.177304964539007,
+            "rmse": 1.6800878058783097,
+            "bias": -0.15602836879432624,
+            "acc_pm1": 0.7163120567375887
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rtdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RF-DETR-L",
+      "metode": "naif",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 6.131205673758865,
+        "rmse_makro": 7.279490824250001,
+        "acc_pm1_makro": 0.2074468085106383,
+        "bias_abs_makro": 6.092198581560284,
+        "mae_relatif_makro": 2.4941874015995094,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 24.368794326241133,
+        "rmse_total_pohon": 27.188597943918115,
+        "bias_total_pohon": 24.368794326241133,
+        "per_kelas": {
+          "B1": {
+            "mae": 1.9361702127659575,
+            "rmse": 2.8571175277499323,
+            "bias": 1.9361702127659575,
+            "acc_pm1": 0.44680851063829785
+          },
+          "B2": {
+            "mae": 5.3120567375886525,
+            "rmse": 6.568245121159167,
+            "bias": 5.198581560283688,
+            "acc_pm1": 0.14893617021276595
+          },
+          "B3": {
+            "mae": 12.638297872340425,
+            "rmse": 13.864081864928771,
+            "bias": 12.638297872340425,
+            "acc_pm1": 0.0070921985815602835
+          },
+          "B4": {
+            "mae": 4.638297872340425,
+            "rmse": 5.828518783162131,
+            "bias": 4.595744680851064,
+            "acc_pm1": 0.22695035460992907
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rfdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RF-DETR-L",
+      "metode": "global",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ],
+      "k_rerata": [
+        0.38999999999999996,
+        0.38999999999999996,
+        0.38999999999999996,
+        0.38999999999999996
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0425531914893618,
+        "rmse_makro": 1.5488730895020972,
+        "acc_pm1_makro": 0.7677304964539007,
+        "bias_abs_makro": 0.3475177304964539,
+        "mae_relatif_makro": 0.4843443145117332,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.368794326241135,
+        "rmse_total_pohon": 3.274660937458892,
+        "bias_total_pohon": -1.3475177304964538,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.3900709219858156,
+            "rmse": 0.6995439243733446,
+            "bias": 0.02127659574468085,
+            "acc_pm1": 0.9645390070921985
+          },
+          "B2": {
+            "mae": 0.9787234042553191,
+            "rmse": 1.5298449372125573,
+            "bias": -0.3546099290780142,
+            "acc_pm1": 0.7730496453900709
+          },
+          "B3": {
+            "mae": 1.524822695035461,
+            "rmse": 2.1717071756426067,
+            "bias": -0.2765957446808511,
+            "acc_pm1": 0.6453900709219859
+          },
+          "B4": {
+            "mae": 1.2765957446808511,
+            "rmse": 1.7943963207798796,
+            "bias": -0.7375886524822695,
+            "acc_pm1": 0.6879432624113475
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rfdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RF-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ],
+      "k_rerata": [
+        0.348,
+        0.41200000000000003,
+        0.38400000000000006,
+        0.538
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0425531914893615,
+        "rmse_makro": 1.5412201228844815,
+        "acc_pm1_makro": 0.7641843971631206,
+        "bias_abs_makro": 0.1702127659574468,
+        "mae_relatif_makro": 0.48662226818525794,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.099290780141844,
+        "rmse_total_pohon": 3.050403996031852,
+        "bias_total_pohon": -0.6808510638297872,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.41134751773049644,
+            "rmse": 0.7244464749279004,
+            "bias": -0.014184397163120567,
+            "acc_pm1": 0.9716312056737588
+          },
+          "B2": {
+            "mae": 1.0425531914893618,
+            "rmse": 1.608928986086553,
+            "bias": -0.2624113475177305,
+            "acc_pm1": 0.7446808510638298
+          },
+          "B3": {
+            "mae": 1.553191489361702,
+            "rmse": 2.1388006183621657,
+            "bias": -0.3617021276595745,
+            "acc_pm1": 0.624113475177305
+          },
+          "B4": {
+            "mae": 1.1631205673758864,
+            "rmse": 1.6927044121613066,
+            "bias": -0.0425531914893617,
+            "acc_pm1": 0.7163120567375887
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rfdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>953",
+      "detektor": "RF-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 141,
+      "tau_rerata": [
+        0.6399999999999999,
+        0.3,
+        0.27999999999999997,
+        0.35
+      ],
+      "k_rerata": [
+        0.508,
+        0.314,
+        0.30600000000000005,
+        0.538
+      ],
+      "metrik": {
+        "n_pohon": 141,
+        "mae_makro": 1.0602836879432624,
+        "rmse_makro": 1.548507776468043,
+        "acc_pm1_makro": 0.75177304964539,
+        "bias_abs_makro": 0.22340425531914893,
+        "mae_relatif_makro": 0.48787892414788264,
+        "tandan_per_pohon": 9.907801418439716,
+        "mae_total_pohon": 2.25531914893617,
+        "rmse_total_pohon": 3.197960342876367,
+        "bias_total_pohon": -0.8936170212765957,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.3829787234042553,
+            "rmse": 0.6944562646748168,
+            "bias": -0.15602836879432624,
+            "acc_pm1": 0.950354609929078
+          },
+          "B2": {
+            "mae": 1.099290780141844,
+            "rmse": 1.6351632533934424,
+            "bias": -0.2765957446808511,
+            "acc_pm1": 0.7375886524822695
+          },
+          "B3": {
+            "mae": 1.5957446808510638,
+            "rmse": 2.1717071756426067,
+            "bias": -0.41843971631205673,
+            "acc_pm1": 0.6028368794326241
+          },
+          "B4": {
+            "mae": 1.1631205673758864,
+            "rmse": 1.6927044121613066,
+            "bias": -0.0425531914893617,
+            "acc_pm1": 0.7163120567375887
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/combined1716_rfdetr_l__on_953__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "YOLO26l",
+      "metode": "naif",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.9545454545454546,
+        "rmse_makro": 1.6148252172493436,
+        "acc_pm1_makro": 0.7878787878787878,
+        "bias_abs_makro": 0.5227272727272727,
+        "mae_relatif_makro": 0.7737537336802043,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 2.121212121212121,
+        "rmse_total_pohon": 2.6342729432224634,
+        "bias_total_pohon": 1.5151515151515151,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5606060606060606,
+            "rmse": 1.0940611029415575,
+            "bias": 0.19696969696969696,
+            "acc_pm1": 0.8787878787878788
+          },
+          "B2": {
+            "mae": 1.2272727272727273,
+            "rmse": 2.0560332505270256,
+            "bias": 0.6818181818181818,
+            "acc_pm1": 0.7121212121212122
+          },
+          "B3": {
+            "mae": 1.5909090909090908,
+            "rmse": 2.3963355863535143,
+            "bias": 0.9242424242424242,
+            "acc_pm1": 0.6212121212121212
+          },
+          "B4": {
+            "mae": 0.4393939393939394,
+            "rmse": 0.9128709291752769,
+            "bias": -0.2878787878787879,
+            "acc_pm1": 0.9393939393939394
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "YOLO26l",
+      "metode": "global",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.19999999999999998,
+        0.19999999999999998,
+        0.19999999999999998,
+        0.19999999999999998
+      ],
+      "k_rerata": [
+        0.562,
+        0.562,
+        0.562,
+        0.562
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.8295454545454545,
+        "rmse_makro": 1.4038238165326407,
+        "acc_pm1_makro": 0.8143939393939393,
+        "bias_abs_makro": 0.20833333333333331,
+        "mae_relatif_makro": 0.7355377101700631,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.6818181818181819,
+        "rmse_total_pohon": 2.1707420878863553,
+        "bias_total_pohon": -0.8333333333333334,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5606060606060606,
+            "rmse": 1.0660035817780522,
+            "bias": -0.07575757575757576,
+            "acc_pm1": 0.9090909090909091
+          },
+          "B2": {
+            "mae": 1.0151515151515151,
+            "rmse": 1.7011582507043235,
+            "bias": -0.045454545454545456,
+            "acc_pm1": 0.7424242424242424
+          },
+          "B3": {
+            "mae": 1.2575757575757576,
+            "rmse": 1.8789100644530674,
+            "bias": -0.3181818181818182,
+            "acc_pm1": 0.6666666666666666
+          },
+          "B4": {
+            "mae": 0.48484848484848486,
+            "rmse": 0.9692233691951198,
+            "bias": -0.3939393939393939,
+            "acc_pm1": 0.9393939393939394
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "YOLO26l",
+      "metode": "k_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.22999999999999998,
+        0.22999999999999998,
+        0.22999999999999998,
+        0.22999999999999998
+      ],
+      "k_rerata": [
+        0.43200000000000005,
+        0.6279999999999999,
+        0.62,
+        0.396
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.8181818181818182,
+        "rmse_makro": 1.3804517014453694,
+        "acc_pm1_makro": 0.8333333333333334,
+        "bias_abs_makro": 0.2878787878787879,
+        "mae_relatif_makro": 0.7185238714650479,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.4848484848484849,
+        "rmse_total_pohon": 2.030076875690209,
+        "bias_total_pohon": -1.1515151515151516,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.48484848484848486,
+            "rmse": 0.9692233691951198,
+            "bias": -0.15151515151515152,
+            "acc_pm1": 0.9393939393939394
+          },
+          "B2": {
+            "mae": 1.0,
+            "rmse": 1.651445647689541,
+            "bias": -0.09090909090909091,
+            "acc_pm1": 0.7878787878787878
+          },
+          "B3": {
+            "mae": 1.2727272727272727,
+            "rmse": 1.8422647458873531,
+            "bias": -0.48484848484848486,
+            "acc_pm1": 0.6666666666666666
+          },
+          "B4": {
+            "mae": 0.5151515151515151,
+            "rmse": 1.0588730430094635,
+            "bias": -0.42424242424242425,
+            "acc_pm1": 0.9393939393939394
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "YOLO26l",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.26,
+        0.18,
+        0.21000000000000002,
+        0.1
+      ],
+      "k_rerata": [
+        0.526,
+        0.534,
+        0.6119999999999999,
+        0.26
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.7537878787878788,
+        "rmse_makro": 1.304684584187929,
+        "acc_pm1_makro": 0.8371212121212122,
+        "bias_abs_makro": 0.1856060606060606,
+        "mae_relatif_makro": 0.6137556005203064,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.3181818181818181,
+        "rmse_total_pohon": 1.8215877190467162,
+        "bias_total_pohon": -0.7424242424242424,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.42424242424242425,
+            "rmse": 0.8876253645985945,
+            "bias": -0.21212121212121213,
+            "acc_pm1": 0.9393939393939394
+          },
+          "B2": {
+            "mae": 1.0,
+            "rmse": 1.7144660799776528,
+            "bias": -0.06060606060606061,
+            "acc_pm1": 0.7878787878787878
+          },
+          "B3": {
+            "mae": 1.2272727272727273,
+            "rmse": 1.8381479480139455,
+            "bias": -0.22727272727272727,
+            "acc_pm1": 0.6666666666666666
+          },
+          "B4": {
+            "mae": 0.36363636363636365,
+            "rmse": 0.778498944161523,
+            "bias": -0.24242424242424243,
+            "acc_pm1": 0.9545454545454546
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RT-DETR-L",
+      "metode": "naif",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 3.3484848484848486,
+        "rmse_makro": 4.293411202349213,
+        "acc_pm1_makro": 0.3939393939393939,
+        "bias_abs_makro": 3.3181818181818183,
+        "mae_relatif_makro": 2.898184949655538,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 13.272727272727273,
+        "rmse_total_pohon": 14.620450600360297,
+        "bias_total_pohon": 13.272727272727273,
+        "per_kelas": {
+          "B1": {
+            "mae": 2.727272727272727,
+            "rmse": 4.0750534482458765,
+            "bias": 2.727272727272727,
+            "acc_pm1": 0.5151515151515151
+          },
+          "B2": {
+            "mae": 3.6515151515151514,
+            "rmse": 4.875728383813773,
+            "bias": 3.6515151515151514,
+            "acc_pm1": 0.36363636363636365
+          },
+          "B3": {
+            "mae": 5.53030303030303,
+            "rmse": 6.155805340809551,
+            "bias": 5.5,
+            "acc_pm1": 0.10606060606060606
+          },
+          "B4": {
+            "mae": 1.4848484848484849,
+            "rmse": 2.0670576365276494,
+            "bias": 1.393939393939394,
+            "acc_pm1": 0.5909090909090909
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RT-DETR-L",
+      "metode": "global",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.52,
+        0.52,
+        0.52,
+        0.52
+      ],
+      "k_rerata": [
+        0.584,
+        0.584,
+        0.584,
+        0.584
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.6590909090909092,
+        "rmse_makro": 1.1923567142309182,
+        "acc_pm1_makro": 0.8636363636363636,
+        "bias_abs_makro": 0.2878787878787879,
+        "mae_relatif_makro": 0.5904216047598401,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.0606060606060606,
+        "rmse_total_pohon": 1.4770978917519928,
+        "bias_total_pohon": -0.6363636363636364,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5,
+            "rmse": 1.0516941599441378,
+            "bias": -0.2878787878787879,
+            "acc_pm1": 0.9090909090909091
+          },
+          "B2": {
+            "mae": 0.8636363636363636,
+            "rmse": 1.387170654332921,
+            "bias": 0.25757575757575757,
+            "acc_pm1": 0.803030303030303
+          },
+          "B3": {
+            "mae": 0.9242424242424242,
+            "rmse": 1.561855927860806,
+            "bias": -0.4090909090909091,
+            "acc_pm1": 0.7878787878787878
+          },
+          "B4": {
+            "mae": 0.3484848484848485,
+            "rmse": 0.7687061147858074,
+            "bias": -0.19696969696969696,
+            "acc_pm1": 0.9545454545454546
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RT-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.55,
+        0.55,
+        0.55,
+        0.55
+      ],
+      "k_rerata": [
+        0.606,
+        0.5879999999999999,
+        0.656,
+        0.742
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.7121212121212122,
+        "rmse_makro": 1.2900683637489971,
+        "acc_pm1_makro": 0.8446969696969696,
+        "bias_abs_makro": 0.25,
+        "mae_relatif_makro": 0.6546409042732573,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.4545454545454546,
+        "rmse_total_pohon": 2.0,
+        "bias_total_pohon": -1.0,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5,
+            "rmse": 1.0660035817780522,
+            "bias": -0.3787878787878788,
+            "acc_pm1": 0.8939393939393939
+          },
+          "B2": {
+            "mae": 0.8939393939393939,
+            "rmse": 1.451227275811961,
+            "bias": -0.015151515151515152,
+            "acc_pm1": 0.7878787878787878
+          },
+          "B3": {
+            "mae": 1.0,
+            "rmse": 1.7056057308448835,
+            "bias": -0.30303030303030304,
+            "acc_pm1": 0.7727272727272727
+          },
+          "B4": {
+            "mae": 0.45454545454545453,
+            "rmse": 0.937436866561092,
+            "bias": -0.30303030303030304,
+            "acc_pm1": 0.9242424242424242
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RT-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.4699999999999999,
+        0.52,
+        0.5700000000000001,
+        0.45999999999999996
+      ],
+      "k_rerata": [
+        0.588,
+        0.6299999999999999,
+        0.6759999999999999,
+        0.45999999999999996
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.7007575757575758,
+        "rmse_makro": 1.2654223050282583,
+        "acc_pm1_makro": 0.8598484848484848,
+        "bias_abs_makro": 0.23106060606060605,
+        "mae_relatif_makro": 0.6279363588187117,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.378787878787879,
+        "rmse_total_pohon": 1.9029482707662133,
+        "bias_total_pohon": -0.5909090909090909,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5454545454545454,
+            "rmse": 1.0730867399773196,
+            "bias": -0.2727272727272727,
+            "acc_pm1": 0.9090909090909091
+          },
+          "B2": {
+            "mae": 0.8939393939393939,
+            "rmse": 1.4301938838683885,
+            "bias": 0.16666666666666666,
+            "acc_pm1": 0.7727272727272727
+          },
+          "B3": {
+            "mae": 1.0,
+            "rmse": 1.7056057308448835,
+            "bias": -0.36363636363636365,
+            "acc_pm1": 0.803030303030303
+          },
+          "B4": {
+            "mae": 0.36363636363636365,
+            "rmse": 0.8528028654224418,
+            "bias": -0.12121212121212122,
+            "acc_pm1": 0.9545454545454546
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rtdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RF-DETR-L",
+      "metode": "naif",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 1.9772727272727273,
+        "rmse_makro": 2.774186337429509,
+        "acc_pm1_makro": 0.5909090909090909,
+        "bias_abs_makro": 1.856060606060606,
+        "mae_relatif_makro": 1.4462494580141638,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 7.424242424242424,
+        "rmse_total_pohon": 8.271894730002456,
+        "bias_total_pohon": 7.424242424242424,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.9696969696969697,
+            "rmse": 1.7320508075688772,
+            "bias": 0.9393939393939394,
+            "acc_pm1": 0.7727272727272727
+          },
+          "B2": {
+            "mae": 2.742424242424242,
+            "rmse": 3.7678866353659974,
+            "bias": 2.712121212121212,
+            "acc_pm1": 0.42424242424242425
+          },
+          "B3": {
+            "mae": 3.5454545454545454,
+            "rmse": 4.461960433384737,
+            "bias": 3.3333333333333335,
+            "acc_pm1": 0.2878787878787879
+          },
+          "B4": {
+            "mae": 0.6515151515151515,
+            "rmse": 1.1348474733984246,
+            "bias": 0.4393939393939394,
+            "acc_pm1": 0.8787878787878788
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RF-DETR-L",
+      "metode": "global",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.43,
+        0.43,
+        0.43,
+        0.43
+      ],
+      "k_rerata": [
+        0.6619999999999999,
+        0.6619999999999999,
+        0.6619999999999999,
+        0.6619999999999999
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.6287878787878788,
+        "rmse_makro": 1.1159569638194806,
+        "acc_pm1_makro": 0.8712121212121212,
+        "bias_abs_makro": 0.1893939393939394,
+        "mae_relatif_makro": 0.5648720913426796,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.0,
+        "rmse_total_pohon": 1.381698559415515,
+        "bias_total_pohon": -0.5454545454545454,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.36363636363636365,
+            "rmse": 0.8348471099367218,
+            "bias": -0.15151515151515152,
+            "acc_pm1": 0.9393939393939394
+          },
+          "B2": {
+            "mae": 0.8333333333333334,
+            "rmse": 1.365150674334655,
+            "bias": 0.10606060606060606,
+            "acc_pm1": 0.8181818181818182
+          },
+          "B3": {
+            "mae": 0.8939393939393939,
+            "rmse": 1.3762047064079508,
+            "bias": -0.2878787878787879,
+            "acc_pm1": 0.803030303030303
+          },
+          "B4": {
+            "mae": 0.42424242424242425,
+            "rmse": 0.8876253645985945,
+            "bias": -0.21212121212121213,
+            "acc_pm1": 0.9242424242424242
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RF-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.33999999999999997,
+        0.33999999999999997,
+        0.33999999999999997,
+        0.33999999999999997
+      ],
+      "k_rerata": [
+        0.368,
+        0.5559999999999999,
+        0.5900000000000001,
+        0.45600000000000007
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.6590909090909091,
+        "rmse_makro": 1.1910887757242443,
+        "acc_pm1_makro": 0.8522727272727273,
+        "bias_abs_makro": 0.21969696969696967,
+        "mae_relatif_makro": 0.609622657416775,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.121212121212121,
+        "rmse_total_pohon": 1.5374122295716148,
+        "bias_total_pohon": -0.3333333333333333,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.45454545454545453,
+            "rmse": 0.9692233691951198,
+            "bias": -0.30303030303030304,
+            "acc_pm1": 0.8939393939393939
+          },
+          "B2": {
+            "mae": 0.9090909090909091,
+            "rmse": 1.5763402186230246,
+            "bias": 0.2727272727272727,
+            "acc_pm1": 0.7727272727272727
+          },
+          "B3": {
+            "mae": 0.8484848484848485,
+            "rmse": 1.3142574813455419,
+            "bias": 0.0,
+            "acc_pm1": 0.803030303030303
+          },
+          "B4": {
+            "mae": 0.42424242424242425,
+            "rmse": 0.9045340337332909,
+            "bias": -0.30303030303030304,
+            "acc_pm1": 0.9393939393939394
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "1716>763",
+      "detektor": "RF-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 66,
+      "tau_rerata": [
+        0.37,
+        0.3,
+        0.4,
+        0.2
+      ],
+      "k_rerata": [
+        0.396,
+        0.518,
+        0.648,
+        0.276
+      ],
+      "metrik": {
+        "n_pohon": 66,
+        "mae_makro": 0.6098484848484849,
+        "rmse_makro": 1.100352340878051,
+        "acc_pm1_makro": 0.8674242424242424,
+        "bias_abs_makro": 0.22348484848484848,
+        "mae_relatif_makro": 0.5488868213132919,
+        "tandan_per_pohon": 5.621212121212121,
+        "mae_total_pohon": 1.106060606060606,
+        "rmse_total_pohon": 1.4407489634761415,
+        "bias_total_pohon": -0.2878787878787879,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.4090909090909091,
+            "rmse": 0.9293203772845852,
+            "bias": -0.25757575757575757,
+            "acc_pm1": 0.9090909090909091
+          },
+          "B2": {
+            "mae": 0.8484848484848485,
+            "rmse": 1.4459976109624424,
+            "bias": 0.30303030303030304,
+            "acc_pm1": 0.7575757575757576
+          },
+          "B3": {
+            "mae": 0.8181818181818182,
+            "rmse": 1.2673044646258476,
+            "bias": -0.24242424242424243,
+            "acc_pm1": 0.8333333333333334
+          },
+          "B4": {
+            "mae": 0.36363636363636365,
+            "rmse": 0.7587869106393281,
+            "bias": -0.09090909090909091,
+            "acc_pm1": 0.9696969696969697
+          }
+        }
+      },
+      "sumber_dump": "results/combined1716/predictions/combined1716_rfdetr_l_rgb_s42_i1280__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "YOLO26l",
+      "metode": "naif",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.284090909090909,
+        "rmse_makro": 1.8866912071252258,
+        "acc_pm1_makro": 0.6977272727272726,
+        "bias_abs_makro": 0.3568181818181818,
+        "mae_relatif_makro": 1.0506472615427458,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 1.990909090909091,
+        "rmse_total_pohon": 2.5672765902623524,
+        "bias_total_pohon": -0.13636363636363635,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5909090909090909,
+            "rmse": 1.0744977685158097,
+            "bias": -0.24545454545454545,
+            "acc_pm1": 0.8636363636363636
+          },
+          "B2": {
+            "mae": 1.9545454545454546,
+            "rmse": 2.708572250534151,
+            "bias": -0.5363636363636364,
+            "acc_pm1": 0.509090909090909
+          },
+          "B3": {
+            "mae": 1.9363636363636363,
+            "rmse": 2.6849750295097548,
+            "bias": 0.5727272727272728,
+            "acc_pm1": 0.5454545454545454
+          },
+          "B4": {
+            "mae": 0.6545454545454545,
+            "rmse": 1.0787197799411874,
+            "bias": 0.07272727272727272,
+            "acc_pm1": 0.8727272727272727
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_yolo26l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "YOLO26l",
+      "metode": "global",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.21999999999999997,
+        0.21999999999999997,
+        0.21999999999999997,
+        0.21999999999999997
+      ],
+      "k_rerata": [
+        0.462,
+        0.462,
+        0.462,
+        0.462
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.15,
+        "rmse_makro": 1.8467555612006021,
+        "acc_pm1_makro": 0.7340909090909091,
+        "bias_abs_makro": 0.6409090909090909,
+        "mae_relatif_makro": 0.9071710357825744,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 2.618181818181818,
+        "rmse_total_pohon": 3.2641301221834667,
+        "bias_total_pohon": -2.5636363636363635,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.6181818181818182,
+            "rmse": 1.1984838907401452,
+            "bias": -0.5818181818181818,
+            "acc_pm1": 0.8454545454545455
+          },
+          "B2": {
+            "mae": 1.7,
+            "rmse": 2.574348990963099,
+            "bias": -1.1363636363636365,
+            "acc_pm1": 0.6090909090909091
+          },
+          "B3": {
+            "mae": 1.809090909090909,
+            "rmse": 2.623321974485439,
+            "bias": -0.5909090909090909,
+            "acc_pm1": 0.5636363636363636
+          },
+          "B4": {
+            "mae": 0.4727272727272727,
+            "rmse": 0.9908673886137246,
+            "bias": -0.2545454545454545,
+            "acc_pm1": 0.9181818181818182
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_yolo26l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "YOLO26l",
+      "metode": "k_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.16,
+        0.16,
+        0.16,
+        0.16
+      ],
+      "k_rerata": [
+        0.44800000000000006,
+        0.312,
+        0.352,
+        0.2
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.1636363636363638,
+        "rmse_makro": 1.8527841000066962,
+        "acc_pm1_makro": 0.7363636363636363,
+        "bias_abs_makro": 0.6409090909090909,
+        "mae_relatif_makro": 0.9170513751339577,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 2.690909090909091,
+        "rmse_total_pohon": 3.335756694855416,
+        "bias_total_pohon": -2.5636363636363635,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5909090909090909,
+            "rmse": 1.1560119533826787,
+            "bias": -0.42727272727272725,
+            "acc_pm1": 0.8636363636363636
+          },
+          "B2": {
+            "mae": 1.6727272727272726,
+            "rmse": 2.5298221281347035,
+            "bias": -1.1636363636363636,
+            "acc_pm1": 0.6181818181818182
+          },
+          "B3": {
+            "mae": 1.9,
+            "rmse": 2.725302318509403,
+            "bias": -0.7363636363636363,
+            "acc_pm1": 0.5454545454545454
+          },
+          "B4": {
+            "mae": 0.4909090909090909,
+            "rmse": 1.0,
+            "bias": -0.23636363636363636,
+            "acc_pm1": 0.9181818181818182
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_yolo26l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "YOLO26l",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.10999999999999999,
+        0.05,
+        0.23000000000000004,
+        0.25
+      ],
+      "k_rerata": [
+        0.388,
+        0.21000000000000002,
+        0.538,
+        0.236
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.1136363636363638,
+        "rmse_makro": 1.7539757982962991,
+        "acc_pm1_makro": 0.7477272727272728,
+        "bias_abs_makro": 0.5318181818181819,
+        "mae_relatif_makro": 0.876591753920518,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 2.272727272727273,
+        "rmse_total_pohon": 2.9634132654454697,
+        "bias_total_pohon": -2.1272727272727274,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5818181818181818,
+            "rmse": 1.1361818036340359,
+            "bias": -0.41818181818181815,
+            "acc_pm1": 0.8818181818181818
+          },
+          "B2": {
+            "mae": 1.490909090909091,
+            "rmse": 2.15322168769582,
+            "bias": -0.7636363636363637,
+            "acc_pm1": 0.6272727272727273
+          },
+          "B3": {
+            "mae": 1.9181818181818182,
+            "rmse": 2.7219645311963396,
+            "bias": -0.5545454545454546,
+            "acc_pm1": 0.5636363636363636
+          },
+          "B4": {
+            "mae": 0.4636363636363636,
+            "rmse": 1.0045351706590013,
+            "bias": -0.39090909090909093,
+            "acc_pm1": 0.9181818181818182
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_yolo26l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RT-DETR-L",
+      "metode": "naif",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 3.8272727272727276,
+        "rmse_makro": 4.817696730641917,
+        "acc_pm1_makro": 0.35227272727272724,
+        "bias_abs_makro": 3.127272727272727,
+        "mae_relatif_makro": 4.427788397703511,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 12.654545454545454,
+        "rmse_total_pohon": 15.045990103074578,
+        "bias_total_pohon": 12.50909090909091,
+        "per_kelas": {
+          "B1": {
+            "mae": 1.1454545454545455,
+            "rmse": 1.618079669911781,
+            "bias": 0.4909090909090909,
+            "acc_pm1": 0.6909090909090909
+          },
+          "B2": {
+            "mae": 2.409090909090909,
+            "rmse": 3.152199809079944,
+            "bias": 0.5,
+            "acc_pm1": 0.39090909090909093
+          },
+          "B3": {
+            "mae": 6.409090909090909,
+            "rmse": 7.854934754662192,
+            "bias": 6.3,
+            "acc_pm1": 0.12727272727272726
+          },
+          "B4": {
+            "mae": 5.345454545454546,
+            "rmse": 6.645572688913752,
+            "bias": 5.218181818181818,
+            "acc_pm1": 0.2
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RT-DETR-L",
+      "metode": "global",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.53,
+        0.53,
+        0.53,
+        0.53
+      ],
+      "k_rerata": [
+        0.766,
+        0.766,
+        0.766,
+        0.766
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.209090909090909,
+        "rmse_makro": 2.006801776381239,
+        "acc_pm1_makro": 0.7340909090909091,
+        "bias_abs_makro": 0.9454545454545454,
+        "mae_relatif_makro": 0.9429175317458147,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 3.8,
+        "rmse_total_pohon": 4.478230169893622,
+        "bias_total_pohon": -3.7818181818181817,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.7181818181818181,
+            "rmse": 1.3038404810405297,
+            "bias": -0.5727272727272728,
+            "acc_pm1": 0.8181818181818182
+          },
+          "B2": {
+            "mae": 1.7545454545454546,
+            "rmse": 2.7386127875258306,
+            "bias": -1.7,
+            "acc_pm1": 0.5909090909090909
+          },
+          "B3": {
+            "mae": 1.9181818181818182,
+            "rmse": 2.998484465677468,
+            "bias": -1.190909090909091,
+            "acc_pm1": 0.6181818181818182
+          },
+          "B4": {
+            "mae": 0.44545454545454544,
+            "rmse": 0.9862693712811287,
+            "bias": -0.3181818181818182,
+            "acc_pm1": 0.9090909090909091
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RT-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.51,
+        0.51,
+        0.51,
+        0.51
+      ],
+      "k_rerata": [
+        0.6039999999999999,
+        0.41000000000000003,
+        0.96,
+        0.624
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.2613636363636365,
+        "rmse_makro": 2.037825855031415,
+        "acc_pm1_makro": 0.7090909090909091,
+        "bias_abs_makro": 0.8749999999999999,
+        "mae_relatif_makro": 0.9724695968710451,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 3.6272727272727274,
+        "rmse_total_pohon": 4.368274050677016,
+        "bias_total_pohon": -3.5,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.7090909090909091,
+            "rmse": 1.2720777563426766,
+            "bias": -0.5454545454545454,
+            "acc_pm1": 0.8363636363636363
+          },
+          "B2": {
+            "mae": 1.8,
+            "rmse": 2.753510156476308,
+            "bias": -1.7272727272727273,
+            "acc_pm1": 0.5727272727272728
+          },
+          "B3": {
+            "mae": 2.081818181818182,
+            "rmse": 3.13484811869295,
+            "bias": -0.8090909090909091,
+            "acc_pm1": 0.5181818181818182
+          },
+          "B4": {
+            "mae": 0.45454545454545453,
+            "rmse": 0.9908673886137246,
+            "bias": -0.41818181818181815,
+            "acc_pm1": 0.9090909090909091
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RT-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.25,
+        0.21000000000000002,
+        0.51,
+        0.54
+      ],
+      "k_rerata": [
+        0.404,
+        0.22999999999999998,
+        0.96,
+        0.8099999999999999
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.2272727272727273,
+        "rmse_makro": 1.9280416950134087,
+        "acc_pm1_makro": 0.7272727272727273,
+        "bias_abs_makro": 0.5818181818181818,
+        "mae_relatif_makro": 0.9484831754019977,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 2.709090909090909,
+        "rmse_total_pohon": 3.4641016151377544,
+        "bias_total_pohon": -2.327272727272727,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.6272727272727273,
+            "rmse": 1.1481209945740989,
+            "bias": -0.4090909090909091,
+            "acc_pm1": 0.8909090909090909
+          },
+          "B2": {
+            "mae": 1.7272727272727273,
+            "rmse": 2.4383302781728617,
+            "bias": -0.7818181818181819,
+            "acc_pm1": 0.5818181818181818
+          },
+          "B3": {
+            "mae": 2.081818181818182,
+            "rmse": 3.13484811869295,
+            "bias": -0.8090909090909091,
+            "acc_pm1": 0.5181818181818182
+          },
+          "B4": {
+            "mae": 0.4727272727272727,
+            "rmse": 0.9908673886137246,
+            "bias": -0.32727272727272727,
+            "acc_pm1": 0.9181818181818182
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RF-DETR-L",
+      "metode": "naif",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "k_rerata": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 3.4909090909090907,
+        "rmse_makro": 4.313504111538535,
+        "acc_pm1_makro": 0.4,
+        "bias_abs_makro": 3.040909090909091,
+        "mae_relatif_makro": 3.130015465750325,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 12.163636363636364,
+        "rmse_total_pohon": 13.572699872102891,
+        "bias_total_pohon": 12.163636363636364,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.7090909090909091,
+            "rmse": 1.2358287613066494,
+            "bias": 0.05454545454545454,
+            "acc_pm1": 0.8454545454545455
+          },
+          "B2": {
+            "mae": 2.918181818181818,
+            "rmse": 3.684118249015261,
+            "bias": 1.8454545454545455,
+            "acc_pm1": 0.3
+          },
+          "B3": {
+            "mae": 7.5,
+            "rmse": 8.666025617317317,
+            "bias": 7.5,
+            "acc_pm1": 0.09090909090909091
+          },
+          "B4": {
+            "mae": 2.8363636363636364,
+            "rmse": 3.668043818514912,
+            "bias": 2.7636363636363637,
+            "acc_pm1": 0.36363636363636365
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RF-DETR-L",
+      "metode": "global",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.54,
+        0.54,
+        0.54,
+        0.54
+      ],
+      "k_rerata": [
+        1.0899999999999999,
+        1.0899999999999999,
+        1.0899999999999999,
+        1.0899999999999999
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.209090909090909,
+        "rmse_makro": 1.9887322395963252,
+        "acc_pm1_makro": 0.7295454545454545,
+        "bias_abs_makro": 0.8136363636363636,
+        "mae_relatif_makro": 0.9411415688039405,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 3.381818181818182,
+        "rmse_total_pohon": 4.229764661409555,
+        "bias_total_pohon": -3.2545454545454544,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.6818181818181818,
+            "rmse": 1.2613124477737825,
+            "bias": -0.5363636363636364,
+            "acc_pm1": 0.8181818181818182
+          },
+          "B2": {
+            "mae": 1.790909090909091,
+            "rmse": 2.7485533384938075,
+            "bias": -1.7545454545454546,
+            "acc_pm1": 0.5818181818181818
+          },
+          "B3": {
+            "mae": 1.9090909090909092,
+            "rmse": 2.9541957835039856,
+            "bias": -0.5454545454545454,
+            "acc_pm1": 0.6090909090909091
+          },
+          "B4": {
+            "mae": 0.45454545454545453,
+            "rmse": 0.9908673886137246,
+            "bias": -0.41818181818181815,
+            "acc_pm1": 0.9090909090909091
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RF-DETR-L",
+      "metode": "k_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.4700000000000001,
+        0.4700000000000001,
+        0.4700000000000001,
+        0.4700000000000001
+      ],
+      "k_rerata": [
+        0.51,
+        1.2479999999999998,
+        0.8019999999999999,
+        0.386
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.190909090909091,
+        "rmse_makro": 1.9161393934589461,
+        "acc_pm1_makro": 0.7318181818181818,
+        "bias_abs_makro": 0.7863636363636364,
+        "mae_relatif_makro": 0.9119091499058877,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 3.290909090909091,
+        "rmse_total_pohon": 3.9772077916777016,
+        "bias_total_pohon": -3.1454545454545455,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.6,
+            "rmse": 1.2060453783110545,
+            "bias": -0.5818181818181818,
+            "acc_pm1": 0.8454545454545455
+          },
+          "B2": {
+            "mae": 1.9090909090909092,
+            "rmse": 2.769968821616459,
+            "bias": -1.490909090909091,
+            "acc_pm1": 0.5545454545454546
+          },
+          "B3": {
+            "mae": 1.8181818181818181,
+            "rmse": 2.706893556694228,
+            "bias": -0.6363636363636364,
+            "acc_pm1": 0.6181818181818182
+          },
+          "B4": {
+            "mae": 0.43636363636363634,
+            "rmse": 0.9816498172140428,
+            "bias": -0.43636363636363634,
+            "acc_pm1": 0.9090909090909091
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_763__test.npz"
+    },
+    {
+      "korpus_latih": "953>763",
+      "detektor": "RF-DETR-L",
+      "metode": "k_tau_perkelas",
+      "n_pohon": 110,
+      "tau_rerata": [
+        0.26999999999999996,
+        0.25,
+        0.5599999999999999,
+        0.43
+      ],
+      "k_rerata": [
+        0.564,
+        0.256,
+        1.202,
+        0.26
+      ],
+      "metrik": {
+        "n_pohon": 110,
+        "mae_makro": 1.125,
+        "rmse_makro": 1.8546765646870507,
+        "acc_pm1_makro": 0.7704545454545455,
+        "bias_abs_makro": 0.5977272727272727,
+        "mae_relatif_makro": 0.8758544702731869,
+        "tandan_per_pohon": 5.072727272727272,
+        "mae_total_pohon": 2.6636363636363636,
+        "rmse_total_pohon": 3.4231829951350567,
+        "bias_total_pohon": -2.390909090909091,
+        "per_kelas": {
+          "B1": {
+            "mae": 0.5545454545454546,
+            "rmse": 1.0660035817780522,
+            "bias": -0.35454545454545455,
+            "acc_pm1": 0.8909090909090909
+          },
+          "B2": {
+            "mae": 1.6636363636363636,
+            "rmse": 2.4064307783331502,
+            "bias": -0.9181818181818182,
+            "acc_pm1": 0.6454545454545455
+          },
+          "B3": {
+            "mae": 1.8272727272727274,
+            "rmse": 2.937221940417974,
+            "bias": -0.7363636363636363,
+            "acc_pm1": 0.6363636363636364
+          },
+          "B4": {
+            "mae": 0.45454545454545453,
+            "rmse": 1.009049958219026,
+            "bias": -0.38181818181818183,
+            "acc_pm1": 0.9090909090909091
+          }
+        }
+      },
+      "sumber_dump": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_763__test.npz"
     }
   ]
 }
