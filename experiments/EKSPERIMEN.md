@@ -2923,3 +2923,166 @@ ambang, bukan oleh kualitas deteksi.
 **Verdict:** CONFIRMED. Koreksi bias per kelas terbukti meningkatkan akurasi
 pencacahan pada seluruh 18 skenario; kalibrasi silang korpus terbukti
 menurunkan performa pada seluruh pasangan yang diuji.
+
+---
+
+## V2-E-050b: kinerja per korpus latih 953, 763, dan 1716 dengan kalibrasi lipat-silang
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/kalibrasi_pencacahan_perkorpus.py`](../scripts/kalibrasi_pencacahan_perkorpus.py)
+
+### Rancangan Eksperimen
+
+Tiga korpus latih dievaluasi pada partisi ujinya masing-masing: `953`
+(141 pohon), `763` (110 pohon), dan `1716` (257 pohon). Koefisien pengali per
+kelas dipasang dengan lipat-silang lima lipatan pada tingkat pohon sehingga
+korpus 953, yang tidak memiliki *dump* prediksi partisi validasi, tetap dapat
+dibandingkan setara dengan dua korpus lain. Satu skenario silang ditambahkan:
+detektor berkorpus latih `763` diuji pada partisi uji `953`.
+
+### Temuan Empiris Terukur
+
+1. **RF-DETR-L unggul pada seluruh korpus, baik deteksi maupun pencacahan.**
+   Deteksi: $mAP50 = 0,5965$ (953), $0,6129$ (763), $0,5960$ (1716).
+   Pencacahan: $MAE$ makro $1,0408$ (953, $k$ per kelas), $0,6091$ (763,
+   $k + \tau$ per kelas), dan $0,8473$ (1716, $k$ per kelas).
+2. **Korpus 763 memiliki galat pencacahan terendah** ($MAE$ makro $0,6091$;
+   akurasi ±1 $0,8614$), diikuti korpus 1716 ($0,8473$) dan korpus 953
+   ($1,0408$). Urutan ini sejalan dengan kepadatan tandan per pohon yang lebih
+   rendah pada korpus 763.
+3. **Kalibrasi menurunkan galat pada seluruh korpus**: $−84,5\%$ (953),
+   $−65,9\%$ (763), dan $−79,8\%$ (1716) pada RF-DETR-L.
+4. **Detektor lintas korpus dapat dipulihkan sebagian melalui kalibrasi ulang.**
+   Detektor berkorpus latih `763` pada partisi uji `953` mencatat $mAP50$ hanya
+   $0,1110$ sampai $0,2331$, namun setelah koefisien disetel ulang pada populasi
+   sasaran, $MAE$ makro mencapai $1,2518$ sampai $1,5142$, berbanding $1,0408$
+   sampai $1,0816$ pada detektor dalam domain.
+
+### Keputusan Metodologis
+
+Pelaporan kinerja per korpus memakai RF-DETR-L sebagai konfigurasi rujukan untuk
+deteksi maupun pencacahan. Metode kalibrasi dipilih per korpus mengikuti $MAE$
+makro terendah, bukan satu metode seragam.
+
+### Batasan Validitas & Audit
+
+1. Koefisien dipasang melalui lipat-silang di dalam partisi uji, sehingga angka
+   menaksir kondisi koefisien disetel ulang untuk populasi yang sama.
+2. $mAP50$ korpus 953 untuk RT-DETR-L dan RF-DETR-L berasal dari bobot hasil
+   pelatihan ulang 7 September 2026.
+3. Partisi uji korpus `1716` memuat 116 pohon DEPTH dengan skema partisi berbeda
+   dari partisi uji korpus `763`.
+
+**Artefak:**
+
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+- [`results/counting_koefisien_2026-09-16/pencacahan_perkorpus.json`](../results/counting_koefisien_2026-09-16/pencacahan_perkorpus.json)
+
+**Verdict:** CONFIRMED. Kinerja ketiga korpus terukur pada protokol yang setara,
+dengan RF-DETR-L sebagai konfigurasi unggul pada seluruh korpus.
+
+---
+
+## V2-E-050c: metrik deteksi lengkap per kelas untuk sembilan kombinasi korpus dan detektor
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/metrik_deteksi_perkorpus.py`](../scripts/metrik_deteksi_perkorpus.py)
+
+### Rancangan Eksperimen
+
+Presisi, Recall, F1, $AP50$, dan $AP50\text{--}95$ dihitung per kelas B1–B4 dan
+secara makro untuk sembilan kombinasi korpus latih dan detektor, langsung dari
+*dump* prediksi `.npz` dan anotasi acuan. Pencocokan memakai aturan serakah pada
+ambang IoU $0,50$ sampai $0,95$, dengan $AP$ interpolasi 101 titik. Presisi,
+Recall, dan F1 dilaporkan pada ambang skor keyakinan yang memaksimalkan F1
+makro, mengikuti konvensi keluaran validasi Ultralytics.
+
+### Temuan Empiris Terukur
+
+1. **Validasi evaluator.** Selisih terbesar terhadap angka `pycocotools` yang
+   sudah terlacak adalah $0,0028$ pada $mAP50$ dan $0,0004$ pada
+   $mAP50\text{--}95$.
+2. **RF-DETR-L unggul pada F1 makro di seluruh korpus**: $0,5874$ (953),
+   $0,6046$ (763), dan $0,6039$ (1716).
+3. **Ambang skor keyakinan optimal berbeda antararsitektur**: YOLO26l pada
+   $0,17$ sampai $0,20$, RF-DETR-L pada $0,34$ sampai $0,37$, dan RT-DETR-L pada
+   $0,45$ sampai $0,48$.
+4. **B4 adalah kelas terlemah pada seluruh kombinasi**, dengan $AP50$ $0,1929$
+   sampai $0,4141$ dan F1 $0,2727$ sampai $0,4694$. Pada korpus 763, kelas ini
+   hanya memiliki 63 objek uji.
+5. **B1 adalah kelas terkuat**, dengan $AP50$ $0,6847$ sampai $0,8196$.
+
+### Keputusan Metodologis
+
+Pelaporan deteksi memakai tabel per kelas lengkap, bukan hanya $mAP50$ makro,
+agar kelemahan kelas B4 dan perbedaan ambang optimal antararsitektur terlihat
+langsung pada lembar bukti.
+
+### Batasan Validitas & Audit
+
+1. Evaluator bersifat lokal, bukan `pycocotools`, sehingga angka dapat berbeda
+   pada orde $0,003$.
+2. Ambang skor keyakinan optimal dipilih pada partisi uji, sehingga Presisi,
+   Recall, dan F1 merupakan taksiran batas atas untuk pemilihan ambang.
+
+**Artefak:**
+
+- [`results/counting_koefisien_2026-09-16/metrik_deteksi_perkorpus.json`](../results/counting_koefisien_2026-09-16/metrik_deteksi_perkorpus.json)
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+
+**Verdict:** CONFIRMED. Metrik deteksi lengkap tersedia untuk seluruh kombinasi
+dan konsisten dengan angka `pycocotools` yang sudah terlacak.
+
+---
+
+## V2-E-050d: matriks permutasi koefisien pencacahan, koefisien terikat detektor bukan korpus
+
+**Tanggal:** 16 September 2026 · **Skrip:**
+[`scripts/permutasi_koefisien_pencacahan.py`](../scripts/permutasi_koefisien_pencacahan.py)
+
+### Rancangan Eksperimen
+
+Koefisien pengali per kelas yang dipasang pada satu kombinasi korpus latih dan
+detektor diterapkan ke seluruh kombinasi lain, menghasilkan matriks 9 x 9 berisi
+81 sel. Permutasi di dalam korpus yang sama memakai lipat-silang lima lipatan
+dengan pembagian pohon identik, sehingga koefisien tidak pernah dipasang pada
+pohon yang sedang dinilai. Permutasi lintas korpus tidak memiliki irisan pohon,
+sehingga koefisien dipasang pada seluruh partisi uji sumber.
+
+### Temuan Empiris Terukur
+
+1. **Koefisien terikat pada detektor, bukan pada korpus.** Pemindahan koefisien
+   antarkorpus untuk detektor yang sama menaikkan $MAE$ makro dari $0,8778$
+   menjadi $0,9572$ ($+9,0\%$), sedangkan pemindahan antardetektor pada korpus
+   yang sama menaikkannya menjadi $1,8369$ ($+109,3\%$).
+2. **Kasus terburuk adalah koefisien YOLO26l pada detektor DETR.** Koefisien
+   korpus 1716 YOLO26l yang diterapkan pada RT-DETR-L korpus 953 menghasilkan
+   $MAE$ makro $5,8564$, yakni $5,2$ kali nilai diagonalnya ($1,1294$).
+3. **Arah sebaliknya jauh lebih ringan.** Koefisien RT-DETR-L dan RF-DETR-L yang
+   diterapkan pada YOLO26l menghasilkan $MAE$ $1,4309$ sampai $1,9344$, sekitar
+   $1,3$ sampai $1,8$ kali nilai diagonal YOLO26l.
+4. **Beberapa sel luar diagonal setara dengan diagonalnya.** Koefisien korpus
+   1716 RF-DETR-L pada korpus 763 RF-DETR-L menghasilkan $0,6295$, berbanding
+   $0,6386$ pada koefisien sendiri, dengan selisih di bawah batas keterpisahan.
+
+### Keputusan Metodologis
+
+Koefisien pencacahan dipasang ulang setiap kali arsitektur detektor berganti.
+Pergantian korpus tanpa pergantian arsitektur dapat memakai koefisien lama
+dengan konsekuensi kenaikan galat sekitar sepersepuluh.
+
+### Batasan Validitas & Audit
+
+1. Metode yang dipermutasikan hanya varian $k$ per kelas dengan satu ambang
+   bersama. Varian $k + \tau$ per kelas berpotensi menghasilkan pola pemindahan
+   yang berbeda.
+2. Permutasi lintas korpus memasang koefisien pada seluruh partisi uji sumber,
+   bukan pada partisi validasi terpisah.
+
+**Artefak:**
+
+- [`results/counting_koefisien_2026-09-16/permutasi_koefisien.json`](../results/counting_koefisien_2026-09-16/permutasi_koefisien.json)
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+
+**Verdict:** CONFIRMED. Ketergantungan koefisien terhadap arsitektur detektor
+terukur satu tingkat lebih besar daripada ketergantungannya terhadap korpus.

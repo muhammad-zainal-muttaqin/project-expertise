@@ -2,8 +2,8 @@
 
 Koefisien pengali mengoreksi bias sistematis pencacahan: kelas yang
 *under-count* dinaikkan, kelas yang *over-count* diturunkan. Prosedur ini tidak
-memerlukan pelatihan ulang detektor; koefisien dipasang dari dump prediksi
-`.npz` yang sudah terlacak.
+memerlukan pelatihan ulang detektor; koefisien dipasang dari berkas prediksi
+tersimpan `.npz` yang sudah terlacak.
 
 Model pencacahan per pohon t dan kelas c:
 
@@ -79,14 +79,14 @@ def muat_gt_763(depth_root: Path) -> dict[str, dict[str, np.ndarray]]:
 
 
 # --------------------------------------------------------------------------
-# Dump prediksi
+# Berkas prediksi tersimpan
 # --------------------------------------------------------------------------
 def muat_prediksi(path: Path, awalan: str | None = None) -> dict[str, list[np.ndarray]]:
     """npz {image_id: (N,6)} -> {tree_id: [array conf per kelas]}.
 
-    Mengembalikan, untuk setiap pohon, daftar 4 array berisi confidence seluruh
+    Mengembalikan, untuk setiap pohon, daftar 4 array berisi skor keyakinan seluruh
     deteksi kelas tersebut (digabung lintas sisi). Kelas di luar 0..3 dibuang
-    (RF-DETR memancarkan indeks 4 pada confidence sangat rendah).
+    (RF-DETR memancarkan indeks 4 pada skor keyakinan sangat rendah).
     """
     data = np.load(path, allow_pickle=True)
     kumpulan: dict[str, list[list[float]]] = {}
@@ -228,7 +228,7 @@ def hitung_metrik(
 # Definisi skenario
 # --------------------------------------------------------------------------
 def bangun_skenario(akar: Path) -> list[dict]:
-    """Daftar (korpus latih, dump kalibrasi, dump uji) per detektor."""
+    """Daftar (korpus latih, berkas kalibrasi, berkas uji) per detektor."""
     skenario = []
     for slug, label in DETECTORS:
         skenario.append(
@@ -353,7 +353,7 @@ def main() -> None:
         korpus_kal, split_kal, path_kal, awalan_kal = sk["kalibrasi"]
         korpus_uji, split_uji, path_uji, awalan_uji = sk["uji"]
         if not path_kal.exists() or not path_uji.exists():
-            print(f"[lewat] dump hilang: {path_kal.name} / {path_uji.name}")
+            print(f"[lewat] berkas hilang: {path_kal.name} / {path_uji.name}")
             continue
 
         n_kal, y_kal, pohon_kal = matriks_hitung(
@@ -411,7 +411,7 @@ def main() -> None:
                 "_meta": {
                     "eksperimen": "V2-E-050",
                     "tanggal": "2026-09-16",
-                    "metrik_peringkat": "MAE makro (rerata MAE per kelas B1-B4)",
+                    "metrik_peringkat": "MAE makro (rerata MAE per kelas B1–B4)",
                     "grid_tau": TAU_GRID.tolist(),
                     "grid_k": [float(K_GRID[0]), float(K_GRID[-1]), 0.01],
                     "gt_953": "Baseline-SawitMVC/ground_truth/split_manifest.csv",

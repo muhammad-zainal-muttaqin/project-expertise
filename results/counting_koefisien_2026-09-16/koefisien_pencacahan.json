@@ -2,7 +2,7 @@
   "_meta": {
     "eksperimen": "V2-E-050",
     "tanggal": "2026-09-16",
-    "metrik_peringkat": "MAE makro (rerata MAE per kelas B1-B4)",
+    "metrik_peringkat": "MAE makro (rerata MAE per kelas B1–B4)",
     "grid_tau": [
       0.05,
       0.1,
