@@ -71,7 +71,6 @@ GAYA = """
               padding-block: 40px 24px; max-height: 100vh; overflow-y: auto; }
   .navigasi .merek { font-family: "Source Serif 4", Georgia, serif; font-size: 19px;
                      font-weight: 600; line-height: 1.25; margin: 0 0 6px; }
-  .navigasi .sub { font-size: 12.5px; color: var(--ink-mute); margin: 0 0 20px; }
   .navigasi ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
   .navigasi a { display: flex; gap: 10px; padding: 5px 8px; border-radius: 4px;
                 color: var(--ink-soft); text-decoration: none; font-size: 13px; }
@@ -86,7 +85,6 @@ GAYA = """
              letter-spacing: 0.12em; text-transform: uppercase; color: var(--biru); margin: 0 0 10px; }
   h1 { font-family: "Source Serif 4", Georgia, serif; font-size: clamp(27px, 4vw, 38px);
        line-height: 1.15; font-weight: 600; margin: 0 0 12px; text-wrap: balance; letter-spacing: -0.01em; }
-  .ikhtisar { color: var(--ink-soft); font-size: 15.5px; max-width: 62ch; margin: 0; }
   h2 { font-family: "Source Serif 4", Georgia, serif; font-size: 23px; font-weight: 600;
        margin: 52px 0 14px; scroll-margin-top: 24px; text-wrap: balance; }
   h3 { font-family: "Source Serif 4", Georgia, serif; font-size: 18px; font-weight: 600;
@@ -247,6 +245,8 @@ def main() -> None:
             kartu.append((k[0], k[5], k[2], k[7]))
         if len(kartu) == 3:
             break
+    identitas = re.search(r"^\| Identitas simpul \| `([^`]+)` sampai `([^`]+)` \|", md, re.M)
+    tanggal = re.search(r"^\| Tanggal \| ([^|]+) \|", md, re.M).group(1).strip()
     kelas = ["utama", "dua", "tiga"]
     kartu_html = "".join(
         f'<div class="kartu {kelas[i]}"><p class="judul">Korpus {k[0]}</p>'
@@ -268,21 +268,17 @@ def main() -> None:
 <div class="bingkai">
   <nav class="navigasi">
     <p class="merek">Kinerja Pencacahan Sawit</p>
-    <p class="sub">Tiga korpus latih, tiga detektor, 16 September 2026</p>
     <ol>{nav}</ol>
   </nav>
   <main>
     <header class="kepala">
-      <p class="eyebrow">V2-E-050 sampai V2-E-050f</p>
+      <p class="eyebrow">{identitas.group(1)} sampai {identitas.group(2)} · {tanggal}</p>
       <h1>Laporan Kinerja per Korpus Latih: Deteksi dan Pencacahan</h1>
-      <p class="ikhtisar">Perbandingan tiga arsitektur detektor pada korpus 953, 763, dan gabungan 1716,
-      beserta kalibrasi koefisien pengali per kelas untuk pencacahan tandan per pohon.</p>
     </header>
     <div class="kartu-baris">{kartu_html}</div>
     {isi}
-    <footer>Seluruh angka dibangkitkan dari berkas JSON hasil melalui
-    <code>scripts/susun_laporan_pencacahan.py</code>, lalu halaman ini disusun oleh
-    <code>scripts/susun_artefak_html.py</code>.</footer>
+    <footer>Angka dibangkitkan dari JSON hasil oleh <code>scripts/susun_laporan_pencacahan.py</code>,
+    dan halaman disusun oleh <code>scripts/susun_artefak_html.py</code>.</footer>
   </main>
 </div>
 {SKRIP}

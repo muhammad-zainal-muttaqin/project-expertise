@@ -209,7 +209,7 @@ def gambar_uji_silang(deteksi: dict, pencacahan: dict, keluaran: Path) -> None:
 
     fig, sumbu = plt.subplots(1, 2, figsize=(6.5, 2.9))
     for kolom, (fungsi, judul, label_y) in enumerate(
-        [(map50, "Kualitas deteksi", "mAP50"), (mae_rel, "Galat pencacahan", "MAE relatif")]
+        [(map50, "Deteksi, RF-DETR-L", "mAP50"), (mae_rel, "Pencacahan, RF-DETR-L", "MAE relatif")]
     ):
         seri = {f"latih {latih}": [fungsi(latih, uji) for uji, _ in sasaran] for latih in KORPUS}
         batang_berkelompok(sumbu[kolom], [label for _, label in sasaran], seri, desimal=3, judul=judul)
@@ -259,7 +259,7 @@ def gambar_perkelas_pencacahan(pencacahan: dict, keluaran: Path) -> None:
         akurasi[nama] = [b["metrik"]["per_kelas"][c]["acc_pm1"] for c in KELAS]
     fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.71))
     batang_berkelompok(sumbu[0], KELAS, mae, desimal=3, judul="MAE per kelas")
-    batang_divergen(sumbu[1], KELAS, bias, judul="Bias; negatif berarti kurang hitung")
+    batang_divergen(sumbu[1], KELAS, bias, judul="Bias per kelas; negatif di bawah acuan")
     batang_berkelompok(sumbu[2], KELAS, akurasi, desimal=3, judul="Akurasi ±1 per kelas")
     sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32)).set_in_layout(False)
     fig.tight_layout()
@@ -300,16 +300,6 @@ def gambar_efek_kalibrasi_penuh(pencacahan: dict, keluaran: Path) -> None:
     sumbu[0][1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.40)).set_in_layout(False)
     fig.tight_layout(h_pad=1.2)
     simpan(fig, keluaran, "efek_kalibrasi_penuh.png")
-
-
-def gambar_efek_kalibrasi(keluaran: Path) -> None:
-    seri = {"Naif": [6.7039, 1.7864, 4.1858], "Terkalibrasi": [1.0408, 0.6091, 0.8473]}
-    fig, ax = plt.subplots(figsize=(5.4, 2.6))
-    batang_berkelompok(ax, KORPUS, seri, desimal=4, label_y="MAE makro")
-    ax.set_xlabel("korpus latih", fontsize=7.5)
-    ax.legend(frameon=False, fontsize=7.5, ncols=2, loc="upper right")
-    ax.set_title("Efek kalibrasi pada RF-DETR-L", fontsize=8.5, pad=6)
-    simpan(fig, keluaran, "efek_kalibrasi.png")
 
 
 def gambar_metode(pencacahan: dict, keluaran: Path) -> None:
@@ -373,7 +363,7 @@ def gambar_permutasi(permutasi: dict, keluaran: Path) -> None:
     bar.outline.set_visible(False)
     ax.set_xlabel("Kombinasi sasaran", fontsize=8)
     ax.set_ylabel("Sumber koefisien", fontsize=8)
-    ax.set_title("Permutasi koefisien, diagonal bercetak tebal", fontsize=8.5, pad=8)
+    ax.set_title("Permutasi koefisien", fontsize=8.5, pad=8)
     simpan(fig, keluaran, "permutasi_koefisien.png")
 
 
