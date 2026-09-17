@@ -1,0 +1,183 @@
+{
+  "eksperimen": "V2-E-050g",
+  "pohon_dikeluarkan_763": [
+    "DEPTH_DAMIMAS_A21B_0001",
+    "DEPTH_DAMIMAS_A21B_0004",
+    "DEPTH_DAMIMAS_A21B_0009",
+    "DEPTH_DAMIMAS_A21B_0022",
+    "DEPTH_DAMIMAS_A21B_0024",
+    "DEPTH_DAMIMAS_A21B_0028",
+    "DEPTH_DAMIMAS_A21B_0038",
+    "DEPTH_DAMIMAS_A21B_0066",
+    "DEPTH_DAMIMAS_A21B_0067",
+    "DEPTH_DAMIMAS_A21B_0070",
+    "DEPTH_DAMIMAS_A21B_0074",
+    "DEPTH_DAMIMAS_A21B_0079",
+    "DEPTH_DAMIMAS_A21B_0081",
+    "DEPTH_DAMIMAS_A21B_0084",
+    "DEPTH_DAMIMAS_A21B_0092",
+    "DEPTH_DAMIMAS_A21B_0104",
+    "DEPTH_DAMIMAS_A21B_0116",
+    "DEPTH_DAMIMAS_A21B_0117",
+    "DEPTH_DAMIMAS_A21B_0139",
+    "DEPTH_DAMIMAS_A21B_0143",
+    "DEPTH_DAMIMAS_A21B_0150",
+    "DEPTH_DAMIMAS_A21B_0160",
+    "DEPTH_DAMIMAS_A21B_0161",
+    "DEPTH_DAMIMAS_A21B_0165",
+    "DEPTH_DAMIMAS_A21B_0187",
+    "DEPTH_DAMIMAS_A21B_0189",
+    "DEPTH_DAMIMAS_A21B_0190",
+    "DEPTH_DAMIMAS_A21B_0195",
+    "DEPTH_DAMIMAS_A21B_0200",
+    "DEPTH_DAMIMAS_A21B_0204",
+    "DEPTH_DAMIMAS_A21B_0219",
+    "DEPTH_DAMIMAS_A21B_0227",
+    "DEPTH_DAMIMAS_A21B_0230",
+    "DEPTH_DAMIMAS_A21B_0235",
+    "DEPTH_DAMIMAS_A21B_0244",
+    "DEPTH_DAMIMAS_A21B_0249",
+    "DEPTH_DAMIMAS_A21B_0251",
+    "DEPTH_DAMIMAS_A21B_0259",
+    "DEPTH_DAMIMAS_A21B_0266",
+    "DEPTH_DAMIMAS_A21B_0278",
+    "DEPTH_DAMIMAS_A21B_0283",
+    "DEPTH_DAMIMAS_A21B_0288",
+    "DEPTH_DAMIMAS_A21B_0289",
+    "DEPTH_DAMIMAS_A21B_0291",
+    "DEPTH_DAMIMAS_A21B_0299",
+    "DEPTH_DAMIMAS_A21B_0301",
+    "DEPTH_DAMIMAS_A21B_0327",
+    "DEPTH_DAMIMAS_A21B_0329",
+    "DEPTH_DAMIMAS_A21B_0331",
+    "DEPTH_DAMIMAS_A21B_0346"
+  ],
+  "dump": {
+    "v2repro953_yolo26l__on_1716__test.npz": {
+      "citra": 1052,
+      "pohon": 257,
+      "bagian": [
+        {
+          "sumber": "results/pred_yolo26l_v2repro_953_test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_yolo26l__on_763__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_yolo26l__on_1716_depth50__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 200,
+          "pohon": 50
+        }
+      ]
+    },
+    "new763_yolo26l__on_1716__test.npz": {
+      "citra": 852,
+      "pohon": 207,
+      "bagian": [
+        {
+          "sumber": "results/cross_eval/predictions/new763_yolo26l__on_953__test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/new763/predictions/yolo26l_rgb_s42_i1280__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        }
+      ]
+    },
+    "v2repro953_rtdetr_l__on_1716__test.npz": {
+      "citra": 1052,
+      "pohon": 257,
+      "bagian": [
+        {
+          "sumber": "results/pred_rtdetr_l_v2repro_953_test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_763__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_rtdetr_l__on_1716_depth50__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 200,
+          "pohon": 50
+        }
+      ]
+    },
+    "new763_rtdetr_l__on_1716__test.npz": {
+      "citra": 852,
+      "pohon": 207,
+      "bagian": [
+        {
+          "sumber": "results/cross_eval/predictions/new763_rtdetr_l__on_953__test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/new763/predictions/rtdetr_l_rgb_s42_i1280__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        }
+      ]
+    },
+    "v2repro953_rfdetr_l__on_1716__test.npz": {
+      "citra": 1052,
+      "pohon": 257,
+      "bagian": [
+        {
+          "sumber": "results/pred_rfdetr_l_v2repro_953_test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_763__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        },
+        {
+          "sumber": "results/cross_eval/predictions/v2repro953_rfdetr_l__on_1716_depth50__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 200,
+          "pohon": 50
+        }
+      ]
+    },
+    "new763_rfdetr_l__on_1716__test.npz": {
+      "citra": 852,
+      "pohon": 207,
+      "bagian": [
+        {
+          "sumber": "results/cross_eval/predictions/new763_rfdetr_l__on_953__test.npz",
+          "awalan": "SAWIT_",
+          "citra": 588,
+          "pohon": 141
+        },
+        {
+          "sumber": "results/new763/predictions/rfdetr_l_rgb_s42_i1280__test.npz",
+          "awalan": "DEPTH_",
+          "citra": 264,
+          "pohon": 66
+        }
+      ]
+    }
+  }
+}

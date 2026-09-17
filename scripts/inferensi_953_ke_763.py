@@ -1,4 +1,8 @@
-"""Inferensi detektor korpus 953 pada partisi uji korpus 763 (V2-E-050f).
+"""Inferensi detektor korpus 953 pada citra korpus lain (V2-E-050f, V2-E-050g).
+
+Sasaran baku adalah partisi uji korpus 763. Opsi `--daftar-citra` menerima
+berkas teks berisi satu lintasan citra per baris, dipakai V2-E-050g untuk 200
+citra DEPTH pada partisi uji 1716 yang berasal dari latih dan validasi 763.
 
 Menghasilkan dump prediksi dengan format yang sama seperti `results/cross_eval`,
 yakni satu kunci per citra berisi larik (N, 6) bertata letak
@@ -8,6 +12,7 @@ Protokol mengikuti `V2-E-001`: imgsz 1280, conf 0,001, iou 0,7, max_det 300.
 
 Pemakaian:
     python scripts/inferensi_953_ke_763.py --detektor yolo26l
+    python scripts/inferensi_953_ke_763.py --detektor yolo26l --daftar-citra daftar.txt         --keluaran results/cross_eval/predictions/v2repro953_yolo26l__on_1716_depth50__test.npz
 """
 from __future__ import annotations
 
@@ -88,13 +93,21 @@ def main() -> None:
     ap.add_argument("--detektor", required=True, choices=["yolo26l", "rtdetr_l", "rfdetr_l"])
     ap.add_argument("--bobot", required=True)
     ap.add_argument("--citra", default="D:/Work/Assisten-Dosen/SawitMVC-Depth/SawitMVC-Depth-YOLO/test/images")
+    ap.add_argument("--daftar-citra", default=None, help="berkas teks, satu lintasan citra per baris")
     ap.add_argument("--perangkat", default="cpu")
     ap.add_argument("--keluaran", default=None)
     arg = ap.parse_args()
 
-    citra = sorted(Path(arg.citra).glob("*.jpg"))
+    if arg.daftar_citra:
+        baris = Path(arg.daftar_citra).read_text(encoding="utf-8").splitlines()
+        citra = sorted((Path(b.strip()) for b in baris if b.strip()), key=lambda p: p.stem)
+        hilang = [p for p in citra if not p.is_file()]
+        if hilang:
+            raise SystemExit(f"{len(hilang)} citra tidak ditemukan, contoh {hilang[0]}")
+    else:
+        citra = sorted(Path(arg.citra).glob("*.jpg"))
     if not citra:
-        raise SystemExit(f"tidak ada citra pada {arg.citra}")
+        raise SystemExit(f"tidak ada citra pada {arg.daftar_citra or arg.citra}")
     print(f"detektor {arg.detektor}, {len(citra)} citra, perangkat {arg.perangkat}", flush=True)
 
     bobot = Path(arg.bobot)

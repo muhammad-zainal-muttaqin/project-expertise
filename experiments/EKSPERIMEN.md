@@ -3192,3 +3192,90 @@ berkas JSON hasil, sehingga penyalinan manual tidak lagi terjadi.
 
 **Verdict:** CONFIRMED. Matriks uji silang lengkap dua arah, dan koreksi basis
 perbandingan mengubah kesimpulan peringkat antarkorpus.
+
+---
+
+## V2-E-050g: uji silang ke partisi uji 1716 dan kolom |bias| makro
+
+**Tanggal:** 17 September 2026 · **Skrip:**
+[`scripts/inferensi_953_ke_763.py`](../scripts/inferensi_953_ke_763.py),
+[`scripts/gabung_dump_1716.py`](../scripts/gabung_dump_1716.py),
+[`scripts/susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py)
+
+### Rancangan Eksperimen
+
+Dosen memberi tiga catatan pada laporan kinerja pencacahan: konfigurasi rincian per
+kelas tidak tercantum, kolom |bias| makro belum ada, dan belum ada hasil latih `953`
+serta latih `763` yang diuji pada partisi uji `1716`. Partisi uji `1716` terdiri atas
+141 pohon SAWIT, yang identik dengan partisi uji `953`, dan 116 pohon DEPTH. Dari 116
+pohon DEPTH, 66 berasal dari partisi uji `763`, 38 dari partisi latih `763`, dan 12
+dari partisi validasi `763`. Korpus `1716` menyalin citra sumber secara utuh
+(`shutil.copy2`), sehingga prediksi disusun dari *dump* yang sudah ada.
+
+- `953` ke `1716` (257 pohon, 1.052 citra): bagian SAWIT dari *dump* `953` dalam
+  domain, 66 pohon DEPTH dari *dump* `953` ke `763`, dan 50 pohon DEPTH sisanya dari
+  inferensi baru pada 200 citra. Inferensi baru dijalankan pada NVIDIA A40 dengan
+  `ultralytics` 8.4.103 dan `rfdetr` 1.8.3, protokol `V2-E-001`. Durasinya 9 detik
+  (YOLO26l), 14 detik (RT-DETR-L), dan 34 detik (RF-DETR-L).
+- `763` ke `1716` (207 pohon, 852 citra): bagian SAWIT dari *dump* `763` ke `953`
+  dan 66 pohon DEPTH dari *dump* `763` dalam domain. Sebanyak 50 pohon DEPTH lain
+  dikeluarkan karena citranya identik dengan citra latih atau validasi `763`.
+- Basis sama 207 pohon (141 SAWIT dan 66 DEPTH) dipakai untuk membandingkan ketiga
+  korpus latih pada partisi uji `1716`.
+
+### Temuan Empiris Terukur
+
+1. **Latih `1716` terbaik pada partisi uji `1716`.** Pada basis 207 pohon, $MAE$
+   makro latih `1716` tercatat $0,9287$ sampai $0,9964$, latih `953` $1,1256$ sampai
+   $1,1703$, dan latih `763` $1,1800$ sampai $1,4879$. $mAP50$ tercatat $0,5436$ sampai
+   $0,6008$, $0,4705$ sampai $0,5174$, dan $0,1745$ sampai $0,2669$.
+2. **Detektor `953` pada 257 pohon** mencapai $mAP50$ $0,4339$ sampai $0,4851$ dan
+   $MAE$ makro $1,1148$ sampai $1,1274$.
+3. **Kalibrasi menurunkan |bias| makro sebesar 34,8% sampai 98,1%** pada 27 kombinasi
+   dalam domain, sejalan dengan penurunan $MAE$ sebesar 28,0% sampai 88,6%.
+4. **Konfigurasi rincian per kelas** adalah RF-DETR-L dengan varian per kelas ber-$MAE$
+   terendah: $k$ per kelas pada `953` ($\tau$ bersama 0,30), $k + \tau$ per kelas pada
+   `763`, dan $k$ per kelas pada `1716` ($\tau$ bersama 0,35). Nilainya berasal dari
+   prediksi luar-lipatan.
+5. **Penggabungan *dump* terverifikasi.** Bagian SAWIT dari `953` ke `1716` menghasilkan
+   metrik deteksi yang identik dengan baris `953` dalam domain, dan bagian DEPTH dari
+   `763` ke `1716` identik dengan `763` dalam domain pada 264 citra yang sama. Baris
+   JSON lama (84 pencacahan dan 21 deteksi) tidak berubah.
+6. **Uji determinisme GPU** pada 8 citra uji `763`: RF-DETR-L identik (selisih
+   maksimum 0,00018), YOLO26l berselisih koordinat paling besar 0,011 piksel tanpa
+   perbedaan hitungan, dan RT-DETR-L berbeda pada 2 dari 576 sel hitungan (selisih skor
+   maksimum 0,0028) antara A40 dan RTX A5000.
+
+### Keputusan Metodologis
+
+Perbandingan korpus latih pada partisi uji `1716` memakai basis 207 pohon yang sama.
+Pohon yang citranya pernah dilihat detektor sumber selalu dikeluarkan dari evaluasi
+silang, sedangkan pohon ber-ID sama dari sesi akuisisi lain tetap dipakai sesuai
+`V2-E-040`. Metode pada gambar dan tabel koefisien dipilih dari JSON, tidak lagi
+ditulis tetap di kode.
+
+### Batasan Validitas & Audit
+
+1. Basis 207 pohon memuat 141 pohon SAWIT (68%), sehingga komposisinya lebih dekat ke
+   domain latih `953` daripada `763`.
+2. Pada baris `763` ke `1716`, 50 pohon SAWIT memiliki ID yang sama dengan pohon latih
+   atau validasi `763` dari sesi akuisisi lain.
+3. Bagian DEPTH RT-DETR-L pada `953` ke `1716` menggabungkan keluaran A5000 dan A40,
+   dengan perbedaan hitungan 2 dari 576 sel pada uji determinisme.
+4. Koreksi atas `V2-E-050f`: klaim "irisan partisi uji `953` dan `763` nol" keliru.
+   Irisan ID uji-uji adalah 8 pohon, 50 dari 141 pohon uji `953` ber-ID sama dengan
+   latih atau validasi `763`, dan 44 dari 110 pohon uji `763` ber-ID sama dengan latih
+   atau validasi `953`. Rentang penurunan $MAE$ pada ringkasan laporan juga dikoreksi
+   dari 25,0–88,6% menjadi 28,0–88,6%.
+
+**Artefak:**
+
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+- [`results/cross_eval/predictions/v2repro953_*__on_1716_depth50__test.npz`](../results/cross_eval/predictions/)
+- [`results/cross_eval/predictions/v2repro953_*__on_1716__test.npz`](../results/cross_eval/predictions/),
+  [`new763_*__on_1716__test.npz`](../results/cross_eval/predictions/),
+  [`gabungan_1716_manifest.json`](../results/cross_eval/predictions/gabungan_1716_manifest.json)
+- [`results/counting_koefisien_2026-09-16/`](../results/counting_koefisien_2026-09-16/)
+
+**Verdict:** CONFIRMED. Ketiga catatan dosen terjawab, dan korpus latih gabungan
+menghasilkan pencacahan terbaik pada partisi uji gabungan untuk ketiga detektor.

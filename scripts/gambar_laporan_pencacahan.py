@@ -1,4 +1,4 @@
-"""Gambar untuk laporan kinerja pencacahan (V2-E-050e).
+"""Gambar untuk laporan kinerja pencacahan (V2-E-050e, V2-E-050g).
 
 Bentuk gambar mengikuti tugas datanya. Perbandingan antararsitektur memakai
 diagram batang berkelompok, bias yang memiliki arah memakai batang divergen di
@@ -119,9 +119,27 @@ def batang_divergen(ax, kategori: list[str], seri: dict[str, list[float]], *, ju
     rapikan(ax)
 
 
+NAMA_METODE = {"k_perkelas": "$k$ per kelas", "k_tau_perkelas": "$k + \\tau$ per kelas"}
+
+
+def terbaik_perkelas(pencacahan: dict, korpus: str, detektor: str) -> dict:
+    """Varian koefisien per kelas dengan MAE makro terendah."""
+    kandidat = [
+        x for x in pencacahan["baris"]
+        if x["korpus_latih"] == korpus and x["detektor"] == detektor
+        and x["metode"] in NAMA_METODE
+    ]
+    return min(kandidat, key=lambda x: x["metrik"]["mae_makro"])
+
+
 def simpan(fig, keluaran: Path, nama: str) -> None:
     keluaran.mkdir(parents=True, exist_ok=True)
     jalur = keluaran / nama
+    # Legenda dikeluarkan dari tight_layout agar jarak antarpanel tidak melebar,
+    # lalu dikembalikan agar bbox_inches="tight" tetap memuatnya.
+    for ax in fig.axes:
+        if ax.get_legend() is not None:
+            ax.get_legend().set_in_layout(True)
     fig.savefig(jalur)
     plt.close(fig)
     print(f"ditulis: {jalur}")
@@ -134,13 +152,14 @@ def gambar_deteksi(deteksi: dict, keluaran: Path) -> None:
     for baris, korpus in enumerate(KORPUS):
         seri = {}
         for det in DETEKTOR:
-            b = next(x for x in deteksi["baris"] if x["korpus_latih"] == korpus and x["detektor"] == det)
+            b = next(x for x in deteksi["baris"]
+                     if x["korpus_latih"] == korpus and x.get("korpus_uji", korpus) == korpus and x["detektor"] == det)
             seri[det] = [b["makro"][kunci] for kunci, _ in metrik]
         batang_berkelompok(
             sumbu[baris], [nama for _, nama in metrik], seri, desimal=4,
             judul=f"Korpus {korpus}", label_y="nilai metrik",
         )
-    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.42))
+    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.42)).set_in_layout(False)
     fig.tight_layout(h_pad=1.6)
     simpan(fig, keluaran, "deteksi_makro.png")
 
@@ -160,52 +179,49 @@ def gambar_deteksi_perkelas(deteksi: dict, keluaran: Path) -> None:
         batang_berkelompok(sumbu[kolom], KELAS, kumpulan[korpus], desimal=3,
                            judul=f"Korpus {korpus}", batas_y=batas)
     sumbu[0].set_ylabel("F1", fontsize=7.5)
-    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.30))
+    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.30)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "deteksi_perkelas.png")
 
 
 def gambar_uji_silang(deteksi: dict, pencacahan: dict, keluaran: Path) -> None:
-    """Dalam domain berbanding lintas korpus pada detektor RF-DETR-L."""
-    kode = {("763", "953"): "763>953", ("1716", "953"): "1716>953",
-            ("1716", "763"): "1716>763", ("953", "763"): "953>763"}
-    sasaran = ["953", "763"]
+    """Dalam domain berbanding lintas korpus pada detektor RF-DETR-L.
+
+    Kelompok uji 1716 memakai basis 207 pohon untuk ketiga korpus latih.
+    """
+    sasaran = [("953", "uji 953"), ("763", "uji 763"), ("1716", "uji 1716" + chr(10) + "(207 pohon)")]
+    kode_deteksi = {("953", "1716"): "1716@207", ("1716", "1716"): "1716@207"}
+    kode_cacah = {("763", "953"): "763>953", ("1716", "953"): "1716>953",
+                  ("1716", "763"): "1716>763", ("953", "763"): "953>763",
+                  ("953", "1716"): "953>1716@207", ("763", "1716"): "763>1716",
+                  ("1716", "1716"): "1716@207"}
 
     def map50(latih, uji):
+        uji = kode_deteksi.get((latih, uji), uji)
         b = next((x for x in deteksi["baris"]
                   if x["korpus_latih"] == latih and x.get("korpus_uji", latih) == uji
                   and x["detektor"] == "RF-DETR-L"), None)
         return b["makro"]["map50"] if b else float("nan")
 
     def mae_rel(latih, uji):
-        korpus = latih if latih == uji else kode[(latih, uji)]
-        kand = [x for x in pencacahan["baris"]
-                if x["korpus_latih"] == korpus and x["detektor"] == "RF-DETR-L"
-                and x["metode"] in ("k_perkelas", "k_tau_perkelas")]
-        return min(x["metrik"]["mae_relatif_makro"] for x in kand) if kand else float("nan")
+        korpus = kode_cacah.get((latih, uji), latih)
+        return terbaik_perkelas(pencacahan, korpus, "RF-DETR-L")["metrik"]["mae_relatif_makro"]
 
-    fig, sumbu = plt.subplots(1, 2, figsize=(6.5, 2.7))
+    fig, sumbu = plt.subplots(1, 2, figsize=(6.5, 2.9))
     for kolom, (fungsi, judul, label_y) in enumerate(
         [(map50, "Kualitas deteksi", "mAP50"), (mae_rel, "Galat pencacahan", "MAE relatif")]
     ):
-        seri = {f"latih {latih}": [fungsi(latih, uji) for uji in sasaran] for latih in KORPUS}
-        batang_berkelompok(sumbu[kolom], [f"uji {t}" for t in sasaran], seri, desimal=3, judul=judul)
+        seri = {f"latih {latih}": [fungsi(latih, uji) for uji, _ in sasaran] for latih in KORPUS}
+        batang_berkelompok(sumbu[kolom], [label for _, label in sasaran], seri, desimal=3, judul=judul)
         sumbu[kolom].set_ylabel(label_y, fontsize=7.5)
-    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(1.05, 1.32))
+    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(1.05, 1.32)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "uji_silang.png")
 
 
 def gambar_pencacahan(pencacahan: dict, keluaran: Path) -> None:
-    terbaik = {}
-    for korpus in KORPUS:
-        for det in DETEKTOR:
-            kandidat = [
-                x for x in pencacahan["baris"]
-                if x["korpus_latih"] == korpus and x["detektor"] == det
-                and x["metode"] in ("k_perkelas", "k_tau_perkelas")
-            ]
-            terbaik[(korpus, det)] = min(kandidat, key=lambda x: x["metrik"]["mae_makro"])
+    terbaik = {(korpus, det): terbaik_perkelas(pencacahan, korpus, det)
+               for korpus in KORPUS for det in DETEKTOR}
     fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.79))
     for kolom, (kunci, nama) in enumerate(
         [("mae_makro", "MAE makro"), ("rmse_makro", "RMSE makro"), ("acc_pm1_makro", "Akurasi ±1 makro")]
@@ -213,46 +229,39 @@ def gambar_pencacahan(pencacahan: dict, keluaran: Path) -> None:
         seri = {det: [terbaik[(k, det)]["metrik"][kunci] for k in KORPUS] for det in DETEKTOR}
         batang_berkelompok(sumbu[kolom], KORPUS, seri, desimal=4, judul=nama)
         sumbu[kolom].set_xlabel("korpus latih", fontsize=7.5)
-    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.30))
+    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.30)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "pencacahan_makro.png")
 
 
 def gambar_koefisien(pencacahan: dict, keluaran: Path) -> None:
-    pilihan = {"953": "k_perkelas", "763": "k_tau_perkelas", "1716": "k_perkelas"}
     k_seri, tau_seri = {}, {}
     for korpus in KORPUS:
-        b = next(
-            x for x in pencacahan["baris"]
-            if x["korpus_latih"] == korpus and x["detektor"] == "RF-DETR-L" and x["metode"] == pilihan[korpus]
-        )
-        k_seri[f"korpus {korpus}"] = b["k_rerata"]
-        tau_seri[f"korpus {korpus}"] = b["tau_rerata"]
+        b = terbaik_perkelas(pencacahan, korpus, "RF-DETR-L")
+        nama = f"{korpus}: {NAMA_METODE[b['metode']]}"
+        k_seri[nama] = b["k_rerata"]
+        tau_seri[nama] = b["tau_rerata"]
     fig, sumbu = plt.subplots(1, 2, figsize=(6.5, 2.49))
     batang_berkelompok(sumbu[0], KELAS, k_seri, desimal=2, judul="Koefisien pengali $k$")
     batang_berkelompok(sumbu[1], KELAS, tau_seri, desimal=2, judul="Ambang skor keyakinan $\\tau$")
-    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(1.0, 1.30))
+    sumbu[0].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(1.0, 1.30)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "koefisien.png")
 
 
 def gambar_perkelas_pencacahan(pencacahan: dict, keluaran: Path) -> None:
-    pilihan = {"953": "k_perkelas", "763": "k_tau_perkelas", "1716": "k_perkelas"}
     mae, bias, akurasi = {}, {}, {}
     for korpus in KORPUS:
-        b = next(
-            x for x in pencacahan["baris"]
-            if x["korpus_latih"] == korpus and x["detektor"] == "RF-DETR-L" and x["metode"] == pilihan[korpus]
-        )
-        nama = f"korpus {korpus}"
+        b = terbaik_perkelas(pencacahan, korpus, "RF-DETR-L")
+        nama = f"{korpus}: {NAMA_METODE[b['metode']]}"
         mae[nama] = [b["metrik"]["per_kelas"][c]["mae"] for c in KELAS]
         bias[nama] = [b["metrik"]["per_kelas"][c]["bias"] for c in KELAS]
         akurasi[nama] = [b["metrik"]["per_kelas"][c]["acc_pm1"] for c in KELAS]
     fig, sumbu = plt.subplots(1, 3, figsize=(6.5, 2.71))
     batang_berkelompok(sumbu[0], KELAS, mae, desimal=3, judul="MAE per kelas")
-    batang_divergen(sumbu[1], KELAS, bias, judul="Bias per kelas, negatif berarti kurang hitung")
+    batang_divergen(sumbu[1], KELAS, bias, judul="Bias; negatif berarti kurang hitung")
     batang_berkelompok(sumbu[2], KELAS, akurasi, desimal=3, judul="Akurasi ±1 per kelas")
-    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32))
+    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "pencacahan_perkelas.png")
 
@@ -288,7 +297,7 @@ def gambar_efek_kalibrasi_penuh(pencacahan: dict, keluaran: Path) -> None:
         batang_berkelompok(sumbu[1][kolom], label, data_naik[kor], desimal=1, batas_y=batas_naik)
     sumbu[0][0].set_ylabel("penurunan MAE (%)", fontsize=7.5)
     sumbu[1][0].set_ylabel("kenaikan akurasi ±1 (pp)", fontsize=7.5)
-    sumbu[0][1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.40))
+    sumbu[0][1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.40)).set_in_layout(False)
     fig.tight_layout(h_pad=1.2)
     simpan(fig, keluaran, "efek_kalibrasi_penuh.png")
 
@@ -322,7 +331,7 @@ def gambar_metode(pencacahan: dict, keluaran: Path) -> None:
         batang_berkelompok(sumbu[kolom], [SINGKAT[d] for d in DETEKTOR], kumpulan[kor], desimal=3,
                            judul=f"Korpus {kor}", batas_y=batas)
     sumbu[0].set_ylabel("MAE makro", fontsize=7.5)
-    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32))
+    sumbu[1].legend(frameon=False, fontsize=7.5, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.32)).set_in_layout(False)
     fig.tight_layout()
     simpan(fig, keluaran, "metode_kalibrasi.png")
 

@@ -1,4 +1,4 @@
-"""Menyusun laporan kinerja pencacahan dari berkas hasil (V2-E-050f).
+"""Menyusun laporan kinerja pencacahan dari berkas hasil (V2-E-050f, V2-E-050g).
 
 Seluruh angka pada laporan dibangkitkan langsung dari JSON hasil, sehingga tidak
 ada penyalinan manual. Jalankan ulang skrip ini setiap kali salah satu berkas
@@ -16,7 +16,7 @@ from pathlib import Path
 import numpy as np
 
 from kalibrasi_koefisien_pencacahan import muat_gt_763, muat_gt_953
-from kalibrasi_pencacahan_perkorpus import gt_korpus
+from kalibrasi_pencacahan_perkorpus import basis_1716_bersih, gt_korpus, pohon_bocor_763, pohon_uji_1716
 
 B = chr(92)
 GAMBAR = "assets/laporan-pencacahan-2026-09-16"
@@ -30,15 +30,18 @@ NAMA = {
     "k_perkelas": "$k$ per kelas",
     "k_tau_perkelas": "$k + " + B + "tau$ per kelas",
 }
-PILIH = {"953": "k_perkelas", "763": "k_tau_perkelas", "1716": "k_perkelas"}
 PYCOCO = {
     ("953", "YOLO26l"): 0.5435, ("953", "RT-DETR-L"): 0.5718, ("953", "RF-DETR-L"): 0.5965,
     ("763", "YOLO26l"): 0.5163, ("763", "RT-DETR-L"): 0.5580, ("763", "RF-DETR-L"): 0.6129,
     ("1716", "YOLO26l"): 0.5389, ("1716", "RT-DETR-L"): 0.5745, ("1716", "RF-DETR-L"): 0.5960,
 }
-SILANG = [("763", "953"), ("1716", "953"), ("1716", "763"), ("953", "763")]
+SILANG = [("763", "953"), ("1716", "953"), ("1716", "763"), ("953", "763"), ("953", "1716"), ("763", "1716")]
 KODE_SILANG = {("763", "953"): "763>953", ("1716", "953"): "1716>953",
-               ("1716", "763"): "1716>763", ("953", "763"): "953>763"}
+               ("1716", "763"): "1716>763", ("953", "763"): "953>763",
+               ("953", "1716"): "953>1716", ("763", "1716"): "763>1716"}
+# Basis sama 207 pohon pada uji 1716: (kode uji deteksi, kode pencacahan) per korpus latih.
+BASIS_207 = {"953": ("1716@207", "953>1716@207"), "763": ("1716", "763>1716"), "1716": ("1716@207", "1716@207")}
+BIAS = B + "|Bias" + B + "| makro"
 
 
 def km(v, n=4):
@@ -65,12 +68,32 @@ class Sumber:
             allow_pickle=True,
         )
         pohon_1716 = {k.rsplit("_", 1)[0] for k in dump.files}
+        akar = hasil.parent.parent
+        basis = basis_1716_bersih(akar, gt763)
         self.acuan = {}
         for korpus in KOR:
             gt = gt_korpus(gt953, gt763, korpus)
             if korpus == "1716":
                 gt = {k: v for k, v in gt.items() if k in pohon_1716}
             self.acuan[korpus] = np.array(list(gt.values()))
+        gt = gt_korpus(gt953, gt763, "1716")
+        self.acuan["1716@207"] = np.array([v for k, v in gt.items() if k in basis])
+        uji953, uji763 = set(gt953["test"]), set(gt763["test"])
+        lihat953 = set(gt953["train"]) | set(gt953["val"])
+        lihat763 = set(gt763["train"]) | set(gt763["val"])
+        sawit_1716 = {p[len("SAWIT_"):] for p in pohon_1716 if p.startswith("SAWIT_")}
+        depth_1716 = {p[len("DEPTH_"):] for p in pohon_uji_1716(akar) if p.startswith("DEPTH_")}
+        self.irisan = {
+            "uji1716_uji953": len(sawit_1716 & uji953),
+            "uji1716_uji763": len(depth_1716 & uji763),
+            "uji1716_lihat763": len(pohon_bocor_763(akar, gt763)),
+            "uji953_uji763": len(uji953 & uji763),
+            "uji953_lihat763": len(uji953 & lihat763),
+            "uji763_lihat953": len(uji763 & lihat953),
+            "n953": len(uji953), "n763": len(uji763), "n_basis": len(basis),
+            "basis_sawit": sum(p.startswith("SAWIT_") for p in basis),
+            "basis_depth": sum(p.startswith("DEPTH_") for p in basis),
+        }
 
     def det(self, latih, uji, detektor):
         for x in self.deteksi:
@@ -83,6 +106,14 @@ class Sumber:
             if (x["korpus_latih"], x["detektor"], x["metode"]) == (korpus, detektor, metode):
                 return x
         return None
+
+    def rentang_penurunan(self, kunci):
+        """Rentang penurunan metrik terhadap naif pada 27 kombinasi dalam domain."""
+        nilai = [
+            (1 - self.cac(k, d, m)["metrik"][kunci] / self.cac(k, d, "naif")["metrik"][kunci]) * 100
+            for k in KOR for d in DET for m in ("global", "k_perkelas", "k_tau_perkelas")
+        ]
+        return min(nilai), max(nilai)
 
     def terbaik(self, korpus, detektor, metode_sah=("k_perkelas", "k_tau_perkelas")):
         kand = [x for x in self.cacah
@@ -107,12 +138,20 @@ def bagian_ringkasan(s: Sumber) -> list[str]:
     mae = {k: s.terbaik(k, "RF-DETR-L")["metrik"]["mae_makro"] for k in KOR}
     map_domain = [s.det(k, k, "RF-DETR-L")["makro"]["map50"] for k in KOR]
     silang_rf = min(s.det(a, b_, "RF-DETR-L")["makro"]["map50"] for a, b_ in SILANG if s.det(a, b_, "RF-DETR-L"))
+    mae_gab = [s.terbaik(BASIS_207["1716"][1], d)["metrik"]["mae_makro"] for d in DET]
+    mae_tunggal = [s.terbaik(BASIS_207[k][1], d)["metrik"]["mae_makro"] for k in ("953", "763") for d in DET]
+    assert max(mae_gab) < min(mae_tunggal), "klaim latih 1716 terbaik pada uji 1716 tidak lagi berlaku"
+    mae_turun = s.rentang_penurunan("mae_makro")
+    bias_turun = s.rentang_penurunan("bias_abs_makro")
     silang_semua = min(s.det(a, b_, d)["makro"]["map50"] for a, b_ in SILANG for d in DET if s.det(a, b_, d))
     L += ["", "| Temuan utama | Angka pendukung |", "|---|---|",
           f"| RF-DETR-L terbaik di ketiga korpus | $mAP50$ {km(min(map_domain))}–{km(max(map_domain))} |",
-          f"| Kalibrasi menurunkan galat di semua kombinasi | $MAE$ turun 25,0–88,6% |",
+          f"| Kalibrasi menurunkan galat di semua kombinasi | $MAE$ turun {km(mae_turun[0], 1)}–{km(mae_turun[1], 1)}%; "
+          f"{BIAS} turun {km(bias_turun[0], 1)}–{km(bias_turun[1], 1)}% |",
           f"| Peringkat korpus berbalik pada basis relatif | $MAE$ {km(mae['763'])} (763) berbanding {km(mae['953'])} (953); relatif {km(rel['763'])} berbanding {km(rel['953'])} |",
-          f"| Detektor gugur lintas korpus, dua arah | $mAP50$ serendah {km(silang_semua)} |", ""]
+          f"| Detektor gugur lintas korpus, dua arah | $mAP50$ serendah {km(silang_semua)} |",
+          f"| Uji `1716`: latih `1716` terbaik | $MAE$ {km(min(mae_gab))}–{km(max(mae_gab))} berbanding "
+          f"{km(min(mae_tunggal))}–{km(max(mae_tunggal))} ({s.irisan['n_basis']} pohon) |", ""]
     return L
 
 
@@ -120,17 +159,17 @@ def bagian_identitas() -> list[str]:
     return [
         "## 2. Identitas Eksperimen", "",
         "| Parameter | Nilai |", "|---|---|",
-        "| Identitas simpul | `V2-E-050` sampai `V2-E-050f` |",
-        "| Tanggal | 16 September 2026 |",
+        "| Identitas simpul | `V2-E-050` sampai `V2-E-050g` |",
+        "| Tanggal | 16–17 September 2026 |",
         "| Korpus latih | `953` (SawitMVC-YOLO), `763` (SawitMVC-Depth-YOLO v2.0.0), `1716` (gabungan) |",
-        "| Partisi uji | `953`: 141 pohon; `763`: 110 pohon; `1716`: 257 pohon |",
+        "| Partisi uji | `953`: 141 pohon; `763`: 110 pohon; `1716`: 257 pohon, basis sama 207 pohon |",
         "| Detektor | YOLO26l, RT-DETR-L, RF-DETR-L |",
         "| Metrik deteksi | Presisi, Recall, F1, $AP50$, dan $AP50" + B + "text{--}95$ per kelas serta makro |",
         "| Model pencacahan | $" + B + "hat{y}_c(t) = " + B + "operatorname{round}(k_c " + B + "cdot n_c(t))$, dengan $n_c(t)$ sebagai jumlah deteksi kelas $c$ lintas sisi pohon yang memenuhi skor keyakinan $" + B + "ge " + B + "tau_c$ |",
         "| Kalibrasi | Lipat-silang 5 lipatan tingkat pohon, tanpa pelatihan ulang |",
-        "| Metrik pencacahan | $MAE$ makro, $MAE$ relatif, $RMSE$ makro, bias mutlak makro, akurasi ±1 makro |",
-        "| Skrip | [`susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py), [`metrik_deteksi_perkorpus.py`](../scripts/metrik_deteksi_perkorpus.py), [`kalibrasi_pencacahan_perkorpus.py`](../scripts/kalibrasi_pencacahan_perkorpus.py), [`permutasi_koefisien_pencacahan.py`](../scripts/permutasi_koefisien_pencacahan.py) |",
-        "| Artefak angka | [`metrik_deteksi_perkorpus.json`](../results/counting_koefisien_2026-09-16/metrik_deteksi_perkorpus.json), [`pencacahan_perkorpus.json`](../results/counting_koefisien_2026-09-16/pencacahan_perkorpus.json), [`permutasi_koefisien.json`](../results/counting_koefisien_2026-09-16/permutasi_koefisien.json) |",
+        "| Metrik pencacahan | $MAE$ makro, $MAE$ relatif, $RMSE$ makro, " + BIAS + ", akurasi ±1 makro |",
+        "| Skrip | [`susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py), [`metrik_deteksi_perkorpus.py`](../scripts/metrik_deteksi_perkorpus.py), [`kalibrasi_pencacahan_perkorpus.py`](../scripts/kalibrasi_pencacahan_perkorpus.py), [`permutasi_koefisien_pencacahan.py`](../scripts/permutasi_koefisien_pencacahan.py), [`inferensi_953_ke_763.py`](../scripts/inferensi_953_ke_763.py), [`gabung_dump_1716.py`](../scripts/gabung_dump_1716.py) |",
+        "| Artefak angka | [`metrik_deteksi_perkorpus.json`](../results/counting_koefisien_2026-09-16/metrik_deteksi_perkorpus.json), [`pencacahan_perkorpus.json`](../results/counting_koefisien_2026-09-16/pencacahan_perkorpus.json), [`permutasi_koefisien.json`](../results/counting_koefisien_2026-09-16/permutasi_koefisien.json), [`gabungan_1716_manifest.json`](../results/cross_eval/predictions/gabungan_1716_manifest.json) |",
         "",
     ]
 
@@ -174,7 +213,7 @@ def bagian_pencacahan(s: Sumber) -> list[str]:
     L = ["## 5. Pencacahan per Korpus Latih", "",
          f"![Galat dan akurasi pencacahan]({GAMBAR}/pencacahan_makro.png)", "",
          "Varian koefisien per kelas terbaik tiap detektor. $MAE$ relatif adalah $MAE$ dibagi rerata cacah acuan kelas.", "",
-         "| Korpus | Detektor | Metode | $MAE$ makro | $MAE$ relatif | $RMSE$ makro | Bias mutlak makro | Akurasi ±1 makro |",
+         "| Korpus | Detektor | Metode | $MAE$ makro | $MAE$ relatif | $RMSE$ makro | " + BIAS + " | Akurasi ±1 makro |",
          "|---|---|---|---|---|---|---|---|"]
     for korpus in KOR:
         for det in DET:
@@ -190,23 +229,26 @@ def bagian_pencacahan(s: Sumber) -> list[str]:
 
 
 def bagian_koefisien(s: Sumber) -> list[str]:
-    L = ["## 6. Koefisien Terbaik", "",
+    L = ["## 6. Koefisien Terbaik RF-DETR-L", "",
          f"![Koefisien pengali dan ambang per kelas]({GAMBAR}/koefisien.png)", "",
-         "Rerata lima lipatan, RF-DETR-L.", "",
+         "Varian per kelas dengan $MAE$ terendah. Rerata lima lipatan.", "",
          "| Korpus | Metode | $k_{B1}$ | $k_{B2}$ | $k_{B3}$ | $k_{B4}$ | $" + B + "tau_{B1}$ | $" + B + "tau_{B2}$ | $" + B + "tau_{B3}$ | $" + B + "tau_{B4}$ |",
          "|---|---|---|---|---|---|---|---|---|---|"]
     for korpus in KOR:
-        b = s.cac(korpus, "RF-DETR-L", PILIH[korpus])
+        b = s.terbaik(korpus, "RF-DETR-L")
         L.append(f"| {korpus} | {NAMA[b['metode']]} | " + " | ".join(km(v, 2) for v in b["k_rerata"])
                  + " | " + " | ".join(km(v, 2) for v in b["tau_rerata"]) + " |")
-    L += ["", "### 6.1 Rincian per Kelas", "",
+    L += ["", "### 6.1 Rincian per Kelas RF-DETR-L", "",
           f"![MAE, bias, dan akurasi per kelas]({GAMBAR}/pencacahan_perkelas.png)", "",
-          "| Korpus | Metrik | B1 | B2 | B3 | B4 |", "|---|---|---|---|---|---|"]
+          "Konfigurasi sama dengan tabel §6. Nilai dari prediksi luar-lipatan.", "",
+          "| Korpus | Metode | Metrik | B1 | B2 | B3 | B4 |", "|---|---|---|---|---|---|---|"]
     for korpus in KOR:
-        pk = s.cac(korpus, "RF-DETR-L", PILIH[korpus])["metrik"]["per_kelas"]
-        L.append(f"| {korpus} | $MAE$ | " + " | ".join(km(pk[k]["mae"], 3) for k in KLS) + " |")
-        L.append(f"| {korpus} | Bias | " + " | ".join(("+" if pk[k]["bias"] > 0 else "") + km(pk[k]["bias"], 3) for k in KLS) + " |")
-        L.append(f"| {korpus} | Akurasi ±1 | " + " | ".join(km(pk[k]["acc_pm1"], 3) for k in KLS) + " |")
+        b = s.terbaik(korpus, "RF-DETR-L")
+        pk, metode = b["metrik"]["per_kelas"], NAMA[b["metode"]]
+        L.append(f"| {korpus} | {metode} | $MAE$ | " + " | ".join(km(pk[k]["mae"], 3) for k in KLS) + " |")
+        L.append(f"| {korpus} | {metode} | Bias | "
+                 + " | ".join(("+" if pk[k]["bias"] > 0 else "") + km(pk[k]["bias"], 3) for k in KLS) + " |")
+        L.append(f"| {korpus} | {metode} | Akurasi ±1 | " + " | ".join(km(pk[k]["acc_pm1"], 3) for k in KLS) + " |")
     L.append("")
     return L
 
@@ -215,16 +257,19 @@ def bagian_efek(s: Sumber) -> list[str]:
     L = ["## 7. Efek Kalibrasi", "",
          f"![Penurunan MAE dan kenaikan akurasi untuk seluruh kombinasi]({GAMBAR}/efek_kalibrasi_penuh.png)", "",
          "Garis dasar naif: $k = 1$, $" + B + "tau = 0,25$.", "",
-         "| Korpus | Detektor | $MAE$ naif | $RMSE$ naif | Akurasi ±1 naif |", "|---|---|---|---|---|"]
+         "| Korpus | Detektor | $MAE$ naif | $RMSE$ naif | " + BIAS + " naif | Akurasi ±1 naif |",
+         "|---|---|---|---|---|---|"]
     for korpus in KOR:
         for det in DET:
             n = s.cac(korpus, det, "naif")["metrik"]
-            L.append(f"| {korpus} | {det} | {km(n['mae_makro'])} | {km(n['rmse_makro'])} | {km(n['acc_pm1_makro'])} |")
+            L.append(f"| {korpus} | {det} | {km(n['mae_makro'])} | {km(n['rmse_makro'])} | "
+                     f"{km(n['bias_abs_makro'])} | {km(n['acc_pm1_makro'])} |")
     L += ["", "### 7.1 Perbandingan Metode", "",
           f"![Perbandingan metode kalibrasi]({GAMBAR}/metode_kalibrasi.png)", "",
           "Sembilan kombinasi, tiga metode, perbaikan terhadap garis dasar di atas.", "",
-          "| Korpus | Detektor | Metode | $MAE$ | Penurunan $MAE$ | $RMSE$ | Penurunan $RMSE$ | Akurasi ±1 | Kenaikan akurasi |",
-          "|---|---|---|---|---|---|---|---|---|"]
+          "| Korpus | Detektor | Metode | $MAE$ | Penurunan $MAE$ | $RMSE$ | Penurunan $RMSE$ | " + BIAS
+          + " | Penurunan " + B + "|bias" + B + "| | Akurasi ±1 | Kenaikan akurasi |",
+          "|---|---|---|---|---|---|---|---|---|---|---|"]
     for korpus in KOR:
         for det in DET:
             n = s.cac(korpus, det, "naif")["metrik"]
@@ -234,9 +279,11 @@ def bagian_efek(s: Sumber) -> list[str]:
                 t = met == met_terbaik
                 dm = (n["mae_makro"] - m["mae_makro"]) / n["mae_makro"] * 100
                 dr = (n["rmse_makro"] - m["rmse_makro"]) / n["rmse_makro"] * 100
+                db = (n["bias_abs_makro"] - m["bias_abs_makro"]) / n["bias_abs_makro"] * 100
                 da = (m["acc_pm1_makro"] - n["acc_pm1_makro"]) * 100
                 L.append(f"| {korpus} | {det} | {tebal(NAMA[met], t)} | {tebal(km(m['mae_makro']), t)} | "
                          f"{tebal(km(dm, 1), t)}% | {km(m['rmse_makro'])} | {km(dr, 1)}% | "
+                         f"{km(m['bias_abs_makro'])} | {km(db, 1)}% | "
                          f"{km(m['acc_pm1_makro'])} | +{km(da, 1)} pp |")
     L += ["", "Tebal: $MAE$ terendah tiap detektor.", ""]
     return L
@@ -246,26 +293,44 @@ def bagian_silang_detektor(s: Sumber) -> list[str]:
     L = ["## 8. Uji Silang Detektor", "",
          f"![Dalam domain berbanding lintas korpus]({GAMBAR}/uji_silang.png)", "",
          "Detektor dipindah ke partisi uji korpus lain, koefisien dipasang ulang pada sasaran.", "",
-         "| Korpus latih | Korpus uji | Detektor | $mAP50$ | F1 | $MAE$ makro | $MAE$ relatif | Akurasi ±1 |",
-         "|---|---|---|---|---|---|---|---|"]
+         "| Korpus latih | Korpus uji | Pohon | Detektor | $mAP50$ | F1 | $MAE$ makro | $MAE$ relatif | Akurasi ±1 |",
+         "|---|---|---|---|---|---|---|---|---|"]
     for korpus in KOR:
         for det in DET:
             d = s.det(korpus, korpus, det)["makro"]
-            b = s.terbaik(korpus, det)["metrik"]
-            L.append(f"| {korpus} | {korpus} (dalam domain) | {det} | {km(d['map50'])} | {km(d['f1'])} | "
-                     f"{km(b['mae_makro'])} | {km(b['mae_relatif_makro'])} | {km(b['acc_pm1_makro'])} |")
+            m = s.terbaik(korpus, det)["metrik"]
+            L.append(f"| {korpus} | {korpus} (dalam domain) | {m['n_pohon']} | {det} | {km(d['map50'])} | "
+                     f"{km(d['f1'])} | {km(m['mae_makro'])} | {km(m['mae_relatif_makro'])} | {km(m['acc_pm1_makro'])} |")
     for latih, uji in SILANG:
         kode = KODE_SILANG[(latih, uji)]
         for det in DET:
             d = s.det(latih, uji, det)
             b = s.terbaik(kode, det)
             if d is None or b is None:
-                L.append(f"| {latih} | {uji} | {det} | belum tersedia | belum tersedia | belum tersedia | belum tersedia | belum tersedia |")
+                L.append(f"| {latih} | {uji} | – | {det} | belum tersedia | belum tersedia | belum tersedia | "
+                         "belum tersedia | belum tersedia |")
                 continue
             m = b["metrik"]
-            L.append(f"| {latih} | {uji} | {det} | {km(d['makro']['map50'])} | {km(d['makro']['f1'])} | "
-                     f"{km(m['mae_makro'])} | {km(m['mae_relatif_makro'])} | {km(m['acc_pm1_makro'])} |")
-    L += ["", "Baris `1716` ke `763` memakai 66 pohon irisan.", ""]
+            L.append(f"| {latih} | {uji} | {m['n_pohon']} | {det} | {km(d['makro']['map50'])} | "
+                     f"{km(d['makro']['f1'])} | {km(m['mae_makro'])} | {km(m['mae_relatif_makro'])} | "
+                     f"{km(m['acc_pm1_makro'])} |")
+    L += ["", f"`763` ke `1716` tanpa {s.irisan['uji1716_lihat763']} pohon yang pernah dilihat detektor `763`.", "",
+          f"### 8.1 Basis Sama {s.irisan['n_basis']} Pohon", "",
+          f"Uji `1716`: {s.irisan['basis_sawit']} pohon SAWIT dan {s.irisan['basis_depth']} pohon DEPTH, "
+          "sama untuk ketiga korpus latih. Tebal: $MAE$ terendah tiap detektor.", "",
+          "| Detektor | Korpus latih | $mAP50$ | F1 | $MAE$ makro | $MAE$ relatif | Akurasi ±1 |",
+          "|---|---|---|---|---|---|---|"]
+    for det in DET:
+        baris = []
+        for latih in KOR:
+            kode_det, kode_cacah = BASIS_207[latih]
+            baris.append((latih, s.det(latih, kode_det, det)["makro"], s.terbaik(kode_cacah, det)["metrik"]))
+        mae_min = min(m["mae_makro"] for _, _, m in baris)
+        for latih, d, m in baris:
+            t = m["mae_makro"] == mae_min
+            L.append(f"| {det} | {tebal(latih, t)} | {km(d['map50'])} | {km(d['f1'])} | "
+                     f"{tebal(km(m['mae_makro']), t)} | {km(m['mae_relatif_makro'])} | {km(m['acc_pm1_makro'])} |")
+    L.append("")
     return L
 
 
@@ -294,14 +359,21 @@ def bagian_permutasi(s: Sumber) -> list[str]:
 def bagian_partisi(s: Sumber) -> list[str]:
     L = ["## 3. Karakteristik Partisi Uji", "",
          "| Korpus | Pohon | Tandan | Tandan per pohon | B1 | B2 | B3 | B4 |", "|---|---|---|---|---|---|---|---|"]
-    for korpus in KOR:
+    for korpus, label in [("953", "953"), ("763", "763"), ("1716", "1716"), ("1716@207", "1716, basis sama")]:
         a = s.acuan[korpus]
-        L.append(f"| {korpus} | {rb(len(a))} | {rb(a.sum())} | {km(a.sum(axis=1).mean(), 2)} | "
+        L.append(f"| {label} | {rb(len(a))} | {rb(a.sum())} | {km(a.sum(axis=1).mean(), 2)} | "
                  + " | ".join(km(v, 2) for v in a.mean(axis=0)) + " |")
+    i = s.irisan
     L += ["", "| Pasangan partisi | Pohon beririsan | Konsekuensi |", "|---|---|---|",
-          "| `1716` dan `953` | 141 dari 141 pohon SAWIT | Tidak independen |",
-          "| `1716` dan `763` | 66 dari 110 pohon | Basis pohon lebih kecil |",
-          "| `953` dan `763` | 0 pohon | Terpisah penuh |", ""]
+          f"| Uji `1716` dan uji `953` | {i['uji1716_uji953']} dari {i['n953']} pohon SAWIT | Tidak independen |",
+          f"| Uji `1716` dan uji `763` | {i['uji1716_uji763']} dari {i['n763']} pohon | Basis `1716` ke `763` |",
+          f"| Uji `1716` dan latih/validasi `763` | {i['uji1716_lihat763']} pohon DEPTH, citra identik | "
+          "Dikeluarkan dari `763` ke `1716` |",
+          f"| Uji `953` dan uji `763` | {i['uji953_uji763']} ID pohon | Beda sesi akuisisi |",
+          f"| Uji `953` dan latih/validasi `763` | {i['uji953_lihat763']} dari {i['n953']} ID pohon | "
+          "Beda sesi akuisisi, sah (V2-E-040) |",
+          f"| Uji `763` dan latih/validasi `953` | {i['uji763_lihat953']} dari {i['n763']} ID pohon | "
+          "Beda sesi akuisisi |", ""]
     return L
 
 
@@ -325,12 +397,16 @@ def bagian_glosarium() -> list[str]:
         "| $MAE$ relatif | $MAE$ dibagi rerata cacah acuan kelas yang sama |",
         "| $RMSE$ | Akar rerata kuadrat galat, menekankan galat besar |",
         "| Bias | Rerata selisih bertanda. Negatif berarti kurang hitung |",
+        "| " + BIAS + " | Rerata nilai mutlak bias per kelas atas B1–B4 |",
         "| Akurasi ±1 | Proporsi pohon dengan selisih paling banyak satu tandan |",
         "| pp | Persentase poin |",
         "| Makro | Rerata tanpa bobot atas B1–B4 |",
         "| Naif | Tanpa kalibrasi: $k = 1$, $" + B + "tau = 0,25$ |",
         "| $k$ global, $k$ per kelas, $k + " + B + "tau$ per kelas | Satu nilai; $k$ per kelas; $k$ dan $" + B + "tau$ per kelas |",
         "| Lipat-silang 5 lipatan | Koefisien dipasang pada empat kelompok, diuji pada kelompok yang ditahan |",
+        "| Prediksi luar-lipatan | Hitungan pohon dari koefisien yang tidak dipasang pada pohon itu |",
+        "| Basis sama 207 pohon | Uji `1716` tanpa 50 pohon DEPTH latih/validasi `763` |",
+        "| ID pohon beda sesi | Pohon fisik sama, difoto pada sesi berselang sekitar 80 hari dengan kamera berbeda |",
         "| Korpus 953, 763, 1716 | SawitMVC-YOLO, SawitMVC-Depth-YOLO, dan gabungannya |",
         "| Y, RT, RF | YOLO26l, RT-DETR-L, RF-DETR-L |",
         "| $n$ | Jumlah pohon pada partisi uji |",

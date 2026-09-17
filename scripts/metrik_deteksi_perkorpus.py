@@ -17,6 +17,9 @@ from pathlib import Path
 
 import numpy as np
 
+from kalibrasi_koefisien_pencacahan import muat_gt_763
+from kalibrasi_pencacahan_perkorpus import basis_1716_bersih
+
 CLASSES = ["B1", "B2", "B3", "B4"]
 IOU_GRID = np.round(np.arange(0.50, 0.951, 0.05), 2)
 CONF_GRID = np.round(np.arange(0.05, 0.96, 0.01), 2)
@@ -251,8 +254,17 @@ def main() -> None:
         ("1716", "953"): ("results/cross_eval/predictions/combined1716_{slug}__on_953__test.npz", "953"),
         ("1716", "763"): ("results/combined1716/predictions/combined1716_{slug}_rgb_s42_i1280__test.npz", "763dep"),
         ("953", "763"): ("results/cross_eval/predictions/v2repro953_{slug}__on_763__test.npz", "763"),
+        # V2-E-050g: partisi uji 1716. Baris 763 dan baris @207 memakai basis 207 pohon.
+        ("953", "1716"): ("results/cross_eval/predictions/v2repro953_{slug}__on_1716__test.npz", "1716"),
+        ("763", "1716"): ("results/cross_eval/predictions/new763_{slug}__on_1716__test.npz", "1716@207"),
+        ("953", "1716@207"): ("results/cross_eval/predictions/v2repro953_{slug}__on_1716__test.npz", "1716@207"),
+        ("1716", "1716@207"): (dump_per_korpus["1716"], "1716@207"),
     }
     gt_per_korpus["763dep"] = gt_763(depth, ("test",), awalan="DEPTH_")
+    basis = basis_1716_bersih(akar, muat_gt_763(depth))
+    gt_per_korpus["1716@207"] = {
+        k: v for k, v in gt_per_korpus["1716"].items() if k.rsplit("_", 1)[0] in basis
+    }
 
     baris_keluaran = []
     for korpus, pola in dump_per_korpus.items():
@@ -298,7 +310,8 @@ def main() -> None:
         json.dumps(
             {
                 "_meta": {
-                    "eksperimen": "V2-E-050c",
+                    "eksperimen": "V2-E-050c, diperluas V2-E-050g",
+                    "basis_207": "uji 1716 tanpa 50 pohon DEPTH yang berada pada latih atau validasi 763",
                     "tanggal": "2026-09-16",
                     "evaluator": "implementasi lokal, pencocokan serakah IoU, AP interpolasi 101 titik",
                     "catatan": "Presisi, Recall, dan F1 dilaporkan pada ambang skor keyakinan yang memaksimalkan F1 makro.",

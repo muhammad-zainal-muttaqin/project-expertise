@@ -153,7 +153,7 @@ SKRIP = """
 
 
 def inline(teks: str) -> str:
-    teks = html.escape(teks, quote=False)
+    teks = html.escape(teks, quote=False).replace(r"\|", "|")
     teks = re.sub(r"`([^`]+)`", r"<code>\1</code>", teks)
     teks = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", teks)
     teks = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", teks)

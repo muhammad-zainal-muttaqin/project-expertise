@@ -6,6 +6,9 @@ Tiga korpus latih dievaluasi pada partisi ujinya masing-masing:
     763  -> SawitMVC-Depth-YOLO test    (110 pohon)
     1716 -> Combined-1716 test          (257 pohon: 141 SAWIT + 116 DEPTH)
 
+Skenario silang memakai kode `latih>uji`. Akhiran `@207` membatasi partisi uji
+1716 pada 207 pohon yang tidak pernah dilihat detektor 763 (V2-E-050g).
+
 Koefisien pengali per kelas dipasang dengan lipat-silang lima lipatan pada
 tingkat pohon: koefisien untuk setiap lipatan dipasang pada empat lipatan lain,
 lalu diterapkan pada lipatan yang ditahan. Prosedur ini tidak memakai partisi
@@ -40,7 +43,31 @@ N_LIPATAN = 5
 SEED = 42
 
 
+def pohon_uji_1716(akar: Path) -> set[str]:
+    """Pohon partisi uji 1716 berawalan `SAWIT_` atau `DEPTH_`."""
+    dump = np.load(
+        akar / "results/combined1716/predictions/combined1716_yolo26l_rgb_s42_i1280__test.npz",
+        allow_pickle=True,
+    )
+    return {kunci.rsplit("_", 1)[0] for kunci in dump.files}
+
+
+def pohon_bocor_763(akar: Path, gt763: dict) -> set[str]:
+    """Pohon DEPTH uji 1716 yang citranya berada pada partisi latih atau validasi 763."""
+    dilihat = set(gt763["train"]) | set(gt763["val"])
+    return {p for p in pohon_uji_1716(akar) if p.startswith("DEPTH_") and p[len("DEPTH_"):] in dilihat}
+
+
+def basis_1716_bersih(akar: Path, gt763: dict) -> set[str]:
+    """Basis 207 pohon: uji 1716 tanpa pohon yang pernah dilihat detektor 763."""
+    return pohon_uji_1716(akar) - pohon_bocor_763(akar, gt763)
+
+
 def sumber_dump(akar: Path, korpus: str, slug: str) -> tuple[Path, str | None]:
+    if korpus in ("953>1716", "953>1716@207"):
+        return akar / f"results/cross_eval/predictions/v2repro953_{slug}__on_1716__test.npz", None
+    if korpus == "763>1716":
+        return akar / f"results/cross_eval/predictions/new763_{slug}__on_1716__test.npz", None
     if korpus == "1716>953":
         return akar / f"results/cross_eval/predictions/combined1716_{slug}__on_953__test.npz", None
     if korpus == "1716>763":
@@ -128,16 +155,20 @@ def main() -> None:
     gt953 = muat_gt_953(Path(arg.baseline_root))
     gt763 = muat_gt_763(Path(arg.depth_root))
 
+    basis = basis_1716_bersih(akar, gt763)
+    skenario = ("953", "763", "1716", "763>953", "1716>953", "1716>763", "953>763",
+                "953>1716", "763>1716", "1716@207", "953>1716@207")
     baris = []
-    for korpus in ("953", "763", "1716", "763>953", "1716>953", "1716>763", "953>763"):
+    for korpus in skenario:
         gt = gt_korpus(gt953, gt763, korpus)
+        batas = basis if korpus.endswith("@207") or korpus == "763>1716" else None
         for slug, label in DETEKTOR:
             path, awalan = sumber_dump(akar, korpus, slug)
             if not path.exists():
                 print(f"[lewat] {path}")
                 continue
             prediksi = muat_prediksi(path, awalan)
-            n, y, pohon = matriks_hitung(prediksi, gt, TAU_GRID)
+            n, y, pohon = matriks_hitung(prediksi, gt, TAU_GRID, batas)
             for metode in METODE:
                 metrik, tau, k = metrik_lipat_silang(n, y, metode)
                 baris.append(
@@ -164,7 +195,7 @@ def main() -> None:
         json.dumps(
             {
                 "_meta": {
-                    "eksperimen": "V2-E-050b",
+                    "eksperimen": "V2-E-050b, diperluas V2-E-050g",
                     "tanggal": "2026-09-16",
                     "protokol": f"kalibrasi lipat-silang {N_LIPATAN} lipatan pada tingkat pohon, seed {SEED}",
                     "korpus": {
@@ -175,6 +206,10 @@ def main() -> None:
                         "1716>953": "detektor latih 1716 diuji pada SawitMVC-YOLO test (141 pohon)",
                         "1716>763": "detektor latih 1716 diuji pada irisan partisi uji 763 (66 pohon)",
                         "953>763": "detektor latih 953 diuji pada SawitMVC-Depth-YOLO test (110 pohon)",
+                        "953>1716": "detektor latih 953 diuji pada Combined-1716 test (257 pohon)",
+                        "763>1716": "detektor latih 763 diuji pada Combined-1716 test tanpa 50 pohon DEPTH latih/validasi 763 (207 pohon)",
+                        "1716@207": "detektor latih 1716 pada basis 207 pohon",
+                        "953>1716@207": "detektor latih 953 pada basis 207 pohon",
                     },
                     "gt_953": "Baseline-SawitMVC/ground_truth/split_manifest.csv",
                     "gt_763": "SawitMVC-Depth-YOLO/{train,valid,test}/linked/*.json",
