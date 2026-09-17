@@ -1,9 +1,17 @@
 {
   "_meta": {
-    "eksperimen": "V2-E-050d",
-    "tanggal": "2026-09-16",
+    "eksperimen": "V2-E-050d, dikoreksi V2-E-050g",
+    "tanggal": "2026-09-17",
     "metode": "k per kelas dengan satu ambang bersama",
-    "protokol": "permutasi di dalam korpus memakai lipat-silang lima lipatan; permutasi lintas korpus memasang koefisien pada seluruh partisi uji sumber"
+    "protokol": "permutasi di dalam korpus memakai validasi silang lima lipatan; pasangan korpus yang berbagi pohon identik memasang koefisien per lipatan sasaran tanpa pohon identik; pasangan 953 dan 763 memasang koefisien pada seluruh partisi uji sumber",
+    "irisan_pohon_identik": {
+      "953>763": 0,
+      "953>1716": 141,
+      "763>953": 0,
+      "763>1716": 66,
+      "1716>953": 141,
+      "1716>763": 66
+    }
   },
   "baris": [
     {
@@ -13,6 +21,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.1,
@@ -40,6 +49,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.1,
@@ -67,6 +77,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.1,
@@ -94,6 +105,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -121,6 +133,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -148,6 +161,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -175,6 +189,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -189,10 +204,10 @@
         0.27
       ],
       "metrik": {
-        "mae_makro": 0.9299610894941635,
-        "rmse_makro": 1.4626344547951282,
-        "acc_pm1_makro": 0.7733463035019454,
-        "bias_abs_makro": 0.16731517509727628
+        "mae_makro": 0.9464980544747081,
+        "rmse_makro": 1.4733066877569232,
+        "acc_pm1_makro": 0.7626459143968871,
+        "bias_abs_makro": 0.12937743190661477
       }
     },
     {
@@ -202,6 +217,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -216,10 +232,10 @@
         0.27
       ],
       "metrik": {
-        "mae_makro": 3.695525291828794,
-        "rmse_makro": 4.608739307294133,
-        "acc_pm1_makro": 0.30933852140077817,
-        "bias_abs_makro": 3.53988326848249
+        "mae_makro": 3.7091439688715955,
+        "rmse_makro": 4.642521147685591,
+        "acc_pm1_makro": 0.311284046692607,
+        "bias_abs_makro": 3.551556420233463
       }
     },
     {
@@ -229,6 +245,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -243,10 +260,10 @@
         0.27
       ],
       "metrik": {
-        "mae_makro": 2.719844357976654,
-        "rmse_makro": 3.576370928686652,
-        "acc_pm1_makro": 0.42509727626459143,
-        "bias_abs_makro": 2.5214007782101167
+        "mae_makro": 2.7344357976653697,
+        "rmse_makro": 3.610578477965913,
+        "acc_pm1_makro": 0.4221789883268482,
+        "bias_abs_makro": 2.53988326848249
       }
     },
     {
@@ -256,6 +273,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -283,6 +301,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -310,6 +329,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -337,6 +357,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -364,6 +385,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -391,6 +413,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -418,6 +441,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.4,
@@ -429,13 +453,13 @@
         0.26,
         0.38,
         0.39,
-        0.35
+        0.36
       ],
       "metrik": {
-        "mae_makro": 1.4863813229571983,
-        "rmse_makro": 2.236781923702037,
-        "acc_pm1_makro": 0.6468871595330739,
-        "bias_abs_makro": 1.4396887159533074
+        "mae_makro": 1.509727626459144,
+        "rmse_makro": 2.2566316786012752,
+        "acc_pm1_makro": 0.6420233463035019,
+        "bias_abs_makro": 1.4649805447470816
       }
     },
     {
@@ -445,6 +469,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.4,
@@ -456,13 +481,13 @@
         0.26,
         0.38,
         0.39,
-        0.35
+        0.36
       ],
       "metrik": {
-        "mae_makro": 0.9601167315175098,
-        "rmse_makro": 1.522249869252328,
+        "mae_makro": 0.9688715953307392,
+        "rmse_makro": 1.5281026805468925,
         "acc_pm1_makro": 0.7714007782101167,
-        "bias_abs_makro": 0.23249027237354086
+        "bias_abs_makro": 0.2276264591439689
       }
     },
     {
@@ -472,6 +497,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.4,
@@ -483,13 +509,13 @@
         0.26,
         0.38,
         0.39,
-        0.35
+        0.36
       ],
       "metrik": {
-        "mae_makro": 0.9980544747081712,
-        "rmse_makro": 1.6034876509295293,
-        "acc_pm1_makro": 0.7412451361867705,
-        "bias_abs_makro": 0.7451361867704281
+        "mae_makro": 1.022373540856031,
+        "rmse_makro": 1.6422072872032067,
+        "acc_pm1_makro": 0.7392996108949417,
+        "bias_abs_makro": 0.7966926070038911
       }
     },
     {
@@ -499,6 +525,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.3,
@@ -526,6 +553,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.3,
@@ -553,6 +581,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.3,
@@ -580,6 +609,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.3,
@@ -607,6 +637,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.3,
@@ -634,6 +665,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 110,
       "tau": [
         0.3,
@@ -661,6 +693,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.3,
@@ -670,15 +703,15 @@
       ],
       "k": [
         0.3,
-        0.26,
-        0.33,
+        0.3,
+        0.35,
         0.39
       ],
       "metrik": {
-        "mae_makro": 1.32295719844358,
-        "rmse_makro": 2.0138261933354005,
-        "acc_pm1_makro": 0.6828793774319066,
-        "bias_abs_makro": 1.2334630350194553
+        "mae_makro": 1.3200389105058368,
+        "rmse_makro": 2.0099485179367984,
+        "acc_pm1_makro": 0.6799610894941635,
+        "bias_abs_makro": 1.2285992217898833
       }
     },
     {
@@ -688,6 +721,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.3,
@@ -697,15 +731,15 @@
       ],
       "k": [
         0.3,
-        0.26,
-        0.33,
+        0.3,
+        0.35,
         0.39
       ],
       "metrik": {
-        "mae_makro": 1.0700389105058365,
-        "rmse_makro": 1.5791728332191193,
-        "acc_pm1_makro": 0.7266536964980546,
-        "bias_abs_makro": 0.2704280155642023
+        "mae_makro": 1.0680933852140078,
+        "rmse_makro": 1.582352049314872,
+        "acc_pm1_makro": 0.7295719844357977,
+        "bias_abs_makro": 0.311284046692607
       }
     },
     {
@@ -715,6 +749,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.3,
@@ -724,15 +759,15 @@
       ],
       "k": [
         0.3,
-        0.26,
-        0.33,
+        0.3,
+        0.35,
         0.39
       ],
       "metrik": {
-        "mae_makro": 0.9036964980544746,
-        "rmse_makro": 1.4402945790616868,
-        "acc_pm1_makro": 0.7869649805447472,
-        "bias_abs_makro": 0.3686770428015564
+        "mae_makro": 0.904669260700389,
+        "rmse_makro": 1.4241875531952672,
+        "acc_pm1_makro": 0.7879377431906616,
+        "bias_abs_makro": 0.3560311284046693
       }
     },
     {
@@ -742,6 +777,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.2,
@@ -769,6 +805,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.2,
@@ -796,6 +833,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.2,
@@ -823,6 +861,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.2,
@@ -850,6 +889,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.2,
@@ -877,6 +917,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.2,
@@ -904,6 +945,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.2,
@@ -915,13 +957,13 @@
         0.32,
         0.5,
         0.45,
-        0.51
+        0.75
       ],
       "metrik": {
-        "mae_makro": 0.9445525291828795,
-        "rmse_makro": 1.5304350571533272,
-        "acc_pm1_makro": 0.7645914396887159,
-        "bias_abs_makro": 0.36867704280155644
+        "mae_makro": 0.9630350194552529,
+        "rmse_makro": 1.552350728457312,
+        "acc_pm1_makro": 0.754863813229572,
+        "bias_abs_makro": 0.30544747081712065
       }
     },
     {
@@ -931,6 +973,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.2,
@@ -942,13 +985,13 @@
         0.32,
         0.5,
         0.45,
-        0.51
+        0.75
       ],
       "metrik": {
-        "mae_makro": 2.9464980544747084,
-        "rmse_makro": 3.8519576608333015,
-        "acc_pm1_makro": 0.40564202334630356,
-        "bias_abs_makro": 2.7986381322957197
+        "mae_makro": 3.1994163424124515,
+        "rmse_makro": 4.206919334860373,
+        "acc_pm1_makro": 0.39202334630350194,
+        "bias_abs_makro": 3.0651750972762644
       }
     },
     {
@@ -958,6 +1001,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.2,
@@ -969,13 +1013,13 @@
         0.32,
         0.5,
         0.45,
-        0.51
+        0.75
       ],
       "metrik": {
-        "mae_makro": 1.8959143968871595,
-        "rmse_makro": 2.7144647359198224,
-        "acc_pm1_makro": 0.5817120622568093,
-        "bias_abs_makro": 1.6585603112840466
+        "mae_makro": 2.057392996108949,
+        "rmse_makro": 2.937808010523978,
+        "acc_pm1_makro": 0.561284046692607,
+        "bias_abs_makro": 1.8472762645914398
       }
     },
     {
@@ -985,6 +1029,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.55,
@@ -1012,6 +1057,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.55,
@@ -1039,6 +1085,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.55,
@@ -1066,6 +1113,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.55,
@@ -1093,6 +1141,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.55,
@@ -1120,6 +1169,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.55,
@@ -1147,24 +1197,25 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.55,
-        0.55,
-        0.55,
-        0.55
+        0.5,
+        0.5,
+        0.5,
+        0.5
       ],
       "k": [
-        0.38,
+        0.3,
         0.5,
-        0.71,
-        0.51
+        0.65,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.5642023346303502,
-        "rmse_makro": 2.335303553486292,
-        "acc_pm1_makro": 0.6352140077821011,
-        "bias_abs_makro": 1.5272373540856032
+        "mae_makro": 1.5554474708171206,
+        "rmse_makro": 2.3190132873207903,
+        "acc_pm1_makro": 0.632295719844358,
+        "bias_abs_makro": 1.5145914396887161
       }
     },
     {
@@ -1174,24 +1225,25 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.55,
-        0.55,
-        0.55,
-        0.55
+        0.5,
+        0.5,
+        0.5,
+        0.5
       ],
       "k": [
-        0.38,
+        0.3,
         0.5,
-        0.71,
-        0.51
+        0.65,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.0262645914396886,
-        "rmse_makro": 1.69082855290471,
-        "acc_pm1_makro": 0.754863813229572,
-        "bias_abs_makro": 0.6060311284046693
+        "mae_makro": 1.0,
+        "rmse_makro": 1.6717047667000973,
+        "acc_pm1_makro": 0.7597276264591439,
+        "bias_abs_makro": 0.5408560311284046
       }
     },
     {
@@ -1201,24 +1253,25 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.55,
-        0.55,
-        0.55,
-        0.55
+        0.5,
+        0.5,
+        0.5,
+        0.5
       ],
       "k": [
-        0.38,
+        0.3,
         0.5,
-        0.71,
-        0.51
+        0.65,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.193579766536965,
-        "rmse_makro": 1.9097710870886269,
-        "acc_pm1_makro": 0.7052529182879378,
-        "bias_abs_makro": 1.0009727626459144
+        "mae_makro": 1.169260700389105,
+        "rmse_makro": 1.8684992159445746,
+        "acc_pm1_makro": 0.7101167315175096,
+        "bias_abs_makro": 0.9688715953307393
       }
     },
     {
@@ -1228,6 +1281,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -1255,6 +1309,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -1282,6 +1337,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "seluruh partisi sumber",
       "n_pohon": 141,
       "tau": [
         0.4,
@@ -1309,6 +1365,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -1336,6 +1393,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -1363,6 +1421,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.4,
@@ -1390,24 +1449,25 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.4,
-        0.4,
-        0.4,
-        0.4
+        0.25,
+        0.25,
+        0.25,
+        0.25
       ],
       "k": [
-        0.51,
-        0.44,
-        0.72,
-        0.51
+        0.35,
+        0.41,
+        0.48,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.2373540856031129,
-        "rmse_makro": 1.9617835789644968,
-        "acc_pm1_makro": 0.7003891050583658,
-        "bias_abs_makro": 1.0622568093385214
+        "mae_makro": 1.2042801556420233,
+        "rmse_makro": 1.903393833610156,
+        "acc_pm1_makro": 0.7062256809338522,
+        "bias_abs_makro": 0.9883268482490273
       }
     },
     {
@@ -1417,24 +1477,25 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.4,
-        0.4,
-        0.4,
-        0.4
+        0.25,
+        0.25,
+        0.25,
+        0.25
       ],
       "k": [
-        0.51,
-        0.44,
-        0.72,
-        0.51
+        0.35,
+        0.41,
+        0.48,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.5330739299610894,
-        "rmse_makro": 2.2879603946771545,
-        "acc_pm1_makro": 0.6984435797665369,
-        "bias_abs_makro": 1.0700389105058365
+        "mae_makro": 1.7023346303501947,
+        "rmse_makro": 2.5461083372042346,
+        "acc_pm1_makro": 0.6391050583657587,
+        "bias_abs_makro": 1.3268482490272373
       }
     },
     {
@@ -1444,24 +1505,25 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
-        0.4,
-        0.4,
-        0.4,
-        0.4
+        0.25,
+        0.25,
+        0.25,
+        0.25
       ],
       "k": [
-        0.51,
-        0.44,
-        0.72,
-        0.51
+        0.35,
+        0.41,
+        0.48,
+        0.63
       ],
       "metrik": {
-        "mae_makro": 1.0398832684824904,
-        "rmse_makro": 1.6983348194045362,
-        "acc_pm1_makro": 0.7519455252918288,
-        "bias_abs_makro": 0.6138132295719845
+        "mae_makro": 1.0671206225680934,
+        "rmse_makro": 1.7295655565537025,
+        "acc_pm1_makro": 0.7412451361867705,
+        "bias_abs_makro": 0.39202334630350194
       }
     },
     {
@@ -1471,23 +1533,24 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
-        0.1,
-        0.1,
-        0.1,
-        0.1
+        0.2,
+        0.2,
+        0.2,
+        0.2
       ],
       "k": [
-        0.32,
-        0.23,
-        0.27,
-        0.33
+        0.42,
+        0.5,
+        0.46,
+        0.76
       ],
       "metrik": {
-        "mae_makro": 1.1134751773049647,
-        "rmse_makro": 1.6236993758820835,
-        "acc_pm1_makro": 0.7446808510638298,
+        "mae_makro": 1.1950354609929077,
+        "rmse_makro": 1.7417078486335622,
+        "acc_pm1_makro": 0.7145390070921986,
         "bias_abs_makro": 0.4078014184397163
       }
     },
@@ -1498,24 +1561,25 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
-        0.1,
-        0.1,
-        0.1,
-        0.1
+        0.2,
+        0.2,
+        0.2,
+        0.2
       ],
       "k": [
-        0.32,
-        0.23,
-        0.27,
-        0.33
+        0.42,
+        0.5,
+        0.46,
+        0.76
       ],
       "metrik": {
-        "mae_makro": 5.8563829787234045,
-        "rmse_makro": 6.5394999069412325,
-        "acc_pm1_makro": 0.2021276595744681,
-        "bias_abs_makro": 5.820921985815604
+        "mae_makro": 5.780141843971631,
+        "rmse_makro": 6.5609285732764775,
+        "acc_pm1_makro": 0.2092198581560284,
+        "bias_abs_makro": 5.74822695035461
       }
     },
     {
@@ -1525,24 +1589,25 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
-        0.1,
-        0.1,
-        0.1,
-        0.1
+        0.2,
+        0.2,
+        0.2,
+        0.2
       ],
       "k": [
-        0.32,
-        0.23,
-        0.27,
-        0.33
+        0.42,
+        0.5,
+        0.46,
+        0.76
       ],
       "metrik": {
-        "mae_makro": 4.569148936170213,
-        "rmse_makro": 5.2339136420498535,
-        "acc_pm1_makro": 0.20567375886524822,
-        "bias_abs_makro": 4.530141843971631
+        "mae_makro": 4.349290780141844,
+        "rmse_makro": 5.014196823546583,
+        "acc_pm1_makro": 0.23049645390070922,
+        "bias_abs_makro": 4.306737588652482
       }
     },
     {
@@ -1552,6 +1617,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -1566,10 +1632,10 @@
         0.33
       ],
       "metrik": {
-        "mae_makro": 0.7636363636363637,
-        "rmse_makro": 1.2679225120128246,
+        "mae_makro": 0.7704545454545455,
+        "rmse_makro": 1.2960848737353214,
         "acc_pm1_makro": 0.8318181818181818,
-        "bias_abs_makro": 0.34090909090909094
+        "bias_abs_makro": 0.3795454545454546
       }
     },
     {
@@ -1579,6 +1645,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -1593,10 +1660,10 @@
         0.33
       ],
       "metrik": {
-        "mae_makro": 1.4068181818181817,
-        "rmse_makro": 1.833739065728286,
-        "acc_pm1_makro": 0.5840909090909091,
-        "bias_abs_makro": 0.7659090909090909
+        "mae_makro": 1.3909090909090909,
+        "rmse_makro": 1.8185652441018765,
+        "acc_pm1_makro": 0.5909090909090909,
+        "bias_abs_makro": 0.7136363636363636
       }
     },
     {
@@ -1606,6 +1673,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.1,
@@ -1620,10 +1688,10 @@
         0.33
       ],
       "metrik": {
-        "mae_makro": 1.3840909090909093,
-        "rmse_makro": 1.879586961979862,
-        "acc_pm1_makro": 0.5840909090909091,
-        "bias_abs_makro": 0.9568181818181818
+        "mae_makro": 1.3454545454545452,
+        "rmse_makro": 1.8457303616949705,
+        "acc_pm1_makro": 0.6068181818181817,
+        "bias_abs_makro": 0.8954545454545455
       }
     },
     {
@@ -1633,6 +1701,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -1660,6 +1729,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -1687,6 +1757,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.1,
@@ -1714,6 +1785,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.5,
@@ -1725,13 +1797,13 @@
         0.42,
         0.42,
         0.46,
-        0.63
+        0.7
       ],
       "metrik": {
         "mae_makro": 1.9343971631205674,
-        "rmse_makro": 2.5117332517305297,
+        "rmse_makro": 2.518214282168466,
         "acc_pm1_makro": 0.5460992907801419,
-        "bias_abs_makro": 1.8563829787234043
+        "bias_abs_makro": 1.8492907801418441
       }
     },
     {
@@ -1741,6 +1813,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.5,
@@ -1752,13 +1825,13 @@
         0.42,
         0.42,
         0.46,
-        0.63
+        0.7
       ],
       "metrik": {
-        "mae_makro": 1.1524822695035462,
-        "rmse_makro": 1.719413851462086,
-        "acc_pm1_makro": 0.7287234042553191,
-        "bias_abs_makro": 0.4787234042553191
+        "mae_makro": 1.1950354609929077,
+        "rmse_makro": 1.766620406583562,
+        "acc_pm1_makro": 0.7163120567375886,
+        "bias_abs_makro": 0.49645390070921985
       }
     },
     {
@@ -1768,6 +1841,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.5,
@@ -1779,13 +1853,13 @@
         0.42,
         0.42,
         0.46,
-        0.63
+        0.7
       ],
       "metrik": {
-        "mae_makro": 1.6613475177304964,
-        "rmse_makro": 2.251862554937844,
-        "acc_pm1_makro": 0.5904255319148937,
-        "bias_abs_makro": 1.5053191489361704
+        "mae_makro": 1.677304964539007,
+        "rmse_makro": 2.2760673322974996,
+        "acc_pm1_makro": 0.5868794326241135,
+        "bias_abs_makro": 1.5106382978723405
       }
     },
     {
@@ -1795,6 +1869,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.5,
@@ -1809,10 +1884,10 @@
         0.63
       ],
       "metrik": {
-        "mae_makro": 1.0363636363636364,
-        "rmse_makro": 1.8251058726336833,
+        "mae_makro": 1.0386363636363636,
+        "rmse_makro": 1.8261697526939236,
         "acc_pm1_makro": 0.7659090909090909,
-        "bias_abs_makro": 1.0181818181818183
+        "bias_abs_makro": 1.0204545454545455
       }
     },
     {
@@ -1822,6 +1897,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.5,
@@ -1849,6 +1925,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.5,
@@ -1863,10 +1940,10 @@
         0.63
       ],
       "metrik": {
-        "mae_makro": 0.7522727272727273,
-        "rmse_makro": 1.4061322404982675,
+        "mae_makro": 0.7545454545454545,
+        "rmse_makro": 1.4072509486255527,
         "acc_pm1_makro": 0.8136363636363636,
-        "bias_abs_makro": 0.6886363636363636
+        "bias_abs_makro": 0.6909090909090909
       }
     },
     {
@@ -1876,6 +1953,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.5,
@@ -1903,6 +1981,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.5,
@@ -1930,6 +2009,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.5,
@@ -1957,6 +2037,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.35,
@@ -1968,13 +2049,13 @@
         0.38,
         0.5,
         0.46,
-        0.51
+        0.65
       ],
       "metrik": {
-        "mae_makro": 1.4308510638297873,
-        "rmse_makro": 2.0369482060590407,
-        "acc_pm1_makro": 0.6524822695035462,
-        "bias_abs_makro": 1.2358156028368794
+        "mae_makro": 1.4450354609929077,
+        "rmse_makro": 2.0543077894975013,
+        "acc_pm1_makro": 0.6507092198581561,
+        "bias_abs_makro": 1.2429078014184398
       }
     },
     {
@@ -1984,6 +2065,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.35,
@@ -1995,13 +2077,13 @@
         0.38,
         0.5,
         0.46,
-        0.51
+        0.65
       ],
       "metrik": {
-        "mae_makro": 1.6914893617021276,
-        "rmse_makro": 2.27836887266046,
-        "acc_pm1_makro": 0.5585106382978724,
-        "bias_abs_makro": 1.1914893617021276
+        "mae_makro": 1.7109929078014185,
+        "rmse_makro": 2.31917442650797,
+        "acc_pm1_makro": 0.5549645390070922,
+        "bias_abs_makro": 1.200354609929078
       }
     },
     {
@@ -2011,6 +2093,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 141,
       "tau": [
         0.35,
@@ -2022,13 +2105,13 @@
         0.38,
         0.5,
         0.46,
-        0.51
+        0.65
       ],
       "metrik": {
-        "mae_makro": 1.0868794326241134,
-        "rmse_makro": 1.6113281324808337,
-        "acc_pm1_makro": 0.7198581560283688,
-        "bias_abs_makro": 0.26063829787234044
+        "mae_makro": 1.0939716312056738,
+        "rmse_makro": 1.6290899250739663,
+        "acc_pm1_makro": 0.723404255319149,
+        "bias_abs_makro": 0.22517730496453903
       }
     },
     {
@@ -2038,6 +2121,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.35,
@@ -2052,10 +2136,10 @@
         0.51
       ],
       "metrik": {
-        "mae_makro": 0.8181818181818181,
-        "rmse_makro": 1.4699384829612616,
+        "mae_makro": 0.8227272727272728,
+        "rmse_makro": 1.4824469086491663,
         "acc_pm1_makro": 0.8113636363636363,
-        "bias_abs_makro": 0.7363636363636363
+        "bias_abs_makro": 0.740909090909091
       }
     },
     {
@@ -2065,6 +2149,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": false,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.35,
@@ -2079,10 +2164,10 @@
         0.51
       ],
       "metrik": {
-        "mae_makro": 0.7363636363636363,
-        "rmse_makro": 1.2211233188807185,
-        "acc_pm1_makro": 0.8295454545454546,
-        "bias_abs_makro": 0.2545454545454546
+        "mae_makro": 0.7454545454545454,
+        "rmse_makro": 1.234887278269983,
+        "acc_pm1_makro": 0.8272727272727272,
+        "bias_abs_makro": 0.2636363636363636
       }
     },
     {
@@ -2092,6 +2177,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": false,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 110,
       "tau": [
         0.35,
@@ -2106,10 +2192,10 @@
         0.51
       ],
       "metrik": {
-        "mae_makro": 0.6295454545454545,
-        "rmse_makro": 1.177049206236003,
+        "mae_makro": 0.6363636363636364,
+        "rmse_makro": 1.187630513994445,
         "acc_pm1_makro": 0.8659090909090909,
-        "bias_abs_makro": 0.28409090909090906
+        "bias_abs_makro": 0.2909090909090909
       }
     },
     {
@@ -2119,6 +2205,7 @@
       "sasaran_detektor": "YOLO26l",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.35,
@@ -2146,6 +2233,7 @@
       "sasaran_detektor": "RT-DETR-L",
       "sama_korpus": true,
       "sama_detektor": false,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.35,
@@ -2173,6 +2261,7 @@
       "sasaran_detektor": "RF-DETR-L",
       "sama_korpus": true,
       "sama_detektor": true,
+      "pemasangan": "per lipatan",
       "n_pohon": 257,
       "tau": [
         0.35,

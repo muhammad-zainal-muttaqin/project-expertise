@@ -1,15 +1,20 @@
-"""Matriks permutasi koefisien pencacahan (V2-E-050d).
+"""Matriks permutasi koefisien pencacahan (V2-E-050d, dikoreksi V2-E-050g).
 
 Koefisien pengali per kelas yang dipasang pada satu kombinasi korpus latih dan
 detektor diterapkan ke seluruh kombinasi lain, menghasilkan matriks 9 x 9.
 
 Aturan pemisahan data:
 
-* Sumber dan sasaran pada korpus yang sama memakai lipat-silang lima lipatan
+* Sumber dan sasaran pada korpus yang sama memakai validasi silang lima lipatan
   dengan pembagian pohon yang identik, sehingga koefisien tidak pernah dipasang
   pada pohon yang sedang dinilai.
-* Sumber dan sasaran pada korpus berbeda tidak memiliki irisan pohon, sehingga
-  koefisien dipasang pada seluruh partisi uji sumber.
+* Partisi uji 1716 memuat pohon yang identik dengan partisi uji 953 (awalan
+  SAWIT_) dan sebagian partisi uji 763 (awalan DEPTH_). Untuk pasangan korpus
+  yang berbagi pohon identik, koefisien sumber dipasang per lipatan sasaran
+  tanpa pohon yang identik dengan lipatan sasaran tersebut.
+* Pasangan 953 dan 763 tidak berbagi citra; pohon ber-ID sama berasal dari sesi
+  akuisisi berbeda (V2-E-040), sehingga koefisien dipasang pada seluruh partisi
+  uji sumber.
 
 Pemakaian:
     python scripts/permutasi_koefisien_pencacahan.py
@@ -56,6 +61,16 @@ def metrik(prediksi: np.ndarray, y: np.ndarray) -> dict:
     }
 
 
+def identitas(korpus: str, pohon: str) -> tuple[str, str]:
+    """Identitas data pohon: sumber citra dan ID pohon."""
+    if korpus == "953":
+        return ("SAWIT", pohon)
+    if korpus == "763":
+        return ("DEPTH", pohon)
+    awalan, _, nama = pohon.partition("_")
+    return (awalan, nama)
+
+
 def terapkan(n: np.ndarray, tau: list[float], k: list[float], indeks: np.ndarray | None = None) -> np.ndarray:
     pilih = slice(None) if indeks is None else indeks
     keluaran = np.zeros((n.shape[1] if indeks is None else len(indeks), 4))
@@ -80,6 +95,7 @@ def main() -> None:
     # Matriks hitungan per kombinasi, dengan urutan pohon yang identik per korpus.
     data: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]] = {}
     lipatan_korpus: dict[str, list[np.ndarray]] = {}
+    ident_korpus: dict[str, list[tuple[str, str]]] = {}
     for korpus in KORPUS:
         gt = gt_korpus(gt953, gt763, korpus)
         pohon_acuan = None
@@ -88,6 +104,7 @@ def main() -> None:
             n, y, pohon = matriks_hitung(muat_prediksi(path, None), gt, TAU_GRID)
             if pohon_acuan is None:
                 pohon_acuan = pohon
+                ident_korpus[korpus] = [identitas(korpus, x) for x in pohon]
                 acak = np.random.default_rng(SEED)
                 lipatan_korpus[korpus] = np.array_split(acak.permutation(len(pohon)), N_LIPATAN)
             elif pohon != pohon_acuan:
@@ -109,16 +126,41 @@ def main() -> None:
         koef_lipatan[kunci] = daftar
         print(f"koefisien terpasang: {kunci[0]:>4} {kunci[1]}")
 
+    # Koefisien lintas korpus yang berbagi pohon identik: dipasang per lipatan
+    # sasaran tanpa pohon yang identik dengan lipatan tersebut.
+    koef_tanpa_irisan: dict[tuple[tuple[str, str], str], list] = {}
+    irisan_korpus: dict[tuple[str, str], int] = {}
+    for s_korpus in KORPUS:
+        for t_korpus in KORPUS:
+            if s_korpus != t_korpus:
+                irisan_korpus[(s_korpus, t_korpus)] = len(set(ident_korpus[s_korpus]) & set(ident_korpus[t_korpus]))
+    for sumber, (n, y) in data.items():
+        for t_korpus in KORPUS:
+            if t_korpus == sumber[0] or irisan_korpus[(sumber[0], t_korpus)] == 0:
+                continue
+            daftar = []
+            for tahan in lipatan_korpus[t_korpus]:
+                terlarang = {ident_korpus[t_korpus][i] for i in tahan}
+                latih = np.array([i for i, x in enumerate(ident_korpus[sumber[0]]) if x not in terlarang])
+                daftar.append(pasang_koefisien(n[:, latih, :], y[latih], METODE))
+            koef_tanpa_irisan[(sumber, t_korpus)] = daftar
+    print("irisan pohon identik antarkorpus:", irisan_korpus)
+
     baris = []
     for sumber in data:
         for sasaran in data:
             n_t, y_t = data[sasaran]
+            bergilir = None
             if sumber[0] == sasaran[0]:
+                bergilir = koef_lipatan[sumber]
+            elif (sumber, sasaran[0]) in koef_tanpa_irisan:
+                bergilir = koef_tanpa_irisan[(sumber, sasaran[0])]
+            if bergilir is not None:
                 prediksi = np.zeros_like(y_t)
                 for idx, tahan in enumerate(lipatan_korpus[sasaran[0]]):
-                    tau, k = koef_lipatan[sumber][idx]
+                    tau, k = bergilir[idx]
                     prediksi[tahan] = terapkan(n_t, tau, k, tahan)
-                tau_lapor, k_lapor = koef_lipatan[sumber][0]
+                tau_lapor, k_lapor = bergilir[0]
             else:
                 tau_lapor, k_lapor = koef_penuh[sumber]
                 prediksi = terapkan(n_t, tau_lapor, k_lapor)
@@ -131,6 +173,7 @@ def main() -> None:
                     "sasaran_detektor": sasaran[1],
                     "sama_korpus": sumber[0] == sasaran[0],
                     "sama_detektor": sumber[1] == sasaran[1],
+                    "pemasangan": "per lipatan" if bergilir is not None else "seluruh partisi sumber",
                     "n_pohon": int(y_t.shape[0]),
                     "tau": tau_lapor,
                     "k": k_lapor,
@@ -145,13 +188,15 @@ def main() -> None:
         json.dumps(
             {
                 "_meta": {
-                    "eksperimen": "V2-E-050d",
-                    "tanggal": "2026-09-16",
+                    "eksperimen": "V2-E-050d, dikoreksi V2-E-050g",
+                    "tanggal": "2026-09-17",
                     "metode": "k per kelas dengan satu ambang bersama",
                     "protokol": (
-                        "permutasi di dalam korpus memakai lipat-silang lima lipatan; "
-                        "permutasi lintas korpus memasang koefisien pada seluruh partisi uji sumber"
+                        "permutasi di dalam korpus memakai validasi silang lima lipatan; "
+                        "pasangan korpus yang berbagi pohon identik memasang koefisien per lipatan sasaran "
+                        "tanpa pohon identik; pasangan 953 dan 763 memasang koefisien pada seluruh partisi uji sumber"
                     ),
+                    "irisan_pohon_identik": {f"{a}>{b}": v for (a, b), v in irisan_korpus.items()},
                 },
                 "baris": baris,
             },

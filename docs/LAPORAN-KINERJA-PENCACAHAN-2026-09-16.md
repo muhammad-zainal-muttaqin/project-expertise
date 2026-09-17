@@ -2,6 +2,8 @@
 
 ## 1. Ringkasan Eksekutif
 
+Metode kalibrasi dipilih dari dua varian per kelas; $k$ global dibandingkan di §7.1.
+
 | Korpus | Detektor terbaik | $mAP50$ | F1 | Metode kalibrasi | $MAE$ | $MAE$ relatif | Akurasi ±1 | Penurunan $MAE$ |
 |---|---|---|---|---|---|---|---|---|
 | 953 | RF-DETR-L | 0,5964 | 0,5874 | $k$ per kelas | 1,0408 | 0,4803 | 0,7429 | 84,5% |
@@ -20,14 +22,14 @@
 
 | Parameter | Nilai |
 |---|---|
-| Identitas simpul | `V2-E-050` sampai `V2-E-050g` |
+| Identitas simpul | `V2-E-050` sampai `V2-E-050h` |
 | Tanggal | 16–17 September 2026 |
 | Korpus latih | `953` (SawitMVC-YOLO), `763` (SawitMVC-Depth-YOLO v2.0.0), `1716` (gabungan) |
 | Partisi uji | `953`: 141 pohon; `763`: 110 pohon; `1716`: 257 pohon, basis sama 207 pohon |
 | Detektor | YOLO26l, RT-DETR-L, RF-DETR-L |
 | Metrik deteksi | Presisi, *recall*, F1, $AP50$, dan $AP50\text{--}95$ per kelas serta makro |
 | Model pencacahan | $\hat{y}_c(t) = \operatorname{round}(k_c \cdot n_c(t))$ |
-| Kalibrasi | Validasi silang 5 lipatan tingkat pohon, tanpa pelatihan ulang |
+| Kalibrasi | Validasi silang 5 lipatan pada pohon partisi uji, tanpa pelatihan ulang detektor |
 | Metrik pencacahan | $MAE$ makro, $MAE$ relatif, $RMSE$ makro, \|bias\| makro, akurasi ±1 makro |
 | Skrip | [`susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py), [`metrik_deteksi_perkorpus.py`](../scripts/metrik_deteksi_perkorpus.py), [`kalibrasi_pencacahan_perkorpus.py`](../scripts/kalibrasi_pencacahan_perkorpus.py), [`permutasi_koefisien_pencacahan.py`](../scripts/permutasi_koefisien_pencacahan.py), [`inferensi_953_ke_763.py`](../scripts/inferensi_953_ke_763.py), [`gabung_dump_1716.py`](../scripts/gabung_dump_1716.py) |
 | Artefak angka | [`metrik_deteksi_perkorpus.json`](../results/counting_koefisien_2026-09-16/metrik_deteksi_perkorpus.json), [`pencacahan_perkorpus.json`](../results/counting_koefisien_2026-09-16/pencacahan_perkorpus.json), [`permutasi_koefisien.json`](../results/counting_koefisien_2026-09-16/permutasi_koefisien.json), [`gabungan_1716_manifest.json`](../results/cross_eval/predictions/gabungan_1716_manifest.json) |
@@ -44,11 +46,11 @@
 | Pasangan partisi | Pohon beririsan | Konsekuensi |
 |---|---|---|
 | Uji `1716` dan uji `953` | 141 dari 141 pohon SAWIT | Hasil tidak saling bebas |
-| Uji `1716` dan uji `763` | 66 dari 110 pohon | Basis baris `1716` ke `763` |
-| Uji `1716` dan latih/validasi `763` | 50 pohon DEPTH, citra identik | Dikeluarkan dari baris `763` ke `1716` |
+| Uji `1716` dan uji `763` | 66 dari 110 pohon | Basis latih `1716` pada uji `763` |
+| Uji `1716` dan latih/validasi `763` | 50 pohon DEPTH, citra identik | Dikeluarkan dari latih `763` pada uji `1716` |
 | Uji `953` dan uji `763` | 8 ID pohon | Sesi akuisisi berbeda |
 | Uji `953` dan latih/validasi `763` | 50 dari 141 ID pohon | Sesi akuisisi berbeda, sah menurut V2-E-040 |
-| Uji `763` dan latih/validasi `953` | 44 dari 110 ID pohon | Sesi akuisisi berbeda |
+| Uji `763` dan latih/validasi `953` | 44 dari 110 ID pohon | Sesi akuisisi berbeda, sah menurut V2-E-040 |
 
 ## 4. Deteksi per Korpus Latih
 
@@ -56,9 +58,9 @@
 
 ![F1 per kelas, tiga korpus](assets/laporan-pencacahan-2026-09-16/deteksi_perkelas.png)
 
-Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$. Tebal: nilai tertinggi tiap korpus.
+Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$ masing-masing detektor. Tebal: nilai tertinggi tiap korpus.
 
-| Korpus | Detektor | Citra | Objek | $\text{conf}^{*}$ | Presisi | Recall | F1 | $mAP50$ | $mAP50\text{--}95$ | $mAP50$ `pycocotools` |
+| Korpus | Detektor | Citra | Anotasi | $\text{conf}^{*}$ | Presisi | Recall | F1 | $mAP50$ | $mAP50\text{--}95$ | $mAP50$ `pycocotools` |
 |---|---|---|---|---|---|---|---|---|---|---|
 | 953 | YOLO26l | 588 | 2.612 | 0,20 | 0,5426 | 0,5681 | 0,5515 | 0,5434 | 0,2565 | 0,5435 |
 | 953 | RT-DETR-L | 588 | 2.612 | 0,45 | 0,5316 | **0,6136** | 0,5618 | 0,5725 | 0,2687 | 0,5718 |
@@ -72,7 +74,7 @@ Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$. Tebal: nilai ter
 
 ### 4.1 Rincian Kelas Korpus `953`
 
-| Detektor | Kelas | Objek | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
+| Detektor | Kelas | Anotasi | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
 |---|---|---|---|---|---|---|---|
 | YOLO26l | B1 | 252 | 0,6555 | 0,7778 | 0,7114 | 0,7704 | 0,4022 |
 | YOLO26l | B2 | 496 | 0,5312 | 0,4113 | 0,4636 | 0,4475 | 0,2110 |
@@ -92,7 +94,7 @@ Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$. Tebal: nilai ter
 
 ### 4.2 Rincian Kelas Korpus `763`
 
-| Detektor | Kelas | Objek | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
+| Detektor | Kelas | Anotasi | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
 |---|---|---|---|---|---|---|---|
 | YOLO26l | B1 | 173 | 0,5821 | 0,6763 | 0,6257 | 0,6847 | 0,2708 |
 | YOLO26l | B2 | 321 | 0,5695 | 0,6511 | 0,6076 | 0,5877 | 0,2074 |
@@ -112,7 +114,7 @@ Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$. Tebal: nilai ter
 
 ### 4.3 Rincian Kelas Korpus `1716`
 
-| Detektor | Kelas | Objek | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
+| Detektor | Kelas | Anotasi | Presisi | Recall | F1 | $AP50$ | $AP50\text{--}95$ |
 |---|---|---|---|---|---|---|---|
 | YOLO26l | B1 | 443 | 0,6803 | 0,7111 | 0,6954 | 0,7298 | 0,3455 |
 | YOLO26l | B2 | 808 | 0,4952 | 0,5062 | 0,5006 | 0,4764 | 0,2095 |
@@ -134,25 +136,25 @@ Presisi, *recall*, dan F1 diukur pada ambang $\text{conf}^{*}$. Tebal: nilai ter
 
 ![Galat dan akurasi pencacahan per korpus latih](assets/laporan-pencacahan-2026-09-16/pencacahan_makro.png)
 
-Setiap baris memakai varian per kelas dengan $MAE$ terendah. Tebal: $MAE$ terendah tiap korpus.
+Setiap baris memakai varian per kelas dengan $MAE$ terendah. Tebal: nilai terbaik tiap korpus.
 
 | Korpus | Detektor | Metode | $MAE$ makro | $MAE$ relatif | $RMSE$ makro | \|Bias\| makro | Akurasi ±1 makro |
 |---|---|---|---|---|---|---|---|
-| 953 | YOLO26l | $k$ per kelas | 1,0816 | 0,5031 | 1,5408 | 0,1206 | 0,7447 |
+| 953 | YOLO26l | $k$ per kelas | 1,0816 | 0,5031 | 1,5408 | **0,1206** | **0,7447** |
 | 953 | RT-DETR-L | $k + \tau$ per kelas | 1,0621 | 0,5102 | 1,5733 | 0,2784 | 0,7429 |
-| **953** | **RF-DETR-L** | **$k$ per kelas** | **1,0408** | 0,4803 | 1,5087 | 0,1720 | 0,7429 |
+| **953** | **RF-DETR-L** | **$k$ per kelas** | **1,0408** | **0,4803** | **1,5087** | 0,1720 | 0,7429 |
 | 763 | YOLO26l | $k$ per kelas | 0,6477 | 0,5817 | 1,1638 | 0,2205 | 0,8591 |
 | 763 | RT-DETR-L | $k$ per kelas | 0,6886 | 0,6141 | 1,2506 | 0,2614 | 0,8455 |
-| **763** | **RF-DETR-L** | **$k + \tau$ per kelas** | **0,6091** | 0,5648 | 1,1023 | 0,1273 | 0,8614 |
+| **763** | **RF-DETR-L** | **$k + \tau$ per kelas** | **0,6091** | **0,5648** | **1,1023** | **0,1273** | **0,8614** |
 | 1716 | YOLO26l | $k + \tau$ per kelas | 0,9348 | 0,5324 | 1,4794 | 0,2519 | 0,7685 |
 | 1716 | RT-DETR-L | $k$ per kelas | 0,8677 | 0,5015 | 1,4495 | 0,2490 | 0,7928 |
-| **1716** | **RF-DETR-L** | **$k$ per kelas** | **0,8473** | 0,4847 | 1,4006 | 0,0982 | 0,7938 |
+| **1716** | **RF-DETR-L** | **$k$ per kelas** | **0,8473** | **0,4847** | **1,4006** | **0,0982** | **0,7938** |
 
 ## 6. Koefisien Terbaik RF-DETR-L
 
 ![Koefisien pengali dan ambang per kelas](assets/laporan-pencacahan-2026-09-16/koefisien.png)
 
-Metode dipilih dari varian per kelas ber-$MAE$ terendah, dan nilainya merupakan rerata lima lipatan.
+Nilai $k$ dan $\tau$ merupakan rerata lima lipatan dari varian per kelas ber-$MAE$ terendah. Hitungan $n_c(t)$ menjumlahkan deteksi dari semua sisi pohon, sehingga satu tandan dapat terhitung lebih dari sekali; $k$ di bawah 1 mengoreksi kelebihan itu.
 
 | Korpus | Metode | $k_{B1}$ | $k_{B2}$ | $k_{B3}$ | $k_{B4}$ | $\tau_{B1}$ | $\tau_{B2}$ | $\tau_{B3}$ | $\tau_{B4}$ |
 |---|---|---|---|---|---|---|---|---|---|
@@ -164,7 +166,7 @@ Metode dipilih dari varian per kelas ber-$MAE$ terendah, dan nilainya merupakan 
 
 ![MAE, bias, dan akurasi ±1 per kelas, RF-DETR-L](assets/laporan-pencacahan-2026-09-16/pencacahan_perkelas.png)
 
-Konfigurasi mengikuti tabel §6, dan nilainya dihitung dari prediksi luar-lipatan.
+Detektor dan metode sama dengan §6. Tiap pohon dihitung dengan koefisien dari empat lipatan lain, bukan dengan rerata pada §6.
 
 | Korpus | Metode | Metrik | B1 | B2 | B3 | B4 |
 |---|---|---|---|---|---|---|
@@ -200,45 +202,43 @@ Penurunan pada gambar dan §7.1 dihitung terhadap garis dasar naif berikut.
 
 ![Perbandingan metode kalibrasi](assets/laporan-pencacahan-2026-09-16/metode_kalibrasi.png)
 
-Kolom penurunan dan kenaikan dihitung terhadap garis dasar naif pada §7.
+Kolom penurunan dan kenaikan dihitung terhadap garis dasar naif pada §7. Tebal: nilai terbaik tiap pasangan korpus dan detektor; nama metode tebal menandai $MAE$ terendah. §1, §5, dan §6 hanya memilih varian per kelas, sehingga $k$ global yang lebih rendah tidak terpilih.
 
 | Korpus | Detektor | Metode | $MAE$ | Penurunan $MAE$ | $RMSE$ | Penurunan $RMSE$ | \|Bias\| makro | Penurunan \|bias\| | Akurasi ±1 | Kenaikan akurasi ±1 |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 953 | YOLO26l | **$k$ global** | **1,0691** | **50,4%** | 1,5512 | 47,4% | 0,1826 | 87,1% | 0,7606 | +23,9 pp |
-| 953 | YOLO26l | $k$ per kelas | 1,0816 | 49,8% | 1,5408 | 47,8% | 0,1206 | 91,5% | 0,7447 | +22,3 pp |
+| 953 | YOLO26l | **$k$ global** | **1,0691** | **50,4%** | 1,5512 | 47,4% | 0,1826 | 87,1% | **0,7606** | **+23,9 pp** |
+| 953 | YOLO26l | $k$ per kelas | 1,0816 | 49,8% | **1,5408** | **47,8%** | **0,1206** | **91,5%** | 0,7447 | +22,3 pp |
 | 953 | YOLO26l | $k + \tau$ per kelas | 1,1046 | 48,8% | 1,5605 | 47,1% | 0,1543 | 89,1% | 0,7323 | +21,1 pp |
 | 953 | RT-DETR-L | $k$ global | 1,1489 | 87,6% | 1,6590 | 84,3% | 0,2163 | 97,7% | 0,7074 | +56,7 pp |
-| 953 | RT-DETR-L | $k$ per kelas | 1,1294 | 87,8% | 1,6305 | 84,6% | 0,1720 | 98,1% | 0,7181 | +57,8 pp |
-| 953 | RT-DETR-L | **$k + \tau$ per kelas** | **1,0621** | **88,6%** | 1,5733 | 85,1% | 0,2784 | 97,0% | 0,7429 | +60,3 pp |
-| 953 | RF-DETR-L | **$k$ global** | **1,0372** | **84,5%** | 1,5037 | 80,9% | 0,1791 | 97,3% | 0,7465 | +53,7 pp |
-| 953 | RF-DETR-L | $k$ per kelas | 1,0408 | 84,5% | 1,5087 | 80,8% | 0,1720 | 97,4% | 0,7429 | +53,4 pp |
-| 953 | RF-DETR-L | $k + \tau$ per kelas | 1,0833 | 83,8% | 1,5616 | 80,1% | 0,1649 | 97,5% | 0,7216 | +51,2 pp |
-| 763 | YOLO26l | **$k$ global** | **0,6159** | **35,8%** | 1,1467 | 25,6% | 0,3614 | 34,8% | 0,8568 | +9,1 pp |
-| 763 | YOLO26l | $k$ per kelas | 0,6477 | 32,5% | 1,1638 | 24,5% | 0,2205 | 60,2% | 0,8591 | +9,3 pp |
-| 763 | YOLO26l | $k + \tau$ per kelas | 0,6909 | 28,0% | 1,1992 | 22,2% | 0,1864 | 66,4% | 0,8386 | +7,3 pp |
+| 953 | RT-DETR-L | $k$ per kelas | 1,1294 | 87,8% | 1,6305 | 84,6% | **0,1720** | **98,1%** | 0,7181 | +57,8 pp |
+| 953 | RT-DETR-L | **$k + \tau$ per kelas** | **1,0621** | **88,6%** | **1,5733** | **85,1%** | 0,2784 | 97,0% | **0,7429** | **+60,3 pp** |
+| 953 | RF-DETR-L | **$k$ global** | **1,0372** | **84,5%** | **1,5037** | **80,9%** | 0,1791 | 97,3% | **0,7465** | **+53,7 pp** |
+| 953 | RF-DETR-L | $k$ per kelas | 1,0408 | **84,5%** | 1,5087 | 80,8% | 0,1720 | 97,4% | 0,7429 | +53,4 pp |
+| 953 | RF-DETR-L | $k + \tau$ per kelas | 1,0833 | 83,8% | 1,5616 | 80,1% | **0,1649** | **97,5%** | 0,7216 | +51,2 pp |
+| 763 | YOLO26l | **$k$ global** | **0,6159** | **35,8%** | **1,1467** | **25,6%** | 0,3614 | 34,8% | 0,8568 | +9,1 pp |
+| 763 | YOLO26l | $k$ per kelas | 0,6477 | 32,5% | 1,1638 | 24,5% | 0,2205 | 60,2% | **0,8591** | **+9,3 pp** |
+| 763 | YOLO26l | $k + \tau$ per kelas | 0,6909 | 28,0% | 1,1992 | 22,2% | **0,1864** | **66,4%** | 0,8386 | +7,3 pp |
 | 763 | RT-DETR-L | $k$ global | 0,7250 | 71,3% | 1,2871 | 62,2% | 0,2523 | 89,6% | 0,8432 | +40,0 pp |
-| 763 | RT-DETR-L | **$k$ per kelas** | **0,6886** | **72,7%** | 1,2506 | 63,3% | 0,2614 | 89,3% | 0,8455 | +40,2 pp |
-| 763 | RT-DETR-L | $k + \tau$ per kelas | 0,7023 | 72,2% | 1,2610 | 63,0% | 0,1932 | 92,1% | 0,8386 | +39,5 pp |
+| 763 | RT-DETR-L | **$k$ per kelas** | **0,6886** | **72,7%** | **1,2506** | **63,3%** | 0,2614 | 89,3% | **0,8455** | **+40,2 pp** |
+| 763 | RT-DETR-L | $k + \tau$ per kelas | 0,7023 | 72,2% | 1,2610 | 63,0% | **0,1932** | **92,1%** | 0,8386 | +39,5 pp |
 | 763 | RF-DETR-L | $k$ global | 0,6205 | 65,3% | 1,1234 | 56,6% | 0,2477 | 85,2% | 0,8523 | +24,5 pp |
 | 763 | RF-DETR-L | $k$ per kelas | 0,6386 | 64,2% | 1,1698 | 54,9% | 0,2250 | 86,6% | 0,8432 | +23,6 pp |
-| 763 | RF-DETR-L | **$k + \tau$ per kelas** | **0,6091** | **65,9%** | 1,1023 | 57,5% | 0,1273 | 92,4% | 0,8614 | +25,5 pp |
-| 1716 | YOLO26l | $k$ global | 0,9387 | 38,9% | 1,4665 | 38,6% | 0,1683 | 83,4% | 0,7714 | +12,6 pp |
+| 763 | RF-DETR-L | **$k + \tau$ per kelas** | **0,6091** | **65,9%** | **1,1023** | **57,5%** | **0,1273** | **92,4%** | **0,8614** | **+25,5 pp** |
+| 1716 | YOLO26l | $k$ global | 0,9387 | 38,9% | **1,4665** | **38,6%** | **0,1683** | **83,4%** | **0,7714** | **+12,6 pp** |
 | 1716 | YOLO26l | $k$ per kelas | 0,9582 | 37,7% | 1,5115 | 36,7% | 0,2364 | 76,6% | 0,7685 | +12,4 pp |
 | 1716 | YOLO26l | **$k + \tau$ per kelas** | **0,9348** | **39,2%** | 1,4794 | 38,0% | 0,2519 | 75,1% | 0,7685 | +12,4 pp |
 | 1716 | RT-DETR-L | $k$ global | 0,9270 | 85,3% | 1,5134 | 81,2% | 0,3064 | 95,1% | 0,7753 | +53,4 pp |
-| 1716 | RT-DETR-L | **$k$ per kelas** | **0,8677** | **86,2%** | 1,4495 | 82,0% | 0,2490 | 96,0% | 0,7928 | +55,2 pp |
+| 1716 | RT-DETR-L | **$k$ per kelas** | **0,8677** | **86,2%** | **1,4495** | **82,0%** | **0,2490** | **96,0%** | **0,7928** | **+55,2 pp** |
 | 1716 | RT-DETR-L | $k + \tau$ per kelas | 0,8842 | 86,0% | 1,4608 | 81,8% | 0,2617 | 95,8% | 0,7879 | +54,7 pp |
 | 1716 | RF-DETR-L | $k$ global | 0,8765 | 79,1% | 1,4178 | 75,3% | 0,2208 | 94,6% | 0,7899 | +41,1 pp |
-| 1716 | RF-DETR-L | **$k$ per kelas** | **0,8473** | **79,8%** | 1,4006 | 75,6% | 0,0982 | 97,6% | 0,7938 | +41,5 pp |
+| 1716 | RF-DETR-L | **$k$ per kelas** | **0,8473** | **79,8%** | **1,4006** | **75,6%** | **0,0982** | **97,6%** | **0,7938** | **+41,5 pp** |
 | 1716 | RF-DETR-L | $k + \tau$ per kelas | 0,8959 | 78,6% | 1,4513 | 74,7% | 0,1313 | 96,8% | 0,7840 | +40,6 pp |
-
-Tebal: $MAE$ terendah tiap pasangan korpus dan detektor.
 
 ## 8. Uji Silang Detektor
 
 ![Dalam domain berbanding lintas korpus, RF-DETR-L](assets/laporan-pencacahan-2026-09-16/uji_silang.png)
 
-Detektor diuji pada partisi uji korpus lain, dan koefisiennya dipasang ulang pada partisi sasaran. Tebal: nilai terbaik tiap pasangan korpus uji dan detektor.
+Setiap detektor diuji pada ketiga partisi uji, dan koefisiennya dipasang pada partisi uji sasaran. Tebal: nilai terbaik tiap pasangan korpus uji dan detektor.
 
 | Korpus uji | Detektor | Korpus latih | Pohon | $mAP50$ | F1 | $MAE$ makro | $MAE$ relatif | Akurasi ±1 |
 |---|---|---|---|---|---|---|---|---|
@@ -292,7 +292,7 @@ Ketiga korpus latih diuji pada 207 pohon uji `1716` yang sama: 141 SAWIT dan 66 
 
 ![Matriks permutasi koefisien](assets/laporan-pencacahan-2026-09-16/permutasi_koefisien.png)
 
-Diagonal tebal: koefisien milik kombinasi itu sendiri.
+Semua sel memakai $k$ per kelas. Pasangan `1716` dengan `953` atau `763` memasang koefisien sumber tanpa pohon sasaran yang identik. Diagonal tebal: koefisien milik kombinasi itu sendiri.
 
 | Bagian | Yang dipindahkan | Pertanyaan yang dijawab |
 |---|---|---|
@@ -305,8 +305,8 @@ Tebal: nilai terendah tiap kolom.
 |---|---|---|---|---|
 | **Koefisien sendiri** | 9 | **0,8778** | 0,6386 | **1,1294** |
 | Korpus sama, detektor berbeda | 18 | 1,8369 | 0,7227 | 5,5284 |
-| Detektor sama, korpus berbeda | 18 | 0,9572 | **0,6295** | 1,3972 |
-| Korpus dan detektor berbeda | 36 | 1,8381 | 0,7295 | 5,8564 |
+| Detektor sama, korpus berbeda | 18 | 0,9677 | **0,6364** | 1,3972 |
+| Korpus dan detektor berbeda | 36 | 1,8466 | 0,7295 | 5,7801 |
 
 ## 10. Glosarium
 
@@ -321,9 +321,11 @@ Tebal: nilai terendah tiap kolom.
 | $\text{conf}^{*}$ | Ambang skor keyakinan yang memaksimalkan F1 makro |
 | Presisi dan *recall* | Proporsi deteksi yang cocok dengan anotasi acuan, dan proporsi anotasi acuan yang terdeteksi |
 | F1 | Rerata harmonik presisi dan *recall* |
-| IoU | Rasio irisan terhadap gabungan dua kotak pembatas (*bounding box*) |
+| Anotasi | Kotak pembatas (*bounding box*) acuan hasil pelabelan manual |
+| IoU | Rasio irisan terhadap gabungan dua kotak pembatas |
 | $AP50$ dan $AP50\text{--}95$ | Luas kurva presisi-*recall* pada IoU $0,50$; rerata atas sepuluh ambang IoU $0,50$–$0,95$ |
 | $mAP50$ dan $mAP50\text{--}95$ | Rerata $AP50$ dan $AP50\text{--}95$ atas empat kelas |
+| `pycocotools` | Evaluator COCO resmi; kolomnya pembanding evaluator laporan ini |
 | $MAE$ | Rerata galat absolut per pohon, dalam satuan tandan |
 | $MAE$ relatif | $MAE$ dibagi rerata jumlah tandan acuan kelas yang sama |
 | $RMSE$ | Akar rerata kuadrat galat; lebih peka terhadap galat besar |
@@ -336,7 +338,7 @@ Tebal: nilai terendah tiap kolom.
 | $k$ global | Satu $k$ dan satu $\tau$ untuk semua kelas |
 | $k$ per kelas | $k$ per kelas dengan satu $\tau$ bersama |
 | $k + \tau$ per kelas | $k$ dan $\tau$ per kelas |
-| Validasi silang 5 lipatan | Koefisien dipasang pada empat lipatan, lalu diuji pada lipatan kelima |
+| Validasi silang 5 lipatan | Pohon uji dibagi lima lipatan; koefisien dipasang pada empat lipatan dan diterapkan pada lipatan sisanya, bergiliran |
 | Prediksi luar-lipatan (*out-of-fold*) | Hitungan pohon dari koefisien yang dipasang tanpa pohon itu |
 | Basis sama 207 pohon | Uji `1716` tanpa 50 pohon DEPTH latih/validasi `763` |
 | ID pohon sama, sesi berbeda | Pohon fisik yang sama, difoto pada sesi berselang sekitar 80 hari dengan kamera berbeda |

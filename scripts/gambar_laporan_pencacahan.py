@@ -363,7 +363,7 @@ def gambar_permutasi(permutasi: dict, keluaran: Path) -> None:
     bar.outline.set_visible(False)
     ax.set_xlabel("Kombinasi sasaran", fontsize=8)
     ax.set_ylabel("Sumber koefisien", fontsize=8)
-    ax.set_title("Permutasi koefisien", fontsize=8.5, pad=8)
+    ax.set_title("Permutasi koefisien $k$ per kelas", fontsize=8.5, pad=8)
     simpan(fig, keluaran, "permutasi_koefisien.png")
 
 

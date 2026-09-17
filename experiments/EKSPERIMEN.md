@@ -3279,3 +3279,74 @@ ditulis tetap di kode.
 
 **Verdict:** CONFIRMED. Ketiga catatan dosen terjawab, dan korpus latih gabungan
 menghasilkan pencacahan terbaik pada partisi uji gabungan untuk ketiga detektor.
+
+---
+
+## V2-E-050h: koreksi kebocoran pohon pada permutasi koefisien dan audit pernyataan laporan
+
+**Tanggal:** 17 September 2026 · **Skrip:**
+[`scripts/permutasi_koefisien_pencacahan.py`](../scripts/permutasi_koefisien_pencacahan.py),
+[`scripts/susun_laporan_pencacahan.py`](../scripts/susun_laporan_pencacahan.py)
+
+### Rancangan Eksperimen
+
+`V2-E-050d` menyatakan bahwa sumber dan sasaran dari korpus berbeda tidak memiliki
+irisan pohon, sehingga koefisien lintas korpus dipasang pada seluruh partisi uji
+sumber. Pernyataan itu keliru untuk pasangan yang melibatkan korpus `1716`: partisi
+uji `1716` memuat 141 pohon yang identik dengan partisi uji `953` dan 66 pohon yang
+identik dengan partisi uji `763`. Pada pasangan tersebut, koefisien sumber ikut
+dipasang dengan anotasi pohon sasaran yang sedang dinilai. Protokol dikoreksi:
+untuk pasangan korpus yang berbagi pohon identik, koefisien sumber dipasang per
+lipatan sasaran tanpa pohon yang identik dengan lipatan itu. Pasangan `953` dan
+`763` tetap dipasang pada seluruh partisi sumber, karena pohon ber-ID sama pada kedua
+korpus berasal dari sesi akuisisi berbeda (`V2-E-040`). Metode tetap $k$ per kelas
+dengan satu ambang bersama.
+
+Laporan kinerja juga diaudit per pernyataan untuk kalimat yang janggal atau kurang
+tepat.
+
+### Temuan Empiris Terukur
+
+1. **Sebanyak 36 sel lintas korpus kini dipasang per lipatan**, dan 34 di antaranya
+   berubah. Selisih $MAE$ makro terhadap versi lama berkisar $−0,2199$ sampai
+   $+0,2529$, dengan rerata $+0,0138$.
+2. **Kesimpulan `V2-E-050d` tetap berlaku dengan angka terkoreksi.** Pemindahan
+   koefisien antarkorpus untuk detektor yang sama menaikkan $MAE$ makro dari $0,8778$
+   menjadi $0,9677$ ($+10,3\%$, sebelumnya $0,9572$ dan $+9,0\%$). Pemindahan
+   antardetektor pada korpus yang sama tidak berubah: $1,8369$ ($+109,3\%$).
+3. **Kasus terburuk tetap koefisien `1716` YOLO26l pada RT-DETR-L `953`**, kini
+   $5,7801$ (sebelumnya $5,8564$), yakni $5,1$ kali nilai diagonalnya ($1,1294$).
+4. **Koefisien RT-DETR-L dan RF-DETR-L pada YOLO26l `953`** menghasilkan $1,4450$
+   sampai $1,9344$ (sebelumnya $1,4309$ sampai $1,9344$).
+5. **Koefisien `1716` RF-DETR-L pada `763` RF-DETR-L** menghasilkan $0,6364$
+   (sebelumnya $0,6295$), tetap di bawah koefisien sendiri ($0,6386$).
+6. **Pernyataan laporan yang diperbaiki:** keterangan §6.1 menyiratkan bahwa angkanya
+   berasal dari koefisien rerata pada §6, padahal setiap pohon dihitung dengan
+   koefisien lipatannya; kalibrasi tidak menyebut bahwa pemasangannya dilakukan pada
+   pohon partisi uji; §1 dan §5 memilih varian per kelas tanpa menyebut bahwa
+   $k$ global pada §7.1 lebih rendah untuk sebagian kombinasi; §9 tidak menyebut
+   metode $k$ per kelas; makna $k$ di bawah 1 dan kolom `pycocotools` belum
+   dijelaskan; cetak tebal §5 dan §7.1 kini menandai nilai terbaik setiap kolom
+   berdasarkan nilai yang ditampilkan.
+
+### Keputusan Metodologis
+
+Irisan pohon diperiksa berdasarkan identitas citra (awalan `SAWIT_` atau `DEPTH_`
+beserta ID pohon), bukan hanya berdasarkan nama korpus, sebelum koefisien atau
+detektor dipindahkan antarkorpus.
+
+### Batasan Validitas & Audit
+
+1. Pasangan `953` dan `763` tetap memakai koefisien dari seluruh partisi sumber
+   walaupun 8 ID pohon uji beririsan, karena citra dan anotasinya berasal dari sesi
+   akuisisi berbeda.
+2. Angka `V2-E-050d` pada entri aslinya tidak diubah; angka terkoreksi tercatat pada
+   entri ini dan pada `results/counting_koefisien_2026-09-16/permutasi_koefisien.json`.
+
+**Artefak:**
+
+- [`results/counting_koefisien_2026-09-16/permutasi_koefisien.json`](../results/counting_koefisien_2026-09-16/permutasi_koefisien.json)
+- [`docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md`](../docs/LAPORAN-KINERJA-PENCACAHAN-2026-09-16.md)
+
+**Verdict:** CONFIRMED. Kebocoran pohon pada 36 sel permutasi ditutup tanpa
+mengubah kesimpulan bahwa koefisien terikat pada arsitektur detektor.
