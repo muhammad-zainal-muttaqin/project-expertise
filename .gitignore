@@ -26,6 +26,7 @@ desktop.ini
 datasets/
 SawitMVC-YOLO/
 SawitMVC-Depth/
+Sawit-Weight-HF/
 
 # Bobot model dan log training lokal (backup di luar Git)
 *.pt
