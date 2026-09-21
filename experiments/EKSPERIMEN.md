@@ -3350,3 +3350,77 @@ detektor dipindahkan antarkorpus.
 
 **Verdict:** CONFIRMED. Kebocoran pohon pada 36 sel permutasi ditutup tanpa
 mengubah kesimpulan bahwa koefisien terikat pada arsitektur detektor.
+
+---
+
+## V2-E-051: pengelompokan otomatis dan regresi ordinal kematangan pada citra terpotong
+
+**Tanggal:** 21 September 2026 · **Skrip:**
+[`scripts/eksplorasi_klaster_regresi.py`](../scripts/eksplorasi_klaster_regresi.py)
+
+### Rancangan Eksperimen
+
+Semua pengklasifikasi sebelumnya tertahan pada akurasi per tandan sekitar 0,74, dengan
+galat terbesar antara B2 dan B3. Eksperimen ini menguji dua jalur tanpa data baru:
+pengelompokan otomatis tanpa label dan regresi ordinal. Data: korpus `953`
+(`ULM-DS-Lab/SawitMVC-YOLO`), 18.540 kotak acuan pada 3.926 citra, partisi kanonik
+716/96/141 pohon. Partisi uji berisi 2.612 kotak (B1 252, B2 496, B3 1.409, B4 455).
+
+- **Fitur warna:** 27 fitur (statistik Lab, kroma, arah rona, histogram rona 12 kelas)
+  pada 70% bagian tengah kotak.
+- **Fitur DINOv2:** ViT-S/14 `vit_small_patch14_dinov2.lvd142m` beku; token CLS dan
+  rerata token petak (768 dimensi) dari potongan persegi 224 px dengan konteks 10%.
+- **Fitur relatif:** fitur dikurangi rerata fitur tandan lain pada citra yang sama.
+- **Tanpa label:** KMeans $k$ = 2–8 dengan *silhouette*; kontingensi dan ARI pada
+  $k$ = 4; klaster yang diberi nama kelas mayoritas data latih untuk $k$ = 4–64.
+- **Dengan label:** regresi logistik ($C$ ∈ {0,001; 0,01; 0,1}, dipilih pada akurasi
+  validasi) dan regresi Ridge ordinal ($\alpha$ dipilih pada $MAE$ validasi), dengan
+  pembulatan atau tiga ambang dari validasi.
+- **Urutan pasangan:** peluang tandan yang lebih matang mendapat skor regresi lebih
+  kecil, dihitung terpisah untuk pasangan dalam satu citra, satu pohon beda citra, dan
+  beda pohon.
+
+Ekstraksi fitur berjalan 3,5 menit pada NVIDIA RTX 2000 Ada (RunPod).
+
+### Temuan Empiris Terukur
+
+1. **Kelas B1–B4 tidak membentuk kelompok alami.** *Silhouette* kelas manusia
+   $−0,014$ pada fitur warna dan DINOv2. Pada $k$ = 4, ARI 0,031 (warna) dan 0,009
+   (DINOv2).
+2. **Klaster yang diberi nama hampir setara dengan tebakan kelas terbanyak.** Akurasi
+   terbaik sampai 64 klaster 0,5919 (warna) dan 0,5747 (DINOv2), terhadap 0,5394 bila
+   semua tandan ditebak B3. Sebanyak 80,7–100% tandan B2 masuk klaster bernama B3.
+3. **Regresi ordinal tidak lebih baik daripada klasifikasi** (DINOv2, per tampak).
+   Klasifikasi: akurasi 0,6711, F1 makro 0,5858, B2 menjadi B3 60,1%. Regresi dengan
+   ambang validasi: 0,6692; 0,5873; 57,3%. Regresi dibulatkan: 0,6474; 0,5815; 47,2%.
+   DINOv2 beku setara dengan ConvNeXt terlatih (0,6612 per tampak, `exp_ceiling.log`).
+4. **Fitur relatif menambah sedikit:** klasifikasi DINOv2 + relatif 0,6807 (F1 makro
+   0,6044).
+5. **Urutan B2–B3 sudah cukup benar:** 0,8755 dalam satu citra (1.100 pasangan),
+   0,8661 satu pohon beda citra (3.779), dan 0,8151 beda pohon (693.985).
+
+### Keputusan Metodologis
+
+Pengelompokan otomatis dan regresi ordinal tidak dijadikan jalur perbaikan B2/B3.
+Selisih urutan dalam citra dan antarpohon hanya sekitar 6 poin persentase, sehingga
+pencahayaan antarfoto bukan penyebab utama.
+
+### Batasan Validitas & Audit
+
+1. Metrik dihitung per tampak dengan *probe* linear pada fitur beku, satu *seed*, tanpa
+   selang kepercayaan.
+2. Probe regresi logistik 1.536 dimensi dengan kisi $C$ sampai 1 tidak selesai dalam
+   34 menit, sehingga kisi dibatasi sampai 0,1. Putaran yang dihentikan tidak
+   menghasilkan angka.
+3. Putaran pertama pada CPU lokal dihentikan oleh sistem karena memori rendah; seluruh
+   angka berasal dari putaran pod.
+
+**Artefak:**
+
+- [`results/klaster_regresi_2026-09-21/ringkasan.json`](../results/klaster_regresi_2026-09-21/ringkasan.json)
+- [`results/klaster_regresi_2026-09-21/peta_tsne_uji.png`](../results/klaster_regresi_2026-09-21/peta_tsne_uji.png),
+  [`kontingensi_k4_uji.png`](../results/klaster_regresi_2026-09-21/kontingensi_k4_uji.png)
+
+**Verdict:** FALSIFIED. Tanpa sumber label baru, pengelompokan otomatis dan regresi
+ordinal tidak memisahkan B2 dan B3 lebih baik daripada klasifikasi.
+

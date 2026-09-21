@@ -1,0 +1,1017 @@
+{
+  "dataset": "/workspace/SawitMVC-YOLO",
+  "model_fitur": "vit_small_patch14_dinov2.lvd142m",
+  "ukuran_potongan": 224,
+  "margin_konteks": 0.1,
+  "seed": 42,
+  "jumlah_kotak": {
+    "train": {
+      "B1": 1579,
+      "B2": 2616,
+      "B3": 7333,
+      "B4": 2513
+    },
+    "val": {
+      "B1": 201,
+      "B2": 388,
+      "B3": 959,
+      "B4": 339
+    },
+    "test": {
+      "B1": 252,
+      "B2": 496,
+      "B3": 1409,
+      "B4": 455
+    }
+  },
+  "acuan_akurasi_per_tampak": {
+    "nilai": 0.6612,
+    "sumber": "logs_ringkas/audit_forensik_2026-09-06/exp_ceiling.log"
+  },
+  "tanpa_label": {
+    "warna": {
+      "silhouette_kelas_manusia": -0.014,
+      "silhouette_per_k": {
+        "2": 0.2332,
+        "3": 0.1788,
+        "4": 0.1648,
+        "5": 0.1749,
+        "6": 0.1665,
+        "7": 0.1775,
+        "8": 0.1771
+      },
+      "kelompok_lalu_beri_nama": {
+        "4": {
+          "akurasi": 0.5394,
+          "f1_makro": 0.1752,
+          "b2_menjadi_b3": 1.0
+        },
+        "8": {
+          "akurasi": 0.5704,
+          "f1_makro": 0.2955,
+          "b2_menjadi_b3": 0.9617
+        },
+        "16": {
+          "akurasi": 0.5632,
+          "f1_makro": 0.2781,
+          "b2_menjadi_b3": 0.9476
+        },
+        "32": {
+          "akurasi": 0.5823,
+          "f1_makro": 0.3311,
+          "b2_menjadi_b3": 0.9355
+        },
+        "64": {
+          "akurasi": 0.5919,
+          "f1_makro": 0.3569,
+          "b2_menjadi_b3": 0.8911
+        }
+      },
+      "k4": {
+        "ari": 0.0311,
+        "nmi_kelas": 0.0348,
+        "nmi_kuartil_terang_citra": 0.043,
+        "akurasi_hungarian": 0.3568,
+        "kontingensi": [
+          [
+            139,
+            48,
+            53,
+            12
+          ],
+          [
+            114,
+            202,
+            102,
+            78
+          ],
+          [
+            202,
+            580,
+            336,
+            291
+          ],
+          [
+            90,
+            131,
+            123,
+            111
+          ]
+        ]
+      }
+    },
+    "warna_relatif": {
+      "silhouette_kelas_manusia": -0.0046,
+      "silhouette_per_k": {
+        "2": 0.1664,
+        "3": 0.1531,
+        "4": 0.1252,
+        "5": 0.1009,
+        "6": 0.1021,
+        "7": 0.1014,
+        "8": 0.1037
+      },
+      "kelompok_lalu_beri_nama": {
+        "4": {
+          "akurasi": 0.5881,
+          "f1_makro": 0.3339,
+          "b2_menjadi_b3": 0.9133
+        },
+        "8": {
+          "akurasi": 0.5762,
+          "f1_makro": 0.3112,
+          "b2_menjadi_b3": 0.9637
+        },
+        "16": {
+          "akurasi": 0.5877,
+          "f1_makro": 0.3343,
+          "b2_menjadi_b3": 0.9153
+        },
+        "32": {
+          "akurasi": 0.59,
+          "f1_makro": 0.3429,
+          "b2_menjadi_b3": 0.8891
+        },
+        "64": {
+          "akurasi": 0.5953,
+          "f1_makro": 0.3471,
+          "b2_menjadi_b3": 0.8871
+        }
+      },
+      "k4": {
+        "ari": 0.0529,
+        "nmi_kelas": 0.0974,
+        "nmi_kuartil_terang_citra": 0.0048,
+        "akurasi_hungarian": 0.3978,
+        "kontingensi": [
+          [
+            131,
+            35,
+            73,
+            13
+          ],
+          [
+            43,
+            94,
+            242,
+            117
+          ],
+          [
+            4,
+            323,
+            668,
+            414
+          ],
+          [
+            4,
+            87,
+            218,
+            146
+          ]
+        ]
+      }
+    },
+    "dinov2": {
+      "silhouette_kelas_manusia": -0.0142,
+      "silhouette_per_k": {
+        "2": 0.1109,
+        "3": 0.0868,
+        "4": 0.087,
+        "5": 0.0648,
+        "6": 0.0616,
+        "7": 0.0578,
+        "8": 0.0576
+      },
+      "kelompok_lalu_beri_nama": {
+        "4": {
+          "akurasi": 0.5394,
+          "f1_makro": 0.1752,
+          "b2_menjadi_b3": 1.0
+        },
+        "8": {
+          "akurasi": 0.5394,
+          "f1_makro": 0.1752,
+          "b2_menjadi_b3": 1.0
+        },
+        "16": {
+          "akurasi": 0.5616,
+          "f1_makro": 0.2856,
+          "b2_menjadi_b3": 0.9093
+        },
+        "32": {
+          "akurasi": 0.5743,
+          "f1_makro": 0.3467,
+          "b2_menjadi_b3": 0.8488
+        },
+        "64": {
+          "akurasi": 0.5747,
+          "f1_makro": 0.3205,
+          "b2_menjadi_b3": 0.8387
+        }
+      },
+      "k4": {
+        "ari": 0.0087,
+        "nmi_kelas": 0.0219,
+        "nmi_kuartil_terang_citra": 0.0094,
+        "akurasi_hungarian": 0.3204,
+        "kontingensi": [
+          [
+            107,
+            83,
+            48,
+            14
+          ],
+          [
+            139,
+            188,
+            115,
+            54
+          ],
+          [
+            382,
+            399,
+            417,
+            211
+          ],
+          [
+            85,
+            89,
+            156,
+            125
+          ]
+        ]
+      }
+    },
+    "dinov2_relatif": {
+      "silhouette_kelas_manusia": -0.0091,
+      "silhouette_per_k": {
+        "2": 0.1138,
+        "3": 0.0793,
+        "4": 0.0736,
+        "5": 0.0592,
+        "6": 0.0553,
+        "7": 0.0484,
+        "8": 0.0449
+      },
+      "kelompok_lalu_beri_nama": {
+        "4": {
+          "akurasi": 0.5394,
+          "f1_makro": 0.1752,
+          "b2_menjadi_b3": 1.0
+        },
+        "8": {
+          "akurasi": 0.5586,
+          "f1_makro": 0.2867,
+          "b2_menjadi_b3": 0.8468
+        },
+        "16": {
+          "akurasi": 0.5655,
+          "f1_makro": 0.2849,
+          "b2_menjadi_b3": 0.9315
+        },
+        "32": {
+          "akurasi": 0.5754,
+          "f1_makro": 0.3307,
+          "b2_menjadi_b3": 0.869
+        },
+        "64": {
+          "akurasi": 0.5884,
+          "f1_makro": 0.3917,
+          "b2_menjadi_b3": 0.8065
+        }
+      },
+      "k4": {
+        "ari": 0.0088,
+        "nmi_kelas": 0.0317,
+        "nmi_kuartil_terang_citra": 0.0006,
+        "akurasi_hungarian": 0.3113,
+        "kontingensi": [
+          [
+            132,
+            74,
+            37,
+            9
+          ],
+          [
+            233,
+            129,
+            88,
+            46
+          ],
+          [
+            498,
+            366,
+            345,
+            200
+          ],
+          [
+            109,
+            71,
+            126,
+            149
+          ]
+        ]
+      }
+    }
+  },
+  "dengan_label": {
+    "warna": {
+      "klasifikasi": {
+        "C": 0.1,
+        "akurasi": 0.6191,
+        "f1_makro": 0.4484,
+        "akurasi_pm1": 0.9671,
+        "mae_kelas": 0.4173,
+        "recall_per_kelas": {
+          "B1": 0.6786,
+          "B2": 0.0907,
+          "B3": 0.9546,
+          "B4": 0.1231
+        },
+        "b2_menjadi_b3": 0.7823,
+        "b3_menjadi_b2": 0.0106,
+        "matriks_konfusi": [
+          [
+            171,
+            21,
+            58,
+            2
+          ],
+          [
+            58,
+            45,
+            388,
+            5
+          ],
+          [
+            9,
+            15,
+            1345,
+            40
+          ],
+          [
+            7,
+            5,
+            387,
+            56
+          ]
+        ]
+      },
+      "regresi_dibulatkan": {
+        "alpha": 1.0,
+        "akurasi": 0.598,
+        "f1_makro": 0.4265,
+        "akurasi_pm1": 0.977,
+        "mae_kelas": 0.4253,
+        "recall_per_kelas": {
+          "B1": 0.3254,
+          "B2": 0.3206,
+          "B3": 0.9141,
+          "B4": 0.0725
+        },
+        "b2_menjadi_b3": 0.6552,
+        "b3_menjadi_b2": 0.0589,
+        "matriks_konfusi": [
+          [
+            82,
+            128,
+            41,
+            1
+          ],
+          [
+            9,
+            159,
+            325,
+            3
+          ],
+          [
+            0,
+            83,
+            1288,
+            38
+          ],
+          [
+            0,
+            15,
+            407,
+            33
+          ]
+        ]
+      },
+      "regresi_ambang_validasi": {
+        "alpha": 1.0,
+        "ambang": [
+          1.135,
+          1.5218,
+          2.5941
+        ],
+        "akurasi": 0.6126,
+        "f1_makro": 0.4534,
+        "akurasi_pm1": 0.9747,
+        "mae_kelas": 0.4131,
+        "recall_per_kelas": {
+          "B1": 0.6389,
+          "B2": 0.2419,
+          "B3": 0.9205,
+          "B4": 0.0484
+        },
+        "b2_menjadi_b3": 0.631,
+        "b3_menjadi_b2": 0.0617,
+        "matriks_konfusi": [
+          [
+            161,
+            51,
+            40,
+            0
+          ],
+          [
+            61,
+            120,
+            313,
+            2
+          ],
+          [
+            8,
+            87,
+            1297,
+            17
+          ],
+          [
+            1,
+            15,
+            417,
+            22
+          ]
+        ]
+      }
+    },
+    "warna+relatif": {
+      "klasifikasi": {
+        "C": 0.1,
+        "akurasi": 0.6348,
+        "f1_makro": 0.5082,
+        "akurasi_pm1": 0.9732,
+        "mae_kelas": 0.3955,
+        "recall_per_kelas": {
+          "B1": 0.7143,
+          "B2": 0.1371,
+          "B3": 0.9184,
+          "B4": 0.2549
+        },
+        "b2_menjadi_b3": 0.7198,
+        "b3_menjadi_b2": 0.0263,
+        "matriks_konfusi": [
+          [
+            180,
+            25,
+            43,
+            4
+          ],
+          [
+            64,
+            68,
+            357,
+            7
+          ],
+          [
+            8,
+            37,
+            1294,
+            70
+          ],
+          [
+            5,
+            3,
+            331,
+            116
+          ]
+        ]
+      },
+      "regresi_dibulatkan": {
+        "alpha": 1.0,
+        "akurasi": 0.606,
+        "f1_makro": 0.4676,
+        "akurasi_pm1": 0.9828,
+        "mae_kelas": 0.4119,
+        "recall_per_kelas": {
+          "B1": 0.369,
+          "B2": 0.3145,
+          "B3": 0.8935,
+          "B4": 0.1648
+        },
+        "b2_menjadi_b3": 0.6552,
+        "b3_menjadi_b2": 0.0632,
+        "matriks_konfusi": [
+          [
+            93,
+            126,
+            31,
+            2
+          ],
+          [
+            12,
+            156,
+            325,
+            3
+          ],
+          [
+            0,
+            89,
+            1259,
+            61
+          ],
+          [
+            0,
+            9,
+            371,
+            75
+          ]
+        ]
+      },
+      "regresi_ambang_validasi": {
+        "alpha": 1.0,
+        "ambang": [
+          1.091,
+          1.3764,
+          2.5387
+        ],
+        "akurasi": 0.6137,
+        "f1_makro": 0.4535,
+        "akurasi_pm1": 0.9755,
+        "mae_kelas": 0.4116,
+        "recall_per_kelas": {
+          "B1": 0.6548,
+          "B2": 0.1169,
+          "B3": 0.9354,
+          "B4": 0.1363
+        },
+        "b2_menjadi_b3": 0.7379,
+        "b3_menjadi_b2": 0.0241,
+        "matriks_konfusi": [
+          [
+            165,
+            40,
+            46,
+            1
+          ],
+          [
+            69,
+            58,
+            366,
+            3
+          ],
+          [
+            9,
+            34,
+            1318,
+            48
+          ],
+          [
+            1,
+            4,
+            388,
+            62
+          ]
+        ]
+      }
+    },
+    "dinov2": {
+      "klasifikasi": {
+        "C": 0.001,
+        "akurasi": 0.6711,
+        "f1_makro": 0.5858,
+        "akurasi_pm1": 0.9843,
+        "mae_kelas": 0.3449,
+        "recall_per_kelas": {
+          "B1": 0.7302,
+          "B2": 0.2581,
+          "B3": 0.8957,
+          "B4": 0.3934
+        },
+        "b2_menjadi_b3": 0.6008,
+        "b3_menjadi_b2": 0.0369,
+        "matriks_konfusi": [
+          [
+            184,
+            41,
+            27,
+            0
+          ],
+          [
+            66,
+            128,
+            298,
+            4
+          ],
+          [
+            6,
+            52,
+            1262,
+            89
+          ],
+          [
+            1,
+            3,
+            272,
+            179
+          ]
+        ]
+      },
+      "regresi_dibulatkan": {
+        "alpha": 1000.0,
+        "akurasi": 0.6474,
+        "f1_makro": 0.5815,
+        "akurasi_pm1": 0.9943,
+        "mae_kelas": 0.3583,
+        "recall_per_kelas": {
+          "B1": 0.5198,
+          "B2": 0.4637,
+          "B3": 0.8183,
+          "B4": 0.389
+        },
+        "b2_menjadi_b3": 0.4718,
+        "b3_menjadi_b2": 0.11,
+        "matriks_konfusi": [
+          [
+            131,
+            113,
+            8,
+            0
+          ],
+          [
+            30,
+            230,
+            234,
+            2
+          ],
+          [
+            0,
+            155,
+            1153,
+            101
+          ],
+          [
+            0,
+            5,
+            273,
+            177
+          ]
+        ]
+      },
+      "regresi_ambang_validasi": {
+        "alpha": 1000.0,
+        "ambang": [
+          0.7741,
+          1.3414,
+          2.5203
+        ],
+        "akurasi": 0.6692,
+        "f1_makro": 0.5873,
+        "akurasi_pm1": 0.992,
+        "mae_kelas": 0.3388,
+        "recall_per_kelas": {
+          "B1": 0.75,
+          "B2": 0.2883,
+          "B3": 0.89,
+          "B4": 0.356
+        },
+        "b2_menjadi_b3": 0.5726,
+        "b3_menjadi_b2": 0.0461,
+        "matriks_konfusi": [
+          [
+            189,
+            48,
+            15,
+            0
+          ],
+          [
+            68,
+            143,
+            284,
+            1
+          ],
+          [
+            1,
+            65,
+            1254,
+            89
+          ],
+          [
+            0,
+            4,
+            289,
+            162
+          ]
+        ]
+      }
+    },
+    "dinov2+relatif": {
+      "klasifikasi": {
+        "C": 0.001,
+        "akurasi": 0.6807,
+        "f1_makro": 0.6044,
+        "akurasi_pm1": 0.9893,
+        "mae_kelas": 0.3304,
+        "recall_per_kelas": {
+          "B1": 0.7341,
+          "B2": 0.2843,
+          "B3": 0.8864,
+          "B4": 0.4462
+        },
+        "b2_menjadi_b3": 0.5706,
+        "b3_menjadi_b2": 0.0412,
+        "matriks_konfusi": [
+          [
+            185,
+            46,
+            21,
+            0
+          ],
+          [
+            69,
+            141,
+            283,
+            3
+          ],
+          [
+            3,
+            58,
+            1249,
+            99
+          ],
+          [
+            1,
+            0,
+            251,
+            203
+          ]
+        ]
+      },
+      "regresi_dibulatkan": {
+        "alpha": 10000.0,
+        "akurasi": 0.6485,
+        "f1_makro": 0.5662,
+        "akurasi_pm1": 0.9958,
+        "mae_kelas": 0.3557,
+        "recall_per_kelas": {
+          "B1": 0.4405,
+          "B2": 0.4798,
+          "B3": 0.8375,
+          "B4": 0.3626
+        },
+        "b2_menjadi_b3": 0.4657,
+        "b3_menjadi_b2": 0.1029,
+        "matriks_konfusi": [
+          [
+            111,
+            135,
+            6,
+            0
+          ],
+          [
+            26,
+            238,
+            231,
+            1
+          ],
+          [
+            0,
+            145,
+            1180,
+            84
+          ],
+          [
+            0,
+            4,
+            286,
+            165
+          ]
+        ]
+      },
+      "regresi_ambang_validasi": {
+        "alpha": 10000.0,
+        "ambang": [
+          0.8125,
+          1.318,
+          2.4045
+        ],
+        "akurasi": 0.6727,
+        "f1_makro": 0.6006,
+        "akurasi_pm1": 0.9931,
+        "mae_kelas": 0.3342,
+        "recall_per_kelas": {
+          "B1": 0.7024,
+          "B2": 0.2722,
+          "B3": 0.8616,
+          "B4": 0.5077
+        },
+        "b2_menjadi_b3": 0.5887,
+        "b3_menjadi_b2": 0.0376,
+        "matriks_konfusi": [
+          [
+            177,
+            60,
+            15,
+            0
+          ],
+          [
+            67,
+            135,
+            292,
+            2
+          ],
+          [
+            1,
+            53,
+            1214,
+            141
+          ],
+          [
+            0,
+            0,
+            224,
+            231
+          ]
+        ]
+      }
+    }
+  },
+  "urutan_pasangan_uji": {
+    "warna": {
+      "B1-B2": {
+        "satu_citra": {
+          "benar": 0.907,
+          "n": 215
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.887,
+          "n": 832
+        },
+        "beda_pohon": {
+          "benar": 0.836,
+          "n": 123945
+        }
+      },
+      "B2-B3": {
+        "satu_citra": {
+          "benar": 0.7709,
+          "n": 1100
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.7386,
+          "n": 3779
+        },
+        "beda_pohon": {
+          "benar": 0.7269,
+          "n": 693985
+        }
+      },
+      "B3-B4": {
+        "satu_citra": {
+          "benar": 0.6878,
+          "n": 1105
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.6545,
+          "n": 3572
+        },
+        "beda_pohon": {
+          "benar": 0.6053,
+          "n": 636418
+        }
+      }
+    },
+    "warna+relatif": {
+      "B1-B2": {
+        "satu_citra": {
+          "benar": 0.9209,
+          "n": 215
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.9099,
+          "n": 832
+        },
+        "beda_pohon": {
+          "benar": 0.8489,
+          "n": 123945
+        }
+      },
+      "B2-B3": {
+        "satu_citra": {
+          "benar": 0.7964,
+          "n": 1100
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.7745,
+          "n": 3779
+        },
+        "beda_pohon": {
+          "benar": 0.7418,
+          "n": 693985
+        }
+      },
+      "B3-B4": {
+        "satu_citra": {
+          "benar": 0.7439,
+          "n": 1105
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.7234,
+          "n": 3572
+        },
+        "beda_pohon": {
+          "benar": 0.668,
+          "n": 636418
+        }
+      }
+    },
+    "dinov2": {
+      "B1-B2": {
+        "satu_citra": {
+          "benar": 0.9442,
+          "n": 215
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.9219,
+          "n": 832
+        },
+        "beda_pohon": {
+          "benar": 0.8847,
+          "n": 123945
+        }
+      },
+      "B2-B3": {
+        "satu_citra": {
+          "benar": 0.8755,
+          "n": 1100
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.8661,
+          "n": 3779
+        },
+        "beda_pohon": {
+          "benar": 0.8151,
+          "n": 693985
+        }
+      },
+      "B3-B4": {
+        "satu_citra": {
+          "benar": 0.9032,
+          "n": 1105
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.8639,
+          "n": 3572
+        },
+        "beda_pohon": {
+          "benar": 0.8133,
+          "n": 636418
+        }
+      }
+    },
+    "dinov2+relatif": {
+      "B1-B2": {
+        "satu_citra": {
+          "benar": 0.9442,
+          "n": 215
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.9123,
+          "n": 832
+        },
+        "beda_pohon": {
+          "benar": 0.8832,
+          "n": 123945
+        }
+      },
+      "B2-B3": {
+        "satu_citra": {
+          "benar": 0.8764,
+          "n": 1100
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.8664,
+          "n": 3779
+        },
+        "beda_pohon": {
+          "benar": 0.8186,
+          "n": 693985
+        }
+      },
+      "B3-B4": {
+        "satu_citra": {
+          "benar": 0.9059,
+          "n": 1105
+        },
+        "satu_pohon_beda_citra": {
+          "benar": 0.888,
+          "n": 3572
+        },
+        "beda_pohon": {
+          "benar": 0.8308,
+          "n": 636418
+        }
+      }
+    }
+  }
+}
