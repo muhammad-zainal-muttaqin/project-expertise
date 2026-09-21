@@ -3424,3 +3424,106 @@ pencahayaan antarfoto bukan penyebab utama.
 **Verdict:** FALSIFIED. Tanpa sumber label baru, pengelompokan otomatis dan regresi
 ordinal tidak memisahkan B2 dan B3 lebih baik daripada klasifikasi.
 
+---
+
+## V2-E-052: pencacahan per pohon dengan deduplikasi lintas sisi
+
+**Tanggal:** 21 September 2026 · **Skrip:**
+[`scripts/pencacahan_dedup_pohon.py`](../scripts/pencacahan_dedup_pohon.py)
+
+### Rancangan Eksperimen
+
+Metode koefisien `V2-E-050` menghitung $\operatorname{round}(k_c \cdot n_c(t))$. Nilai
+$k_c$ adalah rerata populasi, sehingga tidak mengikuti banyaknya sisi tempat setiap
+tandan muncul pada pohon tertentu. Eksperimen ini menguji pengganti yang menghitung
+tandan fisik secara langsung:
+
+1. **Perapian per sisi:** kotak kembar beda kelas (IoU ≥ 0,90) digabung menjadi satu
+   vektor peluang kelas, lalu NMS 0,60; skor minimum 0,05.
+2. **Model pasangan:** *HistGradientBoosting* pada fitur geometri pasangan kotak di
+   sisi bersebelahan (posisi, ukuran, pergeseran, posisi relatif, peringkat tinggi,
+   sudut silinder $u = (x - \text{pusat})/\text{jari-jari}$, peringkat horizontal).
+   Model dilatih pada kotak acuan partisi latih dan validasi, dengan satu salinan bersih
+   dan tiga salinan berderau (geser 5%, skala 10%, 15% kotak dibuang, pengecoh
+   Poisson 0,6 per sisi): 311.709 pasangan (`953`) dan 53.936 pasangan (`763`).
+3. **Penggabungan:** *union-find* rakus menurut peluang; satu komponen memuat paling
+   banyak satu kotak per sisi dan paling banyak $\lfloor 3S/4 \rfloor$ sisi.
+4. **Cacah:** satu komponen dihitung satu tandan jika $1 - \prod(1 - s_i) \geq
+   \tau_{simpan}$; kelasnya argmax peluang teragregasi ditambah pergeseran kelas.
+
+Ambang $\tau_{det}$, $\tau_{taut}$, $\tau_{simpan}$, dan pergeseran kelas dipilih dengan
+lipat-silang lima lipatan pada pohon uji, dengan lipatan yang sama dengan `V2-E-050`
+(*seed* 42). Data: 141 pohon uji `953` dan 110 pohon uji `763`, *dump* yang sama dengan
+`V2-E-050`. Varian fusi menggabungkan tiga detektor per sisi dengan gaya WBF (IoU 0,55).
+Dua analisis batas atas ikut dihitung: kedua metode pada kotak acuan, dan deduplikasi
+dengan tautan acuan pada deteksi nyata. Seluruh putaran berjalan pada CPU pod RunPod,
+kurang dari satu menit per korpus.
+
+### Temuan Empiris Terukur
+
+1. **Angka koefisien laporan tereproduksi persis:** `953` RF-DETR-L $k$ per kelas
+   1,0408 dan `763` RF-DETR-L $k + \tau$ per kelas 0,6091.
+2. **Satu tandan muncul pada jumlah sisi yang berbeda-beda.** Pada pohon empat sisi
+   `953`: 2.394 tandan di 1 sisi, 6.165 di 2 sisi, 719 di 3 sisi, dan tidak ada di 4
+   sisi. Pada `763`: 1.746, 1.940, 84, dan 1. Seluruh 7.328 (`953`) dan 2.025 (`763`)
+   tandan multisisi muncul pada sisi yang bersambung.
+3. **Koefisien tidak tepat per pohon walaupun deteksinya sempurna.** Pada kotak acuan,
+   keempat cacah kelas tepat hanya pada 22,7% pohon `953` dan 48,2% pohon `763`.
+   Deduplikasi: 24,1% dan 66,4%.
+4. **Jumlah total per pohon lebih tepat dengan deduplikasi.** Terhadap $k$ per kelas,
+   selisih $MAE$ total signifikan pada 5 dari 10 pembandingan dan tidak pernah
+   memburuk secara signifikan: kotak acuan `953` $−0,2482$ [$−0,4823$; $−0,0284$],
+   kotak acuan `763` $−0,1727$ [$−0,3091$; $−0,0273$], fusi `953` $−0,5532$
+   [$−0,8582$; $−0,2766$], RT-DETR-L `763` $−0,3455$ [$−0,5364$; $−0,1545$], RF-DETR-L
+   `763` $−0,3000$ [$−0,4818$; $−0,1180$].
+5. **Cacah per kelas setara.** Pada 10 pembandingan $MAE$ makro, semua selang
+   kepercayaan 95% mencakup nilai nol. Terhadap konfigurasi pilihan laporan: `953`
+   RF-DETR-L $+0,0603$ [$−0,0248$; $+0,1472$] dan `763` RF-DETR-L terhadap $k + \tau$
+   per kelas $−0,0136$ [$−0,0659$; $+0,0410$].
+6. **Hasil terbaik per pohon:** `763` RF-DETR-L dengan deduplikasi mencapai $MAE$ total
+   0,9818, total tepat 40,9%, total ±1 77,3%, dan keempat kelas tepat 24,5%
+   (koefisien pilihan laporan: 1,0909; 36,4%; 72,7%; 18,2%).
+7. **Penaut `953` lebih lemah.** Pada kotak acuan uji, F1 pasangan 0,6881 (`953`,
+   $\tau_{taut}$ 0,1) dan 0,8316 (`763`, $\tau_{taut}$ 0,2). Akibatnya, pada kotak acuan
+   `953`, proporsi pohon dengan keempat kelas dalam ±1 turun dari 0,8440 menjadi 0,7305
+   ($−0,1135$ [$−0,1915$; $−0,0426$]).
+8. **Galat tersisa berasal dari detektor.** Tautan acuan pada deteksi nyata hanya
+   menggeser $MAE$ makro $−0,07$ sampai $+0,02$ dibanding penaut terlatih. Dengan
+   tautan acuan, RF-DETR-L `953` ($\tau_{det}$ 0,30; $\tau_{simpan}$ 0,40) menyisakan
+   1,70 tandan terlewat per pohon (17,1%), 1,96 komponen palsu, dan 1,96 tandan salah
+   kelas (23,7% tandan terdeteksi). RF-DETR-L `763` (0,25; 0,40): 0,87 (17,2%), 0,96,
+   dan 0,84 (19,9%).
+9. **Fusi tiga detektor tidak memperbaiki cacah per kelas:** $MAE$ makro 1,0656
+   (`953`) dan 0,6250 (`763`).
+
+### Keputusan Metodologis
+
+Keluaran per pohon memakai deduplikasi, dengan jumlah tandan total sebagai angka utama.
+Metode koefisien hanya dipakai untuk total agregat, misalnya per blok. Perbaikan cacah
+per kelas per pohon diarahkan ke *recall* detektor dan pemisahan B2/B3, bukan ke rumus
+pencacahan.
+
+### Batasan Validitas & Audit
+
+1. Ambang dan pergeseran kelas dipilih dengan lipat-silang pada pohon uji, sama dengan
+   `V2-E-050`, bukan pada partisi validasi.
+2. Rancangan penaut disempurnakan dalam empat putaran yang dinilai pada pohon uji yang
+   sama (kisi ambang dan batas ukuran komponen, fitur silinder, varian fusi). Antara
+   putaran, $MAE$ makro deteksi nyata bergeser sampai 0,06, sehingga selisih sebesar
+   itu berada dalam variasi pemilihan.
+3. Model pasangan dilatih pada kotak acuan. Derau augmentasi hanya mendekati sebaran
+   galat lokalisasi detektor.
+4. Komponen palsu dihitung dengan kecocokan IoU ≥ 0,50, sehingga tandan nyata yang
+   lokalisasinya buruk ikut terhitung palsu.
+5. Pada 5 pohon uji `953`, cacah `split_manifest.csv` berbeda dari jumlah tandan JSON.
+   Cacah acuan mengikuti manifes, sama dengan laporan.
+6. Uraian galat bergantung pada ambang; angka temuan 8 memakai ambang modus hasil
+   lipat-silang putaran akhir.
+
+**Artefak:**
+
+- [`results/pencacahan_dedup_2026-09-21/ringkasan.json`](../results/pencacahan_dedup_2026-09-21/ringkasan.json)
+  (metrik, pilihan per lipatan, *bootstrap* 2.000 resampel pohon, prediksi per pohon)
+
+**Verdict:** CONFIRMED. Deduplikasi menghasilkan cacah bulat per pohon yang setara
+dengan koefisien untuk cacah per kelas dan lebih tepat untuk jumlah tandan total.
